@@ -22,7 +22,8 @@
 		});
 		function chekedT(id) {
 			$('input:checkbox[name="' + id + '"]').each(function () {
-				if (!this.disabled) this.checked = true;
+				if (!this.disabled)
+					this.checked = true;
 			});
 			if (id == 'month') {
 				monthSel();
@@ -33,7 +34,8 @@
 
 		function chekedF(id) {
 			$('input:checkbox[name="' + id + '"]').each(function () {
-				if (!this.disabled) this.checked = false;
+				if (!this.disabled)
+					this.checked = false;
 			});
 			if (id == 'month') {
 				monthSel();
@@ -71,8 +73,10 @@
 				eYearOld = eYear;
 			} else {
 				alert('연도를 확인하세요');
-				$('#beginYear option[value="' + bYearOld + '"]').prop('selected', true);
-				$('#endYear option[value="' + eYearOld + '"]').prop('selected', true);
+				$('#beginYear option[value="' + bYearOld + '"]').prop(
+					'selected', true);
+				$('#endYear option[value="' + eYearOld + '"]').prop('selected',
+					true);
 				return false;
 			}
 
@@ -80,7 +84,8 @@
 			if (bYear < 2024 || eYear < 2024) {
 				$('#month10, #month11').attr("disabled", false);
 			} else {
-				$('#month10, #month11').attr("disabled", true).prop("checked", false);
+				$('#month10, #month11').attr("disabled", true).prop("checked",
+					false);
 			}
 
 			// 한국사 체크박스 활성화/비활성화
@@ -96,15 +101,19 @@
 			var checkedCount = $('input[name=month]:checked').length;
 			var disabledCount = $('input[name=month]:disabled').length;
 
-			$('#monthAll').prop('checked', totalCount === checkedCount + disabledCount);
+			$('#monthAll').prop('checked',
+				totalCount === checkedCount + disabledCount);
 
 			var month = [];
 			$('input:checkbox[name="month"]').each(function () {
 				if (!this.disabled && this.checked) {
 					month.push($(this).val());
-					if ($(this).val() == '03') month.push('02');
-					if ($(this).val() == '04') month.push('05');
-					if ($(this).val() == '11') month.push('12');
+					if ($(this).val() == '03')
+						month.push('02');
+					if ($(this).val() == '04')
+						month.push('05');
+					if ($(this).val() == '11')
+						month.push('12');
 				}
 			});
 			$('#monthList').val(month.join(','));
@@ -115,7 +124,8 @@
 			var checkedCount = $('input[name=subj]:checked').length;
 			var disabledCount = $('input[name=subj]:disabled').length;
 
-			$('#subjAll').prop('checked', totalCount === checkedCount + disabledCount);
+			$('#subjAll').prop('checked',
+				totalCount === checkedCount + disabledCount);
 
 			var subj = [];
 			$('input:checkbox[name="subj"]').each(function () {
@@ -145,15 +155,28 @@
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
-<div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container">
+<div layout:fragment="content" id="examMain" style="max-width: 1270px; margin: 0 auto">
+	<!--	<div id="momoDefault" style="max-width: 20%; width: 100%">
+		<div class="sidebar">
+			<div class="sidebar__item">
+				<h4>성적관리</h4>
+				<ul>
+					<li><a th:href="@{userExamCreate}">모의고사 만들기</a></li>
+					<li><a th:href="@{examMain}">모의고사 목록</a></li>
+					<li><a th:href="@{userExamResultList}">모의고사 응시목록</a></li>
+					<li><a th:href="@{userExamAnalyse}">모의고사 결과분석</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>-->
+	<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+	
+	<section class="container" style="max-width: 80%; width: 100%">
 		<!-- sub_container -->
-		<div class="sub_container">
-			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+		<div class="sub_container" style="width:100%">
+
 			<!-- content -->
-			<div class="content">
+			<div class="content" style="width:100%">
 				<form action="#" name="paperListFrm" id="paperListFrm" method="post">
 					<input type="hidden" name="targetCd" id="targetCd" value="D300">
 					<input type="hidden" name="monthList" id="monthList" value="03,02,04,05,06,07,09"> <input
@@ -585,8 +608,7 @@
 									</div>
 									<div class="txt_wrap">
 										<div class="txt_group">
-											<p class="tit">2024년&nbsp;고3 9월 모평(평가원)&nbsp;생활과윤리
-												&nbsp;</p>
+											<p class="tit">2024년&nbsp;고3 9월 모평(평가원)&nbsp;생활과윤리 &nbsp;</p>
 											<ul class="txt_info">
 												<li>20문항</li>
 												<li>10600명 응시</li>
@@ -647,8 +669,8 @@
 								처음</span></a><a href="javascript:;" class="btn_prev" style="cursor: default"><span
 								class="blind">이전</span></a>
 						<div class="count">
-							<a href="javascript:goPage(1)" class="active"> 1 </a> /<a href="javascript:goPage(10)">
-								10 </a>
+							<a href="javascript:goPage(1)" class="active"> 1 </a> /<a href="javascript:goPage(10)"> 10
+							</a>
 						</div>
 						<a href="javascript:goPage(2)" class="btn_next"><span class="blind">다음</span></a><a
 							href="javascript:goPage(10)" class="btn_last"><span class="blind">맨 마지막</span></a>
