@@ -1,10 +1,14 @@
 package ks52team01.student.score.service;
 
-public interface ScoreExamAllService {
+import java.util.List;
 
+import ks52team01.student.score.dto.Test;
+
+public interface ScoreExamAllService {
+	
 	public void getExamAllScoreSummary();
 	
-	public void getExamAllOriginalScore();
+	public List<Test> getExamAllOriginalScore();
 	
 	public void getExamAllStandardScore();
 	

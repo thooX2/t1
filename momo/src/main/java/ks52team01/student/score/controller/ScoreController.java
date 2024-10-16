@@ -1,9 +1,14 @@
 package ks52team01.student.score.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ks52team01.student.score.dto.Test;
+import ks52team01.student.score.service.ScoreExamAllService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,8 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ScoreController {
 
+private final ScoreExamAllService scoreExamAllService;
+	
 	@GetMapping("/scoreMain")
-	public String getScoreMain() {
+	public String getScoreMain(Model model) {
+		List<Test> tt = scoreExamAllService.getExamAllOriginalScore();
+		System.out.println(tt);
+		model.addAttribute("tt", tt);
 		return "view/user/score/exam_all_score_summary";
 	}
 

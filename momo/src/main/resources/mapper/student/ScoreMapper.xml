@@ -2,8 +2,30 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ks52team01.score.mapper.ScoreMapper">
-
+<mapper namespace="ks52team01.student.score.mapper.ScoreMapper">
+	<resultMap type="Test" id="testMap">
+		<id column="subject_score_code" property="subjectScoreCode"/>
+		<result column="user_code" property="userCode"/>
+		<result column="took_exam_info_code" property="tookExamInfoCode"/>
+		<result column="sub_mjr_cat_code" property="subMjrCatCode"/>
+		<result column="sub_mir_cat_code" property="subMirCatCode"/>
+		<result column="subject_score_origin" property="subjectScoreOrigin"/>
+		<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
+	</resultMap>
+	
+	<select id="getExamAllOriginalScore" resultMap="testMap">
+		SELECT
+			subject_score_code,
+			user_code,
+			took_exam_info_code,
+			sub_mjr_cat_code,
+			sub_mir_cat_code,
+			subject_score_origin,
+			subject_score_reg_time
+		FROM
+			subject_score;
+			
+	</select>
 
 
 

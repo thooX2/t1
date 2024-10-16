@@ -231,6 +231,18 @@ tr {
 									</tr>
 								</tbody>
 							</table>
+							
+							<table>
+								<thead>
+									<tr>
+										<td>코드</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="l : ${tt}">
+										<td th:text="${l.subjectScoreCode}"></td>
+								</tbody>
+							</table>
 						</div>
 
 					</div>
