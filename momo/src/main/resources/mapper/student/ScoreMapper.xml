@@ -12,7 +12,6 @@
 		<result column="subject_score_origin" property="subjectScoreOrigin"/>
 		<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
 	</resultMap>
-	
 	<select id="getExamAllOriginalScore" resultMap="testMap">
 		SELECT
 			subject_score_code,
@@ -25,6 +24,22 @@
 		FROM
 			subject_score;
 			
+	</select>
+	
+	<select id="getTookExam" resultType="String">
+		SELECT
+			distinct
+			ei.exam_nm
+		FROM
+			took_exam_info tei
+			JOIN
+			exam_info ei
+			ON
+			tei.exam_code = ei.exam_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC;
 	</select>
 
 

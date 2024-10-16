@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import ks52team01.student.score.dto.Test;
+import ks52team01.student.score.dto.TookExam;
 import ks52team01.student.score.mapper.ScoreMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -42,5 +43,11 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	@Override
 	public void getExamAllRank() {
 		
+	}
+
+	@Override
+	public List<TookExam> getTookExam() {
+		// TODO Auto-generated method stub
+		return scoreMapper.getTookExam();
 	}
 }

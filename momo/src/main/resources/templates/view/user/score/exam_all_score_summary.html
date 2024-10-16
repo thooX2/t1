@@ -128,6 +128,7 @@ tr {
 						<div class="sidebar">
 							<div class="sidebar__item">
 								<h4>성적관리</h4>
+								<h5>모의고사 성적 개요</h5>
 								<ul>
 									<li><a th:href="@{examAllOriginalScore}">모의고사 원점수 조회</a></li>
 									<li><a th:href="@{examAllStandardScore}">모의고사 표준점수 조회</a></li>
@@ -142,11 +143,7 @@ tr {
 						<div class="ss">
 							<strong>최근 응시하신&nbsp</strong>
 							<select>
-								<option>2024년 9월 모의고사</option>
-								<option>2024년 8월 모의고사</option>
-								<option>2024년 7월 모의고사</option>
-								<option>2024년 6월 모의고사</option>
-								<option>2024년 5월 모의고사</option>
+								<option th:each="l : ${tookExam}" th:text="${l}"></option>
 							</select>
 							<strong>의 점수입니다.</strong>
 						</div>
@@ -251,20 +248,7 @@ tr {
 									</tr>
 								</tbody>
 							</table>
-							
-							<table>
-								<thead>
-									<tr>
-										<td>코드</td>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="l : ${tt}">
-										<td th:text="${l.subjectScoreCode}"></td>
-								</tbody>
-							</table>
 						</div>
-
 					</div>
 				</div>
 			</div>
