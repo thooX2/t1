@@ -17,30 +17,40 @@
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container">
-		<!-- sub_container -->
-		<div class="sub_container">
-			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
-			<!-- content -->
-			<div class="content">
-				<div id="wrap_2014">
-					<div class="column_top">
-						<!-- 상단 메뉴 시작 -->
-						<div class="column_right cust_test" id="contents">
-							<p style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
-								수능과목삭제</p>
-							<div id="tabContent">
-								<div class="myWorkbook">
-									<div class="sort_select" style="width: 150px; margin-bottom: 20px;">
-									</div>
-									<div id="MyTestArea">
-										<form action="removeCastSubject" method="post" class="insert">
-											<h2>정말로 삭제하시겠습니까?</h2>
-											<input type="hidden" name="idx" value="second" /> <br /> <input
-												type="submit" value="목표과목삭제">
-										</form>
+		<!-- container -->
+		<section class="container">
+			<!-- sub_container -->
+			<div class="sub_container">
+
+				<!-- Include the sidebar fragment here -->
+				<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
+
+
+
+				<!-- content -->
+				<div class="content">
+					<div id="wrap_2014">
+						<div class="column_top">
+							<!-- 상단 메뉴 시작 -->
+							<div class="column_right cust_test" id="contents">
+								<p
+									style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
+									수능과목삭제</p>
+								<div id="tabContent">
+
+									<div class="myWorkbook">
+										<div class="sort_select"
+											style="width: 150px; margin-bottom: 20px;">
+										
+										</div>
+
+										<div id="MyTestArea">
+											<form action="/study/removeCastSubject" method="post" class="insert">
+												<h2>정말로 삭제하시겠습니까?</h2>
+												<input type="text" name="idx" th:value=${listIdx} /> <br /> <input
+													type="submit" value="목표과목삭제">
+											</form>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -48,8 +58,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+
+	</div>
 </div>
 
 </html>
