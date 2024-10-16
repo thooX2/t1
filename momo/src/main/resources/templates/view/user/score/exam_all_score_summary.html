@@ -35,6 +35,18 @@ tr {
 #momoDefault .sidebar__item ul li a:hover {
 	color: red;
 }
+.ss {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.score-btn {
+	width: 20%;
+	height: 50px;
+	border-top-radius: 5px;
+}
 </style>
 </head>
 <th:block layout:fragment="customJsFile">
@@ -127,7 +139,8 @@ tr {
 						</div>
 					</div>
 					<div class="col-lg-9 col-md-7">
-						<div>
+						<div class="ss">
+							<strong>최근 응시하신&nbsp</strong>
 							<select>
 								<option>2024년 9월 모의고사</option>
 								<option>2024년 8월 모의고사</option>
@@ -135,13 +148,20 @@ tr {
 								<option>2024년 6월 모의고사</option>
 								<option>2024년 5월 모의고사</option>
 							</select>
+							<strong>의 점수입니다.</strong>
 						</div>
 						<div>
-							<p>최근 응시하신 2024년 9월 모의고사의 점수입니다.</p>
-						</div>
-						<div>
-							<canvas id="scoreChart" width="800" height="400px"
-								max-height="400px"></canvas>
+							<div class="ss">
+								<button class="score-btn">원점수</button>
+								<button class="score-btn">표준점수</button>
+								<button class="score-btn">백분위</button>
+								<button class="score-btn">등급</button>
+								<button class="score-btn">석차</button>
+							</div>
+							<div>
+								<canvas id="scoreChart" width="800" height="400px"
+									max-height="400px"></canvas>							
+							</div>
 						</div>
 						<div>
 							<table>
