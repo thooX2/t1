@@ -46,15 +46,16 @@
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
-<div layout:fragment="content" id="examMain">
+<div layout:fragment="content" id="examMain" style="max-width:1270px;margin:0 auto">
+	<!-- Include the sidebar fragment here -->
+	<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
 	<!-- container -->
-	<section class="container">
+	<section class="container" style="max-width: 80%; width: 100%">
 		<!-- sub_container -->
-		<div class="sub_container">
-			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+		<div class="sub_container" style="width: 100% !important;">
+
 			<!-- content -->
-			<div class="content">
+			<div class="content" style="width: 100% !important;">
 				<div id="wrap_2014">
 					<div class="column_top">
 						<!-- 상단 메뉴 시작 -->
