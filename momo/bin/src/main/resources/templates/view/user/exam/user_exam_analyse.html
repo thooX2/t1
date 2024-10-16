@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<head>
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/style.css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/common(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/layout(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/smartmath.css}">
+</head>
+<th:block layout:fragment="customJsFile">
+	<!-- Highcharts 라이브러리 로드 -->
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+	<script>
+		const $title = document.querySelector('title');
+		$title.textContent = '모의고사 결과분석';
+		Highcharts.chart('memRateArea2', {
+			chart: {
+				type: 'line'
+			},
+			title: {
+				text: '기간별 성적변화'
+			},
+			xAxis: {
+				categories: ['09-18', '09-19', '09-20', '09-21', '09-22',
+					'09-23', '09-24']
+			},
+			yAxis: {
+				title: {
+					text: '점수'
+				},
+				labels: {
+					format: '{value}%'
+				},
+				max: 100,
+				min: 0
+			},
+			series: [{
+				name: '나의 점수',
+				data: [0, 90, 0, 80, 0, 70, 0],
+				color: '#ff8484'
+			}, {
+				name: '평균점수',
+				data: [79, 84, 89, 93, 90, 72, 0],
+				color: '#b1bac2'
+			}]
+		});
+	</script>
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+	<!-- container -->
+	<section class="container" style="margin-left:15px !important">
+		<!-- sub_container -->
+		<div class="sub_container">
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+			<!-- content -->
+			<style>
+				.highcharts-figure,
+				.highcharts-data-table table {
+					min-width: 320px;
+					max-width: 700px;
+					margin: 1em auto;
+				}
+
+				.highcharts-data-table table {
+					font-family: Verdana, sans-serif;
+					border-collapse: collapse;
+					border: 1px solid #EBEBEB;
+					margin: 10px auto;
+					text-align: center;
+					width: 100%;
+					max-width: 500px;
+				}
+
+				.highcharts-data-table caption {
+					padding: 1em 0;
+					font-size: 1.2em;
+					color: #555;
+				}
+
+				.highcharts-data-table th {
+					font-weight: 600;
+					padding: 0.5em;
+				}
+
+				.highcharts-data-table td,
+				.highcharts-data-table th,
+				.highcharts-data-table caption {
+					padding: 0.5em;
+				}
+
+				.highcharts-data-table thead tr,
+				.highcharts-data-table tr:nth-child(even) {
+					background: #f8f8f8;
+				}
+
+				.highcharts-data-table tr:hover {
+					background: #f1f7ff;
+				}
+
+				.Chart .export .menu {
+					display: none;
+				}
+
+				.highcharts-figure,
+				.highcharts-data-table table {
+					min-width: 310px;
+					max-width: 800px;
+					margin: 1em auto;
+				}
+
+				.ic1 {
+					display: inline-block;
+					font-size: 11px;
+					color: #fff;
+					background: #e55c5c;
+					line-height: 14px;
+					padding: 2px 4px;
+					vertical-align: 2px;
+				}
+			</style>
+			<div id="wrap_2014">
+
+				<div class="column_main">
+
+
+					<div class="column_right analysis" style="margin-left: 20px;">
+						<h3 class="areaLogo">성적 분석</h3>
+
+						<div class="review--topTxt">
+							<ul>
+								<li>응시한 문제지를 과목·단원·유형·난도별로 성적이 분석됩니다.</li>
+								<li>성적 분석으로 나의 취약점을 파악할 수 있습니다.</li>
+							</ul>
+						</div>
+
+						<div id="searchCndArea">
+
+							<table class="mid_tbl--type mid_tbl--type02">
+								<colgroup>
+									<col width="110">
+									<col width="620">
+								</colgroup>
+								<tbody>
+									<tr>
+										<th>영역</th>
+										<td>
+											<div class="tbl_in--atc" id="mDomCdDiv">
+
+												<label id="mDomCdHI" onclick="fncSetDom('HI')" class="on">한국사</label>
+
+												<label id="mDomCdSC" onclick="fncSetDom('SC')">과학탐구</label>
+
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+
+						</div>
+						<div class="searchSection--menu ty2" id="schTabMenu">
+							<a href="JavaScript:;" onclick="fncTabSet(1)" class="on"><strong>분석1</strong>성적 변화</a>
+							<a href="/exam/ccr" onclick="fncTabSet(2)"><strong>분석2</strong>단원별 정답률</a>
+							<a href="/exam/weak" onclick="fncTabSet(3)"><strong>분석3</strong>취약 유형</a>
+							<a href="/exam/chap" onclick="fncTabSet(4)"><strong>분석4</strong>단원/난도/문항별 분석</a>
+
+						</div>
+
+						<div id="ContArea">
+
+							<!--[D] 분석 1 -->
+							<div class="bx_analysis">
+								<div class="tit_analysis on" id="tit_main1">누적 성적표</div>
+
+								<div class="cont_analysis" id="dtlCont1">
+									<div class="cumulativeReport">
+										<span> 총 문항수 <strong>20</strong>
+										</span> <span class="correct"> 정답 <strong>16</strong>
+										</span> <span class="wrong"> 오답 <strong>4</strong>
+										</span> <span> 나의 정답률 <strong>80%</strong>
+										</span> <span> 평균 정답률 <strong>80%</strong>
+										</span>
+									</div>
+
+									<div class="cumulativeReport__txt">* 평균 정답률은 각 문항을 응시한 회원의
+										채점결과에 따라 정해집니다.</div>
+								</div>
+
+
+								<div class="section_analysis">
+									<div class="tit_analysis on" id="tit_main2">기간별 성적 변화</div>
+									<div class="cont_analysis" id="dtlCont2" style="margin-bottom: 15px;">
+										<div class="top_legend" style="margin-right: 20px">
+											<span class="g_legen"><span class="ic_qc1"></span>평균 정답률</span>
+											<span class="g_legen"><span class="ic_qc2"></span>나의 정답률</span>
+
+										</div>
+										<div style="display: flex; flex-direction: column; align-items: flex-start;">
+											<div
+												style="width: 100%; display: flex; justify-content: flex-end;padding-right: 20px !important; align-items: center;">
+												<span class="g_legen"
+													style="margin-right: 10px;font-size: 1.5rem;font-weight: bolder;color: black;">Period
+													: </span>
+												<!-- 부모 div에 width: 100% 추가 -->
+												<select name="dateVal" id="dateVal" onchange="fncSetDate(this.value)">
+													<option value="W">주</option>
+													<option value="M">월</option>
+													<option value="Y">년</option>
+												</select>
+											</div>
+											<div id="graphArea" style="margin: 10px auto;"> <!-- 위쪽 여백 추가 -->
+												<div id="memRateArea2" style="width: 740px; height: 400px;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- //content -->
+		</div>
+		<!-- //sub_container -->
+	</section>
+	<!-- container //-->
+</div>
+
+</html>

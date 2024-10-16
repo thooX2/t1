@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<head>
+	<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+</head>
+<th:block layout:fragment="customJsFile">
+	<script th:src="@{/user/js/study/jquery-3.5.1.min.js}"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+	<!-- container -->
+	<section class="container">
+		<!-- sub_container -->
+		<div class="sub_container">
+
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
+
+
+
+			<!-- content -->
+			<div class="content">
+				<div id="wrap_2014">
+					<div class="column_top">
+						<!-- 상단 메뉴 시작 -->
+						<div class="column_right cust_test" id="contents">
+							<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
+								상세 스케쥴 생성
+							</p>
+							<div id="tabContent">
+
+								<div class="myWorkbook">
+									<div class="sort_select" style="width:150px;margin-bottom: 20px;">
+
+									</div>
+
+									<div class="myWorkbook">
+										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
+											<a href="/addDetailed">상세스케쥴 생성</a>
+										</div>
+										<div id="MyTestArea">
+											<table class="bot_tbl--type">
+												<colgroup>
+													<col width="50">
+													<col width="90">
+													<col width="90">
+													<col width="90">
+													<col width="90">
+													<col width="90">
+													<col width="70">
+													<col width="70">
+													<col width="70">
+												</colgroup>
+												<thead>
+													<tr>
+														<th>학습목표</th>
+														<th>일정 메모</th>
+														<th>일정 날짜</th>
+														<th>일정 시작 시간</th>
+														<th>일정 종료 시간</th>
+														<th>일정 소모 시간</th>
+														<th>일정 결과</th>
+														<th>수정</th>
+														<th>삭제</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="list : ${DetailedScheduleList}">
+														<td th:text="${list.learningSchedule}"></td>
+														<td th:text="${list.detailedScheduleMemo}"></td>
+														<td th:text="${list.detailedScheduleDate}"></td>
+														<td th:text="${list.detailedScheduleStartTime}"></td>
+														<td th:text="${list.detailedScheduleEndTime}"></td>
+														<td th:text="${list.detailedScheduleStudyTime}"></td>
+														<td th:text="${list.detailedScheduleResult}"></td>
+														<td><a href="/modifyDetailed">수정</a></td>
+														<td><a href="/deleteDetailed">삭제</a></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+
+</div>
+
+</html>

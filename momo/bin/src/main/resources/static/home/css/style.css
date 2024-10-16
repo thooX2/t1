@@ -1,0 +1,2443 @@
+ #momoDefault /******************************************************************
+  Template Name: Ogani
+  Description:  Ogani eCommerce  HTML Template
+  Author: Colorlib
+  Author URI: https://colorlib.com
+  Version: 1.0
+  Created: Colorlib
+******************************************************************/
+
+/*------------------------------------------------------------------
+[Table of contents]
+
+1.  Template default CSS
+	1.1	Variables
+	1.2	Mixins
+	1.3	Flexbox
+	1.4	Reset
+2.  Helper Css
+3.  Header Section
+4.  Hero Section
+5.  Service Section
+6.  Categories Section
+7.  Featured Section
+8.  Latest Product Section
+9.  Contact
+10.  Footer Style
+-------------------------------------------------------------------*/
+
+/*----------------------------------------*/
+/* Template default CSS
+/*----------------------------------------*/
+/*html, body {
+	height: 100%;
+	font-family: "Cairo", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}*/
+html {
+	font-size: 10px;
+}
+ #momoDefault h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	color: #111111;
+	font-weight: 400;
+	font-family: "Cairo", sans-serif;
+}
+ #momoDefault h1 {
+	font-size: 70px;
+}
+ #momoDefault h2 {
+	font-size: 36px;
+}
+ #momoDefault h3 {
+	font-size: 30px;
+}
+ #momoDefault h4 {
+	font-size: 24px;
+}
+ #momoDefault h5 {
+	font-size: 18px;
+}
+ #momoDefault h6 {
+	font-size: 16px;
+}
+ #momoDefault p {
+	font-size: 16px;
+	font-family: "Cairo", sans-serif;
+	color: #6f6f6f;
+	font-weight: 400;
+	line-height: 26px;
+	margin: 0 0 15px 0;
+} #momoDefault img {
+	max-width: 100%;
+} #momoDefault input:focus, select:focus, button:focus, textarea:focus {
+	outline: none;
+} #momoDefault a:hover, a:focus {
+	text-decoration: none;
+	outline: none;
+	color: #ffffff;
+} #momoDefault ul, ol {
+	padding: 0;
+	margin: 0;
+}
+ #momoDefault .section-title {
+	margin-bottom: 50px;
+	text-align: center;
+}
+ #momoDefault .section-title h2 {
+	color: #1c1c1c;
+	font-weight: 700;
+	position: relative;
+}
+ #momoDefault .section-title h2:after {
+	position: absolute;
+	left: 0;
+	bottom: -15px;
+	right: 0;
+	height: 4px;
+	width: 80px;
+	background: #7fad39;
+	content: "";
+	margin: 0 auto;
+} #momoDefault .set-bg {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: top center;
+} #momoDefault .spad {
+	padding-top: 100px;
+	padding-bottom: 100px;
+} #momoDefault .text-white h1, .text-white h2, .text-white h3, .text-white h4,
+	.text-white h5, .text-white h6, .text-white p, .text-white span,
+	.text-white li, .text-white a {
+	color: #fff;
+}
+ #momoDefault .primary-btn {
+	display: inline-block;
+	font-size: 14px;
+	padding: 10px 28px 10px;
+	color: #ffffff;
+	text-transform: uppercase;
+	font-weight: 700;
+	background: rgb(0, 90, 167);
+	letter-spacing: 2px;
+}
+#momoDefault .site-btn {
+	font-size: 14px;
+	color: #ffffff;
+	font-weight: 800;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 13px 30px 12px;
+	background: rgb(0, 90, 167);
+	border: none;
+}
+#momoDefault #preloder {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 999999;
+	background: #000;
+} #momoDefault .loader {
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -13px;
+	margin-left: -13px;
+	border-radius: 60px;
+	animation: loader 0.8s linear infinite;
+	-webkit-animation: loader 0.8s linear infinite;
+} @keyframes loader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+        border: 4px solid #673ab7;
+        border-left-color: transparent;
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+}
+
+@-webkit-keyframes loader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+    50% {
+        -webkit-transform: rotate(180deg);
+        border: 4px solid #673ab7;
+        border-left-color: transparent;
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+}
+
+
+/*---------------------
+  Header
+-----------------------*/
+.header__top {
+	background: #f5f5f5;
+} #momoDefault .header__top__left {
+	padding: 10px 0 13px;
+} #momoDefault .header__top__left ul li {
+	font-size: 14px;
+	color: #1c1c1c;
+	display: inline-block;
+	margin-right: 45px;
+	position: relative;
+} #momoDefault .header__top__left ul li:after {
+	position: absolute;
+	right: -25px;
+	top: 1px;
+	height: 20px;
+	width: 1px;
+	background: #000000;
+	opacity: 0.1;
+	content: "";
+} #momoDefault .header__top__left ul li:last-child {
+	margin-right: 0;
+} #momoDefault .header__top__left ul li:last-child:after {
+	display: none;
+} #momoDefault .header__top__left ul li i {
+	color: #252525;
+	margin-right: 5px;
+} #momoDefault .header__top__right {
+	text-align: right;
+	padding: 10px 0 13px;
+} #momoDefault .header__top__right__social {
+	position: relative;
+	display: inline-block;
+	margin-right: 35px;
+} #momoDefault .header__top__right__social:after {
+	position: absolute;
+	right: -20px;
+	top: 1px;
+	height: 20px;
+	width: 1px;
+	background: #000000;
+	opacity: 0.1;
+	content: "";
+} #momoDefault .header__top__right__social a {
+	font-size: 14px;
+	display: inline-block;
+	color: #1c1c1c;
+	margin-right: 20px;
+} #momoDefault .header__top__right__social a:last-child {
+	margin-right: 0;
+} #momoDefault .header__top__right__language {
+	position: relative;
+	display: inline-block;
+	margin-right: 40px;
+	cursor: pointer;
+} #momoDefault .header__top__right__language:hover ul {
+	top: 23px;
+	opacity: 1;
+	visibility: visible;
+} #momoDefault .header__top__right__language:after {
+	position: absolute;
+	right: -21px;
+	top: 1px;
+	height: 20px;
+	width: 1px;
+	background: #000000;
+	opacity: 0.1;
+	content: "";
+} #momoDefault .header__top__right__language img {
+	margin-right: 6px;
+} #momoDefault .header__top__right__language div {
+	font-size: 14px;
+	color: #1c1c1c;
+	display: inline-block;
+	margin-right: 4px;
+} #momoDefault .header__top__right__language span {
+	font-size: 14px;
+	color: #1c1c1c;
+	position: relative;
+	top: 2px;
+} #momoDefault .header__top__right__language ul {
+	background: #222222;
+	width: 100px;
+	text-align: left;
+	padding: 5px 0;
+	position: absolute;
+	left: 0;
+	top: 43px;
+	z-index: 9;
+	opacity: 0;
+	visibility: hidden;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .header__top__right__language ul li {
+	list-style: none;
+} #momoDefault .header__top__right__language ul li a {
+	font-size: 14px;
+	color: #ffffff;
+	padding: 5px 10px;
+} #momoDefault .header__top__right__auth {
+	display: inline-block;
+} #momoDefault .header__top__right__auth a {
+	display: block;
+	font-size: 14px;
+	color: #1c1c1c;
+} #momoDefault .header__top__right__auth a i {
+	margin-right: 6px;
+} #momoDefault .header__logo {
+	padding: 15px 0;
+} #momoDefault .header__logo a {
+	display: inline-block;
+} #momoDefault .header__menu {
+	padding: 24px 0;
+} #momoDefault .header__menu ul li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 50px;
+	position: relative;
+} #momoDefault .header__menu ul li .header__menu__dropdown {
+	position: absolute;
+	left: 0;
+	top: 50px;
+	background: #222222;
+	width: 180px;
+	z-index: 9;
+	padding: 5px 0;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+	opacity: 0;
+	visibility: hidden;
+} #momoDefault .header__menu ul li .header__menu__dropdown li {
+	margin-right: 0;
+	display: block;
+} #momoDefault .header__menu ul li .header__menu__dropdown li:hover>a {
+	color: rgb(162,194,206);
+} #momoDefault .header__menu ul li .header__menu__dropdown li a {
+	text-transform: capitalize;
+	color: #ffffff;
+	font-weight: 400;
+	padding: 5px 15px;
+} #momoDefault .header__menu ul li.active a {
+	color: rgb(0, 90, 167);
+} #momoDefault .header__menu ul li:hover .header__menu__dropdown {
+	top: 30px;
+	opacity: 1;
+	visibility: visible;
+} #momoDefault .header__menu ul li:hover>a {
+	color: rgb(162,194,206);
+} #momoDefault .header__menu ul li:last-child {
+	margin-right: 0;
+} #momoDefault .header__menu ul li a {
+	font-size: 14px;
+	color: #252525;
+	text-transform: uppercase;
+	font-weight: 700;
+	letter-spacing: 2px;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+	padding: 5px 0;
+	display: block;
+} #momoDefault .header__cart {
+	text-align: right;
+	padding: 24px 0;
+} #momoDefault .header__cart ul {
+	display: inline-block;
+	margin-right: 25px;
+} #momoDefault .header__cart ul li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 15px;
+} #momoDefault .header__cart ul li:last-child {
+	margin-right: 0;
+} #momoDefault .header__cart ul li a {
+	position: relative;
+} #momoDefault .header__cart ul li a i {
+	font-size: 18px;
+	color: #1c1c1c;
+} #momoDefault .header__cart ul li a span {
+	height: 13px;
+	width: 13px;
+	background: #7fad39;
+	font-size: 10px;
+	color: #ffffff;
+	line-height: 13px;
+	text-align: center;
+	font-weight: 700;
+	display: inline-block;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	right: -12px;
+} #momoDefault .header__cart .header__cart__price {
+	font-size: 14px;
+	color: #6f6f6f;
+	display: inline-block;
+} #momoDefault .header__cart .header__cart__price span {
+	color: #252525;
+	font-weight: 700;
+} #momoDefault .humberger__menu__wrapper {
+	display: none;
+} #momoDefault .humberger__open {
+	display: none;
+} #momoDefault /*---------------------
+  Hero
+-----------------------*/
+.hero {
+	padding-bottom: 50px;
+} #momoDefault .hero.hero-normal {
+	padding-bottom: 30px;
+} #momoDefault .hero.hero-normal .hero__categories {
+	position: relative;
+} #momoDefault .hero.hero-normal .hero__categories ul {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 46px;
+	width: 100%;
+	z-index: 9;
+	background: #ffffff;
+} #momoDefault .hero.hero-normal .hero__search {
+	margin-bottom: 0;
+} #momoDefault .hero__categories__all {
+	background: #7fad39;
+	position: relative;
+	padding: 10px 25px 10px 40px;
+	cursor: pointer;
+} #momoDefault .hero__categories__all i {
+	font-size: 16px;
+	color: #ffffff;
+	margin-right: 10px;
+} #momoDefault .hero__categories__all span {
+	font-size: 18px;
+	font-weight: 700;
+	color: #ffffff;
+} #momoDefault .hero__categories__all:after {
+	position: absolute;
+	right: 18px;
+	top: 9px;
+	content: "3";
+	font-family: "ElegantIcons";
+	font-size: 18px;
+	color: #ffffff;
+} #momoDefault .hero__categories ul {
+	border: 1px solid #ebebeb;
+	padding-left: 40px;
+	padding-top: 10px;
+	padding-bottom: 12px;
+} #momoDefault .hero__categories ul li {
+	list-style: none;
+} #momoDefault .hero__categories ul li a {
+	font-size: 16px;
+	color: #1c1c1c;
+	line-height: 39px;
+	display: block;
+} #momoDefault .hero__search {
+	overflow: hidden;
+	margin-bottom: 30px;
+} #momoDefault .hero__search__form {
+	width: 610px;
+	height: 50px;
+	border: 1px solid #ebebeb;
+	position: relative;
+	float: left;
+} #momoDefault .hero__search__form form .hero__search__categories {
+	width: 30%;
+	float: left;
+	font-size: 16px;
+	color: #1c1c1c;
+	font-weight: 700;
+	padding-left: 18px;
+	padding-top: 11px;
+	position: relative;
+} #momoDefault .hero__search__form form .hero__search__categories:after {
+	position: absolute;
+	right: 0;
+	top: 14px;
+	height: 20px;
+	width: 1px;
+	background: #000000;
+	opacity: 0.1;
+	content: "";
+} #momoDefault .hero__search__form form .hero__search__categories span {
+	position: absolute;
+	right: 14px;
+	top: 14px;
+} #momoDefault .hero__search__form form input {
+	width: 70%;
+	border: none;
+	height: 48px;
+	font-size: 16px;
+	color: #b2b2b2;
+	padding-left: 20px;
+} #momoDefault .hero__search__form form input::placeholder {
+	color: #b2b2b2;
+} #momoDefault .hero__search__form form button {
+	position: absolute;
+	right: 0;
+	top: -1px;
+	height: 50px;
+} #momoDefault .hero__search__phone {
+	float: right;
+} #momoDefault .hero__search__phone__icon {
+	font-size: 18px;
+	color: #7fad39;
+	height: 50px;
+	width: 50px;
+	background: #f5f5f5;
+	line-height: 50px;
+	text-align: center;
+	border-radius: 50%;
+	float: left;
+	margin-right: 20px;
+} #momoDefault .hero__search__phone__text {
+	overflow: hidden;
+} #momoDefault .hero__search__phone__text h5 {
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-bottom: 5px;
+} #momoDefault .hero__search__phone__text span {
+	font-size: 14px;
+	color: #6f6f6f;
+} #momoDefault .hero__item {
+	height: 431px;
+	display: flex;
+	align-items: center;
+	padding-left: 75px;
+} #momoDefault .hero__text span {
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: 700;
+	letter-spacing: 4px;
+	color: rga(0, 90, 167);
+} #momoDefault .hero__text h2 {
+	font-size: 46px;
+	color: #252525;
+	line-height: 52px;
+	font-weight: 700;
+	margin: 10px 0;
+} #momoDefault .hero__text p {
+	margin-bottom: 35px;
+} #momoDefault /*---------------------
+  Categories
+-----------------------*/
+.categories__item {
+	height: 270px;
+	position: relative;
+} #momoDefault .categories__item h5 {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	padding: 0 20px;
+	bottom: 20px;
+	text-align: center;
+} #momoDefault .categories__item h5 a {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	padding: 12px 0 10px;
+	background: #ffffff;
+	display: block;
+} #momoDefault .categories__slider .col-lg-3 {
+	max-width: 100%;
+} #momoDefault .categories__slider.owl-carousel .owl-nav button {
+	font-size: 18px;
+	color: #1c1c1c;
+	height: 70px;
+	width: 30px;
+	line-height: 70px;
+	text-align: center;
+	border: 1px solid #ebebeb;
+	position: absolute;
+	left: -35px;
+	top: 50%;
+	-webkit-transform: translateY(-35px);
+	background: #ffffff;
+} #momoDefault .categories__slider.owl-carousel .owl-nav button.owl-next {
+	left: auto;
+	right: -35px;
+} #momoDefault /*---------------------
+  Featured
+-----------------------*/
+.featured {
+	padding-top: 80px;
+	padding-bottom: 40px;
+} #momoDefault .featured__controls {
+	text-align: center;
+	margin-bottom: 50px;
+} #momoDefault .featured__controls ul li {
+	list-style: none;
+	font-size: 18px;
+	color: #1c1c1c;
+	display: inline-block;
+	margin-right: 25px;
+	position: relative;
+	cursor: pointer;
+} #momoDefault .featured__controls ul li.active:after {
+	opacity: 1;
+} #momoDefault .featured__controls ul li:after {
+	position: absolute;
+	left: 0;
+	bottom: -2px;
+	width: 100%;
+	height: 2px;
+	background: #7fad39;
+	content: "";
+	opacity: 0;
+} #momoDefault .featured__controls ul li:last-child {
+	margin-right: 0;
+} #momoDefault .featured__item {
+	margin-bottom: 50px;
+} #momoDefault .featured__item:hover .featured__item__pic .featured__item__pic__hover {
+	bottom: 20px;
+} #momoDefault .featured__item__pic {
+	height: 270px;
+	position: relative;
+	overflow: hidden;
+	background-position: center center;
+} #momoDefault .featured__item__pic__hover {
+	position: absolute;
+	left: 0;
+	bottom: -50px;
+	width: 100%;
+	text-align: center;
+	-webkit-transition: all, 0.5s;
+	-moz-transition: all, 0.5s;
+	-ms-transition: all, 0.5s;
+	-o-transition: all, 0.5s;
+	transition: all, 0.5s;
+} #momoDefault .featured__item__pic__hover li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 6px;
+} #momoDefault .featured__item__pic__hover li:last-child {
+	margin-right: 0;
+} #momoDefault .featured__item__pic__hover li:hover a {
+	background: #7fad39;
+	border-color: #7fad39;
+} #momoDefault .featured__item__pic__hover li:hover a i {
+	color: #ffffff;
+	transform: rotate(360deg);
+} #momoDefault .featured__item__pic__hover li a {
+	font-size: 16px;
+	color: #1c1c1c;
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid #ebebeb;
+	background: #ffffff;
+	display: block;
+	border-radius: 50%;
+	-webkit-transition: all, 0.5s;
+	-moz-transition: all, 0.5s;
+	-ms-transition: all, 0.5s;
+	-o-transition: all, 0.5s;
+	transition: all, 0.5s;
+} #momoDefault .featured__item__pic__hover li a i {
+	position: relative;
+	transform: rotate(0);
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .featured__item__text {
+	text-align: center;
+	padding-top: 15px;
+} #momoDefault .featured__item__text h6 {
+	margin-bottom: 10px;
+} #momoDefault .featured__item__text h6 a {
+	color: #252525;
+} #momoDefault .featured__item__text h5 {
+	color: #252525;
+	font-weight: 700;
+} #momoDefault /*---------------------
+  Latest Product
+-----------------------*/
+.latest-product {
+	padding-top: 80px;
+	padding-bottom: 0;
+} #momoDefault .latest-product__text h4 {
+	font-weight: 700;
+	color: #1c1c1c;
+	margin-bottom: 45px;
+} #momoDefault .latest-product__slider.owl-carousel .owl-nav {
+	position: absolute;
+	right: 20px;
+	top: -75px;
+} #momoDefault .latest-product__slider.owl-carousel .owl-nav button {
+	height: 30px;
+	width: 30px;
+	background: #F3F6FA;
+	border: 1px solid #e6e6e6;
+	font-size: 14px;
+	color: #636363;
+	margin-right: 10px;
+	line-height: 30px;
+	text-align: center;
+} #momoDefault .latest-product__slider.owl-carousel .owl-nav button span {
+	font-weight: 700;
+} #momoDefault .latest-product__slider.owl-carousel .owl-nav button:last-child {
+	margin-right: 0;
+} #momoDefault .latest-product__item {
+	margin-bottom: 20px;
+	overflow: hidden;
+	display: block;
+} #momoDefault .latest-product__item__pic {
+	float: left;
+	margin-right: 26px;
+} #momoDefault .latest-product__item__pic img {
+	height: 110px;
+	width: 110px;
+} #momoDefault .latest-product__item__text {
+	overflow: hidden;
+	padding-top: 10px;
+} #momoDefault .latest-product__item__text h6 {
+	color: #252525;
+	margin-bottom: 8px;
+} #momoDefault .latest-product__item__text span {
+	font-size: 18px;
+	display: block;
+	color: #252525;
+	font-weight: 700;
+} #momoDefault /*---------------------
+  Form BLog
+-----------------------*/
+.from-blog {
+	padding-top: 50px;
+	padding-bottom: 50px;
+} #momoDefault .from-blog .blog__item {
+	margin-bottom: 30px;
+} #momoDefault .from-blog__title {
+	margin-bottom: 70px;
+} #momoDefault /*---------------------
+  Breadcrumb
+-----------------------*/
+.breadcrumb-section {
+	display: flex;
+	align-items: center;
+	padding: 45px 0 40px;
+} #momoDefault .breadcrumb__text h2 {
+	font-size: 46px;
+	color: #ffffff;
+	font-weight: 700;
+} #momoDefault .breadcrumb__option a {
+	display: inline-block;
+	font-size: 16px;
+	color: #ffffff;
+	font-weight: 700;
+	margin-right: 20px;
+	position: relative;
+} #momoDefault .breadcrumb__option a:after {
+	position: absolute;
+	right: -12px;
+	top: 13px;
+	height: 1px;
+	width: 10px;
+	background: #ffffff;
+	content: "";
+} #momoDefault .breadcrumb__option span {
+	display: inline-block;
+	font-size: 16px;
+	color: #ffffff;
+} #momoDefault /*---------------------
+  Sidebar
+-----------------------*/
+.sidebar__item {
+	margin-bottom: 35px;
+} #momoDefault .sidebar__item.sidebar__item__color--option {
+	overflow: hidden;
+} #momoDefault .sidebar__item h4 {
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-bottom: 25px;
+} #momoDefault .sidebar__item ul li {
+	list-style: none;
+} #momoDefault .sidebar__item ul li a {
+	font-size: 16px;
+	color: #1c1c1c;
+	line-height: 39px;
+	display: block;
+} #momoDefault .sidebar__item .latest-product__text {
+	position: relative;
+} #momoDefault .sidebar__item .latest-product__text h4 {
+	margin-bottom: 45px;
+} #momoDefault .sidebar__item .latest-product__text .owl-carousel .owl-nav {
+	right: 0;
+} #momoDefault .price-range-wrap .range-slider {
+	margin-top: 20px;
+} #momoDefault .price-range-wrap .range-slider .price-input {
+	position: relative;
+} #momoDefault .price-range-wrap .range-slider .price-input:after {
+	position: absolute;
+	left: 38px;
+	top: 13px;
+	height: 1px;
+	width: 5px;
+	background: #dd2222;
+	content: "";
+} #momoDefault .price-range-wrap .range-slider .price-input input {
+	font-size: 16px;
+	color: #dd2222;
+	font-weight: 700;
+	max-width: 20%;
+	border: none;
+	display: inline-block;
+} #momoDefault .price-range-wrap .price-range {
+	border-radius: 0;
+} #momoDefault .price-range-wrap .price-range.ui-widget-content {
+	border: none;
+	background: #ebebeb;
+	height: 5px;
+} #momoDefault .price-range-wrap .price-range.ui-widget-content .ui-slider-handle {
+	height: 13px;
+	width: 13px;
+	border-radius: 50%;
+	background: #ffffff;
+	border: none;
+	-webkit-box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+	outline: none;
+	cursor: pointer;
+} #momoDefault .price-range-wrap .price-range .ui-slider-range {
+	background: #dd2222;
+	border-radius: 0;
+} #momoDefault .price-range-wrap .price-range .ui-slider-range.ui-corner-all.ui-widget-header:last-child
+	{
+	background: #dd2222;
+} #momoDefault .sidebar__item__color {
+	float: left;
+	width: 40%;
+} #momoDefault .sidebar__item__color.sidebar__item__color--white label:after {
+	border: 2px solid #333333;
+	background: transparent;
+} #momoDefault .sidebar__item__color.sidebar__item__color--gray label:after {
+	background: #E9A625;
+} #momoDefault .sidebar__item__color.sidebar__item__color--red label:after {
+	background: #D62D2D;
+} #momoDefault .sidebar__item__color.sidebar__item__color--black label:after {
+	background: #252525;
+} #momoDefault .sidebar__item__color.sidebar__item__color--blue label:after {
+	background: #249BC8;
+} #momoDefault .sidebar__item__color.sidebar__item__color--green label:after {
+	background: #3CC032;
+} #momoDefault .sidebar__item__color label {
+	font-size: 16px;
+	color: #333333;
+	position: relative;
+	padding-left: 32px;
+	cursor: pointer;
+} #momoDefault .sidebar__item__color label input {
+	position: absolute;
+	visibility: hidden;
+} #momoDefault .sidebar__item__color label:after {
+	position: absolute;
+	left: 0;
+	top: 5px;
+	height: 14px;
+	width: 14px;
+	background: #222;
+	content: "";
+	border-radius: 50%;
+} #momoDefault .sidebar__item__size {
+	display: inline-block;
+	margin-right: 16px;
+	margin-bottom: 10px;
+} #momoDefault .sidebar__item__size label {
+	font-size: 12px;
+	color: #6f6f6f;
+	display: inline-block;
+	padding: 8px 25px 6px;
+	background: #f5f5f5;
+	cursor: pointer;
+	margin-bottom: 0;
+} #momoDefault .sidebar__item__size label input {
+	position: absolute;
+	visibility: hidden;
+} #momoDefault /*---------------------
+  Shop Grid
+-----------------------*/
+.product {
+	padding-top: 80px;
+	padding-bottom: 80px;
+} #momoDefault .product__discount {
+	padding-bottom: 50px;
+} #momoDefault .product__discount__title {
+	text-align: left;
+	margin-bottom: 65px;
+} #momoDefault .product__discount__title h2 {
+	display: inline-block;
+} #momoDefault .product__discount__title h2:after {
+	margin: 0;
+	width: 100%;
+} #momoDefault .product__discount__item:hover .product__discount__item__pic .product__item__pic__hover
+	{
+	bottom: 20px;
+} #momoDefault .product__discount__item__pic {
+	height: 270px;
+	position: relative;
+	overflow: hidden;
+} #momoDefault .product__discount__item__pic .product__discount__percent {
+	height: 45px;
+	width: 45px;
+	background: #dd2222;
+	border-radius: 50%;
+	font-size: 14px;
+	color: #ffffff;
+	line-height: 45px;
+	text-align: center;
+	position: absolute;
+	left: 15px;
+	top: 15px;
+} #momoDefault .product__item__pic__hover {
+	position: absolute;
+	left: 0;
+	bottom: -50px;
+	width: 100%;
+	text-align: center;
+	-webkit-transition: all, 0.5s;
+	-moz-transition: all, 0.5s;
+	-ms-transition: all, 0.5s;
+	-o-transition: all, 0.5s;
+	transition: all, 0.5s;
+} #momoDefault .product__item__pic__hover li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 6px;
+} #momoDefault .product__item__pic__hover li:last-child {
+	margin-right: 0;
+} #momoDefault .product__item__pic__hover li:hover a {
+	background: #7fad39;
+	border-color: #7fad39;
+} #momoDefault .product__item__pic__hover li:hover a i {
+	color: #ffffff;
+	transform: rotate(360deg);
+} #momoDefault .product__item__pic__hover li a {
+	font-size: 16px;
+	color: #1c1c1c;
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid #ebebeb;
+	background: #ffffff;
+	display: block;
+	border-radius: 50%;
+	-webkit-transition: all, 0.5s;
+	-moz-transition: all, 0.5s;
+	-ms-transition: all, 0.5s;
+	-o-transition: all, 0.5s;
+	transition: all, 0.5s;
+} #momoDefault .product__item__pic__hover li a i {
+	position: relative;
+	transform: rotate(0);
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .product__discount__item__text {
+	text-align: center;
+	padding-top: 20px;
+} #momoDefault .product__discount__item__text span {
+	font-size: 14px;
+	color: #b2b2b2;
+	display: block;
+	margin-bottom: 4px;
+} #momoDefault .product__discount__item__text h5 {
+	margin-bottom: 6px;
+} #momoDefault .product__discount__item__text h5 a {
+	color: #1c1c1c;
+} #momoDefault .product__discount__item__text .product__item__price {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+} #momoDefault .product__discount__item__text .product__item__price span {
+	display: inline-block;
+	font-weight: 400;
+	text-decoration: line-through;
+	margin-left: 10px;
+} #momoDefault .product__discount__slider .col-lg-4 {
+	max-width: 100%;
+} #momoDefault .product__discount__slider.owl-carousel .owl-dots {
+	text-align: center;
+	margin-top: 30px;
+} #momoDefault .product__discount__slider.owl-carousel .owl-dots button {
+	height: 12px;
+	width: 12px;
+	border: 1px solid #b2b2b2;
+	border-radius: 50%;
+	margin-right: 12px;
+} #momoDefault .product__discount__slider.owl-carousel .owl-dots button.active {
+	background: #707070;
+	border-color: #6f6f6f;
+} #momoDefault .product__discount__slider.owl-carousel .owl-dots button:last-child {
+	margin-right: 0;
+} #momoDefault .filter__item {
+	padding-top: 45px;
+	border-top: 1px solid #ebebeb;
+	padding-bottom: 20px;
+} #momoDefault .filter__sort {
+	margin-bottom: 15px;
+} #momoDefault .filter__sort span {
+	font-size: 16px;
+	color: #6f6f6f;
+	display: inline-block;
+} #momoDefault .filter__sort .nice-select {
+	background-color: #fff;
+	border-radius: 0;
+	border: none;
+	display: inline-block;
+	float: none;
+	height: 0;
+	line-height: 0;
+	padding-left: 18px;
+	padding-right: 30px;
+	font-size: 16px;
+	color: #1c1c1c;
+	font-weight: 700;
+	cursor: pointer;
+} #momoDefault .filter__sort .nice-select span {
+	color: #1c1c1c;
+} #momoDefault .filter__sort .nice-select:after {
+	border-bottom: 1.5px solid #1c1c1c;
+	border-right: 1.5px solid #1c1c1c;
+	height: 8px;
+	margin-top: 0;
+	right: 16px;
+	width: 8px;
+	top: -5px;
+} #momoDefault .filter__sort .nice-select.open .list {
+	opacity: 1;
+	pointer-events: auto;
+	-webkit-transform: scale(1) translateY(0);
+	-ms-transform: scale(1) translateY(0);
+	transform: scale(1) translateY(0);
+} #momoDefault .filter__sort .nice-select .list {
+	border-radius: 0;
+	margin-top: 0;
+	top: 15px;
+} #momoDefault .filter__sort .nice-select .option {
+	line-height: 30px;
+	min-height: 30px;
+} #momoDefault .filter__found {
+	text-align: center;
+	margin-bottom: 15px;
+} #momoDefault .filter__found h6 {
+	font-size: 16px;
+	color: #b2b2b2;
+} #momoDefault .filter__found h6 span {
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-right: 5px;
+} #momoDefault .filter__option {
+	text-align: right;
+	margin-bottom: 15px;
+} #momoDefault .filter__option span {
+	font-size: 24px;
+	color: #b2b2b2;
+	margin-right: 10px;
+	cursor: pointer;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .filter__option span:last-child {
+	margin: 0;
+} #momoDefault .filter__option span:hover {
+	color: #7fad39;
+} #momoDefault .product__item {
+	margin-bottom: 50px;
+} #momoDefault .product__item:hover .product__item__pic .product__item__pic__hover {
+	bottom: 20px;
+} #momoDefault .product__item__pic {
+	height: 270px;
+	position: relative;
+	overflow: hidden;
+} #momoDefault .product__item__pic__hover {
+	position: absolute;
+	left: 0;
+	bottom: -50px;
+	width: 100%;
+	text-align: center;
+	-webkit-transition: all, 0.5s;
+	-moz-transition: all, 0.5s;
+	-ms-transition: all, 0.5s;
+	-o-transition: all, 0.5s;
+	transition: all, 0.5s;
+} #momoDefault .product__item__pic__hover li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 6px;
+} #momoDefault .product__item__pic__hover li:last-child {
+	margin-right: 0;
+} #momoDefault .product__item__pic__hover li:hover a {
+	background: #7fad39;
+	border-color: #7fad39;
+} #momoDefault .product__item__pic__hover li:hover a i {
+	color: #ffffff;
+	transform: rotate(360deg);
+} #momoDefault .product__item__pic__hover li a {
+	font-size: 16px;
+	color: #1c1c1c;
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid #ebebeb;
+	background: #ffffff;
+	display: block;
+	border-radius: 50%;
+	-webkit-transition: all, 0.5s;
+	-moz-transition: all, 0.5s;
+	-ms-transition: all, 0.5s;
+	-o-transition: all, 0.5s;
+	transition: all, 0.5s;
+} #momoDefault .product__item__pic__hover li a i {
+	position: relative;
+	transform: rotate(0);
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .product__item__text {
+	text-align: center;
+	padding-top: 15px;
+} #momoDefault .product__item__text h6 {
+	margin-bottom: 10px;
+} #momoDefault .product__item__text h6 a {
+	color: #252525;
+} #momoDefault .product__item__text h5 {
+	color: #252525;
+	font-weight: 700;
+} #momoDefault .product__pagination, .blog__pagination {
+	padding-top: 10px;
+} #momoDefault .product__pagination a, .blog__pagination a {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border: 1px solid #b2b2b2;
+	font-size: 14px;
+	color: #b2b2b2;
+	font-weight: 700;
+	line-height: 28px;
+	text-align: center;
+	margin-right: 16px;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .product__pagination a:hover, .blog__pagination a:hover {
+	background: rgb(162, 194, 206);
+	border-color: rgb(162, 194, 206);
+	color: #ffffff;
+} #momoDefault .product__pagination a:last-child, .blog__pagination a:last-child {
+	margin-right: 0;
+} #momoDefault /*---------------------
+  Shop Details
+-----------------------*/
+.product-details {
+	padding-top: 80px;
+} #momoDefault .product__details__pic__item {
+	margin-bottom: 20px;
+} #momoDefault .product__details__pic__item img {
+	min-width: 100%;
+} #momoDefault .product__details__pic__slider img {
+	cursor: pointer;
+} #momoDefault .product__details__pic__slider.owl-carousel .owl-item img {
+	width: auto;
+} #momoDefault .product__details__text h3 {
+	color: #252525;
+	font-weight: 700;
+	margin-bottom: 16px;
+} #momoDefault .product__details__text .product__details__rating {
+	font-size: 14px;
+	margin-bottom: 12px;
+} #momoDefault .product__details__text .product__details__rating i {
+	margin-right: -2px;
+	color: #EDBB0E;
+} #momoDefault .product__details__text .product__details__rating span {
+	color: #dd2222;
+	margin-left: 4px;
+} #momoDefault .product__details__text .product__details__price {
+	font-size: 30px;
+	color: #dd2222;
+	font-weight: 600;
+	margin-bottom: 15px;
+} #momoDefault .product__details__text p {
+	margin-bottom: 45px;
+} #momoDefault .product__details__text .primary-btn {
+	padding: 16px 28px 14px;
+	margin-right: 6px;
+	margin-bottom: 5px;
+} #momoDefault .product__details__text .heart-icon {
+	display: inline-block;
+	font-size: 16px;
+	color: #6f6f6f;
+	padding: 13px 16px 13px;
+	background: #f5f5f5;
+} #momoDefault .product__details__text ul {
+	border-top: 1px solid #ebebeb;
+	padding-top: 40px;
+	margin-top: 50px;
+} #momoDefault .product__details__text ul li {
+	font-size: 16px;
+	color: #1c1c1c;
+	list-style: none;
+	line-height: 36px;
+} #momoDefault .product__details__text ul li b {
+	font-weight: 700;
+	width: 170px;
+	display: inline-block;
+} #momoDefault .product__details__text ul li span samp {
+	color: #dd2222;
+} #momoDefault .product__details__text ul li .share {
+	display: inline-block;
+} #momoDefault .product__details__text ul li .share a {
+	display: inline-block;
+	font-size: 15px;
+	color: #1c1c1c;
+	margin-right: 25px;
+} #momoDefault .product__details__text ul li .share a:last-child {
+	margin-right: 0;
+} #momoDefault .product__details__quantity {
+	display: inline-block;
+	margin-right: 6px;
+} #momoDefault .pro-qty {
+	width: 140px;
+	height: 50px;
+	display: inline-block;
+	position: relative;
+	text-align: center;
+	background: #f5f5f5;
+	margin-bottom: 5px;
+} #momoDefault .pro-qty input {
+	height: 100%;
+	width: 100%;
+	font-size: 16px;
+	color: #6f6f6f;
+	width: 50px;
+	border: none;
+	background: #f5f5f5;
+	text-align: center;
+} #momoDefault .pro-qty .qtybtn {
+	width: 35px;
+	font-size: 16px;
+	color: #6f6f6f;
+	cursor: pointer;
+	display: inline-block;
+} #momoDefault .product__details__tab {
+	padding-top: 85px;
+} #momoDefault .product__details__tab .nav-tabs {
+	border-bottom: none;
+	justify-content: center;
+	position: relative;
+} #momoDefault .product__details__tab .nav-tabs:before {
+	position: absolute;
+	left: 0;
+	top: 12px;
+	height: 1px;
+	width: 370px;
+	background: #ebebeb;
+	content: "";
+} #momoDefault .product__details__tab .nav-tabs:after {
+	position: absolute;
+	right: 0;
+	top: 12px;
+	height: 1px;
+	width: 370px;
+	background: #ebebeb;
+	content: "";
+} #momoDefault .product__details__tab .nav-tabs li {
+	margin-bottom: 0;
+	margin-right: 65px;
+} #momoDefault .product__details__tab .nav-tabs li:last-child {
+	margin-right: 0;
+} #momoDefault .product__details__tab .nav-tabs li a {
+	font-size: 16px;
+	color: #999999;
+	font-weight: 700;
+	border: none;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	padding: 0;
+} #momoDefault .product__details__tab .product__details__tab__desc {
+	padding-top: 44px;
+} #momoDefault .product__details__tab .product__details__tab__desc h6 {
+	font-weight: 700;
+	color: #333333;
+	margin-bottom: 26px;
+} #momoDefault .product__details__tab .product__details__tab__desc p {
+	color: #666666;
+} #momoDefault /*---------------------
+  Shop Details
+-----------------------*/
+.related-product {
+	padding-bottom: 30px;
+} #momoDefault .related__product__title {
+	margin-bottom: 70px;
+} #momoDefault /*---------------------
+  Shop Cart
+-----------------------*/
+.shoping-cart {
+	padding-top: 80px;
+	padding-bottom: 80px;
+} #momoDefault .shoping__cart__table {
+	margin-bottom: 30px;
+} #momoDefault .shoping__cart__table table {
+	width: 100%;
+	text-align: center;
+} #momoDefault .shoping__cart__table table thead tr {
+	border-bottom: 1px solid #ebebeb;
+} #momoDefault .shoping__cart__table table thead th {
+	font-size: 20px;
+	font-weight: 700;
+	color: #1c1c1c;
+	padding-bottom: 20px;
+} #momoDefault .shoping__cart__table table thead th.shoping__product {
+	text-align: left;
+} #momoDefault .shoping__cart__table table tbody tr td {
+	padding-top: 30px;
+	padding-bottom: 30px;
+	border-bottom: 1px solid #ebebeb;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__item {
+	width: 630px;
+	text-align: left;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__item img {
+	display: inline-block;
+	margin-right: 25px;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__item h5 {
+	color: #1c1c1c;
+	display: inline-block;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__price {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	width: 100px;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__total {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	width: 110px;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__item__close {
+	text-align: right;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__item__close span
+	{
+	font-size: 24px;
+	color: #b2b2b2;
+	cursor: pointer;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__quantity {
+	width: 225px;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty
+	{
+	width: 120px;
+	height: 40px;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty input
+	{
+	color: #1c1c1c;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty input::placeholder
+	{
+	color: #1c1c1c;
+} #momoDefault .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty .qtybtn
+	{
+	width: 15px;
+} #momoDefault .primary-btn.cart-btn {
+	color: #6f6f6f;
+	padding: 14px 30px 12px;
+	background: #f5f5f5;
+} #momoDefault .primary-btn.cart-btn span {
+	font-size: 14px;
+} #momoDefault .primary-btn.cart-btn.cart-btn-right {
+	float: right;
+} #momoDefault .shoping__discount {
+	margin-top: 45px;
+} #momoDefault .shoping__discount h5 {
+	font-size: 20px;
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-bottom: 25px;
+} #momoDefault .shoping__discount form input {
+	width: 255px;
+	height: 46px;
+	border: 1px solid #cccccc;
+	font-size: 16px;
+	color: #b2b2b2;
+	text-align: center;
+	display: inline-block;
+	margin-right: 15px;
+} #momoDefault .shoping__discount form input::placeholder {
+	color: #b2b2b2;
+} #momoDefault .shoping__discount form button {
+	padding: 15px 30px 11px;
+	font-size: 12px;
+	letter-spacing: 4px;
+	background: #6f6f6f;
+} #momoDefault .shoping__checkout {
+	background: #f5f5f5;
+	padding: 30px;
+	padding-top: 20px;
+	margin-top: 50px;
+} #momoDefault .shoping__checkout h5 {
+	color: #1c1c1c;
+	font-weight: 700;
+	font-size: 20px;
+	margin-bottom: 28px;
+} #momoDefault .shoping__checkout ul {
+	margin-bottom: 28px;
+} #momoDefault .shoping__checkout ul li {
+	font-size: 16px;
+	color: #1c1c1c;
+	font-weight: 700;
+	list-style: none;
+	overflow: hidden;
+	border-bottom: 1px solid #ebebeb;
+	padding-bottom: 13px;
+	margin-bottom: 18px;
+} #momoDefault .shoping__checkout ul li:last-child {
+	padding-bottom: 0;
+	border-bottom: none;
+	margin-bottom: 0;
+} #momoDefault .shoping__checkout ul li span {
+	font-size: 18px;
+	color: #dd2222;
+	float: right;
+} #momoDefault .shoping__checkout .primary-btn {
+	display: block;
+	text-align: center;
+} #momoDefault /*---------------------
+  Checkout
+-----------------------*/
+.checkout {
+	padding-top: 80px;
+	padding-bottom: 60px;
+} #momoDefault .checkout h6 {
+	color: #999999;
+	text-align: center;
+	background: #f5f5f5;
+	border-top: 1px solid #6AB963;
+	padding: 12px 0 12px;
+	margin-bottom: 75px;
+} #momoDefault .checkout h6 span {
+	font-size: 16px;
+	color: #6AB963;
+	margin-right: 5px;
+} #momoDefault .checkout h6 a {
+	text-decoration: underline;
+	color: #999999;
+} #momoDefault .checkout__form h4 {
+	color: #1c1c1c;
+	font-weight: 700;
+	border-bottom: 1px solid #e1e1e1;
+	padding-bottom: 20px;
+	margin-bottom: 25px;
+} #momoDefault .checkout__form p {
+	column-rule: #b2b2b2;
+} #momoDefault .checkout__input {
+	margin-bottom: 24px;
+} #momoDefault .checkout__input p {
+	color: #1c1c1c;
+	margin-bottom: 20px;
+} #momoDefault .checkout__input p span {
+	color: #dd2222;
+} #momoDefault .checkout__input input {
+	width: 100%;
+	height: 46px;
+	border: 1px solid #ebebeb;
+	padding-left: 20px;
+	font-size: 16px;
+	color: #b2b2b2;
+	border-radius: 4px;
+} #momoDefault .checkout__input input.checkout__input__add {
+	margin-bottom: 20px;
+} #momoDefault .checkout__input input::placeholder {
+	color: #b2b2b2;
+} #momoDefault .checkout__input__checkbox {
+	margin-bottom: 10px;
+} #momoDefault .checkout__input__checkbox label {
+	position: relative;
+	font-size: 16px;
+	color: #1c1c1c;
+	padding-left: 40px;
+	cursor: pointer;
+} #momoDefault .checkout__input__checkbox label input {
+	position: absolute;
+	visibility: hidden;
+} #momoDefault .checkout__input__checkbox label input:checked ~.checkmark {
+	background: #7fad39;
+	border-color: #7fad39;
+} #momoDefault .checkout__input__checkbox label input:checked ~.checkmark:after {
+	opacity: 1;
+} #momoDefault .checkout__input__checkbox label .checkmark {
+	position: absolute;
+	left: 0;
+	top: 4px;
+	height: 16px;
+	width: 14px;
+	border: 1px solid #a6a6a6;
+	content: "";
+	border-radius: 4px;
+} #momoDefault .checkout__input__checkbox label .checkmark:after {
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	width: 10px;
+	height: 8px;
+	border: solid white;
+	border-width: 3px 3px 0px 0px;
+	-webkit-transform: rotate(127deg);
+	-ms-transform: rotate(127deg);
+	transform: rotate(127deg);
+	content: "";
+	opacity: 0;
+} #momoDefault .checkout__order {
+	background: #f5f5f5;
+	padding: 40px;
+	padding-top: 30px;
+} #momoDefault .checkout__order h4 {
+	color: #1c1c1c;
+	font-weight: 700;
+	border-bottom: 1px solid #e1e1e1;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+} #momoDefault .checkout__order .checkout__order__products {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-bottom: 10px;
+} #momoDefault .checkout__order .checkout__order__products span {
+	float: right;
+} #momoDefault .checkout__order ul {
+	margin-bottom: 12px;
+} #momoDefault .checkout__order ul li {
+	font-size: 16px;
+	color: #6f6f6f;
+	line-height: 40px;
+	list-style: none;
+} #momoDefault .checkout__order ul li span {
+	font-weight: 700;
+	float: right;
+} #momoDefault .checkout__order .checkout__order__subtotal {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	border-bottom: 1px solid #e1e1e1;
+	border-top: 1px solid #e1e1e1;
+	padding-bottom: 15px;
+	margin-bottom: 15px;
+	padding-top: 15px;
+} #momoDefault .checkout__order .checkout__order__subtotal span {
+	float: right;
+} #momoDefault .checkout__order .checkout__input__checkbox label {
+	padding-left: 20px;
+} #momoDefault .checkout__order .checkout__order__total {
+	font-size: 18px;
+	color: #1c1c1c;
+	font-weight: 700;
+	border-bottom: 1px solid #e1e1e1;
+	padding-bottom: 15px;
+	margin-bottom: 25px;
+} #momoDefault .checkout__order .checkout__order__total span {
+	float: right;
+	color: #dd2222;
+} #momoDefault .checkout__order button {
+	font-size: 18px;
+	letter-spacing: 2px;
+	width: 100%;
+	margin-top: 10px;
+} #momoDefault /*---------------------
+  Blog
+-----------------------*/
+.blog__item {
+	margin-bottom: 60px;
+} #momoDefault .blog__item__pic img {
+	min-width: 100%;
+} #momoDefault .blog__item__text {
+	padding-top: 25px;
+} #momoDefault .blog__item__text ul {
+	margin-bottom: 15px;
+} #momoDefault .blog__item__text ul li {
+	font-size: 16px;
+	color: #b2b2b2;
+	list-style: none;
+	display: inline-block;
+	margin-right: 15px;
+} #momoDefault .blog__item__text ul li:last-child {
+	margin-right: 0;
+} #momoDefault .blog__item__text h5 {
+	margin-bottom: 12px;
+} #momoDefault .blog__item__text h5 a {
+	font-size: 20px;
+	color: #1c1c1c;
+	font-weight: 700;
+} #momoDefault .blog__item__text p {
+	margin-bottom: 25px;
+} #momoDefault .blog__item__text .blog__btn {
+	display: inline-block;
+	font-size: 14px;
+	color: #1c1c1c;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	border: 1px solid #b2b2b2;
+	padding: 14px 20px 12px;
+	border-radius: 25px;
+} #momoDefault .blog__item__text .blog__btn span {
+	position: relative;
+	top: 1px;
+	margin-left: 5px;
+} #momoDefault .blog__pagination {
+	padding-top: 5px;
+	position: relative;
+} #momoDefault .blog__pagination:before {
+	position: absolute;
+	left: 0;
+	top: -29px;
+	height: 1px;
+	width: 100%;
+	background: #000000;
+	opacity: 0.1;
+	content: "";
+} #momoDefault /*---------------------
+  Blog Sidebar
+-----------------------*/
+.blog__sidebar {
+	padding-top: 50px;
+} #momoDefault .blog__sidebar__item {
+	margin-bottom: 50px;
+} #momoDefault .blog__sidebar__item h4 {
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-bottom: 25px;
+} #momoDefault .blog__sidebar__item ul li {
+	list-style: none;
+} #momoDefault .blog__sidebar__item ul li a {
+	font-size: 16px;
+	color: #666666;
+	line-height: 48px;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .blog__sidebar__item ul li a:hover {
+	color: #7fad39;
+} #momoDefault .blog__sidebar__search {
+	margin-bottom: 50px;
+} #momoDefault .blog__sidebar__search form {
+	position: relative;
+} #momoDefault .blog__sidebar__search form input {
+	width: 100%;
+	height: 46px;
+	font-size: 16px;
+	color: #6f6f6f;
+	padding-left: 15px;
+	border: 1px solid #e1e1e1;
+	border-radius: 20px;
+} #momoDefault .blog__sidebar__search form input::placeholder {
+	color: #6f6f6f;
+} #momoDefault .blog__sidebar__search form button {
+	font-size: 16px;
+	color: #6f6f6f;
+	background: transparent;
+	border: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 100%;
+	padding: 0px 18px;
+} #momoDefault .blog__sidebar__recent .blog__sidebar__recent__item {
+	display: block;
+} #momoDefault .blog__sidebar__recent .blog__sidebar__recent__item:last-child {
+	margin-bottom: 0;
+} #momoDefault .blog__sidebar__recent__item {
+	overflow: hidden;
+	margin-bottom: 20px;
+} #momoDefault .blog__sidebar__recent__item__pic {
+	float: left;
+	margin-right: 20px;
+} #momoDefault .blog__sidebar__recent__item__text {
+	overflow: hidden;
+} #momoDefault .blog__sidebar__recent__item__text h6 {
+	font-weight: 700;
+	color: #333333;
+	line-height: 20px;
+	margin-bottom: 5px;
+} #momoDefault .blog__sidebar__recent__item__text span {
+	font-size: 12px;
+	color: #999999;
+	text-transform: uppercase;
+} #momoDefault .blog__sidebar__item__tags a {
+	font-size: 16px;
+	color: #6f6f6f;
+	background: #f5f5f5;
+	display: inline-block;
+	padding: 7px 26px 5px;
+	margin-right: 6px;
+	margin-bottom: 10px;
+} #momoDefault /*---------------------
+  Blog Details Hero
+-----------------------*/
+.blog-details-hero {
+	height: 350px;
+	display: flex;
+	align-items: center;
+} #momoDefault .blog__details__hero__text {
+	text-align: center;
+} #momoDefault .blog__details__hero__text h2 {
+	font-size: 46px;
+	color: #ffffff;
+	font-weight: 700;
+	margin-bottom: 10px;
+} #momoDefault .blog__details__hero__text ul li {
+	font-size: 16px;
+	color: #ffffff;
+	list-style: none;
+	display: inline-block;
+	margin-right: 45px;
+	position: relative;
+} #momoDefault .blog__details__hero__text ul li:after {
+	position: absolute;
+	right: -26px;
+	top: 0;
+	content: "|";
+} #momoDefault .blog__details__hero__text ul li:last-child {
+	margin-right: 0;
+} #momoDefault .blog__details__hero__text ul li:last-child:after {
+	display: none;
+} #momoDefault /*---------------------
+  Blog Details
+-----------------------*/
+.related-blog {
+	padding-top: 70px;
+	padding-bottom: 10px;
+} #momoDefault .related-blog-title {
+	margin-bottom: 70px;
+} #momoDefault .blog-details {
+	padding-bottom: 75px;
+	border-bottom: 1px solid #e1e1e1;
+} #momoDefault .blog__details__text {
+	margin-bottom: 45px;
+} #momoDefault .blog__details__text img {
+	margin-bottom: 30px;
+} #momoDefault .blog__details__text p {
+	font-size: 18px;
+	line-height: 30px;
+} #momoDefault .blog__details__text h3 {
+	color: #333333;
+	font-weight: 700;
+	line-height: 30px;
+	margin-bottom: 30px;
+} #momoDefault .blog__details__author__pic {
+	float: left;
+	margin-right: 15px;
+} #momoDefault .blog__details__author__pic img {
+	height: 92px;
+	width: 92px;
+	border-radius: 50%;
+} #momoDefault .blog__details__author__text {
+	overflow: hidden;
+	padding-top: 30px;
+} #momoDefault .blog__details__author__text h6 {
+	color: #1c1c1c;
+	font-weight: 700;
+} #momoDefault .blog__details__author__text span {
+	font-size: 16px;
+	color: #6f6f6f;
+} #momoDefault .blog__details__widget ul {
+	margin-bottom: 5px;
+} #momoDefault .blog__details__widget ul li {
+	font-size: 16px;
+	color: #6f6f6f;
+	list-style: none;
+	line-height: 30px;
+} #momoDefault .blog__details__widget ul li span {
+	color: #1c1c1c;
+	font-weight: 700;
+} #momoDefault .blog__details__widget .blog__details__social a {
+	display: inline-block;
+	font-size: 20px;
+	color: #6f6f6f;
+	margin-right: 24px;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+} #momoDefault .blog__details__widget .blog__details__social a:hover {
+	color: #7fad39;
+} #momoDefault .blog__details__widget .blog__details__social a:last-child {
+	margin-right: 0;
+} #momoDefault /*---------------------
+  Footer
+-----------------------*/
+.footer {
+	background: #F3F6FA;
+	padding-top: 70px;
+	padding-bottom: 0;
+} #momoDefault .footer__about {
+	margin-bottom: 30px;
+} #momoDefault .footer__about ul li {
+	font-size: 16px;
+	color: #1c1c1c;
+	line-height: 36px;
+	list-style: none;
+} #momoDefault .footer__about__logo {
+	margin-bottom: 15px;
+} #momoDefault .footer__about__logo a {
+	display: inline-block;
+} #momoDefault .footer__widget {
+	margin-bottom: 30px;
+	overflow: hidden;
+} #momoDefault .footer__widget h6 {
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-bottom: 10px;
+} #momoDefault .footer__widget ul {
+	width: 50%;
+	float: left;
+} #momoDefault .footer__widget ul li {
+	list-style: none;
+} #momoDefault .footer__widget ul li a {
+	color: #1c1c1c;
+	font-size: 14px;
+	line-height: 32px;
+} #momoDefault .footer__widget p {
+	font-size: 14px;
+	color: #1c1c1c;
+	margin-bottom: 30px;
+} #momoDefault .footer__widget form {
+	position: relative;
+	margin-bottom: 30px;
+} #momoDefault .footer__widget form input {
+	width: 100%;
+	font-size: 16px;
+	padding-left: 20px;
+	color: #1c1c1c;
+	height: 46px;
+	border: 1px solid #ededed;
+} #momoDefault .footer__widget form input::placeholder {
+	color: #1c1c1c;
+} #momoDefault .footer__widget form button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 0 26px;
+	height: 100%;
+} #momoDefault .footer__widget .footer__widget__social a {
+	display: inline-block;
+	height: 41px;
+	width: 41px;
+	font-size: 16px;
+	color: #404040;
+	border: 1px solid #ededed;
+	border-radius: 50%;
+	line-height: 38px;
+	text-align: center;
+	background: #ffffff;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+	margin-right: 10px;
+} #momoDefault .footer__widget .footer__widget__social a:last-child {
+	margin-right: 0;
+} #momoDefault .footer__widget .footer__widget__social a:hover {
+	background: rgb(0,90,167);
+	color: #ffffff;
+	border-color: #ffffff;
+} #momoDefault .footer__copyright {
+	border-top: 1px solid #ebebeb;
+	padding: 15px 0;
+	overflow: hidden;
+	margin-top: 20px;
+} #momoDefault .footer__copyright__text {
+	font-size: 14px;
+	color: #1c1c1c;
+	float: left;
+	line-height: 25px;
+} #momoDefault .footer__copyright__payment {
+	float: right;
+} #momoDefault /*---------------------
+  Contact
+-----------------------*/
+.contact {
+	padding-top: 80px;
+	padding-bottom: 50px;
+} #momoDefault .contact__widget {
+	margin-bottom: 30px;
+} #momoDefault .contact__widget span {
+	font-size: 36px;
+	color: #7fad39;
+} #momoDefault .contact__widget h4 {
+	color: #1c1c1c;
+	font-weight: 700;
+	margin-bottom: 6px;
+	margin-top: 18px;
+} #momoDefault .contact__widget p {
+	color: #666666;
+	margin-bottom: 0;
+} #momoDefault /*---------------------
+  Map
+-----------------------*/
+.map {
+	height: 500px;
+	position: relative;
+} #momoDefault .map iframe {
+	width: 100%;
+} #momoDefault .map .map-inside {
+	position: absolute;
+	left: 50%;
+	top: 160px;
+	-webkit-transform: translateX(-175px);
+	-ms-transform: translateX(-175px);
+	transform: translateX(-175px);
+} #momoDefault .map .map-inside i {
+	font-size: 48px;
+	color: #7fad39;
+	position: absolute;
+	bottom: -75px;
+	left: 50%;
+	-webkit-transform: translateX(-18px);
+	-ms-transform: translateX(-18px);
+	transform: translateX(-18px);
+} #momoDefault .map .map-inside .inside-widget {
+	width: 350px;
+	background: #ffffff;
+	text-align: center;
+	padding: 23px 0;
+	position: relative;
+	z-index: 1;
+	-webkit-box-shadow: 0 0 20px 5px rgba(12, 7, 26, 0.15);
+	box-shadow: 0 0 20px 5px rgba(12, 7, 26, 0.15);
+} #momoDefault .map .map-inside .inside-widget:after {
+	position: absolute;
+	left: 50%;
+	bottom: -30px;
+	-webkit-transform: translateX(-6px);
+	-ms-transform: translateX(-6px);
+	transform: translateX(-6px);
+	border: 12px solid transparent;
+	border-top: 30px solid #ffffff;
+	content: "";
+	z-index: -1;
+} #momoDefault .map .map-inside .inside-widget h4 {
+	font-size: 22px;
+	font-weight: 700;
+	color: #1c1c1c;
+	margin-bottom: 4px;
+} #momoDefault .map .map-inside .inside-widget ul li {
+	list-style: none;
+	font-size: 16px;
+	color: #666666;
+	line-height: 26px;
+} #momoDefault /*---------------------
+  Contact Form
+-----------------------*/
+.contact__form__title {
+	margin-bottom: 50px;
+	text-align: center;
+} #momoDefault .contact__form__title h2 {
+	color: #1c1c1c;
+	font-weight: 700;
+} #momoDefault .contact-form {
+	padding-top: 80px;
+	padding-bottom: 80px;
+} #momoDefault .contact-form form input {
+	width: 100%;
+	height: 50px;
+	font-size: 16px;
+	color: #6f6f6f;
+	padding-left: 20px;
+	margin-bottom: 30px;
+	border: 1px solid #ebebeb;
+	border-radius: 4px;
+} #momoDefault .contact-form form input::placeholder {
+	color: #6f6f6f;
+} #momoDefault .contact-form form textarea {
+	width: 100%;
+	height: 150px;
+	font-size: 16px;
+	color: #6f6f6f;
+	padding-left: 20px;
+	margin-bottom: 24px;
+	border: 1px solid #ebebeb;
+	border-radius: 4px;
+	padding-top: 12px;
+	resize: none;
+} #momoDefault .contact-form form textarea::placeholder {
+	color: #6f6f6f;
+} #momoDefault .contact-form form button {
+	font-size: 18px;
+	letter-spacing: 2px;
+} /*--------------------------------- Responsive Media Quaries -----------------------------*/
+@media only screen and (min-width: 1200px) {
+	#momoDefault .container {
+		max-width: 1170px;
+	} 
+}
+
+/* Medium Device = 1200px */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+	#momoDefault .header__menu ul li {
+		margin-right: 45px;
+	} #momoDefault .hero__search__form {
+		width: 490px;
+	} #momoDefault .hero__categories__all {
+		padding: 10px 25px 10px 20px;
+	} #momoDefault .hero__categories ul {
+		padding-left: 20px;
+	} #momoDefault .latest-product__slider.owl-carousel .owl-nav {
+		right: 0;
+	} #momoDefault .product__details__tab .nav-tabs:before {
+		width: 265px;
+	} #momoDefault .product__details__tab .nav-tabs:after {
+		width: 265px;
+	} #momoDefault .shoping__discount form input {
+		width: 240px;
+	} 
+}
+
+/* Tablet Device = 768px */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.hero__categories {
+		margin-bottom: 30px;
+	} #momoDefault .hero__search__form {
+		width: 485px;
+	} #momoDefault .categories__slider.owl-carousel .owl-nav button {
+		left: -20px;
+	} #momoDefault .categories__slider.owl-carousel .owl-nav button.owl-next {
+		right: -20px;
+	} #momoDefault .filter__sort .nice-select {
+		padding-left: 5px;
+		padding-right: 28px;
+	} #momoDefault .product__details__quantity {
+		margin-bottom: 10px;
+	} #momoDefault .product__details__text .primary-btn {
+		margin-bottom: 10px;
+	} #momoDefault .product__details__tab .nav-tabs:before {
+		width: 150px;
+	} #momoDefault .product__details__tab .nav-tabs:after {
+		width: 150px;
+	} #momoDefault .blog__details__author {
+		overflow: hidden;
+		margin-bottom: 25px;
+	} #momoDefault .humberger__open {
+		display: block;
+		font-size: 22px;
+		color: #1c1c1c;
+		height: 35px;
+		width: 35px;
+		line-height: 33px;
+		text-align: center;
+		border: 1px solid #1c1c1c;
+		cursor: pointer;
+		position: absolute;
+		right: 15px;
+		top: 22px;
+	} #momoDefault .header .container {
+		position: relative;
+	} #momoDefault .humberger__menu__wrapper {
+		width: 300px;
+		background: #ffffff;
+		position: fixed;
+		left: -300px;
+		top: 0;
+		height: 100%;
+		overflow-y: auto;
+		z-index: 99;
+		padding: 30px;
+		padding-top: 50px;
+		opacity: 0;
+		display: block;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	} #momoDefault .humberger__menu__wrapper.show__humberger__menu__wrapper {
+		opacity: 1;
+		left: 0;
+	} #momoDefault .humberger__menu__logo {
+		margin-bottom: 30px;
+	} #momoDefault .humberger__menu__logo a {
+		display: inline-block;
+	} #momoDefault .humberger__menu__contact {
+		padding: 10px 0 13px;
+	} #momoDefault .humberger__menu__contact ul li {
+		font-size: 14px;
+		color: #1c1c1c;
+		position: relative;
+		line-height: 30px;
+		list-style: none;
+	} #momoDefault .humberger__menu__contact ul li i {
+		color: #252525;
+		margin-right: 5px;
+	} #momoDefault .humberger__menu__cart ul {
+		display: inline-block;
+		margin-right: 25px;
+	} #momoDefault .humberger__menu__cart ul li {
+		list-style: none;
+		display: inline-block;
+		margin-right: 15px;
+	} #momoDefault .humberger__menu__cart ul li:last-child {
+		margin-right: 0;
+	} #momoDefault .humberger__menu__cart ul li a {
+		position: relative;
+	} #momoDefault .humberger__menu__cart ul li a i {
+		font-size: 18px;
+		color: #1c1c1c;
+	} #momoDefault .humberger__menu__cart ul li a span {
+		height: 13px;
+		width: 13px;
+		background: #7fad39;
+		font-size: 10px;
+		color: #ffffff;
+		line-height: 13px;
+		text-align: center;
+		font-weight: 700;
+		display: inline-block;
+		border-radius: 50%;
+		position: absolute;
+		top: 0;
+		right: -12px;
+	} #momoDefault .humberger__menu__cart .header__cart__price {
+		font-size: 14px;
+		color: #6f6f6f;
+		display: inline-block;
+	} #momoDefault .humberger__menu__cart .header__cart__price span {
+		color: #252525;
+		font-weight: 700;
+	} #momoDefault .humberger__menu__cart {
+		margin-bottom: 25px;
+	} #momoDefault .humberger__menu__widget {
+		margin-bottom: 20px;
+	} #momoDefault .humberger__menu__widget .header__top__right__language {
+		margin-right: 20px;
+	} #momoDefault .humberger__menu__nav {
+		display: none;
+	} #momoDefault .humberger__menu__wrapper .header__top__right__social {
+		display: block;
+		margin-right: 0;
+		margin-bottom: 20px;
+	} #momoDefault .humberger__menu__wrapper .slicknav_btn {
+		display: none;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav .slicknav_item a {
+		border-bottom: none !important;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav {
+		display: block !important;
+	} #momoDefault .humberger__menu__wrapper .slicknav_menu {
+		background: transparent;
+		padding: 0;
+		margin-bottom: 30px;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav ul {
+		margin: 0;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav a {
+		color: #1c1c1c;
+		font-size: 16px;
+		font-weight: 600;
+		margin: 0;
+		border-bottom: 1px solid #e1e1e1;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav a:hover {
+		-webkit-border-radius: 0;
+		border-radius: 0;
+		background: transparent;
+		color: #7fad39;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav .slicknav_row,
+		.humberger__menu__wrapper .slicknav_nav a {
+		padding: 8px 0;
+	} #momoDefault .humberger__menu__overlay {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		content: "";
+		z-index: 98;
+		visibility: hidden;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	} #momoDefault .humberger__menu__overlay.active {
+		visibility: visible;
+	} #momoDefault .header__top {
+		display: none;
+	} #momoDefault .header__menu {
+		display: none;
+	} #momoDefault .header__cart {
+		text-align: center;
+		padding: 10px 0 24px;
+	} #momoDefault .over_hid {
+		overflow: hidden;
+	} 
+}
+
+/* Wide Mobile = 480px */
+@media only screen and (max-width: 767px) {
+	#momoDefault .hero__categories {
+		margin-bottom: 30px;
+	} #momoDefault .hero__search {
+		margin-bottom: 30px;
+	} #momoDefault .hero__search__form {
+		width: 100%;
+	} #momoDefault .hero__search__form form input {
+		width: 100%;
+	} #momoDefault .hero__search__form form .hero__search__categories {
+		display: none;
+	} #momoDefault .hero__search__phone {
+		float: left;
+		margin-top: 30px;
+	} #momoDefault .categories__slider.owl-carousel .owl-nav {
+		text-align: center;
+		margin-top: 40px;
+	} #momoDefault .categories__slider.owl-carousel .owl-nav button {
+		position: relative;
+		left: 0;
+		top: 0;
+		-webkit-transform: translateY(0);
+	} #momoDefault .categories__slider.owl-carousel .owl-nav button.owl-next {
+		right: -10px;
+	} #momoDefault .footer__copyright {
+		text-align: center;
+	} #momoDefault .footer__copyright__text {
+		float: none;
+		margin-bottom: 25px;
+	} #momoDefault .footer__copyright__payment {
+		float: none;
+	} #momoDefault .filter__item {
+		text-align: center;
+	} #momoDefault .filter__option {
+		text-align: center;
+	} #momoDefault .product__details__pic {
+		margin-bottom: 40px;
+	} #momoDefault .product__details__tab .nav-tabs:before {
+		display: none;
+	} #momoDefault .product__details__tab .nav-tabs:after {
+		display: none;
+	} #momoDefault .shoping__cart__table {
+		overflow-y: auto;
+	} #momoDefault .shoping__discount form input {
+		margin-bottom: 15px;
+	} #momoDefault .blog__details__author {
+		overflow: hidden;
+		margin-bottom: 25px;
+	} #momoDefault .humberger__open {
+		display: block;
+		font-size: 22px;
+		color: #1c1c1c;
+		height: 35px;
+		width: 35px;
+		line-height: 33px;
+		text-align: center;
+		border: 1px solid #1c1c1c;
+		cursor: pointer;
+		position: absolute;
+		right: 15px;
+		top: 22px;
+	} #momoDefault .header .container {
+		position: relative;
+	} #momoDefault .humberger__menu__wrapper {
+		width: 300px;
+		background: #ffffff;
+		position: fixed;
+		left: -300px;
+		top: 0;
+		height: 100%;
+		overflow-y: auto;
+		z-index: 99;
+		padding: 30px;
+		padding-top: 50px;
+		opacity: 0;
+		display: block;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	} #momoDefault .humberger__menu__wrapper.show__humberger__menu__wrapper {
+		opacity: 1;
+		left: 0;
+	} #momoDefault .humberger__menu__logo {
+		margin-bottom: 30px;
+	} #momoDefault .humberger__menu__logo a {
+		display: inline-block;
+	} #momoDefault .humberger__menu__contact {
+		padding: 10px 0 13px;
+	} #momoDefault .humberger__menu__contact ul li {
+		font-size: 14px;
+		color: #1c1c1c;
+		position: relative;
+		line-height: 30px;
+		list-style: none;
+	} #momoDefault .humberger__menu__contact ul li i {
+		color: #252525;
+		margin-right: 5px;
+	} #momoDefault .humberger__menu__cart ul {
+		display: inline-block;
+		margin-right: 25px;
+	} #momoDefault .humberger__menu__cart ul li {
+		list-style: none;
+		display: inline-block;
+		margin-right: 15px;
+	} #momoDefault .humberger__menu__cart ul li:last-child {
+		margin-right: 0;
+	} #momoDefault .humberger__menu__cart ul li a {
+		position: relative;
+	} #momoDefault .humberger__menu__cart ul li a i {
+		font-size: 18px;
+		color: #1c1c1c;
+	} #momoDefault .humberger__menu__cart ul li a span {
+		height: 13px;
+		width: 13px;
+		background: #7fad39;
+		font-size: 10px;
+		color: #ffffff;
+		line-height: 13px;
+		text-align: center;
+		font-weight: 700;
+		display: inline-block;
+		border-radius: 50%;
+		position: absolute;
+		top: 0;
+		right: -12px;
+	} #momoDefault .humberger__menu__cart .header__cart__price {
+		font-size: 14px;
+		color: #6f6f6f;
+		display: inline-block;
+	} #momoDefault .humberger__menu__cart .header__cart__price span {
+		color: #252525;
+		font-weight: 700;
+	} #momoDefault .humberger__menu__cart {
+		margin-bottom: 25px;
+	} #momoDefault .humberger__menu__widget {
+		margin-bottom: 20px;
+	} #momoDefault .humberger__menu__widget .header__top__right__language {
+		margin-right: 20px;
+	} #momoDefault .humberger__menu__nav {
+		display: none;
+	} #momoDefault .humberger__menu__wrapper .header__top__right__social {
+		display: block;
+		margin-right: 0;
+		margin-bottom: 20px;
+	} #momoDefault .humberger__menu__wrapper .slicknav_btn {
+		display: none;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav .slicknav_item a {
+		border-bottom: none !important;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav {
+		display: block !important;
+	} #momoDefault .humberger__menu__wrapper .slicknav_menu {
+		background: transparent;
+		padding: 0;
+		margin-bottom: 30px;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav ul {
+		margin: 0;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav a {
+		color: #1c1c1c;
+		font-size: 16px;
+		font-weight: 600;
+		margin: 0;
+		border-bottom: 1px solid #e1e1e1;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav a:hover {
+		-webkit-border-radius: 0;
+		border-radius: 0;
+		background: transparent;
+		color: #7fad39;
+	} #momoDefault .humberger__menu__wrapper .slicknav_nav .slicknav_row,
+		.humberger__menu__wrapper .slicknav_nav a {
+		padding: 8px 0;
+	} #momoDefault .humberger__menu__overlay {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		content: "";
+		z-index: 98;
+		visibility: hidden;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	} #momoDefault .humberger__menu__overlay.active {
+		visibility: visible;
+	} #momoDefault .header__top {
+		display: none;
+	} #momoDefault .header__menu {
+		display: none;
+	} #momoDefault .header__cart {
+		text-align: center;
+		padding: 10px 0 24px;
+	} #momoDefault .over_hid {
+		overflow: hidden;
+	}
+}
+
+/* Small Device = 320px */
+@media only screen and (max-width: 479px) {
+	#momoDefault .hero__search__form form .hero__search__categories {
+		display: none;
+	} #momoDefault .featured__controls ul li {
+		margin-bottom: 10px;
+	} #momoDefault .product__details__text ul li b {
+		width: 100px;
+	} #momoDefault .product__details__tab .nav-tabs li {
+		margin-right: 20px;
+	} #momoDefault .shoping__cart__btns {
+		text-align: center;
+	} #momoDefault .primary-btn.cart-btn.cart-btn-right {
+		float: none;
+		margin-top: 10px;
+	} #momoDefault .shoping__checkout .primary-btn {
+		display: block;
+		text-align: center;
+		padding: 10px 15px 10px;
+	} #momoDefault .map .map-inside {
+		-webkit-transform: translateX(-125px);
+		-ms-transform: translateX(-125px);
+		transform: translateX(-125px);
+	} #momoDefault .map .map-inside .inside-widget {
+		width: 250px;
+	} #momoDefault .product__details__tab .nav-tabs li {
+		margin-right: 15px;
+	} #momoDefault .shoping__discount form input {
+		width: 100%;
+	} #momoDefault .checkout__order {
+		padding: 20px;
+	} #momoDefault .blog__details__hero__text h2 {
+		font-size: 24px;
+	}
+}

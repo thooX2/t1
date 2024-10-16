@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<div layout:fragment="content" id="momoDefault">
+	<!-- Hero Section Begin -->
+	<section class="hero">
+		<div class="container">
+			<div class="row" style="display: flex; justify-content: center; align-items: center;">
+				<div class="col-lg-9">
+					<div class="hero__search" style="display: flex; justify-content: center;">
+						<div class="hero__search__form" style="width: 100%; max-width: 600px; margin: 0 auto;">
+							<form action="#">
+								<div class="hero__search__categories">
+									All Categories <span class="arrow_carrot-down"></span>
+								</div>
+								<input type="text" placeholder="What do you need?" style="width: 70%;">
+								<button type="submit" class="site-btn">SEARCH</button>
+							</form>
+						</div>
+					</div>
+
+					<div class="hero__item set-bg" data-setbg="/home/img/hero/banner.jpg">
+						<div class="hero__text">
+							<span style="color: rgb(0, 90, 167) !important">FRUIT FRESH</span>
+							<h2>
+								Vegetable <br />100% Organic
+							</h2>
+							<p>Free Pickup and Delivery Available</p>
+							<a href="#" class="primary-btn">SHOP NOW</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Hero Section End -->
+
+	<!-- Categories Section Begin -->
+	<section class="categories">
+		<div class="container">
+			<div class="row">
+				<div class="categories__slider owl-carousel">
+					<div class="col-lg-3">
+						<div class="categories__item set-bg" data-setbg="/home/img/categories/cat-1.jpg">
+							<h5>
+								<a href="#">Fresh Fruit</a>
+							</h5>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="categories__item set-bg" data-setbg="/home/img/categories/cat-2.jpg">
+							<h5>
+								<a href="#">Dried Fruit</a>
+							</h5>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="categories__item set-bg" data-setbg="/home/img/categories/cat-3.jpg">
+							<h5>
+								<a href="#">Vegetables</a>
+							</h5>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="categories__item set-bg" data-setbg="/home/img/categories/cat-4.jpg">
+							<h5>
+								<a href="#">drink fruits</a>
+							</h5>
+						</div>
+					</div>
+					<div class="col-lg-3" style="margin-bottom: 100px !important;">
+						<div class="categories__item set-bg" data-setbg="/home/img/categories/cat-5.jpg">
+							<h5>
+								<a href="#">drink fruits</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Categories Section End -->
+</div>
+</html>

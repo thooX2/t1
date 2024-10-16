@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<head>
+  	<title>MOMO</title>
+	<link rel="stylesheet" href="https://demo.sir.kr/gnuboard5/theme/basic/css/default_shop.css?ver=2303229">
+
+	<style>
+	body { background: #ffffff !important;}
+	</style>
+
+</head>
+
+<div layout:fragment="content" >
+<div id="momoDefault">
+
+<body>
+	
+<!-- 전체 콘텐츠 시작 { -->
+<div id="wrapper" class="" style="background-color: #ffffff;">
+    <!-- #container 시작 { -->
+    <div id="container" >
+
+        
+	<!-- 마이페이지 시작 { -->
+	<div id="smb_my" style="padding-top: 50px;">
+	
+	    <!-- 회원정보 개요 시작 { -->
+	    <section id="smb_my_ov">
+	        <h2>회원정보 개요</h2>
+	        
+	        <div class="smb_me">
+		        <strong class="my_ov_name"><img src="https://demo.sir.kr/gnuboard5/img/no_profile.gif" alt="profile_image"><br>홍길동님</strong><br>
+		        <!--<a href="#" class="smb_info">정보수정</a>-->
+		        <a href="#">로그아웃</a>
+	        </div>
+			<h3>나의 학습</h3>
+	        <ul id="smb_private">
+		    	<li>
+		            <a href="/" target="_blank" class="win_point">일간 ToDoList</a>
+		        </li>
+		        <li>
+		        	<a href="/" target="_blank" class="win_coupon">학습 통계</a>
+		        </li>
+		        <li>
+		            <a href="/" target="_blank" class="win_memo">모의고사 평균 성적</a>
+		        </li>
+		    	<li>
+		            <a href="/" target="_blank" class="win_point">나의 목표</a>
+		        </li>
+		        <li>
+		        	<a href="/" target="_blank" class="win_coupon">문제은행</a>
+		        </li>
+		        <li>
+		            <a href="/" target="_blank" class="win_memo">성적관리</a>
+		        </li>
+		    </ul>
+		    
+	        <h3>나의 정보</h3>
+	        <dl class="op_area">
+	            <dt>학교</dt>
+	            <dd>A고등학교</dd>
+	            <dt>학년</dt>
+	            <dd>1학년</dd>
+	            <dt>계열</dt>
+	            <dd>인문계</dd>
+	            <dt><a href="/user/userInfoModfiy" style="color:darkgrey">회원정보수정</a></dt>
+				<dd></dd>
+	            <dt style="margin-bottom: 30px;"><a href="/user/userDeleteMove" style="color:darkgrey; margin-bottom: 30px;">회원탈퇴</a></dt>
+				<!--
+	            <dt id="smb_my_ovaddt">주소</dt>
+	            <dd id="smb_my_ovaddd">(135754) 서울특별시 강남구 강남대로 310, 1312호 (역삼동,유니온센터오피스텔)</dd>-->
+	        </dl>
+			<!--<a href="#" onclick="return member_leave();" class="withdrawal">회원정보수정</a>
+	        <a href="#" onclick="return member_leave();" class="withdrawal">회원탈퇴</a>-->
+	    </section>
+	    <!-- } 회원정보 개요 끝 -->
+	
+	</div>
+	<!-- } 마이페이지 끝 -->
+
+	</div>      <!-- } #container 끝 -->
+</div>
+<!-- } 전체 콘텐츠 끝 -->
+
+
+
+
+
+
+</body></div></div></html>

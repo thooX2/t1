@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.student.user.mapper.UserMapper">
-	<resultMap type="User" id="userResultMap">
+	<resultMap type="ks52team01.student.user.dto.User" id="userResultMap">
 		<id column="user_code" property="userCode" />
 		<result column="user_id" property="userId" />
 		<result column="grade_code" property="gradeCode" />

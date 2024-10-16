@@ -5,7 +5,6 @@
 <head>
 	<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
 	<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
-
 	<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
 	<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
 	<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
@@ -18,98 +17,59 @@
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container">
-		<!-- sub_container -->
-		<div class="sub_container">
+		<!-- container -->
+		<section class="container">
+			<!-- sub_container -->
+			<div class="sub_container">
 
-			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
+				<!-- Include the sidebar fragment here -->
+				<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
 
-			<!-- content -->
-			<div class="content">
-				<div id="wrap_2014">
-					<div class="column_top">
-						<!-- 상단 메뉴 시작 -->
-						<div class="column_right cust_test" id="contents">
-							<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
-								문제스크랩 추가
-							</p>
-							<div id="tabContent">
-								<!-- 공통 인클루드 페이지 시작 -->
 
-								<!-- 공통 인클루드 페이지 종료 -->
 
-								<div class="myWorkbook">
-									<div class="sort_select" style="width:150px;margin-bottom: 20px;">
+				<!-- content -->
+				<div class="content">
+					<div id="wrap_2014">
+						<div class="column_top">
+							<!-- 상단 메뉴 시작 -->
+							<div class="column_right cust_test" id="contents">
+								<p
+									style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
+									문제스크랩 추가</p>
+								<div id="tabContent">
+									<!-- 공통 인클루드 페이지 시작 -->
 
-									</div>
+									<!-- 공통 인클루드 페이지 종료 -->
 
-									<div id="MyTestArea">
-										<form action="/addProblemSolving" method="post" class="insert">
-											<input type="hidden" name="idx" value="second" />
-											<input type="hidden" name="usercode" value="uc9" />
+									<div class="myWorkbook">
+										<div class="sort_select"
+											style="width: 150px; margin-bottom: 20px;"></div>
 
-											<a>스크랩 추가 여부 :
-												<select name="scrape" style="width:500px">
-													<option value="qsc1">추가</option>
-													<option value="null">미추가</option>
+										<div id="MyTestArea">
+											<form action="/study/addQuestionScrape" method="post"
+												class="insert">
+												<input type="hidden" name="questionScrape" value="second" />
+												<input type="hidden" name="userCode" value="uc9" /> 
+												<input type="text" name="examCode" value="ec2" /> 
+												<input
+													type="text" name="examQnaCode" value="eqc2" />
+													
+												 <a>스크랩메모 : <input type="text" name="questionScrapeMemo" style="width: 500px;"></a><br /> 
+												 <a>문제난이도 선택 : <select name="questionScrapeLevel"
+													style="width: 500px">
+														<option value="상">어렵다.</option>
+														<option value="중">적당하다.</option>
+														<option value="하">쉽다.</option>
+														<option value="미기재">미기재</option>
 												</select>
-											</a><br />
-											<input type="hidden" name="usercode" value="uc9" />
-
-											<a>대과목 선택 :
-												<select name="sicc" style="width: 500px">
-													<option value="smjrcc1">국어</option>
-													<option value="smjrcc2">수학</option>
-													<option value="smjrcc3">영어</option>
-													<option value="smjrcc4">한국사</option>
-													<option value="smjrcc5">사회탐구</option>
-													<option value="smjrcc6">과학탐구</option>
-													<option value="smjrcc7">직업탐구</option>
-													<option value="smjrcc8">제2외국어 및 한문</option>
-												</select>
-											</a><br />
-
-											<a>선택과목 선택 :
-												<select name="smcc" style="width: 500px">
-													<option value="smircc39">독일어1</option>
-													<option value="smircc40">프랑스어1</option>
-													<option value="smircc41">스페인어1</option>
-													<option value="smircc42">중국어1</option>
-													<option value="smircc43">일본어1</option>
-													<option value="smircc44">러시아어1</option>
-													<option value="smircc45">아랍어1</option>
-													<option value="smircc46">베트남어1</option>
-													<option value="smircc47">한문1</option>
-												</select>
-											</a><br />
-
-											<a>qna 선택 :
-												<select name="psQna" style="width:500px">
-													<option value="qc1">문제1번</option>
-													<option value="qc2">문제2번</option>
-													<option value="qc3">문제3번</option>
-												</select>
-											</a><br />
-
-											<input type="hidden" name="psType" value="모의고사" />
-
-
-											<a>문제유형 선택 :
-												<select name="psQnaType" style="width:500px">
-													<option value="오답풀이">오답풀이</option>
-													<option value="일반풀이">일반풀이</option>
-													<option value="정답풀이">정답풀이</option>
-													<option value="미기재">미추가</option>
-												</select>
-											</a><br />
-											<a>문제풀이 작성 : <textarea name="psNote" cols="50" rows="10"
-													style="width:500px;"></textarea></a><br />
-											<input type="hidden" name="psCount" value=0 />
-											<input type="submit" value="문제스크랩 생성">
-											<br /><br /><br />
-										</form>
+												</a><br /> 
+												<input type="hidden" name="questionScrapeModifyTime" value="2000-01-01 01:00:00" /> 
+												<input type="hidden" name="questionScrapeResult" value="정답" /> 
+												<input type="submit" value="문제 스크랩 수정"> <br /> <br />
+												<br />
+												<br />
+											</form>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -117,9 +77,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
+	</div>
 </div>
 
 </html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks52team01.student.user.mapper.UserMapper">
+	<resultMap type="ks52team01.student.user.dto.User" id="userResultMap">
+		<id column="user_code" property="userCode" />
+		<result column="user_id" property="userId" />
+		<result column="grade_code" property="gradeCode" />
+		<result column="area_city_code" property="areaCityCode" />
+		<result column="user_pw" property="userPw" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_address" property="userAddress" />
+		<result column="user_detail_address" property="userDetailAddress" />
+		<result column="user_phone" property="userPhone" />
+		<result column="user_name" property="userName" />
+		<result column="user_birth_date" property="userBirthDate" />
+		<result column="user_gender" property="userGender" />
+		<result column="user_sign_date" property="userSignDate" />
+		<result column="user_update_date" property="userUpdateDate" />
+		<result column="user_delete_date" property="userDeleteDate" />
+		<result column="user_dormant_status" property="userDormantStatus" />
+		<result column="user_delete_staus" property="userDeleteStatus" />
+	</resultMap>
+	<select id="getUserById" resultMap="userResultMap">
+		SELECT
+			user_code,
+			user_id,
+			grade_code,
+			area_city_code,
+			user_pw, user_email,
+			user_address,
+			user_detail_address,
+			user_phone,
+			user_name,
+			user_birth_date,
+			user_gender,
+			user_sign_date,
+			user_update_date,
+			user_delete_date,
+			user_dormant_status,
+			user_delete_status
+		FROM
+			`user`
+		WHERE
+			user_id =#{userId}
+	</select>
+
+
+</mapper>
