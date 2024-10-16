@@ -31,22 +31,19 @@
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
-<div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container" style="margin-left:15px !important">
-		<!-- sub_container -->
-		<div class="sub_container">
+<div layout:fragment="content" id="examMain" style="max-width:1270px;margin:0 auto">
 			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+	<!-- container -->
+	<section class="container" style="max-width: 80%; width: 100%">
+		<!-- sub_container -->
+		<div class="sub_container" style="width: 100% !important;">
 			<!-- content -->
-			<div id="wrap_2014">
-				<div class="column_top">
-					<!-- 상단 메뉴 시작 -->
-				</div>
-				<div class="column_main">
-					<div class="column_menu">
-					</div>
-					<div class="column_right analysis" style="margin-left: 20px; margin-bottom:15px!important;">
+			
+			
+				<div class="column_main" style="width:100%">
+					
+					<div class="column_right analysis" style="margin-bottom: 10px;">
 						<h3 class="areaLogo">성적 분석</h3>
 						<div class="review--topTxt">
 							<ul>
@@ -705,7 +702,7 @@
 					</div>
 				</div>
 				<!-- 하단 메뉴 종료 -->
-			</div>
+			
 		</div>
 	</section>
 </div>
