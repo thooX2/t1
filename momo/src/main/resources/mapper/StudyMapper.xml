@@ -16,7 +16,7 @@
 		<result column="sub_mir_cat_lang2" 	property="smcl2" />
 		<result column="sub_mir_cat_kh" 	property="smck" />
 	</resultMap>
-	<select id="findAll" resultMap="StudyTargetsResultMap">
+	<select id="getStudyTarget" resultMap="StudyTargetsResultMap">
 	
 		SELECT 
 			csat_sel_code,
@@ -75,7 +75,7 @@
 		<result column="target_university_rangking" 	property="targetUniversityRangking" />
 		
 	</resultMap>
-	<select id="findAll2" resultMap="TargetUniversityResultMap">
+	<select id="getTargetUniversity" resultMap="TargetUniversityResultMap">
 		
 		SELECT 
 			target_university_code,
@@ -133,7 +133,7 @@
 		<result column="count_grade_set" 	property="count_grade_set" />
 		
 	</resultMap>
-	<select id="findAll3" resultMap="TargetGradeResultMap">
+	<select id="getTargetGrade" resultMap="TargetGradeResultMap">
 	
 		SELECT 
 			obj_grade_code,
@@ -206,7 +206,7 @@
 		<result column="learning_schedule_end" 	property="learningScheduleEnd" />
 		<result column="learning_schedule_compleate" 	property="learningScheduleCompleate" />
 	</resultMap>
-	<select id="findAll4" resultMap="StudyScheduleResultMap">
+	<select id="getStudySchedule" resultMap="StudyScheduleResultMap">
 	
 		SELECT 
 
@@ -279,7 +279,7 @@
 		<result column="detailed_schedule_studytime" 	property="detailedScheduleStudyTime" />
 		<result column="detailed_schedule_result"	 	property="detailedScheduleResult" />
 	</resultMap>
-	<select id="findAll5" resultMap="DetailedScheduleResultMap">
+	<select id="getDetailedSchedule" resultMap="DetailedScheduleResultMap">
 		
 		SELECT 
 			detailed_schedule_code,
@@ -358,7 +358,7 @@
 		<result column="question_scrape_result" 	property="questionScrapeResult" />
 
 	</resultMap>
-	<select id="findAll6" resultMap="ProblemScrapeResultMap">
+	<select id="getProblemScrape" resultMap="ProblemScrapeResultMap">
 		
 		SELECT 
 			question_scrape_code,
@@ -438,7 +438,7 @@
 		<result column="solving_history_note" 	property="solvingHistoryNote" />
 		<result column="solving_history_count" 	property="solvingHistoryCount" />
 	</resultMap>
-	<select id="findAll7" resultMap="ProblemSolvingResultMap">
+	<select id="getProblemSolving" resultMap="ProblemSolvingResultMap">
 		
 		SELECT 
 			solving_history,

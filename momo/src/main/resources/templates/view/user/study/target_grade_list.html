@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
-<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
-<div layout:fragment="content">
-	<div id="examMain">
-		<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/exam_new.css}">
-		<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/style.css}">
 
-		<link rel="stylesheet" th:href="@{/user/css/exam/examMain/common(1).css}">
-		<link rel="stylesheet" th:href="@{/user/css/exam/examMain/layout(1).css}">
-		<link rel="stylesheet" th:href="@{/user/css/exam/examMain/board(1).css}">
-		<link rel="stylesheet" th:href="@{/user/css/exam/examMain/past_question.css}">
+<head>
+	<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+</head>
+<th:block layout:fragment="customJsFile">
+	<script th:src="@{/user/js/study/jquery-3.5.1.min.js}"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
 		<script th:src="@{/user/js/exam/examMain/jquery-3.5.1.min.js}"></script>
 		<!-- container -->
 		<section class="container">
@@ -35,7 +41,7 @@
 
 									<div class="myWorkbook">
 										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											<a href = "/addGrade">목표등급 생성</a>
+											<a href = "/study/addGrade">목표등급 생성</a>
 										</div>
 
 										<div id="MyTestArea">
