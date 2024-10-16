@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>단계별 회원가입 폼</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.css">
+	<style>
+		.disabled {
+			color: gray;
+			/* 비활성화된 버튼 색상 */
+			pointer-events: none;
+			/* 클릭 불가능 */
+		}
+
+		.steps .current {
+			font-weight: bold;
+			/* 현재 단계 강조 */
+		}
+
+		.section-title {
+			display: none;
+			/* 기본적으로 숨김 */
+			font-size: 1.5em;
+			/* 제목 크기 조정 */
+			margin-bottom: 10px;
+			/* 제목과 입력폼 사이 간격 */
+		}
+
+		h5 {
+			display: none;
+			/* 모든 h5 태그 숨김 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="tab-wizard2">
+		<div class="section-title"></div> <!-- 현재 섹션의 제목을 표시할 영역 -->
+
+		<h5>기본 정보 입력</h5>1234569999999999
+	
+		<section>
+			<label for="name">이름:</label>
+			<input type="text" id="name" required>
+			<label for="email">이메일:</label>
+			<input type="email" id="email" required>
+		</section>
+
+		<h5>주소 정보 입력</h5>
+		<section>
+			<label for="address">주소:</label>
+			<input type="text" id="address" required>
+			<label for="city">도시:</label>
+			<input type="text" id="city" required>
+		</section>
+
+		<h5>비밀번호 설정</h5>
+		<section>
+			<label for="password">비밀번호:</label>
+			<input type="password" id="password" required>
+			<label for="confirmPassword">비밀번호 확인:</label>
+			<input type="password" id="confirmPassword" required>
+		</section>
+	</div>
+
+	<button id="success-modal-btn" style="display: none;">성공 메시지 표시</button>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// 초기 상태에서 기본 정보 입력 제목을 표시
+			$('.section-title').text('기본 정보 입력').show();
+
+
+
+			$(".tab-wizard2").steps({
+				headerTag: "h5",
+				bodyTag: "section",
+				transitionEffect: "fade",
+				titleTemplate: '<span class="step">#index#</span> <span class="info">#title#</span>',
+				labels: {
+					finish: "제출",
+					next: "다음",
+					previous: "이전",
+				},
+				onStepChanged: function (event, currentIndex, priorIndex) {
+					$('.steps .current').prevAll().addClass('disabled');
+
+					// 현재 섹션 제목만 표시
+					var currentTitle = $(this).find('h5').eq(currentIndex).text();
+					$('.section-title').text(currentTitle).show();
+
+					// 첫 번째 섹션일 때 이전 버튼 숨기기
+					if (currentIndex === 0) {
+						$('.actions a[href="#previous"]').hide();
+					} else {
+						$('.actions a[href="#previous"]').show();
+					}
+				},
+				onFinished: function (event, currentIndex) {
+					alert("회원가입이 완료되었습니다!");
+					$('#success-modal-btn').trigger('click'); // 모달 버튼 클릭
+				}
+			});
+			// 처음 페이지가 열렸을 때 이전 버튼 숨기기
+			$('.actions a[href="#previous"]').hide();
+		});
+	</script>
+</body>
+
+</html>

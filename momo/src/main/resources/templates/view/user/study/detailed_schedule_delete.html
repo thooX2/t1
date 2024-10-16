@@ -17,40 +17,46 @@
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container">
-		<!-- sub_container -->
-		<div class="sub_container">
-			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
-			<!-- content -->
-			<div class="content">
-				<div id="wrap_2014">
-					<div class="column_top">
-						<!-- 상단 메뉴 시작 -->
-						<div class="column_right cust_test" id="contents">
-							<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
-								상세 스케쥴 생성
-							</p>
-							<div id="tabContent">
+		<!-- container -->
+		<section class="container">
+			<!-- sub_container -->
+			<div class="sub_container">
 
-								<div class="myWorkbook">
-									<div class="sort_select" style="width:150px;margin-bottom: 20px;">
+				<!-- Include the sidebar fragment here -->
+				<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
 
-									</div>
 
+
+				<!-- content -->
+				<div class="content">
+					<div id="wrap_2014">
+						<div class="column_top">
+							<!-- 상단 메뉴 시작 -->
+							<div class="column_right cust_test" id="contents">
+								<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
+									상세 스케쥴 생성
+								</p>
+								<div id="tabContent">
+	
 									<div class="myWorkbook">
 										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											<a href="/addDetailed">상세스케쥴 생성</a>
+											
 										</div>
-										<div id="MyTestArea">
-											<form action="/removeDetailedSchedule" method="post" class="insert">
-												<a>정말로 삭제하시겠습니까?</a>
-												<!-- 처리 완료되는 대로 pk 따로 수정해야 되는 페이지 -->
-												<input type="hidden" name="idx" value="second" /> <br />
 
-												<input type="submit" value="상세 스케쥴 삭제"> <br /> <br /> <br />
-											</form>
+										<div class="myWorkbook">
+											<div class="sort_select" style="width:150px;margin-bottom: 20px;">
+												<a href = "/addDetailed">상세스케쥴 생성</a>
+											</div>
+											<div id="MyTestArea">
+												<form action="/study/removeDetailedSchedule" method="post"
+													class="insert">
+													<a>정말로 삭제하시겠습니까?</a>
+													<!-- 처리 완료되는 대로 pk 따로 수정해야 되는 페이지 -->
+													<input type="hidden" name="detailedSchedule" th:value=${listIdx} /> <br /> 
+												
+													<input type="submit" value="상세 스케쥴 삭제"> <br /> <br /> <br />
+												</form>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -58,8 +64,9 @@
 						</div>
 					</div>
 				</div>
-			</div>
-	</section>
+		</section>
+
+	</div>
 </div>
 
 </html>
