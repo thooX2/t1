@@ -16,7 +16,7 @@
 		<result column="sub_mir_cat_lang2" 	property="smcl2" />
 		<result column="sub_mir_cat_kh" 	property="smck" />
 	</resultMap>
-	<select id="findAll" resultMap="StudyTargetsResultMap">
+	<select id="getStudyTarget" resultMap="StudyTargetsResultMap">
 	
 		SELECT 
 			csat_sel_code,
@@ -35,6 +35,38 @@
 			CSAT;
 	</select>
 	
+	<insert id='addCastSubject'
+		parameterType="ks52team01.student.study.dto.StudyTarget">
+		insert into CSAT VALUES(
+		#{idx},
+		#{usercode},
+		#{smcck},
+		#{smcsk},
+		#{smccm},
+		#{smcsm},
+		#{smci1},
+		#{smci2},
+		#{smcl1},
+		#{smcl2},
+		#{smck}
+		);
+	</insert>
+
+	<update id='modifyCastSubject' parameterType="ks52team01.student.study.dto.StudyTarget">
+		update CSAT cs set cs.sub_mir_cat_sel_kor = #{smcsk}, cs.sub_mir_cat_sel_math = #{smcsm}, cs.sub_mir_cat_inq1 = #{smci1}, cs.sub_mir_cat_inq2 = #{smci2}, cs.sub_mir_cat_lang2 = #{smcl2} WHERE cs.csat_sel_code = 	#{idx};
+	</update>
+
+	<delete id='removeCastSubject' parameterType="ks52team01.student.study.dto.StudyTarget">
+		DELETE FROM CSAT cs WHERE cs.csat_sel_code = #{idx};
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
 	<resultMap type="ks52team01.student.study.dto.TargetUniversity" id="TargetUniversityResultMap">
 		<id column="target_university_code"		property="targetUniverseCode" />
 		<result column="user_code" property="usercode" />
@@ -43,7 +75,7 @@
 		<result column="target_university_rangking" 	property="targetUniversityRangking" />
 		
 	</resultMap>
-	<select id="findAll2" resultMap="TargetUniversityResultMap">
+	<select id="getTargetUniversity" resultMap="TargetUniversityResultMap">
 		
 		SELECT 
 			target_university_code,
@@ -56,9 +88,42 @@
 			target_university;
 	</select>
 	
+	
+	<!-- 대학교 설정 -->
+	<!-- 대학교 추가 0 -->
+	<insert id='addTargetUniversity' parameterType="ks52team01.student.study.dto.TargetUniversity">
+		insert into target_university VALUES(#{targetUniverseCode}, #{userCode}, #{targetUniversityName}, #{targetUniversityLesson}, #{targetUniversityRangking});
+	</insert>
+	<!-- 대학교 수정 0 -->
+	<update id='modifyTargetUniversity'
+		parameterType="ks52team01.student.study.dto.TargetUniversity">
+		update target_university tu set 
+		tu.target_university_name= #{targetUniversityName}, 
+		tu.target_university_lesson= #{targetUniversityLesson}, 
+		tu.target_university_rangking= #{targetUniversityRangking} 
+		WHERE tu.target_university_code = #{targetUniverseCode};
+	</update>
+	<!-- 대학교 삭제 0 -->
+	<delete id='removeTargetUniversity'
+		parameterType="ks52team01.student.study.dto.TargetUniversity">
+		DELETE FROM target_university tu WHERE tu.target_university_code = #{targetUniverseCode};
+	</delete>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<resultMap type="ks52team01.student.study.dto.TargetGrade" id="TargetGradeResultMap">
 		<id column="obj_grade_code"		property="gradeCode" />
-		<result column="user_code" property="UserCode" />
+		<result column="user_code" 		property="UserCode" />
 		<result column="sub_mjr_cat_code" 	property="smjcc" />
 		<result column="sub_mir_cat_code" 	property="smicc" />
 		<result column="last_grade_set" 	property="lastGrade" />
@@ -68,7 +133,7 @@
 		<result column="count_grade_set" 	property="count_grade_set" />
 		
 	</resultMap>
-	<select id="findAll3" resultMap="TargetGradeResultMap">
+	<select id="getTargetGrade" resultMap="TargetGradeResultMap">
 	
 		SELECT 
 			obj_grade_code,
@@ -85,6 +150,51 @@
 			obejctive_grade;
 	</select>
 	
+	<!-- 목표등급 추가 0 -->
+	<insert id='addTargetGrade' parameterType="ks52team01.student.study.dto.TargetGrade">
+		insert into obejctive_grade VALUES(
+		#{gradeCode},
+		#{UserCode},
+		#{smjcc},
+		#{smicc},
+		#{lastGrade},
+		#{recentGrade},
+		#{tar_grade_set},
+		#{result_grade_set},
+		#{count_grade_set}
+		);
+	</insert>
+	<!-- 목표등급 수정 수정 -->
+	<update id='modifyTargetGrade'
+		parameterType="ks52team01.student.study.dto.TargetGrade">
+		update obejctive_grade og SET 
+		og.sub_mjr_cat_code = #{sicc}, 
+		og.sub_mir_cat_code = #{smcc}, 
+		og.last_grade_set = #{lastGrade},
+		og.recent_grade_set =#{recentGrade} ,
+		og.obj_grade_set = #{tar_grade_set},
+		og.result_grade_set = #{result_grade_set}, 
+		og.count_grade_set = #{count_grade_set}
+		WHERE og.obj_grade_code = #{gradeCode};
+	</update>
+	<!-- 목표등급 삭제 -->
+	<delete id='removeTargetGrade'
+		parameterType="ks52team01.student.study.dto.TargetGrade">
+		DELETE FROM obejctive_grade og WHERE og.obj_grade_code= #{gradeCode};
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<resultMap type="ks52team01.student.study.dto.StudySchedule" id="StudyScheduleResultMap">
 		<id column="learning_schedule"		property="learningSchedule" />
 		<result column="user_code" property="userCode" />
@@ -96,7 +206,7 @@
 		<result column="learning_schedule_end" 	property="learningScheduleEnd" />
 		<result column="learning_schedule_compleate" 	property="learningScheduleCompleate" />
 	</resultMap>
-	<select id="findAll4" resultMap="StudyScheduleResultMap">
+	<select id="getStudySchedule" resultMap="StudyScheduleResultMap">
 	
 		SELECT 
 
@@ -114,18 +224,62 @@
 			learning_schedule;
 	</select>
 	
+	<!-- 학습목표 추가 0 -->
+	<insert id='addLearningSchedule'
+		parameterType="ks52team01.student.study.dto.StudySchedule">
+		insert into learning_schedule VALUES(
+		#{learningSchedule},
+		#{userCode},
+		#{smjcc},
+		#{smicc},
+		#{learningScheduleMemo},
+		#{learningScheduleDay},
+		#{learningScheduleStart},
+		#{learningScheduleEnd},
+		#{learningScheduleCompleate}
+		);
+		
+		
+	</insert>
+	<!-- 학습목표 수정 0 -->
+	<update id='modifyLearningSchedule'
+		parameterType="ks52team01.student.study.dto.StudySchedule">
+		UPDATE learning_schedule ls SET 
+		ls.sub_mjr_cat_code = #{smjcc}, 
+		ls.sub_mir_cat_code = #{smicc}, 
+		ls.learning_schedule_memo = #{learningScheduleMemo}, 
+		ls.learning_schedule_days = #{learningScheduleDay}, 
+		ls.learning_schedule_start = #{learningScheduleStart}, 
+		ls.learning_schedule_end = #{learningScheduleEnd}, 
+		ls.learning_schedule_compleate = #{learningScheduleCompleate}
+		WHERE ls.learning_schedule = #{learningSchedule};
+	</update>
+	<!-- 학습목표 삭제 -->
+	<delete id='removeLearningSchedule'
+		parameterType="ks52team01.student.study.dto.StudySchedule">
+		delete FROM learning_schedule ls where ls.learning_schedule = #{learningSchedule};
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<resultMap type="ks52team01.student.study.dto.DetailedSchedule" id="DetailedScheduleResultMap">
 		<id column="detailed_schedule_code"		property="detailedSchedule" />
 		<result column="user_code" property="userCode" />
-		<result column="learning_schedule" 	property="learningSchedule" />
-		<result column="detailed_schedule_memo" 	property="detailedScheduleMemo" />
-		<result column="detailed_schedule_date" 	property="detailedScheduleDate" />
+		<result column="learning_schedule" 				property="learningSchedule" />
+		<result column="detailed_schedule_memo" 		property="detailedScheduleMemo" />
+		<result column="detailed_schedule_date" 		property="detailedScheduleDate" />
 		<result column="detailed_schedule_starttime" 	property="detailedScheduleStartTime" />
-		<result column="detailed_schedule_endtime" 	property="detailedScheduleEndTime" />
+		<result column="detailed_schedule_endtime" 		property="detailedScheduleEndTime" />
 		<result column="detailed_schedule_studytime" 	property="detailedScheduleStudyTime" />
-		<result column="detailed_schedule_result" 	property="detailedScheduleResult" />
+		<result column="detailed_schedule_result"	 	property="detailedScheduleResult" />
 	</resultMap>
-	<select id="findAll5" resultMap="DetailedScheduleResultMap">
+	<select id="getDetailedSchedule" resultMap="DetailedScheduleResultMap">
 		
 		SELECT 
 			detailed_schedule_code,
@@ -142,6 +296,56 @@
 			detailed_schedule;
 	</select>
 	
+	<!-- 상세일정 추가 0 -->
+	<insert id='addDetailedSchedule'
+		parameterType="ks52team01.student.study.dto.DetailedSchedule">
+		insert into detailed_schedule VALUES(
+		#{detailedSchedule},
+		#{userCode},
+		#{learningSchedule},
+		#{detailedScheduleMemo},
+		#{detailedScheduleDate},
+		#{detailedScheduleStartTime},
+		#{detailedScheduleEndTime},
+		#{detailedScheduleStudyTime},
+		#{detailedScheduleResult}
+		);
+	</insert>
+	<!-- 상세일정 수정 0 -->
+	<update id='modifyDetailedSchedule'
+		parameterType="ks52team01.student.study.dto.DetailedSchedule">
+		update detailed_schedule ds SET 
+		ds.learning_schedule = #{learningSchedule}, 
+		ds.detailed_schedule_memo = #{detailedScheduleMemo},
+		ds.detailed_schedule_date = #{detailedScheduleDate},
+		ds.detailed_schedule_starttime = #{detailedScheduleStartTime},
+		ds.detailed_schedule_endtime = #{detailedScheduleEndTime}, 
+		ds.detailed_schedule_studytime = #{detailedScheduleStudyTime},
+		ds.detailed_schedule_result = #{detailedScheduleResult}
+		WHERE ds.detailed_schedule_code = #{detailedSchedule};
+	</update>
+	<!-- 상세일정 삭제 -->
+	<delete id='removeDetailedSchedule'
+		parameterType="ks52team01.student.study.dto.DetailedSchedule">
+		delete FROM detailed_schedule ds where ds.detailed_schedule_code = #{detailedSchedule};
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<resultMap type="ks52team01.student.study.dto.ProblemScrape" id="ProblemScrapeResultMap">
 		<id column="question_scrape_code"		property="questionScrape" />
 		<result column="user_code" property="userCode" />
@@ -154,7 +358,7 @@
 		<result column="question_scrape_result" 	property="questionScrapeResult" />
 
 	</resultMap>
-	<select id="findAll6" resultMap="ProblemScrapeResultMap">
+	<select id="getProblemScrape" resultMap="ProblemScrapeResultMap">
 		
 		SELECT 
 			question_scrape_code,
@@ -171,6 +375,56 @@
 			question_scrape;
 	</select>
 	
+	<!-- 문제스크랩 추가 0 -->
+	<insert id='addQuestionScrape'
+		parameterType="ks52team01.student.study.dto.ProblemScrape">
+		insert into question_scrape VALUES(
+		#{questionScrape},
+		#{userCode},
+		#{examCode},
+		#{examQnaCode},
+		#{questionScrapeMemo},
+		#{questionScrapeLevel},
+		now(),
+		#{questionScrapeModifyTime},
+		#{questionScrapeResult}
+		);
+	</insert>
+	<!-- 문제스크랩 수정 0 -->
+	<update id='modifyQuestionScrape'
+		parameterType="ks52team01.student.study.dto.ProblemScrape">
+		update question_scrape qs SET 
+		qs.exam_code = #{examCode},
+		qs.exam_qna_code = #{examQnaCode}, 
+		qs.question_scrape_memo = #{questionScrapeMemo}, 
+		qs.question_scrape_level = #{questionScrapeLevel}, 
+		qs.question_scrapemodify_time = NOW(), 
+		qs.question_scrape_result = #{questionScrapeResult}
+		WHERE qs.question_scrape_code = #{questionScrape};
+	</update>
+	<!-- 문제스크랩 삭제 -->
+	<delete id='removeQuestionScrape'
+		parameterType="ks52team01.student.study.dto.ProblemScrape">
+		delete FROM question_scrape qs where qs.question_scrape_code = #{questionScrape};
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<resultMap type="ks52team01.student.study.dto.ProblemSolving" id="ProblemSolvingResultMap">
 		<id column="solving_history"		property="solvingHistory" />
 		<result column="question_scrape_code" property="questionScrapeCode" />
@@ -184,7 +438,7 @@
 		<result column="solving_history_note" 	property="solvingHistoryNote" />
 		<result column="solving_history_count" 	property="solvingHistoryCount" />
 	</resultMap>
-	<select id="findAll7" resultMap="ProblemSolvingResultMap">
+	<select id="getProblemSolving" resultMap="ProblemSolvingResultMap">
 		
 		SELECT 
 			solving_history,
@@ -202,6 +456,43 @@
 		FROM 
 			problem_solving_history;
 	</select>
+
+	<insert id='addProblemSolving' parameterType="ks52team01.student.study.dto.ProblemSolving">
+		insert into problem_solving_history VALUES(
+		#{solvingHistory},
+		#{questionScrapeCode},
+		#{UserCode},
+		#{smjcc},
+		#{smicc},
+		Now(),
+		#{qnaCode},
+		#{solvingType},
+		#{solvingcategory},
+		#{solvingHistoryNote},
+		#{solvingHistoryCount}
+		);
+	</insert>
+	<!-- 문제스크랩 수정 0 -->
+	<update id='modifyProblemSolving'
+		parameterType="ks52team01.student.study.dto.ProblemSolving">
+		update problem_solving_history psh SET 
+		psh.question_scrape_code = #{questionScrapeCode}, 
+		psh.sub_mjr_cat_code = #{smjcc}, 
+		psh.sub_mir_cat_code = #{smicc},
+		 psh.solving_date = NOW(), 
+		 psh.qna_code = #{qnaCode}, 
+		 psh.solving_type = #{solvingType}, 
+		 psh.solving_qna_type = #{solvingcategory}, 
+		 psh.solving_history_note = #{solvingHistoryNote}, 
+		 psh.solving_history_count = #{solvingHistoryCount}
+		 WHERE psh.solving_history = #{solvingHistory};
+	</update>
+	<!-- 문제스크랩 삭제 -->
+	<delete id='removeProblemSolving'
+		parameterType="ks52team01.student.study.dto.ProblemSolving">
+		delete FROM problem_solving_history psh where psh.solving_history = #{solvingHistory};
+	</delete>
+	
 
 
 </mapper>

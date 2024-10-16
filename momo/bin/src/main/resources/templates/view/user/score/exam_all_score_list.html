@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<div layout:fragment="content" id="momoDefault">
+	<div class="sidebar-items">
+		<h4>
+			<a href="#">exam_all_score_list</a>
+		</h4>
+		<ul>
+			<li><a th:href="@{examAllScoreCreate}">exam_all_score_create(admin)</a></li>
+			<li><a th:href="@{examAllScoreUpdate}">exam_all_score_update(admin)</a></li>
+			<li><a th:href="@{examAllScoreDelete}">exam_all_score_delete</a></li>
+			<a>
+				<li><a th:href="@{examAllScoreSelect}">exam_all_score_select</a></li>
+				<li><a th:href="@{examSubjectScoreCreate}">exam_subject_score_create(admin)</a></li>
+				<li><a th:href="@{examSubjectScoreUpdate}">exam_subject_score_update(admin)</a></li>
+				<li><a th:href="@{examSubjectScoreDelete}">exam_subject_score_delete</a></li>
+				<li><a th:href="@{examSubjectScoreSelect}">exam_subject_score_select</a></li>
+		</ul>
+	</div>
+</div>
+</html>

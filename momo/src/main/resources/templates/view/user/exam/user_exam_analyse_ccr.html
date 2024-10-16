@@ -9,7 +9,7 @@
 	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/smartmath.css}">
 </head>
 <th:block layout:fragment="customJsFile">
-<!--	<script src="https://code.jquery.com/jquery-3.7.1.js"
+	<!--	<script src="https://code.jquery.com/jquery-3.7.1.js"
 		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
 	<!-- Highcharts 라이브러리 로드 -->
 	<script src="https://code.highcharts.com/highcharts.js"></script>
@@ -35,18 +35,18 @@
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
-<div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container" style="margin-left:15px !important">
-		<!-- sub_container -->
-		<div class="sub_container">
+<div layout:fragment="content" id="examMain" style="max-width:1270px;margin:0 auto">
 			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+	<!-- container -->
+	<section class="container" style="max-width: 80%; width: 100%">
+		<!-- sub_container -->
+		<div class="sub_container" style="width: 100% !important;">
 			<!-- content -->
-			<div id="wrap_2014">
-				<div class="column_main">
-					<div class="column_right analysis" style="margin-left: 20px; margin-bottom:15px!important;">
-						<h3 class="areaLogo" style="margin-bottom: 10px;">성적 분석</h3>
+			
+				<div class="column_main" style="width:100%">
+					<div class="column_right analysis" style="margin-bottom: 10px;">
+						<h3 class="areaLogo" >성적 분석</h3>
 						<div class="review--topTxt">
 							<ul>
 								<li>응시한 문제지를 과목·단원·유형·난도별로 성적이 분석됩니다.</li>
@@ -70,11 +70,8 @@
 										<th>영역</th>
 										<td>
 											<div class="tbl_in--atc" id="mDomCdDiv">
-
 												<label id="mDomCdHI" onclick="fncSetDom('HI')" class="on">한국사</label>
-
 												<label id="mDomCdSC" onclick="fncSetDom('SC')">과학탐구</label>
-
 											</div>
 										</td>
 									</tr>
@@ -844,7 +841,7 @@
 					</div>
 				</div>
 
-			</div>
+			
 			<div id="criteo-tags-div" style="display: none;"></div>
 			<!-- //content -->
 		</div>

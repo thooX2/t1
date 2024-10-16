@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<head>
+<title>MOMO</title>
+<link href="/user/css/user/user_login.css" rel="stylesheet">
+</head>
+<hr><div layout:fragment="content" style="padding: 100px 0 100px 0;">
+	<div id="momoDefault">
+		<div class="wrapper fadeInDown">
+			<div id="formContent">
+				<div class="fadeIn first" style="font-size: 17px;">LOGIN</div>
+
+				<!-- Login Form -->
+				<!--  form action="/user/userLoginAction" 이었음 -->
+				<form action="/user/loginAction" method="post">
+					<input type="text" id="login" class="fadeIn second" name="userId"
+						placeholder="ID" th:value="${param.userId}" required>
+					<!-- 에러 메시지 출력 -->
+					<div th:if="${errorId}">
+						<p th:text="${errorId}" style="color: red !important;"></p>
+						<input type="hidden" id="errorInput" th:value="${error}" />
+					</div>
+					<input type="password" id="password" class="fadeIn third"
+						name="userPw" placeholder="PASSWORD" required>
+					<!-- 에러 메시지 출력 -->
+					<div th:if="${errorPw}">
+						<p th:text="${errorPw}" style="color: red !important;"></p>
+						<input type="hidden" id="errorInput" th:value="${error}" />
+					</div>
+					<input type="submit" class="fadeIn fourth" value="LOGIN"
+						style="margin-top: 20px; background-color: #4686B8;">
+				</form>
+
+
+				<!-- Remind Passowrd -->
+				<div id="formFooter">
+					<a href="/user/userFindIdMove" style="color: #4686B8">ID찾기</a>&nbsp;
+					<a href="/user/userFindPwMove" style="color: #4686B8">PW찾기</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+</html>

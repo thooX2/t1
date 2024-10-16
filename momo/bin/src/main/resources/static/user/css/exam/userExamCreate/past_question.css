@@ -1,0 +1,114 @@
+@charset "utf-8";
+
+/* -------------------------- PC -------------------------- */
+/* 배너 구조*/
+#examMain .con_banner_wrap {display:-webkit-box;display:-ms-flexbox;display:flex; -webkit-box-pack:justify; -ms-flex-pack:justify; justify-content:space-between;}
+#examMain .con_banner_wrap + .search_box2 {margin-top:2rem;}
+
+/* #examMain .con_banner_wrap.past_question {width:100%; height:33.5rem; background:url('../images/pastQusesion/bnr_main_visual.jpg') no-repeat center center / 100% auto;} */
+#examMain .con_banner_wrap.past_question {display:block; width:100%;}
+#examMain .con_banner_wrap.past_question img {width:100%;}
+#examMain .con_banner_wrap.past_question .visual_m {display:none;}
+
+#examMain .search_box2 {padding:3rem; background-color:#f9f9f9; border:1px solid #dbdbdb;}
+#examMain .search_box2 .form_wrap {}
+#examMain .search_box2 .form_wrap dl {display:-webkit-box;display:-ms-flexbox;display:flex; -ms-flex-wrap:wrap; flex-wrap:wrap; margin:-1rem 0;}
+#examMain .search_box2 .form_wrap dt {display:-webkit-box;display:-ms-flexbox;display:flex; -webkit-box-align:start; -ms-flex-align:start; align-items:flex-start; width:6rem; min-height:3.8rem; margin:1rem 0; font-size:1.6rem; color:#000000; font-weight:bold; line-height:3.8rem;}
+#examMain .search_box2 .form_wrap dd {display:-webkit-box;display:-ms-flexbox;display:flex; -webkit-box-align:center; -ms-flex-align:center; align-items:center; width:calc(100% - 6rem); min-height:3.8rem; margin:1.2rem 0; color:#666666;}
+#examMain .search_box2 .form_wrap dd .form_split {width:3rem; text-align:center; font-size:2rem;}
+#examMain .search_box2 .form_wrap dd .chk_box_group {margin:-0.6rem -0.6rem; padding:0.5rem 0;}
+#examMain .search_box2 .form_wrap dd .chk_box_group .chk_box {margin:0.6rem 0.6rem;}
+#examMain .search_box2 .form_wrap dd.type_yesrs select {width:18rem;}
+#examMain .search_box2 .btn_wrap {-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end; margin-top:1.6rem; padding-top:1rem; border-top:1px solid #e5e5e5;}
+
+#examMain .board_head + .board_qusesion {margin-top:1.4rem;}
+#examMain .board_qusesion {border-top:1px solid #000; border-bottom:1px solid #ddd;}
+#examMain .board_qusesion > ul > li {display:-webkit-box;display:-ms-flexbox;display:flex; padding:2.5rem 0;}
+#examMain .board_qusesion > ul > li + li {border-top:1px solid #ddd;}
+#examMain .board_qusesion ul li .img {width:10.2rem;}
+#examMain .board_qusesion ul li .img img {width:100%;}
+#examMain .board_qusesion ul li .txt_wrap {display:-webkit-box;display:-ms-flexbox;display:flex; width:calc(100% - 49.2rem); margin-left:2.5rem; -webkit-box-orient:vertical; -webkit-box-direction:normal; -ms-flex-direction:column; flex-direction:column;}
+#examMain .board_qusesion ul li .txt_wrap .tit {font-size:2rem; color:#000; line-height:1.3;}
+#examMain .board_qusesion ul li .txt_wrap .txt_info {display:-webkit-box;display:-ms-flexbox;display:flex; -webkit-box-align:center; -ms-flex-align:center; align-items:center; margin-top:0.5rem;}
+#examMain .board_qusesion ul li .txt_wrap .txt_info li {display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex; font-size:1.4rem; font-weight:400; color:#9e9e9e; -webkit-box-align:center; -ms-flex-align:center; align-items:center; line-height:1;}
+#examMain .board_qusesion ul li .txt_wrap .txt_info li + li:before {display:inline-block; position:relative; width:1px; height:1.4rem; margin:0 0.7rem; top:0.2rem; background:#bbb; content:'';}
+#examMain .board_qusesion ul li .txt_wrap .txt_info li .tooltip {margin-left:0.5rem;}
+#examMain .board_qusesion ul li .survey_wrap {margin-top:auto;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result {display:-webkit-box;display:-ms-flexbox;display:flex;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result + .survey_result {margin-top:0.5rem;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result dt {width:40rem; height:2.4rem; border-radius:1.2rem; background:#e4e4e4;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result dt a {display:block; width:100%; height:100%;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result dt p {display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex; height:2.4rem; font-size:1.4rem; color:#fff; border-radius:1.2rem; -webkit-box-align:center; -ms-flex-align:center; align-items:center;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result dt p:before {display:inline-block; width:2.3rem; height:2.4rem; margin-right:0.5rem; content:'';}
+#examMain .board_qusesion ul li .survey_wrap .survey_result.answer01 dt p {background-color:#577dd0;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result.answer01 dt p:before {background:url('/user/img/exam/ico_face_good.png') no-repeat; background-size:100%;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result.answer02 dt p {background-color:#ff6b6b;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result.answer02 dt p:before {background:url('/user/img/exam/ico_face_bad.png') no-repeat; background-size:100%;}
+#examMain .board_qusesion ul li .survey_wrap .survey_result dd {margin-left:1rem; font-size:1.6rem; color:#666; line-height:2.4rem;}
+
+#examMain .board_qusesion ul li .btn_wrap {width:36.5rem; -webkit-box-orient:vertical; -webkit-box-direction:normal; -ms-flex-direction:column; flex-direction:column; margin-top:auto;}
+#examMain .board_qusesion ul li .btn_wrap .btn_down_row {display:-webkit-box;display:-ms-flexbox;display:flex;} 
+#examMain .board_qusesion ul li .btn_wrap .btn_down_row button {margin-right:0; min-width:auto; -webkit-box-flex:1; -ms-flex:1; flex:1;} 
+#examMain .board_qusesion ul li .btn_wrap .btn_down_row button:hover,
+#examMain .board_qusesion ul li .btn_wrap .btn_down_row button:focus {background:#4783d9;}
+#examMain .board_qusesion ul li .btn_wrap .btn_down_row button + button {border-left:1px solid #375f99;}
+#examMain .board_qusesion ul li .btn_wrap .btn_popup_row {display:-webkit-box;display:-ms-flexbox;display:flex; margin-top:0.5rem;} 
+#examMain .board_qusesion ul li .btn_wrap .btn_popup_row button {width:50%;}
+#examMain .board_qusesion ul li .btn_wrap .btn_popup_row button + button {margin-left:0.5rem;}
+
+/* 나의성적분석 - 시험별 분석 */
+#examMain .table_scroll.table_analysis table td {font-weight:400;}
+#examMain .table_scroll.table_analysis table td.col_tit {color:#212121; text-align:left;}
+
+/* 오류 신고 팝업 */
+#examMain .modal_report .report_txt {padding:2rem; margin-bottom:2rem; font-size:1.4rem; background-color:#fafafa; line-height:1.3;}
+#examMain .modal_report .board_form {border-top:1px solid #000;}
+
+
+
+@media screen and (min-width: 1024px) {
+
+}
+
+
+/* -------------------------- tablet -------------------------- */
+@media screen and (max-width: 1023px) {
+    #examMain .con_banner_wrap.past_question .visual_pc {display:none;}
+    #examMain .con_banner_wrap.past_question .visual_m {display:block;}
+    #examMain .search_box2 .form_wrap dl {-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;}
+    #examMain .search_box2 .form_wrap dt {font-size:2.4rem;}
+    #examMain .search_box2 .form_wrap dd {width:100%; margin:1rem 0;}
+    #examMain .search_box2 .form_wrap dd.type_yesrs select {width:50%;}
+    #examMain .search_box2 .form_wrap dd .chk_box_group .chk_box {margin:0.6rem 0.6rem;}
+    #examMain .search_box2 .btn_wrap {padding-top:2rem; -webkit-box-pack:start; -ms-flex-pack:start; justify-content:flex-start;}
+
+    #examMain .board_qusesion > ul > li {padding:3rem 0; -webkit-box-orient:vertical; -webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}
+    #examMain .board_qusesion ul li .img {width:16.2rem;}
+    #examMain .board_qusesion ul li .txt_wrap {width:100%; margin:3rem 0 0 0;}
+    #examMain .board_qusesion ul li .txt_wrap .tit {font-size:2.8rem;}
+    #examMain .board_qusesion ul li .txt_wrap .txt_info li {font-size:2.4rem;}
+    #examMain .board_qusesion ul li .survey_wrap {margin-top:2rem;}
+    #examMain .board_qusesion ul li .survey_wrap .survey_result + .survey_result {margin-top:1rem;}
+    #examMain .board_qusesion ul li .survey_wrap .survey_result dt {width:56rem; height:3.8rem; border-radius:2rem;}
+    #examMain .board_qusesion ul li .survey_wrap .survey_result dt p {height:3.8rem; border-radius:2rem; font-size:2.4rem;}
+    #examMain .board_qusesion ul li .survey_wrap .survey_result dt p:before {width:3.8rem; height:3.8rem;}
+    #examMain .board_qusesion ul li .survey_wrap .survey_result.answer01 dt p:before {background:url('/user/img/exam/ico_face_good_m.png') no-repeat 0 0 / 100% auto;}
+    #examMain .board_qusesion ul li .survey_wrap .survey_result.answer02 dt p:before {background:url('/user/img/exam/ico_face_bad_m.png') no-repeat 0 0 / 100% auto;}
+    #examMain .board_qusesion ul li .survey_wrap .survey_result dd {margin-left:2rem; font-size:2.6rem; line-height:3.8rem; flex:auto; text-align:right;}
+    #examMain .board_qusesion ul li .btn_wrap {width:100%; margin-top:3rem;}
+    #examMain .board_qusesion ul li .btn_wrap .btn_down_row button {height:7rem;}
+    #examMain .board_qusesion ul li .btn_wrap .btn_popup_row {margin-top:1rem;}
+    #examMain .board_qusesion ul li .btn_wrap .btn_popup_row button + button {margin-left:1rem;}
+
+    #examMain .table_scroll.table_analysis table td .btn_view {font-size:2.4rem;}/* 2021-04-14 수정 */
+    
+    /* 오류 신고 팝업 */
+    #examMain .modal_report .report_txt {font-size:2.4rem;}
+    #examMain .modal_report .board_form .form_row.horizontal dl dt.len4 + dd {width:100%;}
+    #examMain .modal_report .board_form .form_row select.w_md {width:100% !important;}
+}
+
+
+/* -------------------------- mobile -------------------------- */
+@media screen and (max-width: 719px) {
+}

@@ -1,0 +1,911 @@
+@charset "utf-8";
+
+
+*{word-wrap:break-word;word-break:keep-all;-webkit-text-size-adjust: none; }
+
+a {text-decoration:none; Color:#000000}
+A:link {text-decoration:none; Color:#000000}
+A:visited {text-decoration:none; Color:#000000}
+A:hover {text-decoration:none; Color:#000000}
+A:active {text-decoration:none; Color:#000000}
+ 
+@media screen and (-webkit-min-device-pixel-ratio:0) 
+{
+/*	table{border-collapse: separate !important;}*/
+}
+
+p{margin:0; padding:0;text-align:justify;}
+
+u{display:inline;border-bottom:1px solid #000;text-decoration:none;}
+
+input[setlegend=Y]
+{
+	background-image: url("../images/etest/down.png") !important; 
+	background-repeat: no-repeat; 
+    background-position: right center; 
+}
+input[type=button], input[type=submit]
+{ 
+	padding: 3px 10px 2px;
+	border: 1px solid #999999;
+	background-image: url('../images/chocontrol/grid/fixed_back.png');
+	font-family: Tahoma; font-size:9pt;
+}
+
+p>img, font>img, td>img{
+	height:auto !important;
+}
+
+img{
+	border:0px;vertical-align:middle;max-width:100%;
+	
+}
+
+/*.neq_control img{height:100% !important;}*/
+
+/*영역선택형 문항의 영역 선택 대상 이미지*/
+.imgareabox{max-width:100%; height:auto !important;}
+
+/*영역선택형 문항에서 영역선택 이미지에서 클릭하여 체크되게 되는 SPAN 영역*/
+.spnareabox{background-image: url('../images/etest/blank.gif');display:block;position:absolute;cursor:pointer;text-indent:0 !important;}
+
+
+/*색칠하기 문항에서 색칠하는 영역*/
+.spncolorbox
+{
+	background-image: url('../images/etest/blank.gif');display:block;position:absolute;cursor:pointer;
+	opacity:.6;filter:alpha(opacity=60);filter: 'alpha(opacity=60)';-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(opacity=60)';
+}
+
+/*지문테두리*/
+.rectangle
+{
+	width:100%;
+	height:auto !important;
+}
+input{padding:0;}
+* { box-sizing: border-box; }
+div.rectangle, .rectangle > tbody > tr > td:first-child, .rectangle > tr > td:first-child
+{
+	/*display:block; - IE10에서 height가 늘어나지 않아서 주석 처리.. 왜 넣었는지를 모르니.. 나중을 대비 남겨 둠*/
+
+	border-width:1px; border-color:#333; border-style:Solid;
+	padding:5px!important;
+	text-align:justify;
+	width:100% !important;
+}
+
+/*객관식 선지 영역을 덮어쓰고 있는 SPAN*/
+.lblchoicecover
+{
+	background-image: url('../images/etest/blank.gif');
+}
+
+
+.rectangle_all
+{
+	border:1px solid #CCCCCC;
+	padding:5px;
+	text-align:justify;
+	width:100%;
+}
+.rectangle_head
+{
+	border-top:1px solid #333;
+	border-left:1px solid #333;
+	border-right:1px solid #333;
+	padding:5px 5px 0 5px;
+	text-align:justify;
+	width:100%;
+}
+.rectangle_body
+{
+	border-left:1px solid #333;
+	border-right:1px solid #333;
+	padding:0 5px;
+	text-align:justify;
+	width:100%;
+}
+.rectangle_tail
+{
+	border-bottom:1px solid #333;
+	border-left:1px solid #333;
+	border-right:1px solid #333;
+	padding:0 5px 5px 5px;
+	text-align:justify;
+	width:100%;
+}
+
+.spnboxtbl
+{
+	padding:5px !important;
+	display:block;
+	margin-top:4px;
+	margin-bottom:4px;
+	text-align:justify;
+	width:100%!important;
+	line-height:1.5!important;
+	height:auto !important;
+	word-break:keep-all;
+}
+.spnboxtblptag
+{
+	display:block;
+	text-align:justify;
+}
+.divheader td, .divheader,  .divheadcontent, .divheadcontent.rectangle td
+{
+	font-family:engnnum2eq, Tahoma;
+	font-size:12pt;
+	line-height:1.5;
+}
+
+.divheader .divheadcontent .divheadexplain
+{
+	padding:5px;
+	/*border:1px dotted silver;*/
+}
+
+
+.divheadexplain, .divheadexplain.rectangle td
+{
+	font-family:engnnum2eq, Tahoma;
+	font-size:12pt;
+	line-height:1.5;
+}
+
+.divheadexplain
+{
+	
+}
+
+
+
+.divproblem
+{
+}
+
+.divproblem td
+{
+	margin-left:0;
+	text-indent:0;
+}
+
+.divprobcontent
+{
+	padding-left:30px;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-right:5px;
+	/*border:1px dotted silver;*/
+}
+.divprobcontent2
+{
+	padding-left:30px;
+	padding-top:5px;
+	padding-bottom:0px;
+	padding-right:5px;
+	/*border:1px dotted silver;*/
+}
+.divdbinfo, .divdbinfo2
+{
+	text-align:right;
+	font-family: Tahoma; font-size:9pt;
+	color:#550000 !important;
+}
+
+
+.divdbinfo  ul, .divdbinfo2  ul
+{
+	margin: 0;padding: 0;list-style: none;
+}
+
+
+.divdocument td, .divdocument
+{
+	font-family:engnnum2eq, 'Tahoma';
+	font-size:12pt;
+	line-height:1.5;
+	
+}
+
+.imgdragctrl
+{
+	cursor:pointer;
+}
+
+.divquestion td, .divquestion, .divquestion.rectangle td
+{
+	font-family:engnnum2eq, 'NanumYetMyeongjo';
+	font-size:12pt;
+	line-height:1.5;
+	z-index:999;
+}
+
+.imgdragctrl, .imgdropctrl
+{
+	font-family:engnnum2eq, 'NanumYetMyeongjo';
+	/*font-size:12pt;*/
+	line-height:1.5;
+	z-index:999;
+}
+
+
+
+.divquestion .txtinput, .txtinput
+{
+	border:1px dotted #000;
+	vertical-align:middle;
+	color:red;
+	text-align:center;
+	font-family:engnnum2eq, 'NanumYetMyeongjo';
+	font-size:12pt;
+}
+.divquestion table{margin-top:2px;margin-bottom:2px;}
+
+.spnelement[kind=image]{font-size:0;}
+.spnelement img
+{
+	left:0;top:0;
+	position:absolute;
+}
+
+.spnelement .txtinput2
+{
+	background-color:transparent !important;
+	border:0 !important;
+	background-image: url('../images/etest/blank.gif');
+	text-align:center;
+	margin-top:-2px;
+	color:red;
+	position:absolute;
+	left:0;
+	padding:0 !important;
+}
+
+.txtinput3
+{
+	border:0 !important;
+
+	width:100%;height:100%;
+	background-color:transparent;
+	background-image: url('../images/etest/blank.gif');
+	text-align:center;
+	color:red;
+}
+
+.txtinput4
+{
+	border:1px solid #000;
+	width:100%;height:100%;
+	background-color:#fff;
+	text-align:center;
+	color:red;
+}
+
+.divchoice
+{
+	margin-top:1px;
+	clear:both;
+/*	margin-left:22px;*/
+
+}
+.divchoice p
+{
+}
+.divchoice img.imgchoice
+{
+	margin-left:-22px;
+	*margin-left:0px;
+	*text-indent:-22px; 
+	max-width:none !important;
+}
+
+.spndroparea
+{
+	text-indent:0;
+}
+.spnmathjaxbox{*vertical-align:middle;}
+
+.spnieseven
+{
+	*position:relative !important;
+}
+.spnmathjax span
+{
+	*margin-top:2px!important;
+}
+.spnmathjax
+{
+	display:inline-block;
+	margin-bottom:3px;
+	*margin-top:1px!important;
+	*vertical-align:middle; 
+	*padding-right:2px;
+/*	font-size:14pt !important;*/
+}
+
+.neq_eqstring
+{
+	font-size:1.0em;
+	margin-right:2px;
+}
+
+
+.spnblankbox{border:1px solid #000;display:inline-block;width:1em;height:1em;vertical-align:middle;margin-top:-2px;}
+
+.divchoice ol
+{
+	*margin-left:0px;padding:0;list-style-type: none;
+}
+.divchoice ol li
+{
+	padding-left:22px;
+	margin-top:3px;
+}
+.divchoice ol{font-size:0;}
+
+.divchoice td, .divchoice li, .divchoice li p
+{
+	margin:0;padding:0;
+	list-style-type:none;
+	font-family:engnnum2eq, 'Tahoma';
+	font-size:12pt;
+	line-height:1.5;
+}
+/*.divchoice .column2 li, .divchoice .acolumn2 li{vertical-align:top;}
+.divchoice .column3 li, .divchoice .acolumn3 li{vertical-align:top;}
+.divchoice .column5 li, .divchoice .acolumn5 li{vertical-align:top;}
+*/
+.divchoice .column2 li, .divchoice .acolumn2 li{display:inline-block;}
+.divchoice .column3 li, .divchoice .acolumn3 li{display:inline-block;}
+.divchoice .column5 li, .divchoice .acolumn5 li{display:inline-block;}
+
+
+.divchoice .column2 li, .divchoice .acolumn2 li{width:42%;}
+.divchoice .column2 li:nth-child(3), .divchoice .acolumn2 li:nth-child(3){clear:both;}
+
+.divchoice .column3 li, .divchoice .acolumn3 li{width:28%;}
+.divchoice .column3 li:nth-child(4), .divchoice .acolumn3 li:nth-child(4){clear:both;}
+
+.divchoice .column5 li, .divchoice .acolumn5 li{width:15%;}
+
+@media only screen and (min-width: 1px) and (max-width: 660px) { 
+	.divchoice .column2 li{width:90% !important;xmargin-right:15px;clear:both;}
+	.divchoice .column3 li{width:90% !important;xmargin-right:15px;clear:both;}
+	.divchoice .column4 li{width:90% !important;xmargin-right:15px;clear:both;}
+
+}
+
+
+
+.divanswer td, .divanswer
+{
+	clear:both;
+	margin-top:10px;
+	font-family:engnnum2eq, 'Tahoma';
+	font-size:11pt;
+	line-height:1.5;
+}
+.divexplain td,.divexplain
+{
+	margin-top:10px;
+	font-family:engnnum2eq, 'Tahoma';
+	font-size:11pt;
+	line-height:1.5;
+	/*margin-left:20px;*/
+}
+
+
+.divscript td,.divscript
+{
+	margin-top:10px;
+	font-family:engnnum2eq, '굴림';
+	font-size:10pt;
+	line-height:1.5;
+	/*margin-left:20px;*/
+}
+
+
+.divhint td, .divhint
+{
+	
+	display:none;
+	
+	margin-top:10px;
+	font-family:engnnum2eq, 'Tahoma';
+	font-size:11pt;
+	line-height:1.5;
+}
+.divedit
+{
+	text-align:right;
+}
+.divspcehead2prob
+{
+	height:10px;
+	
+}
+.divspcprob2prob
+{
+	height:40px;
+}
+
+.linepoint{cursor:pointer;}
+
+.spnlinepointcdot
+{
+	position:relative;display:inline-block;width:17px;height:17px;
+	background-image: url('../images/etest/cdot.png');
+}
+
+.spnlinepointsdot
+{
+	position:relative;display:inline-block;width:17px;height:17px;
+	background-image: url('../images/etest/sdot.png');
+}
+
+.spnlinepointsdot img, .spnlinepointcdot img{width:17px;height:17px;}
+
+.imgchoice
+{
+	min-width:18px;;
+	cursor:pointer;border:0;vertical-align:middle;padding-bottom:4px;
+	max-width:none !important;
+}
+
+
+.spnox
+{
+	z-index:9999;
+	position:absolute;
+	left:-20px;top:-30px;
+	opacity:.6;filter:alpha(opacity=60);filter: 'alpha(opacity=60)';-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(opacity=60)';
+}
+
+.spnnumbering
+{
+	position:relative;
+	font-size:15pt;
+	font-weight:bold;
+	margin-left:-20px;
+	_margin-left:0px;
+}
+
+
+*:first-child+html .spnnumbering
+{
+	position:relative;
+	font-size:15pt;
+	font-weight:bold;
+	margin-left:0px;
+	text-indent:-20px;
+	*margin-left:-20px;
+	*text-indent:0px;
+
+}
+
+.spnheadflag
+{
+	font-weight:bold;
+}
+
+.spnchoice1, .spnchoice2, .spnchoice3, .spnchoice4, .spnchoice5, .spnchoice6, .spnchoice7, .spnchoice8, .spnchoice9, .spnchoice10, .spnchoice11, .spnchoice12, .spnchoice13, .spnchoice14, .spnchoice15
+{
+	cursor:pointer;
+	min-width:18px;
+}
+
+.spninputeq
+{
+	display:inline-block;
+	background-color:rgb(255,255,255);
+	border: 1px solid silver;
+	display: flex;justify-content: center;align-items: center; overflow: auto;
+}
+
+.imgdragmove, .imgdropmove
+{
+	opacity:.4;
+	filter:alpha(opacity=40);
+	filter: "alpha(opacity=40)";
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=40)";
+}
+
+.imgdropctrl
+{
+	margin:2px;
+	display:inline;
+}
+
+.spntxtdrop
+{
+	display:inline-block;
+	background-color:rgb(220,255,255);
+	border-bottom:1px solid silver
+}
+
+
+.lblhide
+{
+	display:none;
+}
+.lblshow
+{
+	display:inline-block;
+}
+
+
+.spnlink
+{
+	cursor:pointer;
+}
+
+.divdroparea
+{
+	position:absolute;
+	border:0px dotted red;
+}
+
+
+table.bogiframe
+{
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-COLLAPSE: collapse; TABLE-LAYOUT: fixed; BORDER-TOP: medium none; BORDER-RIGHT: medium none;
+	width:100%!important;
+}
+.bogibody
+{
+	width:100%!important;
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; WORD-BREAK: break-all; BORDER-TOP: #000000 1px; BORDER-RIGHT: #000000 1px solid;padding:3px;
+}
+.bogititle
+{
+	line-height:1;
+}
+.bogitop1
+{
+	height:10px;
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px; WORD-BREAK: break-all; BORDER-TOP: #000000 1px; BORDER-RIGHT: #000000 1px;line-height:0.1 !important;
+}
+.bogitop2
+{
+	height:10px;
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px; WORD-BREAK: break-all; BORDER-TOP: #000000 1px; BORDER-RIGHT: #000000 1px;line-height:0.1 !important;
+}
+.bogitop3
+{
+	height:10px;
+	BORDER-BOTTOM: #000000 1px; BORDER-LEFT: #000000 1px solid;WORD-BREAK: break-all; BORDER-TOP: #000000 1px solid; BORDER-RIGHT: #000000 1px;line-height:0.1 !important;
+}
+.bogitop4
+{
+	height:10px;
+	BORDER-BOTTOM: #000000 1px; BORDER-LEFT: #000000 1px; WORD-BREAK: break-all; BORDER-TOP: #000000 1px solid; BORDER-RIGHT: #000000 1px solid;line-height:0.1 !important;
+}
+
+.imgchar
+{
+	padding-bottom:4px;
+}
+
+.spnchar1
+{
+	border:1px solid #000;
+	padding:1px 2px 0 2px;
+	font-size:85%;
+	margin:0 1px;
+}
+.spnchar2
+{
+	border:1px solid #000;
+	padding:1px 2px 0 2px;
+	font-size:85%;
+	margin:0 1px;
+	background-color:#000;
+	color:#fff;
+}
+
+.spnchar3
+{
+	position: relative;
+	border:1px solid #000;
+	border-radius: 100px;
+	
+	padding:1px 2px 0 2px;
+	font-size:85%;
+
+	*padding:0px 2px ;
+	*font-size:80% ;
+
+	margin:0 1px;
+	background-color:#000;
+	color:#fff;
+	-webkit-border-radius: 100px;-moz-border-radius: 100px;
+	behavior: url(/edubank/common/css/pie/PIE.htc);
+}
+
+
+.spnchar4
+{
+	position: relative;
+	border:1px solid #000;
+	border-radius: 3px;
+
+	padding:1px 2px 0 2px;
+	*padding:0px 2px ;
+
+	font-size:85%;
+	margin:0 1px;
+	behavior: url(/edubank/common/css/pie/PIE.htc);
+}
+
+.spnchar5
+{
+	position: relative;
+	border:1px solid #000;
+	border-radius: 100px;
+	
+	padding:1px 2px 0 2px;
+	font-size:85%;
+
+	*padding:0px 2px ;
+	*font-size:80% ;
+
+	margin:0 1px;
+	-webkit-border-radius: 100px;-moz-border-radius: 100px;
+	behavior: url(/edubank/common/css/pie/PIE.htc);
+}
+
+.spnprohead
+{
+
+	position:relative;
+	font-weight:bold;
+	margin-left:-20px;
+	_margin-left:0px;
+}
+
+.spnproheadexplain
+{
+
+	position:relative;
+	font-weight:bold;
+}
+
+#divlegend
+{
+	border:1px solid rgb(85, 85, 85);
+	z-index:1000 !important;
+	max-width:90%;
+}
+
+.divlegendtitle
+{
+	padding-left:2px;
+	color:#fff;
+	background-color:rgb(85, 85, 85);
+	height:22px;
+	line-height:22px;
+}
+.divlegendclose
+{
+	cursor:pointer;
+	float:right;
+	margin-top:4px;
+	margin-right:2px;
+	width:13px;height:14px;
+	background-image: url('../images/etest/legendclose.png');
+}
+
+.divlegendlist
+{
+	background-color:#fff;
+	text-align:center;
+	padding-bottom:3px;
+	padding-right:3px;
+}
+
+.divlegenditem
+{
+	margin-top:3px;
+	margin-left:3px;
+	display:inline-block;
+	min-height:35px;
+	line-height:35px;
+	padding-left:13px;
+	padding-right:13px;
+	border:1px dotted rgb(85, 85, 85);
+	cursor:pointer;
+	font-size:12pt;
+}
+
+
+.divlegenditem:hover
+{
+	background-color:#fcc;
+}
+
+
+/*그리기 글상자안의 p*/
+.spnhwpshape > span
+{
+	display:table-cell;
+	vertical-align:middle; 
+}
+
+.spnpblock
+{
+	display:block;
+	line-height:160%;
+	min-height:1.6em;
+}
+.spntxtarea
+{
+	display:inline-block;
+	position:relative;
+	cursor:pointer;
+	white-space: nowrap;
+	z-index:990;
+	margin-left:0;
+	text-indent:0;
+}
+
+.spntxtarea:hover
+{
+	background-color:#f0f0f0;
+}
+
+.spncontent
+{
+	overflow:auto !important; -webkit-overflow-scrolling:touch !important;
+}
+
+.spncontent > span
+{
+	display:block;
+	height:100%;
+}
+
+
+.drawcontrol
+{
+	margin:1px !important;
+}
+
+.divheadbuttons{display:none;}
+
+/* Screen Style Sheet */
+@media screen {
+	body{background:#fff;-moz-user-select:none;}
+	.onlyprint{display:none;}
+	.pagesplit{height:50px;}
+}
+/* Print Style Sheet */
+@media print {
+	body{background:white;color:black;}
+	/*img{page-break-inside:avoid;}*/
+	.onlyScreen{display:none;}
+	.imgchoice{display:none;}
+	.lblcover{display:none;}
+	.pagesplit{height:0;page-break-after:always;}
+	@page{margin:0;}
+	.divchoice{left-margin:-15px;}
+}
+
+.MathJax_strut
+{
+	visibility:hidden;
+	
+}
+
+.spnmath
+{
+	font-family:'돋움', 'dotum'; font-size:1.1em;
+}
+
+
+
+@font-face {
+  font-family: 'engnnum2eq';
+  font-style:normal;
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Regular.eot');
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('/edubank/common/css/neqfont/otf/MathJax_Main-Regular.otf') format('opentype'),
+		url('/edubank/common/css/neqfont/woff/MathJax_Main-Regular.woff') format('woff');
+	unicode-range: U+0030-0039, U+0061-007A, U+0041-005A, U+002B-002D;
+}
+
+ 
+
+@font-face
+{
+	font-family: 'engnnum2eq';
+	font-style:italic;
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Italic.eot');
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Italic.eot?#iefix') format('embedded-opentype'),
+		 url('/edubank/common/css/neqfont/otf/MathJax_Main-Italic.otf') format('opentype'),
+		 url('/edubank/common/css/neqfont/woff/MathJax_Main-Italic.woff') format("woff");
+	unicode-range: U+0030-0039, U+0061-007A, U+0041-005A, U+002B-002D;
+}
+
+
+
+
+
+
+.imgruler{
+	cursor:pointer;
+	opacity:.4;
+	filter:alpha(opacity=40);
+	filter: "alpha(opacity=40)";
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=40)";
+}
+
+
+.txtareainput
+{
+	border:1px solid silver;
+}
+
+
+
+.divtblbox
+{
+	position:relative; 
+}
+
+.divtblbox > table
+{
+	position:absolute;
+	left:0 !important;;
+	top:0 !important;;
+	bottom:0 !important;;
+	right:0 !important;;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*단순 문자 숫자 수식*/
+@font-face
+{
+	font-family: 'NM1';
+	font-style:normal;
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Regular.eot');
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('/edubank/common/css/neqfont/otf/MathJax_Main-Regular.otf') format('opentype'),
+		 url('/edubank/common/css/neqfont/woff/MathJax_Main-Regular.woff') format('woff');
+}
+
+@font-face
+{
+	font-family: 'NM1';
+	font-style:italic;
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Italic.eot');
+	src: url('/edubank/common/css/neqfont/eot/MathJax_Main-Italic.eot?#iefix') format('embedded-opentype'),
+		 url('/edubank/common/css/neqfont/otf/MathJax_Main-Italic.otf') format('opentype'),
+		 url('/edubank/common/css/neqfont/woff/MathJax_Main-Italic.woff') format("woff");
+}
+
+.spneqnumber
+{
+	font-family:NM1;
+}
+
+.spneqitalic
+{
+	font-family:NM1;
+	font-style:italic;
+}
+
+table {table-layout:fixed;width:100%;}
+td{height:auto !important;}

@@ -1,0 +1,431 @@
+@charset "utf-8";
+
+@font-face
+{
+	font-family: 'ceq'; 
+	font-style:normal;
+	src: url('./font/ceq.eot');
+	src: url('./font/ceq.eot?#iefix') format('embedded-opentype'),
+	url('./font/ceq.woff') format('woff'),
+	url('./font/ceq.ttf')  format('truetype');
+
+
+}
+@font-face
+{
+	font-family: 'ceq'; 
+	font-style:italic;
+	src: url('./font/ceq italic.eot');
+	src: url('./font/ceq italic.eot?#iefix') format('embedded-opentype'), 
+	url('./font/ceq italic.woff') format('woff'),
+	url('./font/ceq italic.ttf')  format('truetype');
+} 
+
+
+@font-face 
+{
+	font-family: 'NM2';
+	src: url('./neqfont/eot/MathJax_Size2-Regular.eot');
+	src: url('./neqfont/eot/MathJax_Size2-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_Size2-Regular.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_Size2-Regular.woff') format("woff");
+}
+
+@font-face 
+{
+	font-family: 'NM3';
+	src: url('./neqfont/eot/MathJax_Size3-Regular.eot');
+	src: url('./neqfont/eot/MathJax_Size3-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_Size3-Regular.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_Size3-Regular.woff') format("woff");
+}
+@font-face 
+{
+	font-family: 'NM4';
+	src: url('./neqfont/eot/MathJax_Size4-Regular.eot');
+	src: url('./neqfont/eot/MathJax_Size4-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_Size4-Regular.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_Size4-Regular.woff') format("woff");
+}
+@font-face
+{
+	font-family: 'NM1';
+	font-style:normal;
+	src: url('./neqfont/eot/MathJax_Main-Regular.eot');
+	src: url('./neqfont/eot/MathJax_Main-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_Main-Regular.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_Main-Regular.woff') format('woff');
+}
+
+
+ 
+
+@font-face
+{
+	font-family: 'NM1';
+	font-style:italic;
+	src: url('./neqfont/eot/MathJax_Main-Italic.eot');
+	src: url('./neqfont/eot/MathJax_Main-Italic.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_Main-Italic.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_Main-Italic.woff') format("woff");
+}
+
+@font-face
+{
+	font-family: 'CM1';
+	font-style:normal;
+	src: url('./neqfont/eot/MathJax_AMS-Regular.eot');
+	src: url('./neqfont/eot/MathJax_AMS-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_AMS-Regular.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_AMS-Regular.woff') format('woff');
+}
+
+
+@font-face
+{
+	font-family: 'CM2';
+	font-style:normal;
+	src: url('./neqfont/eot/MathJax_Math-Regular.eot');
+	src: url('./neqfont/eot/MathJax_Math-Regular.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_Math-Regular.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_Math-Regular.woff') format('woff');
+}
+
+.cd{font-family:'돋움','dotum';}
+.cd2{font-family:'돋움','dotum';font-style:italic;}
+.ci{font-family:'NM1'; font-style:italic;margin-left:0.35em;}
+.ci2{font-family:'CM1';font-style:italic;margin-left:0.1em;vertical-align:0.2em;}
+.cm{font-family:'CM1';}
+.cb{font-family:'CM1';position:relative;top:0.35em;}
+.cs{font-family:'CM1';padding:0 0.2em;} 
+.cp{font-family:'NM1';padding:0 0.2em;} 
+.c2{font-family:'CM2';}
+
+.neq_basefont{line-height:1;padding:0;font-family: 'NM1','ceq','Times New Roman';}
+
+.neq_control, .neq_eqstring
+{
+	text-indent:0 !important;
+	font-size:1em;
+	display:inline-block;
+	position:relative; 
+	font-family: 'NM1','ceq','Times New Roman',Times,serif,'NanumYetMyeongjo';letter-spacing:0.01em;
+	border:0px solid blue;
+	text-align:center;
+	line-height:1.0;
+	box-sizing:content-box ;
+	white-space: nowrap;
+}
+
+.neq_eqstring
+{
+	margin:0.25em 0.001em;
+}
+
+.neq_edit > .txtinput3
+{
+	position:absolute;left:0;right:0;top:0;bottom:0;
+}
+
+
+ 
+
+@font-face
+{
+	font-family: 'eqinput';
+	font-style:italic;
+	src: url('./neqfont/eot/MathJax_Main-Italic.eot');
+	src: url('./neqfont/eot/MathJax_Main-Italic.eot?#iefix') format('embedded-opentype'),
+		 url('./neqfont/otf/MathJax_Main-Italic.otf') format('opentype'),
+		 url('./neqfont/woff/MathJax_Main-Italic.woff') format("woff");
+	unicode-range:  U+0061-007A ;
+}
+
+.eqinput
+{
+	text-align:center;
+	border:1px dotted red;
+	font-size:0.8em;
+	font-family: "eqinput",'NM1','ceq','Times New Roman'; 
+	width:1em;
+	min-width:1.0em;
+}
+
+.nobreqinput{width:100%;} 
+
+.neq_char
+{
+	font-family: 'NM1','ceq','Times New Roman',Times,serif;letter-spacing:0.01em;
+	vertical-align:0.1em;
+}
+.neq_const
+{
+	font-family: 'NM1','ceq','Times New Roman',Times,serif;letter-spacing:0.01em;
+	vertical-align:0.1em;
+	display:inline-block;
+}
+
+/*간격 유지*/
+.neq_spc1, .neq_spc2{display:inline-block;}
+.neq_spc1 > img{height:1px; width:0.13em;max-width:none;}
+.neq_spc2 > img{height:1px; width:0.2em;max-width:none;}
+
+/*콘텐츠 영역*/
+.neq_edit
+{
+	display:block;
+	white-space: nowrap;
+	border:0px solid red;
+	vertical-align:middle;
+}
+
+.neq_over > .neq_edit
+{
+	margin:0 0.2em;
+}
+
+.neq_pad
+{
+	margin-left:0.2em; margin-right:0.2em;
+}
+
+.neq_char2{font-family: 'NM2';}
+.neq_ovrblank{display:inline-block;position:relative;width:0.5em;height:0px;border:0px solid red;}
+.neq_ovrblank .neq_char2{position:absolute;left:-0.15em;top:-0.5em;}
+.neq_over2>.neq_edit{display:inline-block !important;}
+
+
+/*글자 위 선,화살표*/
+.neq_hblank{position:relative;display:block;margin:0.1em 0;width:100%;height:0.035em;min-height:1px;}
+.neq_hline
+{
+	position:relative;display:block;
+	margin:0.1em 0;
+	width:100%;
+	height:0.055em;min-height:1px;background:#000;
+}
+.neq_hline2
+{
+	position:relative;display:block;margin:0.1em 0;
+	width:100%;
+	height:0.055em;min-height:1.1px;background:#000;
+}
+.neq_arrowleft{position:absolute;left:-0.02em;top:-0.2em;padding-top:1px;}
+.neq_arrowright{position:absolute;right:-0.02em;top:-0.2em;padding-top:1px;} 
+.neq_arrowleft img, .neq_arrowright img{position:absolute;left:-2px;top:1px;height:0.35em !important;max-width:none;}
+
+
+
+/*SUM*/
+/*----------------------------------------*/
+.neq_limitsymbolbox{display:block;line-height:1.0; padding-right:0.2em;}
+.neq_sumsymbolbox{display:block;line-height:1.5;}
+.neq_sumsymbolchar{font-family:NM2;}
+.neq_sumsub{font-size:0.7em;}
+/*----------------------------------------*/
+
+/*subsup*/
+/*----------------------------------------*/
+.neq_supsub{margin-top:-0.1em;}
+.neq_superscript, .neq_subscript{display:block;font-size:0.7em;text-align:left !important;}
+.neq_superscript input, .neq_subscript input{font-size:0.7em !important;}
+
+.neq_superscript{margin-top:0.1em;}
+.neq_supnsubvs{display:block;margin-top:-0.65em;margin-bottom:-0.45em;}
+.neq_supnsubcontent{display:inline-block;margin-top:0.2em}
+/*----------------------------------------*/
+
+
+
+/*root관련*/
+/*----------------------------------------*/
+.neq_sqrtsymbol{display:block;position:absolute;right:100%;width:0.85em;top:0.1em;bottom:0;}
+.neq_sqrtsymbol > img
+{
+	width:100%;height:100%;max-width:none;
+	position:absolute;left:0;top:0;
+}
+
+.neq_sqrtcontent{display:inline-block;position:relative;margin-left:1.0em;}
+.neq_sqrtsubbox{display:inline-block;margin-right:-0.6em;min-width:0.6em;}
+.neq_sqrtsubcontent{font-size:0.7em;}
+/*----------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*인티그랄*/
+/*----------------------------------------*/
+.neq_intsymbol1{font-family:NM2;padding-top:0.65em;width:0.9em;height:1.65em;}
+.neq_intsymbol2{font-family:NM2;padding-top:0.65em;width:1.45em;height:1.65em;}
+.neq_intsymbol3{font-family:NM2;padding-top:0.65em;width:2.0em;height:1.65em;} 
+
+.neq_integral>.neq_control>.neq_superscript {margin-bottom:-0.9em;margin-left:0.6em;}
+.neq_integral>.neq_control>.neq_subscript {margin-top:-0.7em;margin-left:0;}
+/*----------------------------------------*/
+
+/*괄호 관련*/
+/*----------------------------------------*/
+/*
+box1, box2 : top+mid+bot,
+box3 : top + bot
+box4 : 
+*/
+.neq_vbracketframe{display:inline-block;position:relative;}
+.neq_vbracketltop{position:absolute;width:0.43em;left:0;top:0.15em;}
+.neq_vbracketlmid{position:absolute;width:0.43em;left:0;top:50%;margin-top:-0.25em;}
+.neq_vbracketlbot{position:absolute;width:0.43em;left:0;bottom:0.2em;}
+.neq_vbracketlbox1{position:absolute;width: 0.43em;left:0;top:0.7em;bottom:50%;}
+.neq_vbracketlbox2{position:absolute;width: 0.43em;left:0;top:50%;bottom:0.7em;}
+.neq_vbracketlbox3{position:absolute;width: 0.43em;left:0;top:0.6em;bottom:0.6em;}
+.neq_vbracketlbox4{position:absolute;width: 0.40em;min-width:1px;left:0;top:0;bottom:0;}
+.neq_vbracketlbox1 > img{margin-top:-0.25em;width:100%;height:100%;max-width:none;}
+.neq_vbracketlbox2 > img{margin-top:0.25em;width:100%;height:100%;max-width:none;}
+.neq_vbracketlbox3 > img, .neq_vbracketlbox4 > img{width:100%;height:100%;max-width:none;}
+.neq_vbracketlbox3 > img{position:absolute;top:0;bottom:0;left:0;}
+
+.neq_vbracketrtop{position:absolute;width:0.43em;right:0;top:0;}
+.neq_vbracketrmid{position:absolute;width:0.43em;right:0;top:50%;margin-top:-0.25em;}
+.neq_vbracketrbot{position:absolute;width:0.43em;right:0;bottom:0.2em;}
+.neq_vbracketrbox1{position:absolute;width: 0.43em;right:0;top:0.7em;bottom:50%;}
+.neq_vbracketrbox2{position:absolute;width: 0.43em;right:0;top:50%;bottom:0.7em;}
+.neq_vbracketrbox3{position:absolute;width: 0.43em;right:0;top:0.6em;bottom:0.6em;}
+.neq_vbracketrbox4{position:absolute;width: 0.40em;min-width:1px;right:0;top:0;bottom:0;}
+.neq_vbracketrbox1 > img{margin-top:-0.25em;width:100%;height:100%;max-width:none;}
+.neq_vbracketrbox2 > img{margin-top:0.25em;width:100%;height:100%;max-width:none;}
+.neq_vbracketrbox3 > img, .neq_vbracketrbox4 > img{width:100%;height:100%;max-width:none;}
+.neq_vbracketrbox3 > img{position:absolute;top:0;bottom:0;left:0;}
+
+.neq_vbraccontent{min-height:1em;}
+.neq_vbracketframe > span{display:inline-block !important;min-height:1em;line-height:1.5;} 
+/*----------------------------------------*/
+
+/*box*/
+/*----------------------------------------*/
+
+.neq_boxline
+{
+	padding:0.1em;
+	border: 0.05em solid #000;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+/*----------------------------------------*/
+
+
+/*brace 관련*/
+/*----------------------------------------*/
+.neq_hbractop, .neq_hbracbottom{position:relative;display:block;width:0.3em;height:0.4em;margin:0.1em 0; width:100%;}
+.neq_hbractop img, .neq_hbracbottom img{height:0.4em;max-width:none;}
+.neq_hbracbox{display:inline-block;}
+.neq_hbracbak{position:absolute;left:0.2em;top:0;right:0.2em;bottom:0;}
+.neq_hbracbak > img{width:100%;max-width:none;}
+.neq_hbraclef{position:absolute;left:0;top:0;}
+.neq_hbracrig{position:absolute;right:0;top:0;}
+.neq_hbracmid{position:absolute;display:block;top:0;left:50%;margin-left:-0.2em;z-index:1;}
+/*----------------------------------------*/
+
+
+
+/*dot*/
+/*----------------------------------------*/
+.neq_dot{display:block;width:100%;text-align:center;margin-bottom:-0.7em;}
+
+
+.neq_arch, .neq_hat{display:block;position:relative;text-align:center;width:100%;height:0.4em;}
+.neq_arch > span{position:absolute;left:10%;right:10%;top:0;bottom:0;}
+.neq_hat > span{position:absolute;left:20%;right:20%;top:0;bottom:0;}
+.neq_arch > span > img{height:100%;width:100%;max-width:2em;max-width:2em;margin-top:-0.5em;}
+.neq_hat > span > img{height:100%;width:100%;max-width:1em;max-width:2em;}
+/*----------------------------------------*/
+
+/*not*/
+/*----------------------------------------*/
+.neq_not{display:block;margin-bottom:-1.1em;font-family:NM2}
+/*----------------------------------------*/
+
+
+/*행렬*/
+/*----------------------------------------*/
+.neq_matrix{display: table;}
+.neq_matrow{display: table-row;}
+.neq_matcol
+{
+	padding-bottom:0.2em;
+	padding-right:0.4em;
+	display: table-cell;
+	vertical-align: middle;
+}
+/*----------------------------------------*/
+
+.neq_edit em{margin-right:0.15em;}
+
+
+
+/*IE8이하 핵*/
+@media \0screen\,screen\9 
+{
+	.neq_eqstring
+	{
+		margin:0;
+	} 
+ 
+}
+
+
+.neq_edit .spninputeq
+{
+	position:absolute;left:0;right:0;top:0;bottom:0; 
+}
+
+
+
+/*수식 입력 장치 관련*/
+.spninputbox>nobr {max-height:100% !important;}
+.spnelement[eqbox=Y]{height:100% !important;}
+.diveqcontent{height:100% !important;}
+.diveqcontent:before{content:'';display:inline-block;width:1px;height:100%;vertical-align:middle;}
+
+
+#spncursor{display:inline-block;width:1px;height:0.75em;margin:0;margin-top:0.0em;text-indent:0;}
+.spninputbox{margin:0;text-indent:0; }
+
+.eqinput
+{
+	border:1px solid transparent !important;
+	font-size:1em !important;
+	min-height:1em;
+}
+.diveqcontent{
+	display:inline-block;
+	text-align:center;
+	font-size:1.0em;
+	font-family: "eqinput",'NM1','ceq','Times New Roman'; 
+	border:1px dotted red;
+	width:300px;
+	min-height:40px;
+	background-image: url('/edubank/images/etest/blank.gif');
+	margin:0;
+	text-indent:0; 
+	max-height: 120px;
+}
+
+.inputcursor
+{
+	position:absolute;
+	margin-top:-1000px;width:1px;height:1px;border:0;
+}
+ 
