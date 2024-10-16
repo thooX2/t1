@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ks52team01.student.study.dto.DetailedSchedule;
 import ks52team01.student.study.dto.ProblemScrape;
@@ -15,6 +17,7 @@ import ks52team01.student.study.dto.TargetUniversity;
 import ks52team01.student.study.service.StudyService;
 import ks52team01.student.study.service.StudyServiceImpl;
 
+
 @Controller
 public class StudyController {
 	
@@ -24,47 +27,49 @@ public class StudyController {
 		this.studyService = studyServiceImpl;
 	}
 	
-	@GetMapping("/addCast") 
+	@RequestMapping("/addCast") 
 	public String addProducts(Model model) {
 		System.out.println("과목을 추가하기 이동");
 		return "view/user/study/cast_subject_insert";
 	}
 	
-	@GetMapping("/modifyCast") 
-	public String modifyProducts(Model model) {
+	@RequestMapping("/modifyCast") 
+	public String modifyProducts(@RequestParam("list.idx") String listIdx, Model model) {
 		System.out.println("과목을 수정하기");
+		model.addAttribute("listIdx", listIdx);
 		return "view/user/study/cast_subject_modify";	
 	}
 	
-	@GetMapping("/deleteCast") 
-	public String deleteProducts(Model model) {
+	@RequestMapping("/deleteCast") 
+	public String deleteProducts(@RequestParam("list.idx") String listIdx, Model model) {
 		System.out.println("과목을 삭제하기");
+		 model.addAttribute("listIdx", listIdx);
 		return "view/user/study/cast_subject_delete";	
 	}
 	
 	
 	
-	@GetMapping("/getCastSubjectList")
+	@RequestMapping("/getCastSubjectList")
 	public String getCastSubjectList(Model model) {
 		model.addAttribute("CastSubjectList", studyService.findAll());
 		return  "view/user/study/cast_subject_list";
 	}
 
 	
-	@GetMapping("/addCastSubject")
-	public String addCastSubject(@ModelAttribute StudyTarget studytargetdao , Model model) {
-		studyService.addCastSubject(studytargetdao);
+	@RequestMapping("/addCastSubject")
+	public String addCastSubject(@ModelAttribute StudyTarget studytarget , Model model) {
+		studyService.addCastSubject(studytarget);
 		return  "view/user/study/cast_subject_insert";
 	}
-	@GetMapping("/modifyCastSubject")
-		public String modifyCastSubject(@ModelAttribute StudyTarget studytargetdao , Model model) { 
-		studyService.modifyCastSubject(studytargetdao);
+	@RequestMapping("/modifyCastSubject")
+		public String modifyCastSubject(@ModelAttribute StudyTarget studytarget , Model model) { 
+		studyService.modifyCastSubject(studytarget);
 		return  "view/user/study/cast_subject_modify";
 		
 	}
-	@GetMapping("/removeCastSubject")
-	public String removeCastSubject(@ModelAttribute StudyTarget studytargetdao , Model model) {
-		studyService.removeCastSubject(studytargetdao);
+	@RequestMapping("/removeCastSubject")
+	public String removeCastSubject(@ModelAttribute StudyTarget studytarget , Model model) {
+		studyService.removeCastSubject(studytarget);
 		return  "view/user/study/cast_subject_delete";
 	}
 	
@@ -91,43 +96,51 @@ public class StudyController {
 		return "view/user/study/target_university_insert";
 	}
 	
-	@GetMapping("/modifyUniversity") 
-	public String modifyUniversity(Model model) {
+	@RequestMapping("/modifyUniversity") 
+	public String modifyUniversity(@RequestParam("list.targetUniverseCode") String listIdx, Model model) {
 		System.out.println("목표대학교 수정하기");
+		model.addAttribute("listIdx", listIdx);
 		return "view/user/study/target_university_modify";	
 	}
 	
-	@GetMapping("/deleteUniversity") 
-	public String deleteUniversity(Model model) {
+	@RequestMapping("/deleteUniversity") 
+	public String deleteUniversity(@RequestParam("list.targetUniverseCode") String listIdx, Model model) {
+		System.out.print(listIdx);
 		System.out.println("목표대학교 삭제하기");
+		model.addAttribute("listIdx", listIdx);
 		return "view/user/study/target_university_delete";	
 	}
 	
 
 	
 	
-	@GetMapping("/getTargetUniversityList")
+	
+	@RequestMapping("/getTargetUniversityList")
 	public String getTargetUniversityList(Model model) {
 		model.addAttribute("TargetUniversityList", studyService.findAll2());
 		return "view/user/study/target_university_list";
 	}
 	
-	@GetMapping("/addTargetUniversity")
-	public String addTargetUniversity(@ModelAttribute TargetUniversity targetuniversityDAO , Model model) {
-		studyService.addTargetUniversity(targetuniversityDAO);
+	@RequestMapping("/addTargetUniversity")
+	public String addTargetUniversity(@ModelAttribute TargetUniversity targetuniversity , Model model) {
+		studyService.addTargetUniversity(targetuniversity);
 		return "view/user/study/target_university_insert";
 	}
 	
-	@GetMapping("/modifyTargetUniversity")
-	public String modifyTargetUniversity(@ModelAttribute TargetUniversity targetuniversityDAO , Model model) {
-		studyService.modifyTargetUniversity(targetuniversityDAO);
+	@RequestMapping("/modifyTargetUniversity")
+	public String modifyTargetUniversity(@ModelAttribute TargetUniversity targetuniversity , Model model) {
+		System.out.println("일단 대학교 수정을 진행");
+		
+		studyService.modifyTargetUniversity(targetuniversity);
+		
+		
 		return "view/user/study/target_university_modify";
 	}
 	
-	@GetMapping("/removeTargetUniversity")
-	public String removeTargetUniversity(@ModelAttribute TargetUniversity targetuniversityDAO , Model model) {
-		studyService.removeTargetUniversity(targetuniversityDAO);
-		return "view/user/study/target_university_remove";
+	@RequestMapping("/removeTargetUniversity")
+	public String removeTargetUniversity(@ModelAttribute TargetUniversity targetuniversity , Model model) {
+		studyService.removeTargetUniversity(targetuniversity);
+		return "view/user/study/target_university_delete";
 	}
 	
 	
@@ -139,20 +152,22 @@ public class StudyController {
 	
 	//목표 등급 설정
 	
-	@GetMapping("/addGrade") 
+	@RequestMapping("/addGrade") 
 	public String addGrade(Model model) {
 		System.out.println("목표등급 추가하기");
 		return "view/user/study/target_grade_insert";
 	}
 	
-	@GetMapping("/modifyGrade") 
-	public String modifyGrade(Model model) {
+	@RequestMapping("/modifyGrade") 
+	public String modifyGrade(@RequestParam("list.gradeCode") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("목표등급 수정하기");
 		return "view/user/study/target_grade_modify";	
 	}
 	
-	@GetMapping("/deleteGrade") 
-	public String deleteGrade(Model model) {
+	@RequestMapping("/deleteGrade") 
+	public String deleteGrade(@RequestParam("list.gradeCode") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("목표등급 삭제하기");
 		return "view/user/study/target_grade_delete";	
 	}
@@ -162,24 +177,24 @@ public class StudyController {
 	
 	
 	
-	@GetMapping("/getTargetGradeList")
+	@RequestMapping("/getTargetGradeList")
 	public String getTargetGradeList(Model model) {
 		model.addAttribute("TargetGradeList", studyService.findAll3());
 		return "view/user/study/target_grade_list";
 	}
-	@GetMapping("/addTargetGrade")
-	public String addTargetGrade(@ModelAttribute TargetGrade targetgradeDAO , Model model) {
-		studyService.addTargetGrade(targetgradeDAO);
+	@RequestMapping("/addTargetGrade")
+	public String addTargetGrade(@ModelAttribute TargetGrade targetgrade , Model model) {
+		studyService.addTargetGrade(targetgrade);
 		return "view/user/study/target_grade_insert";
 	}
-	@GetMapping("/modifyTargetGrade")
-	public String modifyTargetGrade(@ModelAttribute TargetGrade targetgradeDAO , Model model) {
-		studyService.modifyTargetGrade(targetgradeDAO);
+	@RequestMapping("/modifyTargetGrade")
+	public String modifyTargetGrade(@ModelAttribute TargetGrade targetgrade , Model model) {
+		studyService.modifyTargetGrade(targetgrade);
 		return "view/user/study/target_grade_modify";
 	}
-	@GetMapping("/removeTargetGrade")
-	public String removeTargetGrade(@ModelAttribute TargetGrade targetgradeDAO , Model model) {
-		studyService.removeTargetGrade(targetgradeDAO);
+	@RequestMapping("/removeTargetGrade")
+	public String removeTargetGrade(@ModelAttribute TargetGrade targetgrade , Model model) {
+		studyService.removeTargetGrade(targetgrade);
 		return "view/user/study/target_grade_delete";
 	}
 	
@@ -193,20 +208,22 @@ public class StudyController {
 	//학습목표 설정
 	
 	
-	@GetMapping("/addlearning") 
+	@RequestMapping("/addlearning") 
 	public String addlearning(Model model) {
 		System.out.println("상세스케쥴 추가하기");
 		return "view/user/study/learning_schedule_insert";
 	}
 	
-	@GetMapping("/modifylearning") 
-	public String modifylearning(Model model) {
+	@RequestMapping("/modifylearning") 
+	public String modifylearning(@RequestParam("list.learningSchedule") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("상세스케쥴 수정하기");
 		return "view/user/study/learning_schedule_modify";	
 	}
 	
-	@GetMapping("/deletelearning") 
-	public String deletelearning(Model model) {
+	@RequestMapping("/deletelearning") 
+	public String deletelearning(@RequestParam("list.learningSchedule") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("상세스케쥴 삭제하기");
 		return "view/user/study/learning_schedule_delete";	
 	}
@@ -218,24 +235,24 @@ public class StudyController {
 	
 	
 	
-	@GetMapping("/getLearningScheduleList")
-	public String getLearningScheduleList(@ModelAttribute TargetGrade targetgradeDAO , Model model) {
+	@RequestMapping("/getLearningScheduleList")
+	public String getLearningScheduleList(@ModelAttribute TargetGrade targetgrade , Model model) {
 		model.addAttribute("LearningScheduleList", studyService.findAll4());
 		return "view/user/study/learning_schedule_list";
 	}
-	@GetMapping("/addLearningSchedule")
-	public String addLearningSchedule(@ModelAttribute StudySchedule studyscheduleDAO, Model model) {
-		studyService.addLearningSchedule(studyscheduleDAO);
+	@RequestMapping("/addLearningSchedule")
+	public String addLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model model) {
+		studyService.addLearningSchedule(studyschedule);
 		return "view/user/study/learning_schedule_insert";
 	}
-	@GetMapping("/modifyLearningSchedule")
-	public String modifyLearningSchedule(@ModelAttribute StudySchedule studyscheduleDAO, Model model) {
-		studyService.modifyLearningSchedule(studyscheduleDAO);
+	@RequestMapping("/modifyLearningSchedule")
+	public String modifyLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model model) {
+		studyService.modifyLearningSchedule(studyschedule);
 		return "view/user/study/target_university_modify";
 	}
-	@GetMapping("/removeLearningSchedule")
-	public String removeLearningSchedule(@ModelAttribute StudySchedule studyscheduleDAO, Model model) {
-		studyService.removeLearningSchedule(studyscheduleDAO);
+	@RequestMapping("/removeLearningSchedule")
+	public String removeLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model model) {
+		studyService.removeLearningSchedule(studyschedule);
 		return "view/user/study/target_university_delete";
 	}
 	
@@ -253,20 +270,22 @@ public class StudyController {
 	
 	
 	
-	@GetMapping("/addDetailed") 
+	@RequestMapping("/addDetailed") 
 	public String addDetailed(Model model) {
 		System.out.println("상세스케쥴 추가하기");
 		return "view/user/study/detailed_schedule_insert";
 	}
 	
-	@GetMapping("/modifyDetailed") 
-	public String modifyDetailed(Model model) {
+	@RequestMapping("/modifyDetailed") 
+	public String modifyDetailed(@RequestParam("list.detailedSchedule") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("상세스케쥴 수정하기");
 		return "view/user/study/detailed_schedule_modify";	
 	}
 	
-	@GetMapping("/deleteDetailed") 
-	public String deleteDetailed(Model model) {
+	@RequestMapping("/deleteDetailed") 
+	public String deleteDetailed(@RequestParam("list.detailedSchedule") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("상세스케쥴 삭제하기");
 		return "view/user/study/detailed_schedule_delete";	
 	}
@@ -275,24 +294,24 @@ public class StudyController {
 	
 	
 	
-	@GetMapping("/getDetailedScheduleList")
-	public String getDetailedScheduleList(@ModelAttribute DetailedSchedule detailedscheduleDAO , Model model) {
+	@RequestMapping("/getDetailedScheduleList")
+	public String getDetailedScheduleList(@ModelAttribute DetailedSchedule detailedschedule , Model model) {
 		model.addAttribute("DetailedScheduleList", studyService.findAll5());
 		return "view/user/study/detailed_schedule_list";
 	}
-	@GetMapping("/addDetailedSchedule")
-	public String addDetailedSchedule(@ModelAttribute DetailedSchedule detailedscheduleDAO , Model model) {
-		studyService.addDetailedSchedule(detailedscheduleDAO);
+	@RequestMapping("/addDetailedSchedule")
+	public String addDetailedSchedule(@ModelAttribute DetailedSchedule detailedschedule , Model model) {
+		studyService.addDetailedSchedule(detailedschedule);
 		return "view/user/study/detailed_schedule_insert";
 	}
-	@GetMapping("/modifyDetailedSchedule")
-	public String modifyDetailedSchedule(@ModelAttribute DetailedSchedule detailedscheduleDAO , Model model) {
-		studyService.modifyDetailedSchedule(detailedscheduleDAO);
+	@RequestMapping("/modifyDetailedSchedule")
+	public String modifyDetailedSchedule(@ModelAttribute DetailedSchedule detailedschedule , Model model) {
+		studyService.modifyDetailedSchedule(detailedschedule);
 		return "view/user/study/detailed_schedule_modify";
 	}
-	@GetMapping("/removeDetailedSchedule")
-	public String removeDetailedSchedule(@ModelAttribute DetailedSchedule detailedscheduleDAO , Model model) {
-		studyService.removeDetailedSchedule(detailedscheduleDAO);
+	@RequestMapping("/removeDetailedSchedule")
+	public String removeDetailedSchedule(@ModelAttribute DetailedSchedule detailedschedule , Model model) {
+		studyService.removeDetailedSchedule(detailedschedule);
 		return "view/user/study/detailed_schedule_delete";
 	}
 	
@@ -308,20 +327,22 @@ public class StudyController {
 	//문제 스크랩
 	
 	
-	@GetMapping("/addScrape") 
+	@RequestMapping("/addScrape") 
 	public String addScrape(Model model) {
 		System.out.println("스크랩 추가하기");
 		return "view/user/study/question_scrape_insert";
 	}
 	
-	@GetMapping("/modifyScrape") 
-	public String modifyScrape(Model model) {
+	@RequestMapping("/modifyScrape") 
+	public String modifyScrape(@RequestParam("list.questionScrape") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("스크랩 수정하기");
 		return "view/user/study/question_scrape_modify";	
 	}
 	
-	@GetMapping("/deleteScrape") 
-	public String deleteScrape(Model model) {
+	@RequestMapping("/deleteScrape") 
+	public String deleteScrape(@RequestParam("list.questionScrape") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("스크랩 삭제하기");
 		return "view/user/study/question_scrape_delete";	
 	}
@@ -331,24 +352,24 @@ public class StudyController {
 	
 	
 	
-	@GetMapping("/getQuestionScrapeList")
+	@RequestMapping("/getQuestionScrapeList")
 	public String getQuestionScrapeList(Model model) {
 		model.addAttribute("QuestionScrapeList", studyService.findAll6());
 		return "view/user/study/question_scrape_list";
 	}
-	@GetMapping("/addQuestionScrape")
-	public String addQuestionScrape(@ModelAttribute ProblemScrape problemscrapeDAO , Model model) {
-		studyService.addQuestionScrape(problemscrapeDAO);
+	@RequestMapping("/addQuestionScrape")
+	public String addQuestionScrape(@ModelAttribute ProblemScrape problemscrape , Model model) {
+		studyService.addQuestionScrape(problemscrape);
 		return "view/user/study/question_scrape_insert";
 	}
-	@GetMapping("/modifyQuestionScrape")
-	public String modifyQuestionScrape(@ModelAttribute ProblemScrape problemscrapeDAO , Model model) {
-		studyService.modifyQuestionScrape(problemscrapeDAO);
+	@RequestMapping("/modifyQuestionScrape")
+	public String modifyQuestionScrape(@ModelAttribute ProblemScrape problemscrape , Model model) {
+		studyService.modifyQuestionScrape(problemscrape);
 		return "view/user/study/question_scrape_modify";
 	}
-	@GetMapping("/removeQuestionScrape")
-	public String removeQuestionScrape(@ModelAttribute ProblemScrape problemscrapeDAO , Model model) {
-		studyService.removeQuestionScrape(problemscrapeDAO);
+	@RequestMapping("/removeQuestionScrape")
+	public String removeQuestionScrape(@ModelAttribute ProblemScrape problemscrape , Model model) {
+		studyService.removeQuestionScrape(problemscrape);
 		return "view/user/study/question_scrape_delete";
 	}
 	
@@ -363,20 +384,22 @@ public class StudyController {
 	// 문제 해결 노트
 	
 	
-	@GetMapping("/addProblem") 
+	@RequestMapping("/addProblem") 
 	public String addProblem(Model model) {
 		System.out.println("문제해결노트 추가하기 이동");
 		return "view/user/study/problem_solving_insert";
 	}
 	
-	@GetMapping("/modifyProblem") 
-	public String modifyProblem(Model model) {
+	@RequestMapping("/modifyProblem") 
+	public String modifyProblem(@RequestParam("list.solvingHistory") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("문제해결노트 수정하기");
 		return "view/user/study/problem_solving_modify";	
 	}
 	
-	@GetMapping("/deleteProblem") 
-	public String deleteProblem(Model model) {
+	@RequestMapping("/deleteProblem") 
+	public String deleteProblem(@RequestParam("list.solvingHistory") String listIdx, Model model) {
+		model.addAttribute("listIdx", listIdx);
 		System.out.println("문제해결노트 삭제하기");
 		return "view/user/study/problem_solving_delete";	
 	}
@@ -386,24 +409,24 @@ public class StudyController {
 	
 	
 	
-	@GetMapping("/getProblemSolvingList")
+	@RequestMapping("/getProblemSolvingList")
 	public String getProblemSolvingList(Model model) {
 		model.addAttribute("ProblemSolvingList", studyService.findAll7());
 		return "view/user/study/problem_solving_list";
 	}
-	@GetMapping("/addProblemSolving")
-	public String addProblemSolving(@ModelAttribute ProblemSolving problemscrapeDAO , Model model) {
-		studyService.addProblemSolving(problemscrapeDAO);
+	@RequestMapping("/addProblemSolving")
+	public String addProblemSolving(@ModelAttribute ProblemSolving problemscrape , Model model) {
+		studyService.addProblemSolving(problemscrape);
 		return "view/user/study/problem_solving_insert";
 	}
-	@GetMapping("/modifyProblemSolving")
-	public String modifyProblemSolving(@ModelAttribute ProblemSolving problemscrapeDAO , Model model) {
-		studyService.modifyProblemSolving(problemscrapeDAO);
+	@RequestMapping("/modifyProblemSolving")
+	public String modifyProblemSolving(@ModelAttribute ProblemSolving problemscrape , Model model) {
+		studyService.modifyProblemSolving(problemscrape);
 		return "view/user/study/problem_solving_modify";
 	}
-	@GetMapping("/removeProblemSolving")
-	public String removeProblemSolving(@ModelAttribute ProblemSolving problemscrapeDAO , Model model) {
-		studyService.removeProblemSolving(problemscrapeDAO);
+	@RequestMapping("/removeProblemSolving")
+	public String removeProblemSolving(@ModelAttribute ProblemSolving problemscrape , Model model) {
+		studyService.removeProblemSolving(problemscrape);
 		return "view/user/study/problem_solving_delete";
 	}
 }
