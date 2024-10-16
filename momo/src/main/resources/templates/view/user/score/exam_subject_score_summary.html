@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<div layout:fragment="content" id="momoDefault">
+	<ul>exam_subject_score_summary	
+		<li><a th:href="@{examSubjectOriginalScore}">exam_subject_original_score</a></li>
+		<li><a th:href="@{examSubjectStandardScore}">exam_subject_standard_score</a></li>
+		<li><a th:href="@{examSubjectPercentScore}">exam_subject_percent_score</a></li><a>
+		<li><a th:href="@{examSubjectGradeScore}">exam_subject_grade_score</a></li>
+		<li><a th:href="@{examSubjectRank}">exam_subject_rank</a></li>
+		<li><a th:href="@{examSubjectChapterTypeCorrectIncoreectAnalysis}">exam_subject_chapter_type_correct_incorrect_analysis</a></li>
+	</ul>
+</div>
+</html>
