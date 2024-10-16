@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<head>
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/style.css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/common(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/layout(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/smartmath.css}">
+</head>
+<th:block layout:fragment="customJsFile">
+	<!-- Highcharts 라이브러리 로드 -->
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+	<script>
+		const $title = document.querySelector('title');
+		$title.textContent = '모의고사 결과분석';
+		function fncShowDtl(id) {
+			const content = document.getElementById('dtlCont' + id);
+			const classname = document.getElementById('tit_main' + id);
+			if (content.style.display == "none" || content.style.display == "") {
+				content.style.display = "block";
+				classname.classList.remove("off");
+				classname.classList.add("on");
+			} else {
+				content.style.display = "none";
+				classname.classList.remove("on");
+				classname.classList.add("off");
+			}
+		}
+	</script>
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+	<!-- container -->
+	<section class="container" style="margin-left:15px !important">
+		<!-- sub_container -->
+		<div class="sub_container">
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+			<!-- content -->
+			<div id="wrap_2014">
+				<div class="column_top">
+					<!-- 상단 메뉴 시작 -->
+				</div>
+				<div class="column_main">
+					<div class="column_menu">
+					</div>
+					<div class="column_right analysis" style="margin-left: 20px; margin-bottom:15px!important;">
+						<h3 class="areaLogo">성적 분석</h3>
+						<div class="review--topTxt">
+							<ul>
+								<li>응시한 문제지를 과목·단원·유형·난도별로 성적이 분석됩니다.</li>
+								<li>성적 분석으로 나의 취약점을 파악할 수 있습니다.</li>
+							</ul>
+						</div>
+
+						<div id="searchCndArea">
+							<!-- 공통 인클루드 페이지 시작 -->
+
+							<!-- 공통 인클루드 페이지 종료 -->
+
+
+							<table class="mid_tbl--type mid_tbl--type02">
+								<colgroup>
+									<col width="110">
+									<col width="620">
+								</colgroup>
+								<tbody>
+									<tr>
+										<th>영역</th>
+										<td>
+											<div class="tbl_in--atc" id="mDomCdDiv">
+
+												<label id="mDomCdHI" onclick="fncSetDom('HI')" class="on">한국사</label>
+
+												<label id="mDomCdSC" onclick="fncSetDom('SC')">과학탐구</label>
+
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+
+						</div>
+						<div class="searchSection--menu ty2" id="schTabMenu">
+							<a href="/exam/userExamAnalyse" onclick="fncTabSet(1)" class=""><strong>분석1</strong>성적
+								변화</a>
+							<a href="/exam/ccr" onclick="fncTabSet(2)" class=""><strong>분석2</strong>단원별 정답률</a>
+							<a href="JavaScript:;" onclick="fncTabSet(3)" class="on"><strong>분석3</strong>취약 유형</a>
+							<a href="/exam/chap" onclick="fncTabSet(4)" class=""><strong>분석4</strong>단원/난도/문항별 분석</a>
+
+						</div>
+
+						<div id="ContArea">
+							<!-- 공통 인클루드 페이지 시작 -->
+
+							<!-- 공통 인클루드 페이지 종료 -->
+
+							<!--[D] 분석 3 -->
+							<div class="bx_analysis">
+								<div class="top_legend">
+									<span class="g_legen"><span class="ic_qc2"></span>나의 정답률</span>
+								</div>
+
+								<div class="section_analysis">
+									<a href="javascript:;" class="tit_analysis on" onclick="fncShowDtl('1')"
+										id="tit_main1">우리 역사의 형성과 고대 국가의 발전</a>
+									<div class="cont_analysis" id="dtlCont1">
+
+										<p class="sub_txtinfo">취약 문제 유형 TOP5 <span class="noti_txt">이 단원의 취약 문제 유형은
+												4개입니다.</span></p>
+
+										<div class="item_cont">
+											<p class="tit_grapth">통일 신라와 발해의 발전</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:50%"></div>
+													<span class="percent my">50%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">삼국과 가야의 발전</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:50%"></div>
+													<span class="percent my">50%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">선사 문화와 여러나라의 성장</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:50%"></div>
+													<span class="percent my">50%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">대외 교류와 문화 발전</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">100%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">0</div>
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="section_analysis">
+									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('2')"
+										id="tit_main2">고려 귀족 사회의 형성과 변천</a>
+									<div class="cont_analysis" id="dtlCont2">
+
+										<p class="sub_txtinfo">취약 문제 유형 TOP5 <span class="noti_txt">이 단원의 취약 문제 유형은
+												3개입니다.</span></p>
+
+										<div class="item_cont">
+											<p class="tit_grapth">고려의 성립과 정치 발전</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:75%"></div>
+													<span class="percent my">75%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">4</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">3</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">다양한 사상과 문화, 대외교류</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">100%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">0</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">신분구조와 사회생활</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">100%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">0</div>
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="section_analysis">
+									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('3')"
+										id="tit_main3">조선 유교 사회의 성립과 변화</a>
+									<div class="cont_analysis" id="dtlCont3">
+
+										<p class="sub_txtinfo">취약 문제 유형 TOP5 <span class="noti_txt">이 단원의 취약 문제 유형은
+												4개입니다.</span></p>
+
+										<div class="item_cont">
+											<p class="tit_grapth">조선 후기의 정치 변동과 제도 개편</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:33%"></div>
+													<span class="percent my">33%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">3</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">2</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">조선 후기의 사회 변동과 문화의 새 경향</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:0%"></div>
+													<span class="percent my">0%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">0</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">조선의 대외 관계와 양난의 극복</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:50%"></div>
+													<span class="percent my">50%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">조선의 건국과 통치 체제의 정비</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">100%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">0</div>
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="section_analysis">
+									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('4')"
+										id="tit_main4">국제 질서의 변동과 근대 국가 수립 운동</a>
+									<div class="cont_analysis" id="dtlCont4">
+
+										<p class="sub_txtinfo">취약 문제 유형 TOP5 <span class="noti_txt">이 단원의 취약 문제 유형은
+												3개입니다.</span></p>
+
+										<div class="item_cont">
+											<p class="tit_grapth">문호개방과 근대적 개혁의 추진</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:0%"></div>
+													<span class="percent my">0%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">0</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">2</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">일제의 침략과 국권 수호 운동</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:66%"></div>
+													<span class="percent my">66%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">3</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">2</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">구국 운동과 근대 국가 수립 운동의 전개</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">100%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">2</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">0</div>
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="section_analysis">
+									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('5')"
+										id="tit_main5">일제의 강점과 민족 운동의 전개</a>
+									<div class="cont_analysis" id="dtlCont5">
+
+										<p class="sub_txtinfo">취약 문제 유형 TOP5 <span class="noti_txt">이 단원의 취약 문제 유형은
+												4개입니다.</span></p>
+
+										<div class="item_cont">
+											<p class="tit_grapth">3.1 운동과 대한민국 임시 정부</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:0%"></div>
+													<span class="percent my">0%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">0</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">2</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">일제의 식민 통치와 경제 수탈</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:0%"></div>
+													<span class="percent my">0%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">0</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">2</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">건국 준비 활동과 국제 사회의 움직임</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:0%"></div>
+													<span class="percent my">0%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">0</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">일제 강점기 국내외 민족 운동</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:50%"></div>
+													<span class="percent my">50%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="section_analysis">
+									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('6')"
+										id="tit_main6">대한민국의 발전과 현대 세계의 변화</a>
+									<div class="cont_analysis" id="dtlCont6">
+
+										<p class="sub_txtinfo">취약 문제 유형 TOP5 <span class="noti_txt">이 단원의 취약 문제 유형은
+												4개입니다.</span></p>
+
+										<div class="item_cont">
+											<p class="tit_grapth">경제 발전과 사회, 문화의 변화</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:0%"></div>
+													<span class="percent my">0%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">0</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">자유 민주주의의 시련과 발전</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:50%"></div>
+													<span class="percent my">50%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">대한민국 정부 수립과 6.25 전쟁</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:50%"></div>
+													<span class="percent my">50%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">2</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">1</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="item_cont">
+											<p class="tit_grapth">북한의 변화와 통일을 위한 노력</p>
+											<div class="bx_bargrapth">
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">100%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">문항수</p>
+													<div class="qnum">1</div>
+												</li>
+												<li>
+													<p class="qtit">정답</p>
+													<div class="qnum ty2">1</div>
+												</li>
+												<li>
+													<p class="qtit">오답</p>
+													<div class="qnum ty3">0</div>
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- 하단 메뉴 종료 -->
+			</div>
+		</div>
+	</section>
+</div>
+
+</html>

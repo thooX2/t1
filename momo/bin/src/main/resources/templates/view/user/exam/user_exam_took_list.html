@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<head>
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/exam_new.css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/style.css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/common(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/layout(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/board(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamTookList/past_question.css}">
+</head>
+<th:block layout:fragment="customJsFile">
+	<!--<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
+</th:block>
+<th:block layout:fragment="customJs">
+	<script>
+		const $title = document.querySelector('title');
+		$title.textContent = '응시 모의고사 목록';
+		// 링크 클릭 시 팝업 보이기
+		document.querySelector('.subject a').addEventListener('click', function (event) {
+			event.preventDefault(); // 기본 동작 막기 (링크 이동 방지)
+
+			// 배경 및 레이어 팝업 보이기
+			document.querySelector('.layer_ex_bg').style.display = 'block';
+			document.querySelector('.layer_ex_pop').style.display = 'block';
+		});
+
+		// 닫기 버튼 클릭 시 팝업 숨기기
+		document.querySelector('.btn_close').addEventListener('click', function (event) {
+			event.preventDefault(); // 기본 동작 막기 (링크 이동 방지)
+
+			// 배경 및 레이어 팝업 숨기기
+			document.querySelector('.layer_ex_bg').style.display = 'none';
+			document.querySelector('.layer_ex_pop').style.display = 'none';
+		});
+
+		// "성적보기" 링크 클릭 시 새로운 팝업 창 열기
+		document.querySelector('#viewReportLink').addEventListener('click', function (event) {
+			event.preventDefault(); // 기본 동작 막기 (링크 이동 방지)
+
+			// 새로운 팝업 창 열기
+			window.open('/exam/userExamAnalyzePopup', 'popupWindow', 'width=1000,height=800,scrollbars=yes');
+		});
+	</script>
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+	<!-- container -->
+	<section class="container">
+		<!-- sub_container -->
+		<div class="sub_container">
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+			<!-- content -->
+			<div class="content">
+				<div id="wrap_2014">
+					<div class="column_top">
+						<!-- 상단 메뉴 시작 -->
+						<div class="column_right cust_test" id="contents">
+							<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">모의고사
+								응시결과
+							</p>
+							<div id="tabContent">
+								<!-- 공통 인클루드 페이지 시작 -->
+
+								<!-- 공통 인클루드 페이지 종료 -->
+								<div class="myWorkbook">
+									<div class="sort_select" style="width:150px;margin-bottom: 20px;">
+										<select name="sortVal" id="sortVal" class="ty_w1">
+											<option value="Dom">영역순</option>
+											<option value="Reg" selected="">최근 등록일순</option>
+											<option value="App">최근 응시일순</option>
+										</select>
+									</div>
+
+									<div id="MyTestArea">
+										<!-- 공통 인클루드 페이지 시작 -->
+
+										<!-- 공통 인클루드 페이지 종료 -->
+
+										<table class="bot_tbl--type">
+											<colgroup>
+												<col width="50">
+												<col width="90">
+												<col width="">
+												<col width="90">
+												<col width="90">
+												<col width="90">
+												<col width="70">
+												<col width="70">
+												<col width="70">
+											</colgroup>
+											<thead>
+												<tr>
+													<th><input type="checkbox" id="myTchkAll" onclick="fncMyTestAll()">
+													</th>
+													<th>영역</th>
+													<th>문제지명</th>
+													<th>등록일</th>
+													<th>최근 응시일</th>
+													<th>오답/문항 수</th>
+													<th>성적</th>
+													<th>인쇄</th>
+													<th>다시풀기</th>
+												</tr>
+											</thead>
+											<tbody>
+
+												<tr>
+													<td><input type="checkbox" name="tmseq" onclick="fncSetSelCnt()"
+															value="493649"></td>
+													<td>국어</td>
+													<td class="subject">
+														<a href="" class="link">내가누구냐고알필요없다</a>
+													</td>
+													<td>2024-09-05</td>
+													<td>2024-09-12</td>
+													<td><a href="javascript:;" onclick="fncMyTestPop('Y',493649,1)"
+															class="link">14</a>/20</td>
+													<td><a href="#" class="link" id="viewReportLink">
+															<img src="/user/img/exam/ic_report.gif" alt="성적보기"></a>
+													</td>
+													<td><a href="javascript:;" onclick="fncPrint('493649')"
+															class="link button-ico__exam-print">
+															<img src="/user/img/exam/ic_print.gif" alt="인쇄하기"></a>
+													</td>
+													<td><a href="/exam/userExamTake" class="link">재응시</a></td>
+												</tr>
+
+											</tbody>
+										</table>
+
+										<div class="mid_btn_area alignLeft" style="margin-bottom: 10px;">
+											<button
+												style="background-color: rgb(255, 128, 128);color: white;padding:8px">선택삭제</button>
+										</div>
+
+										<div id="printSel"></div>
+										<!--// 나의 문제지 -->
+
+
+										<div id="paging_wrap1" style="text-align: center;">
+											<div id="table_footer">
+												<div>
+													<img src="/user/img/exam/icon_back.gif" alt="이전">
+													<strong style="font-size: 14px;font-weight: bolder;">1</strong>
+													<img src="/user/img/exam/icon_next.gif" alt="다음">
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+
+								</div>
+								<div id="myTestReg">
+									<div class="layer_ex_bg" style="display: none;"></div>
+									<input type="hidden" name="mode" id="mode" value="upd">
+									<input type="hidden" name="mySeq" id="mySeq" value="493649">
+									<div class="layer_ex_pop layer_regist" style="display: none; position: fixed;">
+										<p class="tit">
+											나의 문제지 등록하기
+											<a href="javascript:;" class="btn_close">
+												<img src="https://img.megastudy.net/entinfo/ex_test/btn_close.png"
+													alt="닫기">
+											</a>
+										</p>
+										<div class="layer_cont">
+											<input type="text" id="mytestnm" name="mytestnm" maxlength="15"
+												value="내가누구냐고알필요없다"
+												onkeypress="fncByteChk(this,15);fncCheckEmoji(this);"
+												onkeydown="fncByteChk(this,15);fncCheckEmoji(this);"
+												onkeyup="fncByteChk(this,15);fncCheckEmoji(this);"
+												placeholder="문제지 명을 입력하세요. (최대 15자 입력 가능)">
+											<span class="mid_btn_area">
+												<a href="JavaScript:;" onclick="fncMyTestSave()" class="btn_ty02">수정</a>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- //content -->
+		</div>
+		<!-- //sub_container -->
+	</section>
+	<!-- container //-->
+</div>
+
+</html>

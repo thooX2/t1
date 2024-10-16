@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성적 분석</title>
+<style>
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 8px;
+	text-align: center;
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
+.container {
+	display: flex;
+}
+
+.box {
+	width: 50%;
+	padding: 10px;
+	margin: 10px;
+}
+
+.red {
+	color: red;
+}
+
+.ic1 {
+	color: white;
+	background-color: red;
+	padding: 3px;
+	margin-left: 5px;
+	border-radius: 5px;
+	/* 모서리를 둥글게 만듬 */
+}
+
+.bg_red {
+	background-color: rgba(255, 0, 0, 0.1);
+	/* 빨간색, 투명도 10% */
+}
+</style>
+</head>
+<body>
+	<div style="text-align: left; padding: 0 20px 0 20px;">
+		<div style="text-align: center;">
+			<h1>성적 분석</h1>
+		</div>
+		<div>
+			<table>
+				<tbody>
+					<tr>
+						<th>서비스</th>
+						<td>기출 문제은행</td>
+						<th>문제지명</th>
+						<td>내가누구냐고알필요없다</td>
+					</tr>
+					<tr>
+						<th>영역/과목</th>
+						<td colspan="3">국어</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div>
+			<h2>종합 분석</h2>
+
+			<table>
+				<tbody>
+					<tr>
+						<th>총 문항수</th>
+						<td>20</td>
+						<th>정답</th>
+						<td>6</td>
+						<th>오답</th>
+						<td><strong>14</strong></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="container">
+			<div class="box">
+				<h3>단원별 성취도</h3>
+
+				<table>
+					<thead>
+						<tr>
+							<th>단원</th>
+							<th>정답률</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td>화법</td>
+							<td>66%</td>
+						</tr>
+
+						<tr class="red">
+							<td>작문</td>
+							<td>33%</td>
+						</tr>
+
+						<tr class="red">
+							<td>언어</td>
+							<td>25%</td>
+						</tr>
+
+						<tr class="red">
+							<td>현대시</td>
+							<td>50%</td>
+						</tr>
+
+						<tr class="red">
+							<td>인문</td>
+							<td>0%</td>
+						</tr>
+
+						<tr class="red">
+							<td>사회</td>
+							<td>0%</td>
+						</tr>
+
+						<tr class="red">
+							<td>현대소설</td>
+							<td>50%</td>
+						</tr>
+
+						<tr class="red">
+							<td>고전시가</td>
+							<td>0%</td>
+						</tr>
+
+						<tr class="red">
+							<td>고전산문</td>
+							<td>0%</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			<div class="box">
+				<div style="width: 500px; height: 500px;">
+					<canvas id="myRadarChart"></canvas>
+				</div>
+
+			</div>
+		</div>
+
+		<div>
+			<h2>단원별 정답률</h2>
+
+			<table>
+				<colgroup>
+					<col>
+					<col width="13%">
+					<col width="13%">
+					<col width="13%">
+					<col width="13%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>단원</th>
+						<th>문항수</th>
+						<th>정답수</th>
+						<th>오답수</th>
+						<th>정답률</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr class="red">
+						<td>작문 &gt; 계획하기<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr class="red">
+						<td>언어 &gt; 어휘<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr class="red">
+						<td>화법 &gt; 사실적 이해<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr class="red">
+						<td>인문 &gt; 사실적 이해<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr>
+						<td>화법 &gt; 비판적 이해</td>
+						<td>1</td>
+						<td>1</td>
+						<td>0</td>
+						<td>100%</td>
+					</tr>
+
+					<tr class="red">
+						<td>언어 &gt; 어법<span class="ic1">취약</span></td>
+						<td>3</td>
+						<td>1</td>
+						<td>2</td>
+						<td>33%</td>
+					</tr>
+
+					<tr class="red">
+						<td>작문 &gt; 고쳐쓰기<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr>
+						<td>작문 &gt; 표현하기</td>
+						<td>1</td>
+						<td>1</td>
+						<td>0</td>
+						<td>100%</td>
+					</tr>
+
+					<tr>
+						<td>화법 &gt; 추론적 이해</td>
+						<td>1</td>
+						<td>1</td>
+						<td>0</td>
+						<td>100%</td>
+					</tr>
+
+					<tr class="red">
+						<td>인문 &gt; 추론적 이해<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr>
+						<td>현대시 &gt; 시의 감상</td>
+						<td>1</td>
+						<td>1</td>
+						<td>0</td>
+						<td>100%</td>
+					</tr>
+
+					<tr class="red">
+						<td>현대시 &gt; 시의 표현<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr class="red">
+						<td>사회 &gt; 사실적 이해<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr class="red">
+						<td>사회 &gt; 추론적 이해<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr class="red">
+						<td>현대소설 &gt; 구성과 서술<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr>
+						<td>현대소설 &gt; 소설의 감상</td>
+						<td>1</td>
+						<td>1</td>
+						<td>0</td>
+						<td>100%</td>
+					</tr>
+
+					<tr class="red">
+						<td>고전시가 &gt; 시의 감상<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+					<tr class="red">
+						<td>고전산문 &gt; 소설의 감상<span class="ic1">취약</span></td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0%</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+
+		<div>
+			<h2>문항별 채점 결과</h2>
+
+			<table>
+				<colgroup>
+					<col width="8%">
+					<col width="30%">
+					<col width="8%">
+					<col width="8%">
+					<col width="8%">
+					<col>
+					<col width="8%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th rowspan="2">번호</th>
+						<th rowspan="2">단원</th>
+						<th rowspan="2">정답</th>
+						<th rowspan="2">내답</th>
+						<th rowspan="2">정답률</th>
+						<th colspan="5">답안 선택률</th>
+						<th rowspan="2">정오</th>
+					</tr>
+					<tr>
+						<th>①</th>
+						<th>②</th>
+						<th>③</th>
+						<th>④</th>
+						<th>⑤</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr class="bg_red">
+						<td>1</td>
+						<td>화법 &gt; 사실적 이해</td>
+						<td>③</td>
+						<td>④</td>
+						<td>65%</td>
+						<td>5%</td>
+						<td>11%</td>
+						<td>64%</td>
+						<td>14%</td>
+						<td>3%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>2</td>
+						<td>현대소설 &gt; 구성과 서술</td>
+						<td>②</td>
+						<td>④</td>
+						<td>88%</td>
+						<td>2%</td>
+						<td>88%</td>
+						<td>3%</td>
+						<td>5%</td>
+						<td>2%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr>
+						<td>3</td>
+						<td>언어 &gt; 어법</td>
+						<td>④</td>
+						<td>④</td>
+						<td>92%</td>
+						<td>3%</td>
+						<td>1%</td>
+						<td>2%</td>
+						<td>91%</td>
+						<td>1%</td>
+						<td>O</td>
+					</tr>
+
+					<tr>
+						<td>4</td>
+						<td>작문 &gt; 표현하기</td>
+						<td>④</td>
+						<td>④</td>
+						<td>90%</td>
+						<td>1%</td>
+						<td>4%</td>
+						<td>1%</td>
+						<td>90%</td>
+						<td>2%</td>
+						<td>O</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>5</td>
+						<td>고전시가 &gt; 시의 감상</td>
+						<td>②</td>
+						<td>④</td>
+						<td>82%</td>
+						<td>4%</td>
+						<td>82%</td>
+						<td>5%</td>
+						<td>6%</td>
+						<td>1%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>6</td>
+						<td>언어 &gt; 어법</td>
+						<td>③</td>
+						<td>④</td>
+						<td>78%</td>
+						<td>2%</td>
+						<td>5%</td>
+						<td>78%</td>
+						<td>11%</td>
+						<td>2%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>7</td>
+						<td>작문 &gt; 계획하기</td>
+						<td>③</td>
+						<td>④</td>
+						<td>97%</td>
+						<td>0%</td>
+						<td>0%</td>
+						<td>97%</td>
+						<td>0%</td>
+						<td>0%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>8</td>
+						<td>언어 &gt; 어법</td>
+						<td>①</td>
+						<td>④</td>
+						<td>47%</td>
+						<td>47%</td>
+						<td>4%</td>
+						<td>5%</td>
+						<td>24%</td>
+						<td>19%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>9</td>
+						<td>언어 &gt; 어휘</td>
+						<td>①</td>
+						<td>④</td>
+						<td>58%</td>
+						<td>58%</td>
+						<td>5%</td>
+						<td>10%</td>
+						<td>13%</td>
+						<td>13%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>10</td>
+						<td>사회 &gt; 사실적 이해</td>
+						<td>①</td>
+						<td>④</td>
+						<td>75%</td>
+						<td>74%</td>
+						<td>4%</td>
+						<td>11%</td>
+						<td>5%</td>
+						<td>3%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr>
+						<td>11</td>
+						<td>현대소설 &gt; 소설의 감상</td>
+						<td>④</td>
+						<td>④</td>
+						<td>92%</td>
+						<td>1%</td>
+						<td>2%</td>
+						<td>2%</td>
+						<td>92%</td>
+						<td>1%</td>
+						<td>O</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>12</td>
+						<td>현대시 &gt; 시의 표현</td>
+						<td>③</td>
+						<td>④</td>
+						<td>80%</td>
+						<td>5%</td>
+						<td>5%</td>
+						<td>80%</td>
+						<td>3%</td>
+						<td>4%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>13</td>
+						<td>인문 &gt; 추론적 이해</td>
+						<td>③</td>
+						<td>④</td>
+						<td>91%</td>
+						<td>2%</td>
+						<td>2%</td>
+						<td>91%</td>
+						<td>2%</td>
+						<td>1%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>14</td>
+						<td>사회 &gt; 추론적 이해</td>
+						<td>②</td>
+						<td>④</td>
+						<td>51%</td>
+						<td>16%</td>
+						<td>51%</td>
+						<td>9%</td>
+						<td>14%</td>
+						<td>8%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr>
+						<td>15</td>
+						<td>현대시 &gt; 시의 감상</td>
+						<td>④</td>
+						<td>④</td>
+						<td>87%</td>
+						<td>2%</td>
+						<td>2%</td>
+						<td>5%</td>
+						<td>87%</td>
+						<td>2%</td>
+						<td>O</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>16</td>
+						<td>인문 &gt; 사실적 이해</td>
+						<td>⑤</td>
+						<td>④</td>
+						<td>68%</td>
+						<td>5%</td>
+						<td>3%</td>
+						<td>9%</td>
+						<td>13%</td>
+						<td>68%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr>
+						<td>17</td>
+						<td>화법 &gt; 추론적 이해</td>
+						<td>④</td>
+						<td>④</td>
+						<td>93%</td>
+						<td>2%</td>
+						<td>2%</td>
+						<td>1%</td>
+						<td>93%</td>
+						<td>0%</td>
+						<td>O</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>18</td>
+						<td>작문 &gt; 고쳐쓰기</td>
+						<td>③</td>
+						<td>④</td>
+						<td>95%</td>
+						<td>1%</td>
+						<td>1%</td>
+						<td>95%</td>
+						<td>0%</td>
+						<td>0%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+					<tr>
+						<td>19</td>
+						<td>화법 &gt; 비판적 이해</td>
+						<td>④</td>
+						<td>④</td>
+						<td>93%</td>
+						<td>0%</td>
+						<td>0%</td>
+						<td>0%</td>
+						<td>93%</td>
+						<td>4%</td>
+						<td>O</td>
+					</tr>
+
+					<tr class="bg_red">
+						<td>20</td>
+						<td>고전산문 &gt; 소설의 감상</td>
+						<td>③</td>
+						<td>④</td>
+						<td>75%</td>
+						<td>6%</td>
+						<td>2%</td>
+						<td>75%</td>
+						<td>5%</td>
+						<td>10%</td>
+						<td class="wrong">X</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		const $title = document.querySelector('title');
+		$title.textContent = '응시 모의고사 분석';
+		const ctx = document.getElementById('myRadarChart').getContext('2d');
+		const myRadarChart = new Chart(ctx, {
+			type : 'radar',
+			data : {
+				labels : [ '화법', '작문', '언어', '현대시', '인문', '사회', '현대소설', '고전시가',
+						'고전산문' ],
+				datasets : [ {
+					label : '정답률 (%)',
+					data : [ 66, 33, 25, 50, 0, 0, 50, 0, 100 ],
+					fill : true,
+					backgroundColor : 'rgba(54, 162, 235, 0.2)',
+					borderColor : 'rgba(54, 162, 235, 1)',
+					pointBackgroundColor : 'rgba(54, 162, 235, 1)',
+					pointBorderColor : '#fff',
+					pointHoverBackgroundColor : '#fff',
+					pointHoverBorderColor : 'rgba(54, 162, 235, 1)'
+				} ]
+			},
+			options : {
+				scales : {
+					r : {
+						angleLines : {
+							display : true
+						},
+						min : 0,
+						max : 100,
+						ticks : {
+							stepSize : 20
+						// 20 단위로 숫자 표시
+						}
+					}
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>

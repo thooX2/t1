@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
+<div th:fragment="sidebar">
+	<!-- lnb -->
+	<div class="lnb">
+		<div class="title">
+			<!-- 기출문제 -->
+			<a href="/exam/examMain">
+				<h2 class="menu5" style="cursor: pointer;">
+					<span>모의고사</span>
+				</h2>
+			</a>
+		</div>
+		<!-- menu_list -->
+		<div class="menu_list">
+			<ul>
+				<li><a href="/exam/userExamCreate">모의고사 만들기</a></li>
+				<li><a href="/exam/examMain"> 모의고사 목록</a></li>
+				<li><a href="/exam/userExamResultList"> 모의고사 응시목록</a></li>
+				<li><a href="/exam/userExamAnalyse"> 모의고사 결과분석</a></li>
+			</ul>
+		</div>
+		<!-- //menu_list -->
+	</div>
+	<!-- //lnb -->
+</div>
+
+</html>
