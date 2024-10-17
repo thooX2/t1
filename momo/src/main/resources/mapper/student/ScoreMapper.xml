@@ -212,5 +212,4 @@
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>
-
 </mapper>
