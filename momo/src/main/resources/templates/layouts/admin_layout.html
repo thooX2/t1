@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+
+	<title>[관리자] 데모2 사이트</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<link rel="shortcut icon" href="https://cdn.malgnlms.com/sysop/favicon_servicesysop.ico" />
+
+	<!-- CSS Files -->
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/all.min.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/select2.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/colorpicker.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/codemirror.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/jquery-ui-1.12.1-base_malgncustom.css" />
+	<!--[if gte IE 9]><!-->
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/jquery.mCustomScrollbar.css" />
+	<!--<![endif]-->
+	<link rel="stylesheet" href="/admin/css/home/kopubdotum.min.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/customCss.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+	<!-- JavaScript Files -->
+	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-1.12.3.min.js"
+		charset="utf-8"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-ui-1.12.1_malgncustom.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/cheditor.js" charset="utf-8"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/ace.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/common.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/validate.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/admin_func.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/select2.full.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/ko.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/colorpicker.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/codemirror.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/selection-pointer.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/xml.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/javascript.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/css.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/vbscript.js"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/htmlmixed.js"></script>
+	<!--[if gte IE 9]><!-->
+	<script language="javascript" type="text/javascript"
+		src="/admin/js/home/jquery.mCustomScrollbar.concat.min.js"></script>
+	<!--<![endif]-->
+
+	<!-- Css Styles -->
+	<th:block layout:fragment="customCss"></th:block>
+
+	<style>
+		/* 기본적인 레이아웃을 위한 CSS */
+		.container {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+		}
+
+		.sidebar {
+			width: 250px;
+			/* 사이드바 너비 */
+			background-color: #f4f4f4;
+			/* 배경색 */
+			padding: 15px;
+		}
+
+		.content {
+			flex-grow: 1;
+			/* 나머지 영역을 채움 */
+			padding: 15px;
+		}
+	</style>
+</head>
+
+<body style="margin: 0 !important;">
+	<!-- th:replace 속성은 해당 속성이 선언된 html 태그를 다른 html 파일로 치환. fragments 폴더 아래 header.html 파일의 "th:fragment=header" 영역을 가져옴 -->
+	<div th:replace="~{fragments/admin/admin_header :: header}"></div>
+
+	<!-- main 태그는 페이지의 주요 콘텐츠를 담는 영역. -->
+	<main class="main">
+		<!-- layout에서 변경되는 영역을 fragment로 설정. -->
+		<!-- 페이지별로 custom content를 대체하여 동적으로 변경 가능 -->
+		<th:block layout:fragment="content"></th:block>
+	</main>
+
+	<!-- Js Plugins -->
+	<script>
+		var timerTimeObj;
+		Date.prototype.format = function (f) {
+			if (!this.valueOf())
+				return " ";
+
+			var weekName = ["일", "월", "화", "수", "목", "금", "토"];
+			var d = this;
+
+			return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function ($1) {
+				switch ($1) {
+					case "yyyy":
+						return d.getFullYear();
+					case "yy":
+						return (d.getFullYear() % 1000).zf(2);
+					case "MM":
+						return (d.getMonth() + 1).zf(2);
+					case "dd":
+						return d.getDate().zf(2);
+					case "E":
+						return weekName[d.getDay()];
+					case "HH":
+						return d.getHours().zf(2);
+					case "hh":
+						return ((h = d.getHours() % 12) ? h : 12).zf(2);
+					case "mm":
+						return d.getMinutes().zf(2);
+					case "ss":
+						return d.getSeconds().zf(2);
+					case "a/p":
+						return d.getHours() < 12 ? "오전" : "오후";
+					default:
+						return $1;
+				}
+			});
+		};
+
+		String.prototype.string = function (len) {
+			var s = '', i = 0;
+			while (i++ < len) {
+				s += this;
+			}
+			return s;
+		};
+		String.prototype.zf = function (len) {
+			return "0".string(len - this.length) + this;
+		};
+		Number.prototype.zf = function (len) {
+			return this.toString().zf(len);
+		};
+
+		function timer() {
+			document.getElementById("time").innerHTML = new Date().toLocaleString();
+			timerTimeObj = window.setTimeout("timer()", 1000);
+		}
+
+		$(document).ready(function () {
+			timer();
+		});
+
+	</script>
+	<!-- 사용자정의 js -->
+	<th:block layout:fragment="customJsFile"></th:block>
+	<th:block layout:fragment="customJs"></th:block>
+</body>
+
+</html>
