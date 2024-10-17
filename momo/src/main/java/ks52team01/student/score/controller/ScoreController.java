@@ -1,5 +1,7 @@
 package ks52team01.student.score.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -7,9 +9,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import ks52team01.student.score.dto.Test;
+import jakarta.servlet.http.HttpSession;
+import ks52team01.student.score.dto.EnglishScore;
+import ks52team01.student.score.dto.Inquiry1Score;
+import ks52team01.student.score.dto.Inquiry2Score;
+import ks52team01.student.score.dto.KoreanHistoryScore;
+import ks52team01.student.score.dto.KoreanScore;
+import ks52team01.student.score.dto.MathScore;
+import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
 import ks52team01.student.score.dto.TookExam;
 import ks52team01.student.score.service.ScoreExamAllService;
+import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,14 +29,43 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ScoreController {
 
-private final ScoreExamAllService scoreExamAllService;
-	
+	private final ScoreExamAllService scoreExamAllService;
+
 	@GetMapping("/scoreMain")
-	public String getScoreMain(Model model) {
-		List<Test> tt = scoreExamAllService.getExamAllOriginalScore();
-		List<TookExam> tookExam = scoreExamAllService.getTookExam();
+	public String getScoreMain(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loggedInUser");
+		String userCode = user.getUserCode();
+		// 출력 날짜 형식 정의
+		SimpleDateFormat outputFormat = new SimpleDateFormat("yy.MM.dd");
+		// Date 객체를 원하는 형식의 문자열로 변환
+		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
+		List<TookExam> tookExam = scoreExamAllService.getTookExam(userCode);
+		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode);
+		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode);
+		MathScore mathScore = scoreExamAllService.getMathScore(userCode);
+		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode);
+		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode);
+		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode);
+		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService
+				.getSecondLanguageAndChineseCharactersScore(userCode);
+//		log.info("tookExam : {}", tookExam);
+//		log.info("koreanHistoryScore : {}", koreanHistoryScore);
+//		log.info("koreanScore : {}", koreanScore);
+//		log.info("mathScore : {}", mathScore);
+//		log.info("englishScore : {}", englishScore);
+//		log.info("inquiry1Score : {}", inquiry1Score);
+//		log.info("inquiry2Score : {}", inquiry2Score);
+//		log.info("secondLanguageAndChineseCharactersScore : {}", secondLanguageAndChineseCharactersScore);
+		model.addAttribute("user", user);
+		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
 		model.addAttribute("tookExam", tookExam);
-		System.out.println(tookExam);
+		model.addAttribute("koreanHistoryScore", koreanHistoryScore);
+		model.addAttribute("koreanScore", koreanScore);
+		model.addAttribute("mathScore", mathScore);
+		model.addAttribute("englishScore", englishScore);
+		model.addAttribute("inquiry1Score", inquiry1Score);
+		model.addAttribute("inquiry2Score", inquiry2Score);
+		model.addAttribute("secondLanguageAndChineseCharactersScore", secondLanguageAndChineseCharactersScore);
 		return "view/user/score/exam_all_score_summary";
 	}
 
