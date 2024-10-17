@@ -22,6 +22,11 @@ public class ExamController {
 		this.examService = examServiceImpl;
 	}
 
+	@GetMapping("/test4")
+	public String admintest4() {
+		return "view/admin/exam/admin_exam_question_popup";
+	}
+
 	@GetMapping("/test3")
 	public String admintest3() {
 		return "view/admin/exam/admin_exam_management";

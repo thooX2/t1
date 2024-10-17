@@ -3,134 +3,44 @@
 	layout:decorate="~{layouts/admin_layout}">
 
 <head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<style>
+		.flatpickr-current-month {
+			background-color: rgba(70, 134, 184, 1);
+			/* 배경색 */
+			color: white;
+			/* 글자색 */
+			font-size: 1.2em;
+			/* 글자 크기 */
 
-
-		.ui-widget-header{
-			background-color: rgba(70,135,184,0.3) !important;
-		}
-		/* Datepicker 전체 배경 */
-		.ui-datepicker {
-			background-color: #fff !important;
-			/* 달력 배경 */
-			border: none !important;
-			/* 테두리 제거 */
-			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1) !important;
-			/* 약한 그림자 */
-			border-radius: 8px !important;
-			/* 모서리 둥글게 */
-			padding: 10px !important;
+			border-radius: 8px;
+			/* 둥근 모서리 */
+			text-align: center;
+			/* 중앙 정렬 */
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			/* 그림자 효과 */
 		}
 
-		/* 달력 제목 스타일 (년, 월) */
-		.ui-datepicker-title {
-			font-size: 16px !important;
-			font-weight: bold !important;
-			color: #333 !important;
-			/* 제목 텍스트 색상 */
+		.flatpickr-monthDropdown-month {
+			color: black;
 		}
 
-		/* 달력 테이블 스타일 */
-		.ui-datepicker-calendar {
-			width: 100% !important;
-			/* 테이블 전체 너비 */
-			border-collapse: collapse !important;
-			/* 셀 간의 공백 없앰 */
-			border: none !important;
-			/* 테두리 제거 */
+
+		.flatpickr-current-month .flatpickr-prev-month,
+		.flatpickr-current-month .flatpickr-next-month {
+			color: white;
+			/* 화살표 색상 */
+			cursor: pointer;
+			/* 커서 포인터 */
+			transition: color 0.3s;
+			/* 색상 변경 효과 */
+			margin-bottom: 5px;
 		}
 
-		/* 요일 헤더 스타일 */
-		.ui-datepicker-calendar th {
-			padding: 10px !important;
-			background-color: transparent !important;
-			/* 배경 투명 */
-			color: #555 !important;
-			/* 텍스트 색상 */
-			border: none !important;
-			/* 요일 헤더 테두리 없앰 */
-		}
-
-		/* 날짜 셀 스타일 */
-		.ui-datepicker-calendar td {
-			padding: 8px !important;
-			text-align: center !important;
-			background-color: transparent !important;
-			/* 배경 투명 */
-			border: none !important;
-			/* 테두리 없앰 */
-			transition: background-color 0.3s ease !important;
-			/* 마우스 오버 시 부드러운 변화 */
-		}
-
-		/* 날짜의 링크(a 태그) 스타일: 선택하지 않은 날짜 */
-		.ui-datepicker-calendar td a {
-			background-color: transparent !important;
-			/* 배경 투명 */
-			color: #333 !important;
-			/* 기본 날짜 색상 */
-			text-decoration: none !important;
-			/* 링크 밑줄 제거 */
-			border: none !important;
-			/* 테두리 없앰 */
-			display: inline-block !important;
-			width: 100% !important;
-			height: 100% !important;
-			padding: 5px !important;
-			box-sizing: border-box !important;
-			/* 패딩 포함한 전체 크기 */
-		}
-
-		/* 마우스 오버 시 스타일 */
-		.ui-datepicker-calendar td:hover {
-			background-color: rgba(230, 247, 255, 0.7) !important;
-			/* 마우스 오버 시 투명 배경 */
-			cursor: pointer !important;
-		}
-
-		/* 오늘 날짜 스타일 */
-		.ui-datepicker-calendar td.ui-datepicker-today {
-			background-color: #FFFDE4 !important;
-			/* 배경 색상 */
-			font-weight: bold !important;
-			/* 글씨를 굵게 */
-			color: #005aa7 !important;
-			/* 글씨 색상 (빨간색) */
-			border: none !important;
-			/* 테두리 제거 */
-		}
-
-		/* 오늘 날짜 스타일 */
-		.ui-datepicker-calendar td.ui-datepicker-today a {
-			background-color: #FFFDE4 !important;
-			/* 배경 색상 */
-			font-weight: bold !important;
-			/* 글씨를 굵게 */
-			color: #005aa7 !important;
-			/* 글씨 색상 (빨간색) */
-			border: none !important;
-			/* 테두리 제거 */
-		}
-
-		/* 선택된 날짜 스타일 (td에 적용) */
-		.ui-datepicker-calendar td.ui-datepicker-current-day {
-			background-color: rgba(0, 123, 255, 0.1) !important;
-			/* 선택된 날짜 투명 배경 */
-			color: #007bff !important;
-			/* 선택된 날짜 글씨 색상 */
-
-			box-sizing: border-box !important;
-			/* 패딩 포함한 전체 크기 */
-		}
-
-		/* 선택된 날짜의 a 태그 스타일 */
-		.ui-datepicker-calendar td.ui-datepicker-current-day a {
-			background-color: transparent !important;
-			/* a 태그의 배경을 투명하게 */
-			color: inherit !important;
-			/* td의 글씨 색상을 상속받음 */
-			text-decoration: none !important;
-			/* 링크 밑줄 제거 */
+		.flatpickr-current-month .flatpickr-prev-month:hover,
+		.flatpickr-current-month .flatpickr-next-month:hover {
+			color: #FFD700;
+			/* 호버 시 색상 변경 */
 		}
 	</style>
 </head>
@@ -151,12 +61,18 @@
 	<!-- Select2 JS CDN -->
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+	<!-- flatpickr JS -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/l10n/ko.js"></script>
+
+
+
 </th:block>
 <th:block layout:fragment="customJs">
 	<script>
 		$(document).ready(function () {
 			$('.js-example-basic-single').select2({
-				placeholder: " - 전체 - ",
+				placeholder: "카테고리를 선택하세요",
 				allowClear: true,
 				language: {
 					noResults: function () {
@@ -172,12 +88,7 @@
 		});
 
 		$(function () {
-			$(".date-picker").datepicker({
-				dateFormat: "yy-mm-dd",
-				onSelect: function (dateText) {
-					console.log("선택된 날짜: " + dateText);
-				}
-			});
+			var picker = flatpickr(".flatpicker", {locale: "ko"});
 		})
 
 	</script>
@@ -259,15 +170,17 @@
 								<tr>
 									<td class="t_th01">등록일</td>
 									<td class="t_td01">
-										<input type="text" name="s_sdate" size="10" class="cal01 date-picker"
-											readonly="" id="dp1729133177442"
+
+										<input type="date" name="s_sdate" size="10" class="cal01 flatpicker"
+											id="dp1729133177442" placeholder="시작날짜"
 											style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;" />
+
 										<img class="ui-datepicker-trigger"
 											src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..."
 											title="..." />
 										-
-										<input type="text" name="s_edate" size="10" class="cal01 date-picker"
-											readonly="" id="dp1729133177443"
+										<input type="text" name="s_edate" size="10" class="cal01 flatpicker" readonly=""
+											id="dp1729133177443" placeholder="끝날짜"
 											style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;" />
 										<img class="ui-datepicker-trigger"
 											src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..."
@@ -337,10 +250,13 @@
 							<thead>
 								<tr align="center">
 									<td class="l_th01">No</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.onoff_type">구분</span></td>
+									<td class="l_th01"><span class="l_sort01" id="CL_a.onoff_type">구분</span>
+									</td>
 									<td class="l_th01"><span class="l_sort01" id="CL_a.exam_nm">시험명</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.exam_time">시험시간</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.question_cnt">문제수</span></td>
+									<td class="l_th01"><span class="l_sort01" id="CL_a.exam_time">시험시간</span>
+									</td>
+									<td class="l_th01"><span class="l_sort01" id="CL_a.question_cnt">문제수</span>
+									</td>
 									<td class="l_th01"><span class="l_sort01" id="CL_a.reg_date">등록일</span></td>
 									<td class="l_th01"><span class="l_sort01" id="CL_u.user_nm">담당자</span></td>
 									<td class="l_th01"><span class="l_sort01" id="CL_a.status">상태</span></td>

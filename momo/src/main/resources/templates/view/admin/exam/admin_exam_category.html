@@ -12,7 +12,8 @@
 	<!-- Bootstrap Icons (FontAwesome 대용으로 사용 가능) -->
 	<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css" />
-
+	<!-- Select2 CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
 	<style>
 		#examMain {
@@ -80,10 +81,12 @@
 	<!-- FancyTree JS CDN -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.1/jquery.fancytree-all-deps.min.js"></script>
+	<!-- Select2 JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
 	<script>
-		$(document).ready(function () {
+		$(function () {
 			// 트리 데이터를 JSON 형식으로 정의
 			var treeData = [
 				{
@@ -150,10 +153,18 @@
 				alert("선택된 노드: " + data.node.title);
 			});
 		});
-
+		$(function () {
+			$('.js-example-basic-single').select2({
+				placeholder: '담당자 선택', // 플레이스홀더 텍스트 설정
+				allowClear: true, // 클리어 버튼 허용
+				language: {
+					noResults: function () {
+						return "결과가 없습니다"; // Set custom message when no results are found
+					}
+				}
+			});
+		});
 	</script>
-
-
 
 </th:block>
 
@@ -264,8 +275,8 @@
 										<tr>
 											<td class="f_th01">담당자</td>
 											<td class="f_td01" colspan="3">
-												<select name="manager_id" class="js-example-basic-single" hname="담당자"
-													required="Y">
+												<select name="manager_id" class="js-example-basic-single select2"
+													hname="담당자" required="Y">
 													<option value=""> - 담당자 선택 - </option>
 													<option value="-99"> [공용] 모든 최고관리자, 운영자, 과정운영자 </option>
 													<option value="50425">[운영자] ttestt02</option>
