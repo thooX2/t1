@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.student.score.mapper.ScoreMapper">
-	<select id="getTookExam" resultType="String">
+	<select id="getTookExam" parameterType="String" resultType="String">
 		/* 회원이 응시한 모의고사 목록 조회 */
 		SELECT
 			ei.exam_nm
@@ -14,12 +14,12 @@
 			ON
 			tei.exam_code = ei.exam_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC;
 	</select>
 	
-	<select id="getKoreanHistoryScore" resultType="KoreanHistoryScore">
+	<select id="getKoreanHistoryScore" parameterType="String" resultType="KoreanHistoryScore">
 		/* 한국사 점수 조회 */
 		SELECT
 			tei.took_exam_info_code as tookExamInfoCode,
@@ -37,12 +37,12 @@
 			ON
 			ss.subject_score_code = khs.kor_his_subject_score_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>
 
-	<select id="getKoreanScore" resultType="KoreanScore">
+	<select id="getKoreanScore" parameterType="String" resultType="KoreanScore">
 		/* 국어 점수 조회 */
 		SELECT
 			tei.took_exam_info_code as tookExamInfoCode,
@@ -67,12 +67,12 @@
 			ON
 			tei.kor_slt_sub = smc.sub_mir_cat_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>
 
-	<select id="getMathScore" resultType="MathScore">
+	<select id="getMathScore" parameterType="String" resultType="MathScore">
 		/* 수학 점수 조회 */
 		SELECT
 			tei.took_exam_info_code as tookExamInfoCode,
@@ -97,12 +97,12 @@
 			ON
 			tei.math_slt_sub = smc.sub_mir_cat_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>
 
-	<select id="getEnglishScore" resultType="EnglishScore">
+	<select id="getEnglishScore" parameterType="String" resultType="EnglishScore">
 		/* 영어 점수 조회 */
 		SELECT
 			tei.took_exam_info_code as tookExamInfoCode,
@@ -120,12 +120,12 @@
 			ON
 			ss.subject_score_code = es.eng_subject_score_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>
 	
-	<select id="getInquiry1Score" resultType="Inquiry1Score">
+	<select id="getInquiry1Score" parameterType="String" resultType="Inquiry1Score">
 		/* 탐구1 점수 조회 */
 		SELECT
 			tei.took_exam_info_code as tookExamInfoCode,
@@ -150,12 +150,12 @@
 			ON
 			tei.inq1_slt_sub = smc.sub_mir_cat_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>
 	
-	<select id="getInquiry2Score" resultType="Inquiry2Score">
+	<select id="getInquiry2Score" parameterType="String" resultType="Inquiry2Score">
 		/* 탐구2 점수 조회 */
 		SELECT
 			tei.took_exam_info_code as tookExamInfoCode,
@@ -180,12 +180,12 @@
 			ON
 			tei.inq2_slt_sub = smc.sub_mir_cat_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>
 
-	<select id="getSecondLanguageAndChineseCharactersScore" resultType="SecondLanguageAndChineseCharactersScore">
+	<select id="getSecondLanguageAndChineseCharactersScore" parameterType="String" resultType="SecondLanguageAndChineseCharactersScore">
 		/* 제2외국어 및 한문 점수 조회 */
 		SELECT
 			tei.took_exam_info_code as tookExamInfoCode,
@@ -208,7 +208,7 @@
 			ON
 			tei.frn_slt_sub = smc.sub_mir_cat_code
 		WHERE
-			tei.user_code = 'uc6'
+			tei.user_code = #{userCode}
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
 	</select>

@@ -13,6 +13,7 @@ import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
 import ks52team01.student.score.dto.TookExam;
 import ks52team01.student.score.mapper.ScoreMapper;
+import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -47,56 +48,50 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	}
 
 	@Override
-	public List<TookExam> getTookExam() {
+	public List<TookExam> getTookExam(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getTookExam();
+		return scoreMapper.getTookExam(userCode);
 	}
 
 	@Override
-	public KoreanHistoryScore getKoreanHistoryScore() {
+	public KoreanHistoryScore getKoreanHistoryScore(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getKoreanHistoryScore();
+		return scoreMapper.getKoreanHistoryScore(userCode);
 	}
 
 	@Override
-	public KoreanScore getKoreanScore() {
+	public KoreanScore getKoreanScore(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getKoreanScore();
+		return scoreMapper.getKoreanScore(userCode);
 	}
 	
 	@Override
-	public MathScore getMathScore() {
+	public MathScore getMathScore(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getMathScore();
+		return scoreMapper.getMathScore(userCode);
 	}
 
 	@Override
-	public EnglishScore getEnglishScore() {
+	public EnglishScore getEnglishScore(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getEnglishScore();
+		return scoreMapper.getEnglishScore(userCode);
 	}
 
 	@Override
-	public Inquiry1Score getInquiry1Score() {
+	public Inquiry1Score getInquiry1Score(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getInquiry1Score();
+		return scoreMapper.getInquiry1Score(userCode);
 	}
 
 	@Override
-	public Inquiry2Score getInquiry2Score() {
+	public Inquiry2Score getInquiry2Score(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getInquiry2Score();
+		return scoreMapper.getInquiry2Score(userCode);
 	}
 
 	@Override
-	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore() {
+	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String userCode) {
 		// TODO Auto-generated method stub
-		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreMapper.getSecondLanguageAndChineseCharactersScore();
-		if(secondLanguageAndChineseCharactersScore == null) {
-			SecondLanguageAndChineseCharactersScore newSecondLanguageAndChineseCharactersScore = new SecondLanguageAndChineseCharactersScore();
-			System.out.println("asdfasdfasdf");
-			System.out.println(newSecondLanguageAndChineseCharactersScore.getTookExamInfoCode());
-		}
-		return scoreMapper.getSecondLanguageAndChineseCharactersScore();
+		return scoreMapper.getSecondLanguageAndChineseCharactersScore(userCode);
 	}
 }

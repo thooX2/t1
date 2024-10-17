@@ -172,9 +172,9 @@ tr {
 									</tr>
 									<tr>
 										<th>12345678</th>
-										<th colspan="2">이지은</th>
-										<th>93.05.16</th>
-										<th>여</th>
+										<th colspan="2" th:text="${user.userName}"></th>
+										<th th:text="${formattedUserBirthDate}"></th>
+										<th th:text="${user.userGender}"></th>
 										<th colspan="3">한수정고등학교(2)</th>
 									</tr>
 								<thead>
