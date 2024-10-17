@@ -3,32 +3,9 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.student.score.mapper.ScoreMapper">
-	<resultMap type="Test" id="testMap">
-		<id column="subject_score_code" property="subjectScoreCode"/>
-		<result column="user_code" property="userCode"/>
-		<result column="took_exam_info_code" property="tookExamInfoCode"/>
-		<result column="sub_mjr_cat_code" property="subMjrCatCode"/>
-		<result column="sub_mir_cat_code" property="subMirCatCode"/>
-		<result column="subject_score_origin" property="subjectScoreOrigin"/>
-		<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-	</resultMap>
-	<select id="getExamAllOriginalScore" resultMap="testMap">
-		SELECT
-			subject_score_code,
-			user_code,
-			took_exam_info_code,
-			sub_mjr_cat_code,
-			sub_mir_cat_code,
-			subject_score_origin,
-			subject_score_reg_time
-		FROM
-			subject_score;
-			
-	</select>
-	
 	<select id="getTookExam" resultType="String">
+		/* 회원이 응시한 모의고사 목록 조회 */
 		SELECT
-			distinct
 			ei.exam_nm
 		FROM
 			took_exam_info tei
@@ -41,8 +18,199 @@
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC;
 	</select>
+	
+	<select id="getKoreanHistoryScore" resultType="KoreanHistoryScore">
+		/* 한국사 점수 조회 */
+		SELECT
+			tei.took_exam_info_code as tookExamInfoCode,
+			ss.subject_score_origin as subjectScoreOrigin,
+			khs.kor_his_grd as korHisGrd,
+			khs.kor_his_ranking as korHisRanking
+		FROM
+			took_exam_info tei
+			JOIN
+			subject_score ss
+			ON
+			tei.took_exam_info_code = ss.took_exam_info_code
+			JOIN
+			kor_his_scr khs
+			ON
+			ss.subject_score_code = khs.kor_his_subject_score_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
+	</select>
 
+	<select id="getKoreanScore" resultType="KoreanScore">
+		/* 국어 점수 조회 */
+		SELECT
+			tei.took_exam_info_code as tookExamInfoCode,
+			smc.sub_mir_cat_nm as subMirCatNm,
+			ss.subject_score_origin as subjectScoreOrigin,
+			ks.kor_std_scr as korStdScr,
+			ks.kor_pct as korPct,
+			ks.kor_grd as korGrd,
+			ks.kor_ranking as korRanking
+		FROM
+			took_exam_info tei
+			JOIN
+			subject_score ss
+			ON
+			tei.took_exam_info_code = ss.took_exam_info_code
+			JOIN
+			kor_scr ks
+			ON
+			ss.subject_score_code = ks.kor_subject_score_code
+			JOIN
+			sub_mir_cat smc
+			ON
+			tei.kor_slt_sub = smc.sub_mir_cat_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
+	</select>
 
+	<select id="getMathScore" resultType="MathScore">
+		/* 수학 점수 조회 */
+		SELECT
+			tei.took_exam_info_code as tookExamInfoCode,
+			smc.sub_mir_cat_nm as subMirCatNm,
+			ss.subject_score_origin as subjectScoreOrigin,
+			ms.math_std_scr as mathStdScr,
+			ms.math_pct as mathPct,
+			ms.math_grd as mathGrd,
+			ms.math_ranking as mathRanking
+		FROM
+			took_exam_info tei
+			JOIN
+			subject_score ss
+			ON
+			tei.took_exam_info_code = ss.took_exam_info_code
+			JOIN
+			math_scr ms
+			ON
+			ss.subject_score_code = ms.math_subject_score_code
+			JOIN
+			sub_mir_cat smc
+			ON
+			tei.math_slt_sub = smc.sub_mir_cat_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
+	</select>
 
+	<select id="getEnglishScore" resultType="EnglishScore">
+		/* 영어 점수 조회 */
+		SELECT
+			tei.took_exam_info_code as tookExamInfoCode,
+			ss.subject_score_origin as subjectScoreOrigin,
+			es.eng_grd as engGrd,
+			es.eng_ranking as engRanking
+		FROM
+			took_exam_info tei
+			JOIN
+			subject_score ss
+			ON
+			tei.took_exam_info_code = ss.took_exam_info_code
+			JOIN
+			eng_scr es
+			ON
+			ss.subject_score_code = es.eng_subject_score_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
+	</select>
+	
+	<select id="getInquiry1Score" resultType="Inquiry1Score">
+		/* 탐구1 점수 조회 */
+		SELECT
+			tei.took_exam_info_code as tookExamInfoCode,
+			smc.sub_mir_cat_nm as subMirCatNm,
+			ss.subject_score_origin as subjectScoreOrigin,
+			i1s.inq1_std_scr as inq1StdScr,
+			i1s.inq1_pct as inq1Pct,
+			i1s.inq1_grd as inq1Grd,
+			i1s.inq1_ranking as inq1Ranking
+		FROM
+			took_exam_info tei
+			JOIN
+			subject_score ss
+			ON
+			tei.took_exam_info_code = ss.took_exam_info_code
+			JOIN
+			inq1_scr i1s
+			ON
+			ss.subject_score_code = i1s.inq1_subject_score_code
+			JOIN
+			sub_mir_cat smc
+			ON
+			tei.inq1_slt_sub = smc.sub_mir_cat_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
+	</select>
+	
+	<select id="getInquiry2Score" resultType="Inquiry2Score">
+		/* 탐구2 점수 조회 */
+		SELECT
+			tei.took_exam_info_code as tookExamInfoCode,
+			smc.sub_mir_cat_nm as subMirCatNm,
+			ss.subject_score_origin as subjectScoreOrigin,
+			i2s.inq2_std_scr as inq2StdScr,
+			i2s.inq2_pct as inq2Pct,
+			i2s.inq2_grd as inq2Grd,
+			i2s.inq2_ranking as inq2Ranking
+		FROM
+			took_exam_info tei
+			JOIN
+			subject_score ss
+			ON
+			tei.took_exam_info_code = ss.took_exam_info_code
+			JOIN
+			inq2_scr i2s
+			ON
+			ss.subject_score_code = i2s.inq2_subject_score_code
+			JOIN
+			sub_mir_cat smc
+			ON
+			tei.inq2_slt_sub = smc.sub_mir_cat_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
+	</select>
+
+	<select id="getSecondLanguageAndChineseCharactersScore" resultType="SecondLanguageAndChineseCharactersScore">
+		/* 제2외국어 및 한문 점수 조회 */
+		SELECT
+			tei.took_exam_info_code as tookExamInfoCode,
+			smc.sub_mir_cat_nm as subMirCatNm,
+			ss.subject_score_origin as subjectScoreOrigin,
+			fs.frn_grd as frnGrd,
+			fs.frn_ranking as frnRanking
+		FROM
+			took_exam_info tei
+			JOIN
+			subject_score ss
+			ON
+			tei.took_exam_info_code = ss.took_exam_info_code
+			JOIN
+			frn_scr fs
+			ON
+			ss.subject_score_code = fs.frn_subject_score_code
+			JOIN
+			sub_mir_cat smc
+			ON
+			tei.frn_slt_sub = smc.sub_mir_cat_code
+		WHERE
+			tei.user_code = 'uc6'
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC LIMIT 1;
+	</select>
 
 </mapper>
