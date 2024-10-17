@@ -3,11 +3,11 @@
 
 <head>
 
-	<title>[관리자] 데모2 사이트</title>
+	<title>관리자페이지</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-	<link rel="shortcut icon" href="https://cdn.malgnlms.com/sysop/favicon_servicesysop.ico" />
+	<!--<link rel="shortcut icon" href="https://cdn.malgnlms.com/sysop/favicon_servicesysop.ico" />-->
 
 	<!-- CSS Files -->
 	<link rel="stylesheet" type="text/css" href="/admin/css/home/admin.css" />
@@ -27,24 +27,7 @@
 	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-1.12.3.min.js"
 		charset="utf-8"></script>
 	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-ui-1.12.1_malgncustom.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/cheditor.js" charset="utf-8"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/ace.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/common.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/validate.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/admin_func.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/select2.full.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/ko.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/colorpicker.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/codemirror.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/selection-pointer.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/xml.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/javascript.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/css.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/vbscript.js"></script>
-	<script language="javascript" type="text/javascript" src="/admin/js/home/htmlmixed.js"></script>
-	<!--[if gte IE 9]><!-->
-	<script language="javascript" type="text/javascript"
-		src="/admin/js/home/jquery.mCustomScrollbar.concat.min.js"></script>
+	
 	<!--<![endif]-->
 
 	<!-- Css Styles -->
@@ -58,18 +41,41 @@
 			width: 100%;
 		}
 
-		.sidebar {
-			width: 250px;
-			/* 사이드바 너비 */
-			background-color: #f4f4f4;
-			/* 배경색 */
-			padding: 15px;
-		}
 
 		.content {
 			flex-grow: 1;
 			/* 나머지 영역을 채움 */
 			padding: 15px;
+		}
+
+		.arrow {
+			display: inline-block;
+			transition: transform 0.3s;
+		}
+
+		.arrow.open {
+			transform: rotate(90deg);
+			/* 90도 회전 */
+		}
+
+		#examMain {
+			display: flex;
+			/* 플렉스 박스를 사용하여 레이아웃 설정 */
+		}
+
+		.sidebar {
+			width: 250px;
+			padding: 0px;
+			height: 100vh;
+		}
+
+
+		@font-face {
+			font-family: 'Didact Gothic';
+			src:
+				url(chrome-extension://ignghjdjmgleolgiaifohmdlnbjklkij/assets/fonts/didactgothic.woff2) format('woff2');
+			font-weight: normal;
+			font-style: normal;
 		}
 	</style>
 </head>
@@ -146,8 +152,20 @@
 			timer();
 		});
 
+		$(document).ready(function () {
+			// a 태그를 클릭했을 때
+			$('li.acc-title > a').click(function (e) {
+				e.preventDefault(); // 기본 동작 막기
+
+				// 클릭한 a 태그 바로 아래에 있는 ul.acc-sub를 찾아서 토글
+				$(this).next('ul.acc-sub').slideToggle();
+
+				// 아이콘이 회전하는 것을 위해 arrow 클래스도 토글
+				$(this).find('.arrow').toggleClass('open');
+			});
+		});
 	</script>
-	<!-- 사용자정의 js -->
+	js -->
 	<th:block layout:fragment="customJsFile"></th:block>
 	<th:block layout:fragment="customJs"></th:block>
 </body>
