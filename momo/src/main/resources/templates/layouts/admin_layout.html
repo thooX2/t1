@@ -27,7 +27,7 @@
 	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-1.12.3.min.js"
 		charset="utf-8"></script>
 	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-ui-1.12.1_malgncustom.js"></script>
-	
+
 	<!--<![endif]-->
 
 	<!-- Css Styles -->
@@ -93,6 +93,17 @@
 
 	<!-- Js Plugins -->
 	<script>
+		$(function () {
+			const currentAddr = window.location.href.split('/').pop();
+			$('.acc-sub a').each((idx, element) => {
+				const hrefAddr = $(element).attr('href').split('/').pop();
+				if (currentAddr == hrefAddr) $(element).addClass('active');
+			});
+		});
+
+
+
+
 		var timerTimeObj;
 		Date.prototype.format = function (f) {
 			if (!this.valueOf())
@@ -153,6 +164,9 @@
 		});
 
 		$(document).ready(function () {
+			// 페이지 로드 시 모든 섹션을 열어둠
+			$('ul.acc-sub').show();  // 모든 ul.acc-sub 요소를 보여줌
+			$('li.acc-title > a').find('.arrow').addClass('open');  // 모든 섹션의 아이콘을 열림 상태로
 			// a 태그를 클릭했을 때
 			$('li.acc-title > a').click(function (e) {
 				e.preventDefault(); // 기본 동작 막기
@@ -165,7 +179,7 @@
 			});
 		});
 	</script>
-	js -->
+
 	<th:block layout:fragment="customJsFile"></th:block>
 	<th:block layout:fragment="customJs"></th:block>
 </body>
