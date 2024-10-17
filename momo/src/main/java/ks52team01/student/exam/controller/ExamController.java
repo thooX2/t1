@@ -22,9 +22,19 @@ public class ExamController {
 		this.examService = examServiceImpl;
 	}
 
+	@GetMapping("/test3")
+	public String admintest3() {
+		return "view/admin/exam/admin_exam_management";
+	}
+
+	@GetMapping("/test2")
+	public String admintest2() {
+		return "view/admin/exam/admin_exam_category";
+	}
+
 	@GetMapping("/test1")
 	public String admintest() {
-		return "view/admin/exam/admin_exam_main";
+		return "view/admin/exam/admin_exam_add_question";
 	}
 
 	@GetMapping("/examMain")
