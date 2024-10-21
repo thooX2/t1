@@ -22,6 +22,16 @@ public class ExamController {
 		this.examService = examServiceImpl;
 	}
 
+	@GetMapping("/test6")
+	public String admintest6() {
+		return "view/admin/exam/admin_exam_management";
+	}
+	
+	
+	@GetMapping("/test5")
+	public String admintest5() {
+		return "view/admin/exam/admin_exam_add_question";
+	}
 	@GetMapping("/test4")
 	public String admintest4() {
 		return "view/admin/exam/admin_exam_question_popup";
@@ -29,7 +39,7 @@ public class ExamController {
 
 	@GetMapping("/test3")
 	public String admintest3() {
-		return "view/admin/exam/admin_exam_management";
+		return "view/admin/exam/admin_exam_management_list";
 	}
 
 	@GetMapping("/test2")
@@ -39,7 +49,7 @@ public class ExamController {
 
 	@GetMapping("/test1")
 	public String admintest() {
-		return "view/admin/exam/admin_exam_add_question";
+		return "view/admin/exam/admin_exam_question_list";
 	}
 
 	@GetMapping("/examMain")

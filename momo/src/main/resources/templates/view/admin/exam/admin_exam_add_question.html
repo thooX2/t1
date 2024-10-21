@@ -3,41 +3,203 @@
 	layout:decorate="~{layouts/admin_layout}">
 
 <head>
-	<!-- Select2 CSS -->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/adminExamAddQuestion/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/adminExamAddQuestion/font-awesome.min.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet" />
+	<style>
+		/* 기존 CSS 코드에 추가 */
+		#sys-scroll {
+			max-height: 90vh;
+			/* 조정 필요 */
+			overflow-y: auto;
+			/* 세로 스크롤 */
+		}
+
+		#sys-wrap {
+			max-height: 100vh;
+			/* 화면 높이로 제한 */
+			overflow: hidden;
+			/* 이 부분도 auto로 바꿔야 할 수 있음 */
+		}
+
+		/* ---------------------------- */
+		/* 숨겨진 파일 입력 */
+		#fileInput {
+			display: none;
+		}
+
+		/* 커스텀 버튼 스타일 */
+		#customButton {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		#customButton:hover {
+			background-color: #0056b3;
+		}
+
+		/* 파일 이름 텍스트 */
+		#fileName {
+			margin-left: 10px;
+			color: #555;
+			font-style: italic;
+		}
+
+		#fileList {
+			list-style-type: none;
+			padding: 0;
+			border: 1px solid #ccc;
+			background: #fff;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		#fileList li {
+			padding: 10px;
+			border-bottom: 1px solid #eee;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		#fileList li:last-child {
+			border-bottom: none;
+		}
+
+		.remove-button {
+			background-color: #ff4d4d;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		.remove-button:hover {
+			background-color: #e60000;
+		}
+
+		.thumbnail {
+			width: 50px;
+			/* 썸네일의 너비 */
+			height: auto;
+			/* 높이는 비율에 따라 자동으로 설정 */
+			margin-right: 10px;
+			/* 이미지와 텍스트 사이의 간격 */
+		}
+	</style>
 </head>
 <th:block layout:fragment="customJsFile">
-	<script src="https://code.jquery.com/jquery-3.7.1.js"
-		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-	<!-- Select2 JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+	<!-- Include the Korean language file -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 
 </th:block>
 <th:block layout:fragment="customJs">
 	<script>
-		$(function () {
-			// Select2 초기화
-			$('.js-example-basic-single').select2({
-				placeholder: "카테고리를 선택하세요", // 기본 placeholder 설정
-				allowClear: true, // 클리어 버튼 허용
-				language: {
-					noResults: function () {
-						return "결과가 없습니다"; // Set custom message when no results are found
+		$(document).ready(function () {
+			$('#summernote').summernote({
+				height: 300,  // 고정된 높이
+				minHeight: 300,  // 최소 높이 설정 (고정)
+				maxHeight: 300,  // 최대 높이 설정 (고정)
+				placeholder: '여기에 내용을 입력하세요...',  // 플레이스홀더
+				focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+				lang: "ko-KR",                // 한글 설정
+				callbacks: {
+					onImageUpload: function (files) {
+						// 파일 업로드 핸들러
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							$('#summernote').summernote('insertImage', e.target.result);
+						};
+						reader.readAsDataURL(files[0]);
+					},
+					onChange: function (contents, $editable) {
+						console.log('Content changed:', contents);
 					}
-				}
+				},
+				toolbar: [
+					['fontname', ['fontname']],
+					['fontsize', ['fontsize']],
+					['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+					['color', ['forecolor', 'backcolor']],  // 텍스트 색상 및 배경 색상 추가
+					['table', ['table']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['insert', ['picture', 'link', 'video', 'hr']],  // 수평선 추가
+					['view', ['fullscreen', 'codeview', 'help']],  // 코드 보기 버튼 추가
+
+				],
+				fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+				fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+				airMode: false,  // 공기 모드 활성화 여부
+				disableResize: false,  // 에디터 크기 조정 비활성화 (주석 처리)
+
 			});
 		});
-		$('input').each((idx, element) => {
-			if ($(element).val() == "미리보기") {
-				$(element).click(function () {
-					window.open('/exam/test4', '문제미리보기', 'width=600,height=800,scrollbars=yes');
-				})
+
+		// ====================================
+		const fileInput = document.getElementById('fileInput');
+		const fileName = document.getElementById('fileName');
+		const fileList = document.getElementById('fileList');
+
+		// 파일 선택 시
+		fileInput.addEventListener('change', function () {
+			// 선택된 파일들 가져오기
+			const files = Array.from(fileInput.files);
+
+			// 파일명을 표시
+			if (files.length > 0) {
+				fileName.textContent = files.length === 1 ? files[0].name : `${files.length}개의 파일 선택됨`;
+			} else {
+				fileName.textContent = '선택된 파일이 없습니다.';
 			}
-		})
+
+			// 기존 파일 리스트 초기화
+			fileList.innerHTML = '';
+
+			// 파일 리스트에 추가
+			files.forEach(file => {
+				const listItem = document.createElement('li');
+				const img = document.createElement('img');
+				img.src = URL.createObjectURL(file); // 이미지 미리보기
+				img.className = 'thumbnail';
+				listItem.appendChild(img);
+				listItem.appendChild(document.createTextNode(file.name));
+
+				// 제거 버튼 생성
+				const removeButton = document.createElement('button');
+				removeButton.textContent = '제거';
+				removeButton.className = 'remove-button';
+				removeButton.onclick = () => {
+					fileList.removeChild(listItem);
+					updateFileInput();
+				};
+
+				listItem.appendChild(removeButton);
+				fileList.appendChild(listItem);
+			});
+		});
+
+		function updateFileInput() {
+			const updatedFiles = Array.from(fileList.children).map(item => item.childNodes[1].textContent);
+			console.log(updatedFiles); // 선택된 파일 목록을 콘솔에 출력
+
+			// 파일 리스트가 비어 있으면 파일명 텍스트 초기화
+			if (fileList.children.length === 0) {
+				fileName.textContent = '선택된 파일이 없습니다.';
+			}
+		}
 
 
 	</script>
-
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
@@ -48,19 +210,19 @@
 	<div class="content" style="padding:0px">
 		<div id="sys-breadcrumb">
 			<button id="sys-breadcrumb-arrow" type="button">
-				<i class="fa fa-minus" style="font-size: 12px;"></i>
+				<i class="fa fa-angle-left"></i>
 			</button>
 			<div id="sys-page-title">
 				<span id="sys-page-title-nm">문제은행</span>
-				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
+
 				<button type="button" class="btn_simp yellow">
-					<i class="fa fa-star"></i> 퀵메뉴추가
+					<i class="fa fa-star"></i>
+					퀵메뉴추가
 				</button>
 
 			</div>
 			<div id="sys-page-util">
-
-				<a id="sys-page-util-refresh" href="javascript:window.location.reload(true);">
+				<a id="sys-page-util-refresh">
 					<i class="fa fa-retweet"></i>
 				</a>
 			</div>
@@ -69,343 +231,358 @@
 			<div id="sys-scroll">
 				<div id="alert_area"></div>
 				<div id="sys-contents">
-					<form name="form1" method="get">
-						<input type="hidden" name="ord" value="" />
-						<input type="hidden" name="mode" value="" />
-						<input type="hidden" name="cid" />
-						<table class="t_tb01" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+					<form name="form1" method="post" enctype="multipart/form-data" target="sysfrm">
+						<input type="hidden" name="temp_id" value="792" />
+						<table class="c_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td class="c_th01">등록</td>
+									<td class="c_td01"></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="f_tb01" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 							<colgroup>
-								<col style="width: 120px;">
-								<!-- 첫 번째 열의 너비를 120px로 설정 -->
-								<col>
-								<!-- 두 번째 열 (너비 기본값) -->
-								<col style="width: 120px;">
-								<!-- 세 번째 열의 너비를 120px로 설정 -->
-								<col>
-								<!-- 네 번째 열 (너비 기본값) -->
+								<col width="120" />
+								<col />
+								<col width="120" />
+								<col />
 							</colgroup>
 							<tbody>
 								<tr>
-									<td class="t_th01">카테고리</td>
-									<td class="t_td01" colspan="3">
-										<select name="s_category" class="js-example-basic-single">
+									<td class="f_th01">문제카테고리</td>
+									<td class="f_td01" colspan="3">
+										<select name="category_id" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
-											<option value="category1">Category 1</option>
-											<option value="category2">Category 2</option>
-											<option value="category3">Category 3</option>
+
+											<option value="179"> 사교원테스트 </option>
+
+											<option value="180"> 사교원테스트 &gt; DDM </option>
+
+											<option value="49"> 음악 이야기 </option>
 										</select>
 									</td>
 								</tr>
 								<tr>
-									<td class="t_th01">난이도</td>
-									<td class="t_td01" colspan="3">
-										<label>
-											<input type="radio" name="s_grade" value="" class="ipt01" checked="" /> 전체
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="1" class="ipt01" /> A
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="2" class="ipt01"> B
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="3" class="ipt01"> C
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="4" class="ipt01" /> D
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="5" class="ipt01" /> E
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="6" class="ipt01" /> F
-										</label>
-										&nbsp;
+									<td class="f_th01">문제</td>
+									<td class="f_td01" colspan="3">
+										<input type="text" name="question" style="width:99%" />
 									</td>
 								</tr>
 								<tr>
-									<td class="t_th01">문제유형</td>
-									<td class="t_td01">
+									<td class="f_th01">난이도</td>
+									<td class="f_td01" colspan="3">
+
 										<label>
-											<input type="radio" name="s_type" value="" class="ipt01" checked="" /> 전체
+											<input type="radio" name="grade" value="1" class="ipt01" /> A
 										</label>
 										&nbsp;
+
 										<label>
-											<input type="radio" name="s_type" value="1" class="ipt01" /> 단일선택
+											<input type="radio" name="grade" value="2" class="ipt01" /> B
 										</label>
 										&nbsp;
+
 										<label>
-											<input type="radio" name="s_type" value="2" class="ipt01"> 다중선택
+											<input type="radio" name="grade" value="3" class="ipt01" /> C
 										</label>
 										&nbsp;
+
 										<label>
-											<input type="radio" name="s_type" value="3" class="ipt01"> 단답형
+											<input type="radio" name="grade" value="4" class="ipt01" /> D
 										</label>
 										&nbsp;
+
 										<label>
-											<input type="radio" name="s_type" value="4" class="ipt01" /> 서술형
+											<input type="radio" name="grade" value="5" class="ipt01" /> E
 										</label>
 										&nbsp;
-									</td>
-									<td class="t_th01">상태</td>
-									<td class="t_td01">
+
 										<label>
-											<input type="radio" name="s_status" value="" class="ipt01" checked="" /> 전체
+											<input type="radio" name="grade" value="6" class="ipt01" /> F
 										</label>
 										&nbsp;
-										<label>
-											<input type="radio" name="s_status" value="1" class="ipt01" /> 사용
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_status" value="0" class="ipt01"> 중지
-										</label>
-										&nbsp;
+
 									</td>
 								</tr>
 								<tr>
-									<td class="t_th01">검색</td>
-									<td class="t_td01" colspan="3"><select name="s_field">
-											<option value="">- 전체 -</option>
-											<option value="a.question">문제</option>
-											<option value="a.question_text">문제설명</option>
-											<option value="a.question_item">문항</option>
+									<td class="f_th01">문제설명</td>
+									<td class="f_td01" colspan="3">
+										<div style="width:100%;">
+											<textarea id="summernote"></textarea>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제이미지</td>
+									<td class="f_td01" colspan="3">
+										<!-- 실제 파일 입력 (숨김) -->
+										<input type="file" id="fileInput" accept="image/*" multiple>
+
+										<!-- 커스텀 버튼과 파일 이름 표시 -->
+										<label for="fileInput" id="customButton">파일 선택</label>
+										<span id="fileName">선택된 파일이 없습니다.</span> <!-- 파일명을 표시하는 텍스트 -->
+
+										<ul id="fileList"></ul>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제유형</td>
+									<td class="f_td01">
+										<select name="question_type">
+											<option value="1">단일선택</option>
+											<option value="2">다중선택</option>
+											<option value="3">단답형</option>
+											<option value="4">서술형</option>
 										</select>
-										<input type="text" name="s_keyword" size="30" />
-										<button type="submit" class="bttn2">검색</button>
+									</td>
+									<td class="f_th01">문항 갯수</td>
+									<td class="f_td01">
+										<select name="item_cnt">
+											<option value="2">2개</option>
+											<option value="3">3개</option>
+											<option value="4">4개</option>
+											<option value="5">5개</option>
+										</select>
+									</td>
+								</tr>
+								<tr id="item_tr" style="display: none;">
+									<td class="f_th01">문항</td>
+									<td class="f_td01" colspan="3">
+										<table class="l_tb01" cellpadding="0" cellspacing="0">
+											<colgroup>
+												<col width="40" />
+												<col width="40" />
+												<col />
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="l_th03">정답</td>
+													<td class="l_th03">번호</td>
+													<td class="l_th03">내용</td>
+												</tr>
+											</tbody>
+											<tbody id="item_area">
+
+												<tr style="display:none">
+													<td class="l_td01">
+														<div style="text-align:center">
+															<input type="text" name="radio" value="1" />
+														</div>
+													</td>
+													<td class="l_td01" align="center">1</td>
+													<td class="l_td01">
+														<input type="text" name="item1" size="95" />
+														<p class="mt3">
+															<input type="file" name="item1_file" size="80"
+																style="border:1px solid #d1d1d1;" />
+														</p>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+								<tr id="item_tr" style="display: table-row;">
+									<td class="f_th01">문항</td>
+									<td class="f_td01" colspan="3">
+										<table class="l_tb01" cellpadding="0" cellspacing="0">
+											<colgroup>
+												<col width="40">
+												<col width="40">
+												<col>
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="l_th03">정답</td>
+													<td class="l_th03">번호</td>
+													<td class="l_th03">내용</td>
+												</tr>
+											</tbody>
+											<tbody id="item_area">
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center"><input type="radio" required="Y"
+																hname="정답" name="answer" value="1"></div>
+													</td>
+													<td class="l_td01" align="center">1</td>
+													<td class="l_td01">
+														<input type="text" name="item1" hname="문항(1)" size="95">
+														<p class="mt3">
+															<input type="file" name="item1_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center"><input type="radio" required="Y"
+																hname="정답" name="answer" value="2"></div>
+													</td>
+													<td class="l_td01" align="center">2</td>
+													<td class="l_td01">
+														<input type="text" name="item2" hname="문항(2)" size="95">
+														<p class="mt3">
+															<input type="file" name="item2_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center"><input type="radio" required="Y"
+																hname="정답" name="answer" value="3"></div>
+													</td>
+													<td class="l_td01" align="center">3</td>
+													<td class="l_td01">
+														<input type="text" name="item3" hname="문항(3)" size="95">
+														<p class="mt3">
+															<input type="file" name="item3_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center"><input type="radio" required="Y"
+																hname="정답" name="answer" value="4"></div>
+													</td>
+													<td class="l_td01" align="center">4</td>
+													<td class="l_td01">
+														<input type="text" name="item4" hname="문항(4)" size="95">
+														<p class="mt3">
+															<input type="file" name="item4_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center"><input type="radio" required="Y"
+																hname="정답" name="answer" value="5"></div>
+													</td>
+													<td class="l_td01" align="center">5</td>
+													<td class="l_td01">
+														<input type="text" name="item5" hname="문항(5)" size="95">
+														<p class="mt3">
+															<input type="file" name="item5_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+											</tbody>
+										</table>
+									</td>
+								</tr>
+								<tr id="corrent_tr" style="display: none;">
+									<td class="f_th01">정답</td>
+									<td class="f_td01" colspan="3">
+										<div id="correntType_1" style="display:inline;">
+											<input type="text" name="answer" size="80" value="모든 일에 감사하는 것" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">정답설명</td>
+									<td class="f_td01" colspan="3"><textarea name="description" id="textarea1"
+											style="width:99%;height:150px;"
+											class="mceNoEditor">슈바이처 박사는 인생에서 가장 멋진 일을 모든 일에 감사는 것 이라고 했고 그렇기 때문에 감사한 일이 있으면 지체하지 말고 마음을 표현하라,라고 했다.</textarea>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">정답설명이미지</td>
+									<td class="f_td01" colspan="3">
+										<input type="file" name="question_file" size="90"
+											style="border:1px solid #D1D1D1;" />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">담당자</td>
+									<td class="f_td01" colspan="3">
+										<select name="manager_id" class="js-example-basic-single">
+											<option value=""> - 담당자 선택 - </option>
+											<option value=" -99"> [공용] 모든 최고관리자, 운영자, 과정운영자 </option>
+
+											<option value="50425">[운영자] ttestt02</option>
+
+											<option value="50295">[운영자] 박수영</option>
+
+											<option value="50323">[운영자] 홍길동</option>
+
+											<option value="50093">[운영자] 홍길동1</option>
+
+											<option value="50005">[과정운영자] test3</option>
+
+											<option value="50006">[과정운영자] test4</option>
+
+											<option value="50427">[과정운영자] ttestt04</option>
+
+											<option value="50124">[과정운영자] 관리자</option>
+
+											<option value="50019">[과정운영자] 홍길동5</option>
+
+											<option value="50454">[최고관리자] admin5</option>
+
+											<option value="50460">[최고관리자] malgnjudy</option>
+
+											<option value="50424">[최고관리자] ttestt01</option>
+
+											<option value="50464">[최고관리자] wjdehdhs</option>
+
+											<option value="2073">[최고관리자] 나우수</option>
+
+											<option value="50112">[최고관리자] 맑은</option>
+
+											<option value="50277">[최고관리자] 영업왕 주대리</option>
+
+											<option value="2229">[최고관리자] 운영자</option>
+
+											<option value="2001">[최고관리자] 최고관리자</option>
+
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="f_th01">상태</td>
+									<td class="f_td01" colspan="3">
+
+										<label>
+											<input type="radio" name="status" value="1" class="ipt01" /> 사용
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="status" value="0" class="ipt01" /> 중지
+										</label>
+										&nbsp;
 									</td>
 								</tr>
 							</tbody>
 						</table>
-					</form>
-					<form name="form2" method="post" action="https://demo.malgnlms.com/sysop/question/question_list.jsp"
-						target="sysfrm">
-						<input type="hidden" name="mode" value="status" />
-
-						<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+						<table class="b_tb01" cellpadding="0" cellspacing="0">
 							<tbody>
 								<tr>
-									<td class="a_th01">
-										<span style="font-family: arial, dotum; font-weight: normal;">Total :
-											<font color="blue">390</font> 건
-										</span>
-										&nbsp;&nbsp;
-										<input type="button" value="전체문제 미리보기" class="btn_simp" />
+									<td>
+										<button type="button" class="bttn2">목록</button>
 									</td>
-									<td class="a_td01">
-										<button type="button" class="bttn2">일괄등록</button>
-										<button type="button" class="bttn2">등록</button>
-										<button type="button" class="bttn2">EXCEL</button>
-										<select name="a_status">
-											<option value="">상태변경</option>
-											<option value="1">사용</option>
-											<option value="0">중지</option>
-										</select>
+									<td class="b_td01">
+										<button type="submit" class="bttn2">수정</button>
+										<button type="button" class="bttn2">삭제</button>
 									</td>
 								</tr>
-							</tbody>
-						</table>
-
-						<table class="l_tb01" cellpadding="0" cellspacing="0">
-							<thead>
-								<tr align="center">
-									<td class="l_th01">No</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.question">문제</span></td>
-									<td class="l_th01">미리보기</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.grade">난이도</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.question_type">문제유형</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_u.user_nm">담당자</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.status">상태</span></td>
-									<td class="l_th01" width="20"><input type="checkbox" /></td>
-								</tr>
-							</thead>
-							<tbody>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">390</td>
-									<td class="l_td01" align="left" title="인생에서 가장 멋진 일을 슈바이처 박사는 무엇이라고 하였는가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=792&amp;"
-												target="_Main">인생에서 가장 멋진 일을 슈바이처 박사는 무엇이라고 하였는가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="792" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">389</td>
-									<td class="l_td01" align="left"
-										title="최근 많은 기업에서는 CS 고객 만족을 넘어 고객의 OO에 집중하고 있다. OO은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=791&amp;"
-												target="_Main">최근 많은 기업에서는 CS 고객 만족을 넘어 고객의 OO에 집중하고 있다. OO은 무엇인가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="791" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">388</td>
-									<td class="l_td01" align="left" title="최후의 보루를 뜻하며 가성비를 생각하는 소비 트렌드를 무엇이라 표현하는가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=790&amp;"
-												target="_Main">최후의 보루를 뜻하며 가성비를 생각하는 소비 트렌드를 무엇이라 표현하는가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="790" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">387</td>
-									<td class="l_td01" align="left" title="사람들은 선택의 대상이 많은 것을 원치 않는 것을 입증한 이론은?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=789&amp;"
-												target="_Main">사람들은 선택의 대상이 많은 것을 원치 않는 것을 입증한 이론은?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="789" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">386</td>
-									<td class="l_td01" align="left"
-										title="고객이 원하는 것을 물어보는 질문을 OO탐색 질문이라고 한다. OO에 들어갈 알맞은 표현은?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=788&amp;"
-												target="_Main">고객이 원하는 것을 물어보는 질문을 OO탐색 질문이라고 한다. OO에 들어갈 알맞은 표현은?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="788" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">385</td>
-									<td class="l_td01" align="left"
-										title="고객으로 하여금 수치스런 감정을 느끼지 않도록 자신의 그릇된 기준은 없는지 살펴보고 매 순간 자신의 (     )을 생각해야 한다.">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=787&amp;"
-												target="_Main">고객으로 하여금 수치스런 감정을 느끼지 않도록 자신의 그릇된 기준은 없는지 살펴보고 매 순간 자신의 (
-												...</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="787" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">384</td>
-									<td class="l_td01" align="left" title="자아가 손상 되었을 때 느껴지는 감정은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=786&amp;"
-												target="_Main">자아가 손상 되었을 때 느껴지는 감정은 무엇인가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="786" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">383</td>
-									<td class="l_td01" align="left" title="사람의 인상착의를 보고 단정 짓는 것을 표현하는 말은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=785&amp;"
-												target="_Main">사람의 인상착의를 보고 단정 짓는 것을 표현하는 말은 무엇인가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="785" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">382</td>
-									<td class="l_td01" align="left"
-										title="미국 인터넷 매체 복스는 우리에게 로봇, 컴퓨터가 가질 수 없는 이것이 있기에 두려워할 필요가 없다고 하였다. 이것은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=784&amp;"
-												target="_Main">미국 인터넷 매체 복스는 우리에게 로봇, 컴퓨터가 가질 수 없는 이것이 있기에 두려워할 필요가 없다고
-												하...</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="784" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">381</td>
-									<td class="l_td01" align="left"
-										title="서비스의 만족감은 고객의 OO와 관련이 있으며 고객의 사전 OO를 파악하는 것이 중요하다. 이 때 OO은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=783&amp;"
-												target="_Main">서비스의 만족감은 고객의 OO와 관련이 있으며 고객의 사전 OO를 파악하는 것이 중요하다. 이 때
-												OO은
-												무엇...</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="783" /></td>
-								</tr>
-
 							</tbody>
 						</table>
 					</form>
