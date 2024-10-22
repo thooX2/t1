@@ -30,12 +30,12 @@
 		$('input').each((idx, element) => {
 			if ($(element).val() == "미리보기") {
 				$(element).click(function () {
-					window.open('/exam/test4', '문제미리보기', 'width=600,height=800,scrollbars=yes');
+					window.open('/admin/exam/questionPopup', '문제미리보기', 'width=600,height=800,scrollbars=yes');
 				})
 			}
 		})
 		$('#addQuestionBtn').click(function () {
-			location.href = "/exam/test5"
+			location.href = "/admin/exam/addQuestion"
 		})
 
 	</script>
