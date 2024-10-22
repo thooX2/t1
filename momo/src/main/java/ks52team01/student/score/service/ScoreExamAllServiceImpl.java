@@ -94,4 +94,10 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 		// TODO Auto-generated method stub
 		return scoreMapper.getSecondLanguageAndChineseCharactersScore(userCode);
 	}
+
+	@Override
+	public KoreanHistoryScore getKoreanHistoryScoreByTookExamCode(String tookExamInfoCode) {
+		// TODO Auto-generated method stub
+		return scoreMapper.getKoreanHistoryScoreByTookExamCode(tookExamInfoCode);
+	}
 }

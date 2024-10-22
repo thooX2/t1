@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class TookExam {
+	private String tookExamInfoCode;
 	private String examNm;
 }
