@@ -22,40 +22,17 @@ public class ExamController {
 		this.examService = examServiceImpl;
 	}
 
-	@GetMapping("/test6")
-	public String admintest6() {
-		return "view/admin/exam/admin_exam_management";
+	@GetMapping("/examList")
+	public String moveExamList() {
+		log.info("모의고사 메인으로 이동");
+		return "view/user/exam/user_exam_list";
 	}
 
-	@GetMapping("/test5")
-	public String admintest5() {
-		return "view/admin/exam/admin_exam_add_question";
-	}
-
-	@GetMapping("/test4")
-	public String admintest4() {
-		return "view/admin/exam/admin_exam_question_popup";
-	}
-
-	@GetMapping("/test3")
-	public String admintest3() {
-		return "view/admin/exam/admin_exam_management_list";
-	}
-
-	@GetMapping("/test2")
-	public String admintest2() {
-		return "view/admin/exam/admin_exam_category";
-	}
-
-	@GetMapping("/test1")
-	public String admintest() {
-		return "view/admin/exam/admin_exam_question_list";
-	}
 
 	@GetMapping("/examMain")
 	public String moveExamMain() {
 		log.info("모의고사 메인으로 이동");
-		return "view/user/exam/exam_main";
+		return "view/user/exam/user_exam_list";
 	}
 
 	@GetMapping("/userExamCreate")
