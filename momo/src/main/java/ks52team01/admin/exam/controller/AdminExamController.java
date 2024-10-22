@@ -18,8 +18,8 @@ public class AdminExamController {
 
 	@GetMapping("/category")
 	public String adminExamCategory() {
+		adminExamService.getAdminExamCategoryList();
 
-			
 		return "view/admin/exam/admin_exam_category";
 	}
 
