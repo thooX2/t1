@@ -45,9 +45,8 @@
 
 										<div id="MyTestArea">
 											<form action="/study/addTargetUniversity" method="post" class="insert">
-												<!-- 나중에 쿼리문 혹은 javascrip나 jquery들을 이용하여 처리를 해야하는 부분 -->
-													<input type="text" name="targetUniverseCode" value="second" />
-													<input type="text" name="userCode" value="uc9" /> 
+													<input type="hidden" name="usercode" th:value="${session.loggedInUser.userCode}" /> 
+																						
 													
 													 <a>유저 입력 부분</a> 
 													 <a>목표 대학교이름 : <input type="text" name="targetUniversityName" style="width: 500px;"></a> <br />
