@@ -77,7 +77,7 @@
 														<td th:text="${list.learningScheduleStart}"></td>
 														<td th:text="${list.learningScheduleEnd}"></td>
 														<td th:text="${list.learningScheduleCompleate}"></td>
-														<td><a href="/getDetailedScheduleList">세부 일정 이동</a></td>
+														<td><a href="/study/getDetailedScheduleList">세부 일정 이동</a></td>
 														<td><a th:href="@{/study/modifylearning(list.learningSchedule =*{list.learningSchedule})}">수정</a></td>
 														<td><a th:href="@{/study/deletelearning(list.learningSchedule =*{list.learningSchedule})}">삭제</a></td>
 													</tr>
