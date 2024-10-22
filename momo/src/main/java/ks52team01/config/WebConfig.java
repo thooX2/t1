@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 		// 로그인 체크 인터셉터 등록
 		LoginCheckInterceptor loginCheckInterceptor = new LoginCheckInterceptor();
-		registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/exam/**").addPathPatterns("/user/userMyPage").addPathPatterns("/score/**").addPathPatterns("/user/userInfoModfiy").excludePathPatterns("/exam/examMain");
+		registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/exam/**").addPathPatterns("/user/userMyPage").addPathPatterns("/score/**").addPathPatterns("/user/userInfoModfiy").addPathPatterns("/study/**").excludePathPatterns("/exam/examMain");
 
 	}
 
