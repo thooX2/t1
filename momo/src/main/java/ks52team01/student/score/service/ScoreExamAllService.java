@@ -19,6 +19,8 @@ public interface ScoreExamAllService {
 	
 	public KoreanHistoryScore getKoreanHistoryScore(String userCode);
 	
+	public KoreanHistoryScore getKoreanHistoryScoreByTookExamCode(String tookExamInfoCode);
+	
 	public KoreanScore getKoreanScore(String userCode);
 	
 	public MathScore getMathScore(String userCode);
