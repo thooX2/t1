@@ -3,7 +3,7 @@ package ks52team01.admin.exam.dto;
 import lombok.Data;
 
 @Data
-public class SubMjrCateDTO {
+public class SubMjrCate {
 	private String subMjrCatCode; // 과목대분류코드
 	private String subMjrCatNm; // 과목대분류명
 	private int subExamTime; // 과목시험시간

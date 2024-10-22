@@ -3,7 +3,28 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.admin.exam.mapper.AdminExamMapper">
+	<resultMap type="SubMjrCate" id="SubMjrCateMap">
+		<id column="sub_mjr_cat_code" property="subMjrCatCode"></id>
+		<result column="sub_mjr_cat_nm" property="subMjrCatNm"></result>
+		<result column="sub_exam_time" property="subExamTime"></result>
+		<result column="sub_exam_order" property="subExamOrder"></result>
+		<result column="sub_qst_num" property="subQstNum"></result>
+		<result column="sub_qst_total_scr" property="subQstTotalScr"></result>
+		<result column="cur_exam_user_state" property="curExamUserState"></result>
+	</resultMap>
 
+	<select id="getAdminExamCategoryList" resultMap="SubMjrCateMap">
+		SELECT
+			sub_mjr_cat_code,
+			sub_mjr_cat_nm,
+			sub_exam_time,
+			sub_exam_order,
+			sub_qst_num,
+			sub_qst_total_scr,
+			cur_exam_user_state
+		FROM
+			sub_mjr_cat;
+	</select>
 
 
 
