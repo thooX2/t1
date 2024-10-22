@@ -90,7 +90,9 @@
 		$(function () {
 			var picker = flatpickr(".flatpicker", {locale: "ko"});
 		})
-
+		$('#addExamBtn').click(function () {
+			location.href = "/exam/test6";
+		})
 	</script>
 
 
@@ -226,7 +228,7 @@
 										<font color="blue">66</font> 건
 									</span></td>
 								<td class="a_td01">
-									<button type="button" class="bttn2">등록 (온라인)</button>
+									<button type="button" class="bttn2" id="addExamBtn">등록 (온라인)</button>
 									<button type="button" class="bttn2">등록 (집합)</button>
 									<button type="button" class="bttn2">EXCEL</button>
 								</td>

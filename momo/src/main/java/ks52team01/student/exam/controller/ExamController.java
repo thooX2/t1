@@ -26,12 +26,12 @@ public class ExamController {
 	public String admintest6() {
 		return "view/admin/exam/admin_exam_management";
 	}
-	
-	
+
 	@GetMapping("/test5")
 	public String admintest5() {
 		return "view/admin/exam/admin_exam_add_question";
 	}
+
 	@GetMapping("/test4")
 	public String admintest4() {
 		return "view/admin/exam/admin_exam_question_popup";
