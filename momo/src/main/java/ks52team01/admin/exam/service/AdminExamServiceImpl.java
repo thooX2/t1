@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ks52team01.admin.exam.dto.SubMirCate;
 import ks52team01.admin.exam.dto.SubMjrCate;
 import ks52team01.admin.exam.mapper.AdminExamMapper;
+import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +20,13 @@ public class AdminExamServiceImpl implements AdminExamService {
 
 	private final AdminExamMapper adminExamMapper;
 
+	
+	@Override
+	public List<User> getUserListByGrade(String gradeCode) {
+
+		return adminExamMapper.getUserListByGrade(gradeCode);
+	}
+	
 	@Override
 	public List<SubMirCate> getAdminExamCategoryList() {
 

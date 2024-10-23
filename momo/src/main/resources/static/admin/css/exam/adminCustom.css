@@ -753,7 +753,7 @@ x-script {
 
 .c_tb02 {
 	width: 100%;
-	background: url("../images/admin/common/lbg.gif") repeat-x center;
+/* 	background: url("../images/admin/common/lbg.gif") repeat-x center; */
 	background-color: #fafafa;
 	border: 1px solid #d1d1d1;
 	/*

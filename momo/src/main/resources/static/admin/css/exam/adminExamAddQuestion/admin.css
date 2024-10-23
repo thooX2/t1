@@ -160,7 +160,7 @@ x-script {
 .bttn, .btn_save, .btn_cls, .btn_search, .btn
 , .btn_list, .btn_ins, .btn_mod, .btn_del, .btn_ccl, .btn_cls, .btn_sch {
 
-	background:url("../images/global/css_btn_right4.gif") right no-repeat;
+/* 	background:url("../images/global/css_btn_right4.gif") right no-repeat; */
 	font-family: "Malgun Gothic", "맑은 고딕", Dotum, Arial, Gulim;
 	font-size:12px;
 	color:#333333;
@@ -406,7 +406,7 @@ x-script {
 	border:1px solid #9AC6FF;
 	border:1px solid #C1DCFF;
 	*/
-	background: url("../images/admin/common/ftb09.gif") repeat-x left 1px ;
+	/* background: url("../images/admin/common/ftb09.gif") repeat-x left 1px ; */
 	border:1px solid #d1d1d1;
 }
 .l_th03 {
@@ -497,8 +497,8 @@ x-script {
 /* 타이틀, 입력,수정 테이블 스타일 */
 .c_tb01 {
 	width: 100%;
-	background: url("../images/admin/common/lbg.gif") repeat-x center ;
-	background: url("../images/admin/common/ftb09.gif") repeat-x left 1px ;
+/* 	background: url("../images/admin/common/lbg.gif") repeat-x center ; */
+/* 	background: url("../images/admin/common/ftb09.gif") repeat-x left 1px ; */
 	background-color:#fafafa;
 	border:1px solid #d1d1d1;
 	/*
@@ -533,8 +533,8 @@ x-script {
 
 .c_tb02 {
 	width: 100%;
-	background: url("../images/admin/common/lbg.gif") repeat-x center ;
-	background: url("../images/admin/common/ftb09.gif") repeat-x left 1px ;
+/* 	background: url("../images/admin/common/lbg.gif") repeat-x center ; */
+	/* background: url("../images/admin/common/ftb09.gif") repeat-x left 1px ; */
 	background-color:#fafafa;
 	border:1px solid #d1d1d1;
 	/*

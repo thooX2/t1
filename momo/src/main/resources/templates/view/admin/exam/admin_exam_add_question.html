@@ -7,8 +7,6 @@
 	<link rel="stylesheet" type="text/css" href="/admin/css/adminExamAddQuestion/font-awesome.min.css" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet" />
 	<style>
-
-
 		/* ---------------------------- */
 		/* 숨겨진 파일 입력 */
 		#fileInput {
@@ -238,63 +236,51 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<td class="f_th01">문제카테고리</td>
+									<td class="f_th01">문제 카테고리</td>
 									<td class="f_td01" colspan="3">
 										<select name="category_id" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
 
-											<option value="179"> 사교원테스트 </option>
-
-											<option value="180"> 사교원테스트 &gt; DDM </option>
-
-											<option value="49"> 음악 이야기 </option>
+											<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
+												th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm : cl.subMjrName + ' > ' + cl.subMirCatNm}"
+												th:value="${cl.subMirCatCode}">
+											</option>
 										</select>
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">문제</td>
+									<td class="f_th01">문제 제목</td>
 									<td class="f_td01" colspan="3">
 										<input type="text" name="question" style="width:99%" />
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">난이도</td>
+									<td class="f_th01">문제 배점</td>
 									<td class="f_td01" colspan="3">
 
 										<label>
-											<input type="radio" name="grade" value="1" class="ipt01" /> A
+											<input type="radio" name="grade" value="1" class="ipt01" /> 1
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="grade" value="2" class="ipt01" /> B
+											<input type="radio" name="grade" value="2" class="ipt01" /> 2
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="grade" value="3" class="ipt01" /> C
+											<input type="radio" name="grade" value="3" class="ipt01" /> 3
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="grade" value="4" class="ipt01" /> D
+											<input type="radio" name="grade" value="4" class="ipt01" disabled /> 4
 										</label>
 										&nbsp;
-
-										<label>
-											<input type="radio" name="grade" value="5" class="ipt01" /> E
-										</label>
-										&nbsp;
-
-										<label>
-											<input type="radio" name="grade" value="6" class="ipt01" /> F
-										</label>
-										&nbsp;
-
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">문제설명</td>
+									<td class="f_th01">문제 내용</td>
 									<td class="f_td01" colspan="3">
 										<div style="width:100%;">
 											<textarea id="summernote"></textarea>
@@ -319,18 +305,15 @@
 									<td class="f_td01">
 										<select name="question_type">
 											<option value="1">단일선택</option>
-											<option value="2">다중선택</option>
-											<option value="3">단답형</option>
-											<option value="4">서술형</option>
+											<option value="2" disabled>다중선택</option>
+
 										</select>
 									</td>
 									<td class="f_th01">문항 갯수</td>
 									<td class="f_td01">
 										<select name="item_cnt">
-											<option value="2">2개</option>
-											<option value="3">3개</option>
 											<option value="4">4개</option>
-											<option value="5">5개</option>
+											<option value="5" selected>5개</option>
 										</select>
 									</td>
 								</tr>
@@ -500,44 +483,7 @@
 									<td class="f_td01" colspan="3">
 										<select name="manager_id" class="js-example-basic-single">
 											<option value=""> - 담당자 선택 - </option>
-											<option value=" -99"> [공용] 모든 최고관리자, 운영자, 과정운영자 </option>
-
-											<option value="50425">[운영자] ttestt02</option>
-
-											<option value="50295">[운영자] 박수영</option>
-
-											<option value="50323">[운영자] 홍길동</option>
-
-											<option value="50093">[운영자] 홍길동1</option>
-
-											<option value="50005">[과정운영자] test3</option>
-
-											<option value="50006">[과정운영자] test4</option>
-
-											<option value="50427">[과정운영자] ttestt04</option>
-
-											<option value="50124">[과정운영자] 관리자</option>
-
-											<option value="50019">[과정운영자] 홍길동5</option>
-
-											<option value="50454">[최고관리자] admin5</option>
-
-											<option value="50460">[최고관리자] malgnjudy</option>
-
-											<option value="50424">[최고관리자] ttestt01</option>
-
-											<option value="50464">[최고관리자] wjdehdhs</option>
-
-											<option value="2073">[최고관리자] 나우수</option>
-
-											<option value="50112">[최고관리자] 맑은</option>
-
-											<option value="50277">[최고관리자] 영업왕 주대리</option>
-
-											<option value="2229">[최고관리자] 운영자</option>
-
-											<option value="2001">[최고관리자] 최고관리자</option>
-
+											<option th:if="${userList !=null}" th:each="ul:${userList}" th:text="'['+${ul.userId}+'] '+${ul.userName}"></option>
 										</select>
 									</td>
 								</tr>
