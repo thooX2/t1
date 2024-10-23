@@ -55,9 +55,9 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	}
 
 	@Override
-	public KoreanHistoryScore getKoreanHistoryScore(String tookExamInfoCode) {
+	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getKoreanHistoryScore(tookExamInfoCode);
+		return scoreMapper.getKoreanHistoryScore(userCode, tookExamInfoCode);
 	}
 
 	@Override

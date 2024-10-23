@@ -42,7 +42,7 @@ public class ScoreController {
 		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
 		List<TookExamInfo> tookExamList = scoreExamAllService.getTookExamList(userCode);
 		String tookExamInfoCode = tookExamList.get(0).getTookExamInfoCode();
-		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(tookExamInfoCode);
+		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
 		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(tookExamInfoCode);
 		MathScore mathScore = scoreExamAllService.getMathScore(tookExamInfoCode);
 		EnglishScore englishScore = scoreExamAllService.getEnglishScore(tookExamInfoCode);
@@ -51,7 +51,7 @@ public class ScoreController {
 		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(tookExamInfoCode);
 		log.info("tookExam : {}", tookExamList);
 //		log.info("koreanHistoryScore : {}", koreanHistoryScore);
-		log.info("koreanScore : {}", koreanScore);
+//		log.info("koreanScore : {}", koreanScore);
 //		log.info("mathScore : {}", mathScore);
 //		log.info("englishScore : {}", englishScore);
 //		log.info("inquiry1Score : {}", inquiry1Score);
@@ -72,8 +72,8 @@ public class ScoreController {
 	
 	@PostMapping("/searchTookExamScore")
 	@ResponseBody
-	public KoreanHistoryScore getScoreMain(String tookExamInfoCode, HttpSession session) {
-		return scoreExamAllService.getKoreanHistoryScore(tookExamInfoCode);
+	public KoreanHistoryScore getScoreMain(String userCode, String tookExamInfoCode, HttpSession session) {
+		return scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
 	}
 
 	@GetMapping("/examAllScoreSummary")

@@ -22,35 +22,6 @@
 		<result column="cur_exam_user_state" 	  	 property="curExamUserState"/>
 	</resultMap>
 	
-	<resultMap type="KoreanHistoryScore" id="KoreanHistoryScoreMap">
-		<id 	column="kor_his_scr_code" 			property="korHisScrCode"/>
-		<result column="user_code" 					property="userCode"/>
-		<result column="exam_code" 					property="examCode"/>
-		<result column="kor_his_subject_score_code" property="korHisSubjectScoreCode"/>
-		<result column="kor_his_std_scr" 		 	property="korHisStdScr"/>
-		<result column="kor_his_pct" 			 	property="korHisPct"/>
-		<result column="kor_his_grd" 			 	property="korHisGrd"/>
-		<result column="kor_his_ranking" 		 	property="korHisRanking"/>
-		<result column="kor_his_scr_create_time" 	property="korHisScrCreateTime"/>
-		<result column="kor_his_scr_update_time" 	property="korHisScrUpdateTime"/>
-		
-		<association property="subjectScore" resultMap="SubjectScoreMap"/>
-	</resultMap>
-	
-	<select id="getKoreanHistoryScore" parameterType="String" resultMap="KoreanHistoryScoreMap">
-		/* 한국사 점수 조회 */
-		SELECT
-			ss.took_exam_info_code,
-			ss.subject_score_origin,
-			khs.kor_his_grd,
-			khs.kor_his_ranking
-		FROM
-			subject_score ss INNER JOIN kor_his_scr khs
-			ON ss.subject_score_code = khs.kor_his_subject_score_code
-		WHERE
-			ss.took_exam_info_code = #{tookExamInfoCode};
-	</select>
-	
 	<resultMap type="KoreanScore" id="KoreanScoreMap">
 		<id 	column="kor_scr_code" 			property="korScrCode"/>
 		<result column="user_code" 				property="userCode"/>
@@ -102,15 +73,8 @@
 		<result column="math_scr_create_time" 	 property="mathScrCreateTime"/>
 		<result column="math_scr_update_time" 	 property="mathScrUpdateTime"/>
 
-		<association property="subjectScore" javaType="SubjectScore">
-			<id 	column="subject_score_code" 	property="subjectScoreCode"/>
-			<result column="user_code" 				property="userCode"/>
-			<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
-			<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
-			<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
-			<result column="subject_score_origin"   property="subjectScoreOrigin"/>
-			<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-		</association>
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
 	</resultMap>
 
 	<select id="getMathScore" parameterType="String" resultMap="MathScoreMap">
@@ -142,15 +106,7 @@
 		<result column="eng_scr_create_time" 	property="engScrCreateTime"/>
 		<result column="eng_scr_update_time" 	property="engScrUpdateTime"/>
 		
-		<association property="subjectScore" javaType="SubjectScore">
-			<id 	column="subject_score_code" 	property="subjectScoreCode"/>
-			<result column="user_code" 				property="userCode"/>
-			<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
-			<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
-			<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
-			<result column="subject_score_origin"   property="subjectScoreOrigin"/>
-			<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-		</association>
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
 	</resultMap>
 
 	<select id="getEnglishScore" parameterType="String" resultMap="EnglishScoreMap">
@@ -167,6 +123,35 @@
 			ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 	
+	<resultMap type="KoreanHistoryScore" id="KoreanHistoryScoreMap">
+		<id 	column="kor_his_scr_code" 			property="korHisScrCode"/>
+		<result column="user_code" 					property="userCode"/>
+		<result column="exam_code" 					property="examCode"/>
+		<result column="kor_his_subject_score_code" property="korHisSubjectScoreCode"/>
+		<result column="kor_his_std_scr" 		 	property="korHisStdScr"/>
+		<result column="kor_his_pct" 			 	property="korHisPct"/>
+		<result column="kor_his_grd" 			 	property="korHisGrd"/>
+		<result column="kor_his_ranking" 		 	property="korHisRanking"/>
+		<result column="kor_his_scr_create_time" 	property="korHisScrCreateTime"/>
+		<result column="kor_his_scr_update_time" 	property="korHisScrUpdateTime"/>
+		
+		<association property="subjectScore" resultMap="SubjectScoreMap"/>
+	</resultMap>
+	
+	<select id="getKoreanHistoryScore" parameterType="String" resultMap="KoreanHistoryScoreMap">
+		/* 한국사 점수 조회 */
+		SELECT
+			ss.took_exam_info_code,
+			ss.subject_score_origin,
+			khs.kor_his_grd,
+			khs.kor_his_ranking
+		FROM
+			subject_score ss INNER JOIN kor_his_scr khs
+			ON ss.subject_score_code = khs.kor_his_subject_score_code
+		WHERE
+			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
+	</select>
+	
 	<resultMap type="Inquiry1Score" id="Inquiry1ScoreMap">
 		<id 	column="inq1_scr_code" 			 property="inq1ScrCode"/>
 		<result column="user_code" 				 property="userCode"/>
@@ -180,15 +165,8 @@
 		<result column="inq1_scr_create_time" 	 property="inq1ScrCreateTime"/>
 		<result column="inq1_scr_update_time" 	 property="inq1ScrUpdateTime"/>
 		
-		<association property="subjectScore" javaType="SubjectScore">
-			<id 	column="subject_score_code" 	property="subjectScoreCode"/>
-			<result column="user_code" 				property="userCode"/>
-			<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
-			<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
-			<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
-			<result column="subject_score_origin"   property="subjectScoreOrigin"/>
-			<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-		</association>
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
 	</resultMap>
 	
 	<select id="getInquiry1Score" parameterType="String" resultMap="Inquiry1ScoreMap">
@@ -224,15 +202,8 @@
 		<result column="inq2_scr_create_time" 	 property="inq2ScrCreateTime"/>
 		<result column="inq2_scr_update_time" 	 property="inq2ScrUpdateTime"/>
 		
-		<association property="subjectScore" javaType="SubjectScore">
-			<id 	column="subject_score_code" 	property="subjectScoreCode"/>
-			<result column="user_code" 				property="userCode"/>
-			<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
-			<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
-			<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
-			<result column="subject_score_origin"   property="subjectScoreOrigin"/>
-			<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-		</association>
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
 	</resultMap>
 	
 	<select id="getInquiry2Score" parameterType="String" resultMap="Inquiry2ScoreMap">
@@ -268,15 +239,8 @@
 		<result column="frn_scr_create_time" 	 property="frnScrCreateTime"/>
 		<result column="frn_scr_update_time" 	 property="frnScrUpdateTime"/>
 		
-		<association property="subjectScore" javaType="SubjectScore">
-			<id 	column="subject_score_code" 	property="subjectScoreCode"/>
-			<result column="user_code" 				property="userCode"/>
-			<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
-			<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
-			<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
-			<result column="subject_score_origin"   property="subjectScoreOrigin"/>
-			<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-		</association>
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
 	</resultMap>
 
 	<select id="getSecondLanguageAndChineseCharactersScore" parameterType="String" resultMap="SecondLanguageAndChineseCharactersScoreMap">

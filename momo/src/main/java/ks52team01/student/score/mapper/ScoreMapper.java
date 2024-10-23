@@ -18,7 +18,7 @@ public interface ScoreMapper {
 
 	public void getScoreMain();
 	
-	public KoreanHistoryScore getKoreanHistoryScore(String tookExamInfoCode);
+	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode);
 	
 	public KoreanScore getKoreanScore(String tookExamInfoCode);
 	
