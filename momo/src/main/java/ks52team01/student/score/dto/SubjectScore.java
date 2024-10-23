@@ -14,4 +14,6 @@ public class SubjectScore {
 	private String subMirCatCode;
 	private int    subjectScoreOrigin;
 	private Date   subjectScoreRegTime;
+	
+	private SubjectMinorCategory subjectMinorCategory;
 }
