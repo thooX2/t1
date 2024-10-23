@@ -43,12 +43,12 @@ public class ScoreController {
 		List<TookExamInfo> tookExamList = scoreExamAllService.getTookExamList(userCode);
 		String tookExamInfoCode = tookExamList.get(0).getTookExamInfoCode();
 		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
-		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(tookExamInfoCode);
-		MathScore mathScore = scoreExamAllService.getMathScore(tookExamInfoCode);
-		EnglishScore englishScore = scoreExamAllService.getEnglishScore(tookExamInfoCode);
-		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(tookExamInfoCode);
-		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(tookExamInfoCode);
-		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(tookExamInfoCode);
+		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
+		MathScore mathScore = scoreExamAllService.getMathScore(userCode, tookExamInfoCode);
+		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode, tookExamInfoCode);
+		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode, tookExamInfoCode);
+		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode, tookExamInfoCode);
+		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
 		log.info("tookExam : {}", tookExamList);
 //		log.info("koreanHistoryScore : {}", koreanHistoryScore);
 //		log.info("koreanScore : {}", koreanScore);

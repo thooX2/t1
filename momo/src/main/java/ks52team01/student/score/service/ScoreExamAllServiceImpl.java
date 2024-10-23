@@ -61,38 +61,38 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	}
 
 	@Override
-	public KoreanScore getKoreanScore(String tookExamInfoCode) {
+	public KoreanScore getKoreanScore(String userCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getKoreanScore(tookExamInfoCode);
+		return scoreMapper.getKoreanScore(userCode, tookExamInfoCode);
 	}
 	
 	@Override
-	public MathScore getMathScore(String tookExamInfoCode) {
+	public MathScore getMathScore(String userCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getMathScore(tookExamInfoCode);
+		return scoreMapper.getMathScore(userCode, tookExamInfoCode);
 	}
 
 	@Override
-	public EnglishScore getEnglishScore(String tookExamInfoCode) {
+	public EnglishScore getEnglishScore(String userCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getEnglishScore(tookExamInfoCode);
+		return scoreMapper.getEnglishScore(userCode, tookExamInfoCode);
 	}
 
 	@Override
-	public Inquiry1Score getInquiry1Score(String tookExamInfoCode) {
+	public Inquiry1Score getInquiry1Score(String userCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getInquiry1Score(tookExamInfoCode);
+		return scoreMapper.getInquiry1Score(userCode, tookExamInfoCode);
 	}
 
 	@Override
-	public Inquiry2Score getInquiry2Score(String tookExamInfoCode) {
+	public Inquiry2Score getInquiry2Score(String userCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getInquiry2Score(tookExamInfoCode);
+		return scoreMapper.getInquiry2Score(userCode, tookExamInfoCode);
 	}
 
 	@Override
-	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String tookExamInfoCode) {
+	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String userCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getSecondLanguageAndChineseCharactersScore(tookExamInfoCode);
+		return scoreMapper.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
 	}
 }
