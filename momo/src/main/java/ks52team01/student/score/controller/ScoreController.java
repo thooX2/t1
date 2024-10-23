@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import ks52team01.student.exam.dto.TookExamInfo;
 import ks52team01.student.score.dto.EnglishScore;
 import ks52team01.student.score.dto.Inquiry1Score;
 import ks52team01.student.score.dto.Inquiry2Score;
@@ -18,7 +19,6 @@ import ks52team01.student.score.dto.KoreanHistoryScore;
 import ks52team01.student.score.dto.KoreanScore;
 import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
-import ks52team01.student.score.dto.TookExam;
 import ks52team01.student.score.service.ScoreExamAllService;
 import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
@@ -40,16 +40,16 @@ public class ScoreController {
 		SimpleDateFormat outputFormat = new SimpleDateFormat("yy.MM.dd");
 		// Date 객체를 원하는 형식의 문자열로 변환
 		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
-		List<TookExam> tookExam = scoreExamAllService.getTookExam(userCode);
-		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode);
-		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode);
-		MathScore mathScore = scoreExamAllService.getMathScore(userCode);
-		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode);
-		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode);
-		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode);
-		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService
-				.getSecondLanguageAndChineseCharactersScore(userCode);
-//		log.info("tookExam : {}", tookExam);
+		List<TookExamInfo> tookExamList = scoreExamAllService.getTookExamList(userCode);
+		String tookExamInfoCode = tookExamList.get(0).getTookExamInfoCode();
+		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(tookExamInfoCode);
+		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(tookExamInfoCode);
+		MathScore mathScore = scoreExamAllService.getMathScore(tookExamInfoCode);
+		EnglishScore englishScore = scoreExamAllService.getEnglishScore(tookExamInfoCode);
+		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(tookExamInfoCode);
+		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(tookExamInfoCode);
+		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(tookExamInfoCode);
+		log.info("tookExam : {}", tookExamList);
 //		log.info("koreanHistoryScore : {}", koreanHistoryScore);
 //		log.info("koreanScore : {}", koreanScore);
 //		log.info("mathScore : {}", mathScore);
@@ -59,7 +59,7 @@ public class ScoreController {
 //		log.info("secondLanguageAndChineseCharactersScore : {}", secondLanguageAndChineseCharactersScore);
 		model.addAttribute("user", user);
 		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
-		model.addAttribute("tookExam", tookExam);
+		model.addAttribute("tookExamList", tookExamList);
 		model.addAttribute("koreanHistoryScore", koreanHistoryScore);
 		model.addAttribute("koreanScore", koreanScore);
 		model.addAttribute("mathScore", mathScore);
@@ -73,8 +73,7 @@ public class ScoreController {
 	@PostMapping("/searchTookExamScore")
 	@ResponseBody
 	public KoreanHistoryScore getScoreMain(String tookExamInfoCode, HttpSession session) {
-		log.info("========== {} ==========", tookExamInfoCode);
-		return scoreExamAllService.getKoreanHistoryScoreByTookExamCode(tookExamInfoCode);
+		return scoreExamAllService.getKoreanHistoryScore(tookExamInfoCode);
 	}
 
 	@GetMapping("/examAllScoreSummary")

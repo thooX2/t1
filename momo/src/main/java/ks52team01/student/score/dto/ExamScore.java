@@ -31,6 +31,9 @@ public class ExamScore {
 	private Inquiry2Score 						    inquiry2Score;
 	private SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore;
 	
+	// subject_score 도 들어가야 함
+	
+	
 	private SubjectMajorCategory 					subjectMajorCategory;
 	private SubjectMinorCategory 					subjectMinorCategory;
 }
