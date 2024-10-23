@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks52team01.admin.exam.dto.ExamQnaChap;
+import ks52team01.admin.exam.dto.ExamQnaType;
 import ks52team01.admin.exam.dto.SubMirCate;
 import ks52team01.admin.exam.dto.SubMjrCate;
 import ks52team01.admin.exam.mapper.AdminExamMapper;
@@ -20,13 +22,24 @@ public class AdminExamServiceImpl implements AdminExamService {
 
 	private final AdminExamMapper adminExamMapper;
 
-	
+	@Override
+	public List<ExamQnaChap> getQnaChapList() {
+
+		return adminExamMapper.getQnaChapList();
+	}
+
+	@Override
+	public List<ExamQnaType> getQnaTypeList() {
+
+		return adminExamMapper.getQnaTypeList();
+	}
+
 	@Override
 	public List<User> getUserListByGrade(String gradeCode) {
 
 		return adminExamMapper.getUserListByGrade(gradeCode);
 	}
-	
+
 	@Override
 	public List<SubMirCate> getAdminExamCategoryList() {
 

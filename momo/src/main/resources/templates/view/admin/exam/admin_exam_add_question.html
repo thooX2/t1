@@ -3,8 +3,8 @@
 	layout:decorate="~{layouts/admin_layout}">
 
 <head>
-	<link rel="stylesheet" type="text/css" href="/admin/css/adminExamAddQuestion/admin.css" />
-	<link rel="stylesheet" type="text/css" href="/admin/css/adminExamAddQuestion/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/font-awesome.min.css" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 	<style>
@@ -89,7 +89,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
+	<script th:inline="javascript">
 		$(document).ready(function () {
 			$('#summernote').summernote({
 				height: 300,  // 고정된 높이
@@ -196,6 +196,81 @@
 		$('#goQuestionList').click(function () {
 			location.href = "/admin/exam/questionList";
 		})
+
+		$('select[name="item_cnt"]').click(function () {
+			if ($('select[name="item_cnt"]').val() == "4") {
+				$('input[name="item5"]').closest('tr').css('display', 'none');
+				$('input[name="item5"]').prop('disabled', 'true');
+			}
+			if ($('select[name="item_cnt"]').val() == "5") {
+				$('input[name="item5"]').closest('tr').css('display', '');
+				$('input[name="item5"]').prop('disabled', '');
+			}
+		})
+
+		// ---------------------------------------------------
+
+		var qnaTypeList = /*[[${qnaTypeList}]]*/[];
+		var qnaChapList = /*[[${qnaChapList}]]*/[];
+		var categoryList = /*[[${categoryList}]]*/[];
+
+		// 초기 옵션을 저장
+		const initialQnaChapList = $('#qnaChapList').html();
+		const initialQnaTypeListList = $('#qnaTypeList').html();
+
+		$('#categoryList').change(function () {
+			// value가 없고 text가 한국사인 select를 선택
+			if ($(this).val() == '' && $('#categoryList option:selected').text() == '한국사 > 한국사') {
+				// input hidden에 subject_major_catetory_code를 smjrcc4로 수동입력
+				$('#categorySubMjrCatCode').val('smjrcc4');
+				$('#qnaChapList').empty();
+				$('#qnaTypeList').empty();
+
+				// 위의 hidden value값을 기반으로 전체 문항타입목록에서 같은 값을 찾아 option을 생성 
+				qnaTypeList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+
+						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
+					}
+				})
+
+				// value가 없는 즉, 전체라고 쓰인 select를 선택하면 모든 리스트를 보여줌	
+			} else if ($(this).val() == '') {
+				$('#qnaChapList').html(initialQnaChapList);
+				$('#qnaTypeList').html(initialQnaTypeListList);
+			} else {
+				// 한국사를 제외한 다른 카테고리를 생성시 해당 카테고리의 출제단원과 출제유형만 보이게 설정
+				$('#qnaChapList').empty();
+				$('#qnaTypeList').empty();
+
+				// 전체 카테고리 리스트에서 select에서 현재 선택한 smjrcc를 찾아서 hidden에 부여
+				categoryList.forEach(element => {
+					if ($(this).val() == element['subMirCatCode']) {
+						$('#categorySubMjrCatCode').val(element['subMjrCatCode'])
+					}
+				})
+
+				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
+				qnaChapList.forEach(element => {
+					if (element['subMirCatCode'] == $(this).val()) {
+						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
+					}
+				})
+				// 위에서 부여한 hidden의 value를 기반으로 타입리스트를 순회해서 타입 select를 생성
+				qnaTypeList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
+					}
+				})
+
+			}
+		});
+	/*
+	* 중요! : 1.출제단원 테이블의 내용이 과목대분류, 중분류와 맞지 않음
+	* 		  2. 모두 확인하지 않았지만 문제 출제유형은 과목대분류, 중분류와 맞는거 같음	
+	*/
+
+
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -229,7 +304,7 @@
 				<div id="alert_area"></div>
 				<div id="sys-contents">
 					<form name="form1" method="post" enctype="multipart/form-data" target="sysfrm">
-						<input type="hidden" name="temp_id" value="792" />
+						<input type="hidden" id="categorySubMjrCatCode" name="" value="" />
 						<table class="c_tb01" cellpadding="0" cellspacing="0">
 							<tbody>
 								<tr>
@@ -250,12 +325,33 @@
 								<tr>
 									<td class="f_th01">문제 카테고리</td>
 									<td class="f_td01" colspan="3">
-										<select name="category_id" class="js-example-basic-single">
+										<select id="categoryList" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
-
 											<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
 												th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
 												th:value="${cl.subMirCatCode}">
+											</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 출제단원</td>
+									<td class="f_td01" colspan="3">
+										<select id="qnaChapList" class="js-example-basic-single">
+											<option value=""> - 전체 - </option>
+											<option th:if="${qnaChapList !=null}" th:each="qcl:${qnaChapList}"
+												th:text="${qcl.examQnaChapNm}" value="${qcl.examQnaChapCode}">
+											</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 출제유형</td>
+									<td class="f_td01" colspan="3">
+										<select id="qnaTypeList" class="js-example-basic-single">
+											<option value=""> - 전체 - </option>
+											<option th:if="${qnaTypeList !=null}" th:each="qtl:${qnaTypeList}"
+												th:text="${qtl.examQnaTypeNm}" value="${qtl.examQnaTypeCode}">
 											</option>
 										</select>
 									</td>
@@ -479,8 +575,8 @@
 								<tr>
 									<td class="f_th01">정답설명</td>
 									<td class="f_td01" colspan="3"><textarea name="description" id="textarea1"
-											style="width:99%;height:150px;"
-											class="mceNoEditor">슈바이처 박사는 인생에서 가장 멋진 일을 모든 일에 감사는 것 이라고 했고 그렇기 때문에 감사한 일이 있으면 지체하지 말고 마음을 표현하라,라고 했다.</textarea>
+											style="width:99%;height:150px;" class="mceNoEditor"
+											placeholder="여기에 설명을 입력하세요"></textarea>
 									</td>
 								</tr>
 								<tr>
@@ -491,7 +587,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">담당자</td>
+									<td class="f_th01">출제자</td>
 									<td class="f_td01" colspan="3">
 										<select name="manager_id" class="js-example-basic-single">
 											<option value=""> - 담당자 선택 - </option>

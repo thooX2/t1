@@ -43,6 +43,33 @@
 		</resultMap>
 
 
+	<select id="getQnaChapList" resultType="ExamQnaChap">
+		SELECT
+			exam_qna_chap_code as examQnaChapCode,
+			user_code as userCode,
+			sub_mjr_cat_code as subMjrCatCode,
+			sub_mir_cat_code as subMirCatCode,
+			exam_qna_chap_nm as examQnaChapNm
+		FROM
+			exam_qna_chap
+		ORDER BY
+			CAST(SUBSTRING(exam_qna_chap_code,5) AS UNSIGNED);
+	</select>
+	
+
+	<select id="getQnaTypeList" resultType="ExamQnaType">
+		SELECT
+			exam_qna_type_code as examQnaTypeCode,
+			sub_mjr_cat_code as subMjrCatCode,
+			sub_mir_cat_code as subMirCatCode,
+			user_code as userCode,
+			exam_qna_type_nm as examQnaTypeNm,
+			exam_qna_type_create_date as examQnaTypeCreateDate
+		FROM
+			exam_qna_type
+		ORDER BY
+			CAST(SUBSTRING(exam_qna_type_code,5) AS UNSIGNED)
+	</select>
 
 	<select id="getAdminExamCategoryList" resultMap="SubMirCateMap">
 		SELECT
