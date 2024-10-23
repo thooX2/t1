@@ -4,6 +4,24 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.student.score.mapper.ScoreMapper">	
 	
+	<resultMap type="SubjectScore" id="SubjectScoreMap">
+		<id 	column="subject_score_code" 	property="subjectScoreCode"/>
+		<result column="user_code" 				property="userCode"/>
+		<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
+		<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
+		<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
+		<result column="subject_score_origin"   property="subjectScoreOrigin"/>
+		<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
+	</resultMap>
+	
+	<resultMap type="SubjectMinorCategory" id="SubjectMinorCategoryMap">
+		<id 	column="sub_mir_cat_code" 	 property="subMirCatCode"/>
+		<result column="sub_mjr_cat_code"   	 property="subMjrCatCode"/>
+		<result column="sub_mir_cat_nm" 	  	 property="subMirCatNm"/>
+		<result column="comm_slt"   	 property="commSlt"/>
+		<result column="cur_exam_user_state" 	  	 property="curExamUserState"/>
+	</resultMap>
+	
 	<resultMap type="KoreanHistoryScore" id="KoreanHistoryScoreMap">
 		<id 	column="kor_his_scr_code" 			property="korHisScrCode"/>
 		<result column="user_code" 					property="userCode"/>
@@ -16,15 +34,7 @@
 		<result column="kor_his_scr_create_time" 	property="korHisScrCreateTime"/>
 		<result column="kor_his_scr_update_time" 	property="korHisScrUpdateTime"/>
 		
-		<association property="subjectScore" javaType="SubjectScore">
-			<id 	column="subject_score_code" 	property="subjectScoreCode"/>
-			<result column="user_code" 				property="userCode"/>
-			<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
-			<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
-			<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
-			<result column="subject_score_origin"   property="subjectScoreOrigin"/>
-			<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-		</association>
+		<association property="subjectScore" resultMap="SubjectScoreMap"/>
 	</resultMap>
 	
 	<select id="getKoreanHistoryScore" parameterType="String" resultMap="KoreanHistoryScoreMap">
@@ -54,15 +64,8 @@
 		<result column="kor_scr_create_time" 	property="korScrCreateTime"/>
 		<result column="kor_scr_update_time" 	property="korScrUpdateTime"/>
 
-		<association property="subjectScore" javaType="SubjectScore">
-			<id 	column="subject_score_code" 	property="subjectScoreCode"/>
-			<result column="user_code" 				property="userCode"/>
-			<result column="took_exam_info_code" 	property="tookExamInfoCode"/>
-			<result column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
-			<result column="sub_mir_cat_code" 		property="subMirCatCode"/>
-			<result column="subject_score_origin"   property="subjectScoreOrigin"/>
-			<result column="subject_score_reg_time" property="subjectScoreRegTime"/>
-		</association>
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
 	</resultMap>
 	
 	<select id="getKoreanScore" parameterType="String" resultMap="KoreanScoreMap">
@@ -70,14 +73,18 @@
 		SELECT
 			ss.took_exam_info_code,
 			ss.sub_mir_cat_code,
+			smc.sub_mir_cat_nm,
 			ss.subject_score_origin,
 			ks.kor_std_scr,
 			ks.kor_pct,
 			ks.kor_grd,
 			ks.kor_ranking
 		FROM
-			subject_score ss INNER JOIN kor_scr ks
+			subject_score ss
+			INNER JOIN kor_scr ks
 			ON ss.subject_score_code = ks.kor_subject_score_code
+			INNER JOIN sub_mir_cat smc
+			ON ss.sub_mir_cat_code = smc.sub_mir_cat_code
 		WHERE
 			ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
