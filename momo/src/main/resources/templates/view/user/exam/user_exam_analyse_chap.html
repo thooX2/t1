@@ -15,21 +15,32 @@
 </th:block>
 <th:block layout:fragment="customJs">
 	<script>
-		const $title = document.querySelector('title');
-		$title.textContent = '모의고사 결과분석'
-		function fncShowDtl(id) {
-			const content = document.getElementById('dtlCont' + id);
-			const classname = document.getElementById('tit_main' + id);
-			if (content.style.display == "none" || content.style.display == "") {
-				content.style.display = "block";
-				classname.classList.remove("off");
-				classname.classList.add("on");
-			} else {
-				content.style.display = "none";
-				classname.classList.remove("on");
-				classname.classList.add("off");
-			}
-		}
+	const $title = document.querySelector('title');
+	$title.textContent = '모의고사 결과분석';
+
+	function fncShowDtl(id) {
+	    const content = document.getElementById('dtlCont' + id);
+	    const classname = document.getElementById('tit_main' + id);
+	    
+	    // 모든 내용 숨기기
+	    const allContents = document.querySelectorAll('[id^="dtlCont"]');
+	    const allClassNames = document.querySelectorAll('[id^="tit_main"]');
+	    allContents.forEach((item) => {
+	        item.style.display = "none";
+	    });
+	    allClassNames.forEach((item) => {
+	        item.classList.remove("on");
+	        item.classList.add("off");
+	    });
+
+	    // 클릭한 항목 표시하기
+	    if (content.style.display == "none" || content.style.display == "") {
+	        content.style.display = "block";
+	        classname.classList.remove("off");
+	        classname.classList.add("on");
+	    }
+	}
+
 
 
 		const ctx = document.getElementById('myRadarChart').getContext('2d');
@@ -276,9 +287,21 @@
 										<td>
 											<div class="tbl_in--atc" id="mDomCdDiv">
 
+												<label id="">국어</label>
+											
+												<label id="">수학</label>
+												
+												<label id="">영어</label>
+												
 												<label id="mDomCdHI" onclick="fncSetDom('HI')" class="on">한국사</label>
-
+	
 												<label id="mDomCdSC" onclick="fncSetDom('SC')">과학탐구</label>
+												
+												<label id="">사회탐구</label>
+												
+												<label id="">직업탐구</label>
+												
+												<label id="">제2외국어</label>											
 
 											</div>
 										</td>
