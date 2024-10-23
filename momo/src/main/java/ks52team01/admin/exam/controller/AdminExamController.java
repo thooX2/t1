@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ks52team01.admin.exam.dto.SubMirCate;
 import ks52team01.admin.exam.dto.SubMjrCate;
 import ks52team01.admin.exam.service.AdminExamService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +23,12 @@ public class AdminExamController {
 	private final AdminExamService adminExamService;
 
 	@GetMapping("/category")
-	public String adminExamCategory() {
-		List<SubMjrCate> subMjrCateList = new ArrayList<SubMjrCate>();
-		subMjrCateList = adminExamService.getAdminExamCategoryList();
-		log.error("list : {}", subMjrCateList);
+	public String adminExamCategory(Model model) {
 
+		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		categoryList = adminExamService.getAdminExamCategoryList();
+
+		model.addAttribute("categoryList", categoryList);
 		return "view/admin/exam/admin_exam_category";
 	}
 
