@@ -228,6 +228,17 @@ tr {
 										</td>
 									</tr>
 									<tr class="report-card-subject-tr">
+										<td>응시여부</td>
+										<td>응시</td>
+										<td>응시</td>
+										<td>응시</td>
+										<td>응시</td>
+										<td>응시</td>
+										<td>응시</td>
+										<td th:if="examScore.secondLanguageAndChineseCharactersScore == null">미응시</td>
+										<td th:unless="examScore.secondLanguageAndChineseCharactersScore == null">응시</td>
+									</tr>									
+									<tr class="report-card-subject-tr">
 										<td>선택과목</td>
 										<td class="report-card-empty-row"></td>
 										<td id="korean-select-subject" th:text="${examScore.koreanScore != null ? examScore.koreanScore.subjectMinorCategory.subMirCatNm : ''}"></td>
