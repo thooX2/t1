@@ -41,7 +41,7 @@
 
 									<div class="myWorkbook">
 										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											<a th:href = "@{/study/addlearning}">학습계획 생성</a>
+											<a th:href = "@{/study/addLearningSchedule}">학습계획 생성</a>
 										</div>
 
 										<div id="MyTestArea">
@@ -78,8 +78,8 @@
 														<td th:text="${list.learningScheduleEnd}"></td>
 														<td th:text="${list.learningScheduleCompleate}"></td>
 														<td><a href="/study/getDetailedScheduleList">세부 일정 이동</a></td>
-														<td><a th:href="@{/study/modifylearning(list.learningSchedule =*{list.learningSchedule})}">수정</a></td>
-														<td><a th:href="@{/study/deletelearning(list.learningSchedule =*{list.learningSchedule})}">삭제</a></td>
+														<td><a th:href="@{/study/modifyLearningSchedule(list.learningSchedule =*{list.learningSchedule})}">수정</a></td>
+														<td><a th:href="@{/study/removeLearningSchedule(list.learningSchedule =*{list.learningSchedule})}">삭제</a></td>
 													</tr>
 											</table>
 										</div>

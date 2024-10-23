@@ -71,15 +71,15 @@ public interface StudyMapper {
 
 	public void removeProblemSolving(ProblemSolving problemsolvingDAO);
 
-	List<StudyTarget> getStudyTarget();
+	List<StudyTarget> getStudyTarget(String id);
 	
-	List<TargetUniversity> getTargetUniversity();
+	List<TargetUniversity> getTargetUniversity(String id);
 
-	List<TargetGrade> getTargetGrade();
+	List<TargetGrade> getTargetGrade(String id);
 
-	List<StudySchedule> getStudySchedule();
+	List<StudySchedule> getStudySchedule(String id);
 
-	List<DetailedSchedule> getDetailedSchedule();
+	List<DetailedSchedule> getDetailedSchedule(String id);
 
 	List<ProblemScrape> getProblemScrape();
 	

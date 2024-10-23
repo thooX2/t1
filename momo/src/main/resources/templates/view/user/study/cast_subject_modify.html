@@ -44,11 +44,10 @@
 										</div>
 
 										<div id="MyTestArea">
-											<form action="/study/modifyCastSubject" method="post" class="bot_tbl--type">
-												<!-- 나중에 쿼리문 혹은 javascrip나 jquery들을 이용하여 처리를 해야하는 부분 -->
+											<form th:action="@{/study/modifyCastSubject}" method="post" class="bot_tbl--type">
 												<input type="hidden" name="idx" th:value="${listIdx}" />
-												<input type="hidden" name="usercode" th:value="${session.loggedInUser.userCode}" />
-												
+												<!-- <input type="hidden" name="usercode" th:value="${session.loggedInUser.userCode}" />
+												 -->
 												
 												<input type="hidden" name="smcck" value="smircc1,smircc2" />
 												<input type="hidden" name="smccm" value="smircc6,smircc7" />

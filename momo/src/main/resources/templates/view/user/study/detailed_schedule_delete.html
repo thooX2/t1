@@ -48,12 +48,10 @@
 												<a href = "/addDetailed">상세스케쥴 생성</a>
 											</div>
 											<div id="MyTestArea">
-												<form action="/study/removeDetailedSchedule" method="post"
+												<form th:action="@{/study/removeDetailedSchedule}" method="post"
 													class="insert">
 													<a>정말로 삭제하시겠습니까?</a>
-													<!-- 처리 완료되는 대로 pk 따로 수정해야 되는 페이지 -->
 													<input type="hidden" name="detailedSchedule" th:value=${listIdx} /> <br /> 
-												
 													<input type="submit" value="상세 스케쥴 삭제"> <br /> <br /> <br />
 												</form>
 											</div>

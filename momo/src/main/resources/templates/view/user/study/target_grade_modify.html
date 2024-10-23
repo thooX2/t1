@@ -44,7 +44,7 @@
 										</div>
 
 										<div id="MyTestArea">
-											<form action="/study/modifyTargetGrade" method="post" class="insert">
+											<form th:action="@{/study/modifyTargetGrade}" method="post" class="insert">
 				<input type="hidden" name="gradeCode" th:value="${listIdx}" />
 					
 					<a>대과목 선택 : <br />

@@ -23,28 +23,28 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	@Override
-	public List<StudyTarget> getStudyTarget(){
-		return studyMapper.getStudyTarget();
+	public List<StudyTarget> getStudyTarget(String id){
+		return studyMapper.getStudyTarget(id);
 	}
 	
 	@Override
-	public List<TargetUniversity> getTargetUniversity(){
-		return studyMapper.getTargetUniversity();
+	public List<TargetUniversity> getTargetUniversity(String id){
+		return studyMapper.getTargetUniversity(id);
 	}
 	
 	@Override
-	public List<TargetGrade>  getTargetGrade(){
-		return studyMapper.getTargetGrade();
+	public List<TargetGrade>  getTargetGrade(String id){
+		return studyMapper.getTargetGrade(id);
 	}
 	
 	@Override
-	public List<StudySchedule> getStudySchedule(){
-		return studyMapper.getStudySchedule();
+	public List<StudySchedule> getStudySchedule(String id){
+		return studyMapper.getStudySchedule(id);
 	}
 	
 	@Override
-	public List<DetailedSchedule> getDetailedSchedule(){
-		return studyMapper.getDetailedSchedule();
+	public List<DetailedSchedule> getDetailedSchedule(String id){
+		return studyMapper.getDetailedSchedule(id);
 	}
 
 	@Override
