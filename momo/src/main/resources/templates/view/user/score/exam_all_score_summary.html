@@ -57,7 +57,7 @@ tr {
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
+	<script th:inline="javascript">
 		$('#took-exam-select').change(function() {
 			const val = $(this).val();
 			console.log(val);
@@ -70,9 +70,22 @@ tr {
 												}
 									});
 			request.done(function(data) {
-				$('#korean-history-original-score').text(`${data.subjectScore.subjectScoreOrigin}`);
-				$('#korean-history-rank').text(`${data.korHisRanking}`);
-				$('#korean-history-grade').text(`${data.korHisGrd}`);
+				$('#korean-select-subject').text(`${data.koreanScore.subjectMinorCategory.subMirCatNm}`);
+				$('#math-select-subject').text(`${data.mathScore.subjectMinorCategory.subMirCatNm}`);
+				$('#inquiry1-select-subject').text(`${data.inquiry1Score.subjectMinorCategory.subMirCatNm}`);
+				$('#inquiry2-select-subject').text(`${data.inquiry2Score.subjectMinorCategory.subMirCatNm}`);
+				// null error
+				$('#second-language-and-chinese-characters-select-subject').text(`${data.secondLanguageAndChineseCharactersScore.subjectMinorCategory.subMirCatNm}`);
+				
+				$('#korean-history-original-score').text(`${data.koreanHistoryScore.subjectScore.subjectScoreOrigin}`);
+				$('#korean-original-score').text(`${data.koreanScore.subjectScore.subjectScoreOrigin}`);
+				$('#math-original-score').text(`${data.mathScore.subjectScore.subjectScoreOrigin}`);
+				$('#english-original-score').text(`${data.englishScore.subjectScore.subjectScoreOrigin}`);
+				$('#inquiry1-original-score').text(`${data.inquiry1Score.subjectScore.subjectScoreOrigin}`);
+				$('#inquiry2-original-score').text(`${data.inquiry2Score.subjectScore.subjectScoreOrigin}`);
+				$('#second-language-and-chinese-characters-original-score').text(`${data.secondLanguageAndChineseCharactersScore.subjectScore.subjectScoreOrigin}`);
+				$('#korean-history-rank').text(`${data.koreanHistoryScore.korHisRanking}`);
+				$('#korean-history-grade').text(`${data.koreanHistoryScore.korHisGrd}`);
 			});
 			request.fail(function(jqXHR, textStatus, error){
 				console.log(error);
@@ -217,88 +230,76 @@ tr {
 									<tr class="report-card-subject-tr">
 										<td>선택과목</td>
 										<td class="report-card-empty-row"></td>
-										<td
-											th:text="${koreanScore != null ? koreanScore.subjectMinorCategory.subMirCatNm : ''}"></td>
-										<td
-											th:text="${mathScore != null ? mathScore.subjectScore.subMirCatCode : ''}"></td>
+										<td id="korean-select-subject" th:text="${examScore.koreanScore != null ? examScore.koreanScore.subjectMinorCategory.subMirCatNm : ''}"></td>
+										<td id="math-select-subject" th:text="${examScore.mathScore != null ? examScore.mathScore.subjectMinorCategory.subMirCatNm : ''}"></td>
 										<td class="report-card-empty-row"></td>
-										<td
-											th:text="${inquiry1Score != null ? inquiry1Score.subjectScore.subMirCatCode : ''}"></td>
-										<td
-											th:text="${inquiry2Score != null ? inquiry2Score.subjectScore.subMirCatCode : ''}"></td>
-										<td
-											th:text="${secondLanguageAndChineseCharactersScore != null ? secondLanguageAndChineseCharactersScore.subjectScore.subMirCatCode : ''}"></td>
+										<td id="inquiry1-select-subject" th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.subjectMinorCategory.subMirCatNm : ''}"></td>
+										<td id="inquiry2-select-subject" th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.subjectMinorCategory.subMirCatNm : ''}"></td>
+										<td id="second-language-and-chinese-characters-select-subject" th:text="${examScore.secondLanguageAndChineseCharactersScore != null ? examScore.secondLanguageAndChineseCharactersScore.subjectMinorCategory.subMirCatNm : ''}"></td>
 									</tr>
-									<tr th:object="${koreanHistoryScore.subjectScore}">
+									<tr>
 										<td>원점수</td>
-										<td id="korean-history-original-score"
-											th:text="${koreanHistoryScore != null ? koreanHistoryScore.subjectScore.subjectScoreOrigin : ''}"></td>
-										<td
-											th:text="${koreanScore != null ? koreanScore.subjectScore.subjectScoreOrigin : ''}"></td>
-										<td
-											th:text="${mathScore != null ? mathScore.subjectScore.subjectScoreOrigin : ''}"></td>
-										<td
-											th:text="${englishScore != null ? englishScore.subjectScore.subjectScoreOrigin : ''}"></td>
-										<td
-											th:text="${inquiry1Score != null ? inquiry1Score.subjectScore.subjectScoreOrigin : ''}"></td>
-										<td
-											th:text="${inquiry2Score != null ? inquiry2Score.subjectScore.subjectScoreOrigin : ''}"></td>
-										<td
-											th:text="${secondLanguageAndChineseCharactersScore != null ? secondLanguageAndChineseCharactersScore.subjectScore.subjectScoreOrigin : ''}"></td>
+										<td id="korean-history-original-score" th:text="${examScore.koreanHistoryScore != null ? examScore.koreanHistoryScore.subjectScore.subjectScoreOrigin : ''}"></td>
+										<td id="korean-original-score" th:text="${examScore.koreanScore != null ? examScore.koreanScore.subjectScore.subjectScoreOrigin : ''}"></td>
+										<td id="math-original-score" th:text="${examScore.mathScore != null ? examScore.mathScore.subjectScore.subjectScoreOrigin : ''}"></td>
+										<td id="english-original-score" th:text="${examScore.englishScore != null ? examScore.englishScore.subjectScore.subjectScoreOrigin : ''}"></td>
+										<td id="inquiry1-original-score" th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.subjectScore.subjectScoreOrigin : ''}"></td>
+										<td id="inquiry2-original-score" th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.subjectScore.subjectScoreOrigin : ''}"></td>
+										<td id="second-language-and-chinese-characters-original-score" th:text="${examScore.secondLanguageAndChineseCharactersScore != null ? examScore.secondLanguageAndChineseCharactersScore.subjectScore.subjectScoreOrigin : ''}"></td>
 									</tr>
 									<tr>
 										<td>표준점수</td>
 										<td rowspan="2" class="report-card-empty-row"></td>
 										<td
-											th:text="${koreanScore != null ? koreanScore.korStdScr : ''}"></td>
-										<td th:text="${mathScore != null ? mathScore.mathStdScr : ''}"></td>
+											th:text="${examScore.koreanScore != null ? examScore.koreanScore.korStdScr : ''}"></td>
+										<td th:text="${examScore.mathScore != null ? examScore.mathScore.mathStdScr : ''}"></td>
 										<td rowspan="2" class="report-card-empty-row"></td>
 										<td
-											th:text="${inquiry1Score != null ? inquiry1Score.inq1StdScr : ''}"></td>
+											th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.inq1StdScr : ''}"></td>
 										<td
-											th:text="${inquiry2Score != null ? inquiry2Score.inq2StdScr : ''}"></td>
+											th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.inq2StdScr : ''}"></td>
 										<td rowspan="2" class="report-card-empty-row"></td>
 									</tr>
 									<tr>
 										<td>백분위</td>
-										<td th:text="${koreanScore != null ? koreanScore.korPct : ''}"></td>
-										<td th:text="${mathScore != null ? mathScore.mathPct : ''}"></td>
+										<td th:text="${examScore.koreanScore != null ? examScore.koreanScore.korPct : ''}"></td>
+										<td th:text="${examScore.mathScore != null ? examScore.mathScore.mathPct : ''}"></td>
 										<td
-											th:text="${inquiry1Score != null ? inquiry1Score.inq1Pct : ''}"></td>
+											th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.inq1Pct : ''}"></td>
 										<td
-											th:text="${inquiry2Score != null ? inquiry2Score.inq2Pct : ''}"></td>
+											th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.inq2Pct : ''}"></td>
 									</tr>
 									<tr>
 										<td>석차</td>
 										<td id="korean-history-rank"
-											th:text="${koreanHistoryScore != null ? koreanHistoryScore.korHisRanking : ''}"></td>
+											th:text="${examScore.koreanHistoryScore != null ? examScore.koreanHistoryScore.korHisRanking : ''}"></td>
 										<td
-											th:text="${koreanScore != null ? koreanScore.korRanking : ''}"></td>
+											th:text="${examScore.koreanScore != null ? examScore.koreanScore.korRanking : ''}"></td>
 										<td
-											th:text="${mathScore != null ? mathScore.mathRanking : ''}"></td>
+											th:text="${examScore.mathScore != null ? examScore.mathScore.mathRanking : ''}"></td>
 										<td
-											th:text="${englishScore != null ? englishScore.engRanking : ''}"></td>
+											th:text="${examScore.englishScore != null ? examScore.englishScore.engRanking : ''}"></td>
 										<td
-											th:text="${inquiry1Score != null ? inquiry1Score.inq1Ranking : ''}"></td>
+											th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.inq1Ranking : ''}"></td>
 										<td
-											th:text="${inquiry2Score != null ? inquiry2Score.inq2Ranking : ''}"></td>
+											th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.inq2Ranking : ''}"></td>
 										<td
-											th:text="${secondLanguageAndChineseCharactersScore != null ? secondLanguageAndChineseCharactersScore.frnRanking : ''}"></td>
+											th:text="${examScore.secondLanguageAndChineseCharactersScore != null ? examScore.secondLanguageAndChineseCharactersScore.frnRanking : ''}"></td>
 									</tr>
 									<tr>
 										<td>등급</td>
 										<td id="korean-history-grade"
-											th:text="${koreanHistoryScore != null ? koreanHistoryScore.korHisGrd : ''}"></td>
-										<td th:text="${koreanScore != null ? koreanScore.korGrd : ''}"></td>
-										<td th:text="${mathScore != null ? mathScore.mathGrd : ''}"></td>
+											th:text="${examScore.koreanHistoryScore != null ? examScore.koreanHistoryScore.korHisGrd : ''}"></td>
+										<td th:text="${examScore.koreanScore != null ? examScore.koreanScore.korGrd : ''}"></td>
+										<td th:text="${examScore.mathScore != null ? examScore.mathScore.mathGrd : ''}"></td>
 										<td
-											th:text="${englishScore != null ? englishScore.engGrd : ''}"></td>
+											th:text="${examScore.englishScore != null ? examScore.englishScore.engGrd : ''}"></td>
 										<td
-											th:text="${inquiry1Score != null ? inquiry1Score.inq1Grd : ''}"></td>
+											th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.inq1Grd : ''}"></td>
 										<td
-											th:text="${inquiry2Score != null ? inquiry2Score.inq2Grd : ''}"></td>
+											th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.inq2Grd : ''}"></td>
 										<td
-											th:text="${secondLanguageAndChineseCharactersScore != null ? secondLanguageAndChineseCharactersScore.frnGrd : ''}"></td>
+											th:text="${examScore.secondLanguageAndChineseCharactersScore != null ? examScore.secondLanguageAndChineseCharactersScore.frnGrd : ''}"></td>
 									</tr>
 								</tbody>
 							</table>

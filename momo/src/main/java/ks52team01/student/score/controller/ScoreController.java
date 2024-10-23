@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import ks52team01.student.exam.dto.TookExamInfo;
 import ks52team01.student.score.dto.EnglishScore;
+import ks52team01.student.score.dto.ExamScore;
 import ks52team01.student.score.dto.Inquiry1Score;
 import ks52team01.student.score.dto.Inquiry2Score;
 import ks52team01.student.score.dto.KoreanHistoryScore;
@@ -42,14 +43,14 @@ public class ScoreController {
 		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
 		List<TookExamInfo> tookExamList = scoreExamAllService.getTookExamList(userCode);
 		String tookExamInfoCode = tookExamList.get(0).getTookExamInfoCode();
-		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
 		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
 		MathScore mathScore = scoreExamAllService.getMathScore(userCode, tookExamInfoCode);
 		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode, tookExamInfoCode);
+		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
 		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode, tookExamInfoCode);
 		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode, tookExamInfoCode);
 		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
-		log.info("tookExam : {}", tookExamList);
+//		log.info("tookExam : {}", tookExamList);
 //		log.info("koreanHistoryScore : {}", koreanHistoryScore);
 //		log.info("koreanScore : {}", koreanScore);
 //		log.info("mathScore : {}", mathScore);
@@ -57,23 +58,42 @@ public class ScoreController {
 //		log.info("inquiry1Score : {}", inquiry1Score);
 //		log.info("inquiry2Score : {}", inquiry2Score);
 //		log.info("secondLanguageAndChineseCharactersScore : {}", secondLanguageAndChineseCharactersScore);
+		ExamScore examScore = new ExamScore();
+		examScore.setKoreanScore(koreanScore);
+		examScore.setMathScore(mathScore);
+		examScore.setEnglishScore(englishScore);
+		examScore.setKoreanHistoryScore(koreanHistoryScore);
+		examScore.setInquiry1Score(inquiry1Score);
+		examScore.setInquiry2Score(inquiry2Score);
+		examScore.setSecondLanguageAndChineseCharactersScore(secondLanguageAndChineseCharactersScore);
 		model.addAttribute("user", user);
 		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
 		model.addAttribute("tookExamList", tookExamList);
-		model.addAttribute("koreanHistoryScore", koreanHistoryScore);
-		model.addAttribute("koreanScore", koreanScore);
-		model.addAttribute("mathScore", mathScore);
-		model.addAttribute("englishScore", englishScore);
-		model.addAttribute("inquiry1Score", inquiry1Score);
-		model.addAttribute("inquiry2Score", inquiry2Score);
-		model.addAttribute("secondLanguageAndChineseCharactersScore", secondLanguageAndChineseCharactersScore);
+		model.addAttribute("examScore", examScore);
 		return "view/user/score/exam_all_score_summary";
 	}
 	
 	@PostMapping("/searchTookExamScore")
 	@ResponseBody
-	public KoreanHistoryScore getScoreMain(String userCode, String tookExamInfoCode, HttpSession session) {
-		return scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
+	public ExamScore getScoreMain(String tookExamInfoCode, HttpSession session) {
+		User user = (User) session.getAttribute("loggedInUser");
+		String userCode = user.getUserCode();
+		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
+		MathScore mathScore = scoreExamAllService.getMathScore(userCode, tookExamInfoCode);
+		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode, tookExamInfoCode);
+		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
+		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode, tookExamInfoCode);
+		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode, tookExamInfoCode);
+		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
+		ExamScore examScore = new ExamScore();
+		examScore.setKoreanScore(koreanScore);
+		examScore.setMathScore(mathScore);
+		examScore.setEnglishScore(englishScore);
+		examScore.setKoreanHistoryScore(koreanHistoryScore);
+		examScore.setInquiry1Score(inquiry1Score);
+		examScore.setInquiry2Score(inquiry2Score);
+		examScore.setSecondLanguageAndChineseCharactersScore(secondLanguageAndChineseCharactersScore);
+		return examScore;
 	}
 
 	@GetMapping("/examAllScoreSummary")

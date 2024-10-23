@@ -82,6 +82,7 @@
 		SELECT
 			ss.took_exam_info_code,
 			ss.sub_mir_cat_code,
+			smc.sub_mir_cat_nm,
 			ss.subject_score_origin,
 			ms.math_std_scr,
 			ms.math_pct,
@@ -108,7 +109,7 @@
 		<result column="eng_scr_create_time" 	property="engScrCreateTime"/>
 		<result column="eng_scr_update_time" 	property="engScrUpdateTime"/>
 		
-		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectScore" resultMap="SubjectScoreMap"/>
 	</resultMap>
 
 	<select id="getEnglishScore" parameterType="String" resultMap="EnglishScoreMap">
@@ -176,6 +177,7 @@
 		SELECT
 			ss.took_exam_info_code,
 			ss.sub_mir_cat_code,
+			smc.sub_mir_cat_nm,
 			ss.subject_score_origin,
 			i1s.inq1_std_scr,
 			i1s.inq1_pct,
@@ -213,6 +215,7 @@
 		SELECT
 			ss.took_exam_info_code,
 			ss.sub_mir_cat_code,
+			smc.sub_mir_cat_nm,
 			ss.subject_score_origin,
 			i2s.inq2_std_scr,
 			i2s.inq2_pct,
@@ -250,6 +253,7 @@
 		SELECT
 			ss.took_exam_info_code,
 			ss.sub_mir_cat_code,
+			smc.sub_mir_cat_nm,
 			ss.subject_score_origin,
 			fs.frn_grd,
 			fs.frn_ranking
