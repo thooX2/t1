@@ -56,6 +56,9 @@
 					chekedF('month');
 				}
 			})
+			$('input[name="month"]').change(function() {
+		        monthSel(); // 개별 월 체크박스 상태에 따라 "전체" 체크박스 업데이트
+		    });
 		});
 
 		$(function() {
@@ -66,6 +69,19 @@
 					chekedF('subj');
 				}
 			})
+			$('input[name="subj"]').change(function() {
+		        subjSel(); // 개별 과목 체크박스 상태에 따라 "전체" 체크박스 업데이트
+		    });
+		});	
+		
+		$(document).ready(function() {
+		    // 페이지 로드 시 yearSel 함수 호출
+		    yearSel();
+
+		    // beginYear와 endYear의 change 이벤트를 수동으로 등록
+		    $('#beginYear, #endYear').change(function() {
+		        yearSel(); // yearSel 함수 호출
+		    });		    
 		});
 
 		function yearSel() {
@@ -160,6 +176,8 @@
 		$('.btn_popup_test').click(function() {
 			paperOn();
 		})
+	
+
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -208,7 +226,7 @@
 									<label for="sFormDate">연도</label>
 								</dt>
 								<dd class="type_yesrs">
-									<select name="beginYear" id="beginYear" onchange="yearSel();">
+									<select name="beginYear" id="beginYear" >
 										<option value="2024" selected="selected">2024</option>
 										<option value="2023">2023</option>
 										<option value="2022">2022</option>
@@ -229,7 +247,7 @@
 										<option value="2007">2007</option>
 										<option value="2006">2006</option>
 									</select> <i class="form_split">~</i> <select name="endYear"
-										id="endYear" onchange="yearSel();">
+										id="endYear" >
 										<option value="2024" selected="selected">2024</option>
 										<option value="2023">2023</option>
 										<option value="2022">2022</option>
@@ -260,25 +278,25 @@
 											name="monthAll" id="monthAll" checked="checked"> <label
 											for="monthAll">전체</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="month" id="month03" value="03" onclick="monthSel();">
+											name="month" id="month03" value="03" >
 											<label for="month03">3월</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="month" id="month04" value="04" onclick="monthSel();">
+											name="month" id="month04" value="04" >
 											<label for="month04">4월</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="month" id="month06" value="06" onclick="monthSel();">
+											name="month" id="month06" value="06" >
 											<label for="month06">6월</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="month" id="month07" value="07" onclick="monthSel();">
+											name="month" id="month07" value="07" >
 											<label for="month07">7월</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="month" id="month09" value="09" onclick="monthSel();">
+											name="month" id="month09" value="09" >
 											<label for="month09">9월</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="month" id="month10" value="10" onclick="monthSel();"
+											name="month" id="month10" value="10" 
 											disabled=""> <label for="month10">10월</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="month" id="month11" value="11" onclick="monthSel();"
+											name="month" id="month11" value="11" 
 											disabled=""> <label for="month11">11월</label>
 										</span>
 									</div>
@@ -292,28 +310,28 @@
 											name="subjAll" id="subjAll" checked="checked"> <label
 											for="subjAll">전체</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj1" value="1" onclick="subjSel();">
+											name="subj" id="subj1" value="1" >
 											<label for="subj1">국어</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj2" value="2" onclick="subjSel();">
+											name="subj" id="subj2" value="2" >
 											<label for="subj2">수학</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj3" value="3" onclick="subjSel();">
+											name="subj" id="subj3" value="3" >
 											<label for="subj3">영어</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj4" value="4" onclick="subjSel();">
+											name="subj" id="subj4" value="4" >
 											<label for="subj4">한국사</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj5" value="5" onclick="subjSel();">
+											name="subj" id="subj5" value="5" >
 											<label for="subj5">사회탐구</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj6" value="6" onclick="subjSel();">
+											name="subj" id="subj6" value="6" >
 											<label for="subj6">과학탐구</label>
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj7" value="7" onclick="subjSel();">
+											name="subj" id="subj7" value="7" >
 											<label for="subj7">직업탐구</label> <!-- 수정: 잘못된 label 태그 닫힘 오류 -->
 										</span> <span class="chk_box"> <input type="checkbox"
-											name="subj" id="subj8" value="8" onclick="subjSel();">
+											name="subj" id="subj8" value="8" >
 											<label for="subj8">제2외국어</label>
 										</span>
 									</div>
@@ -321,7 +339,7 @@
 							</dl>
 						</div>
 						<div class="btn_wrap">
-							<button type="button" class="btn_L_col7" onclick="search();">
+							<button type="button" class="btn_L_col7" >
 								<span>검색</span>
 							</button>
 						</div>
@@ -348,16 +366,14 @@
 							</div>
 							<div class="order_area">
 								<div class="btn_wrap">
-									<button type="button" class="btn_order on"
-										onclick="pagingForm.sort.value = 'recent'; goPage('1');">
+									<button type="button" class="btn_order on">
 										<span>최근등록순</span>
 									</button>
-									<button type="button" class="btn_order "
-										onclick="pagingForm.sort.value = 'answerCount'; goPage('1');">
+									<button type="button" class="btn_order ">
 										<span>응시수</span>
 									</button>
 								</div>
-								<select name="pageSize" onchange="goPage('1');">
+								<select name="pageSize">
 									<option value="15" selected="">15개씩 보기</option>
 									<option value="30">30개씩 보기</option>
 									<option value="50">50개씩 보기</option>
@@ -385,8 +401,7 @@
 										<div class="survey_wrap" id="survey_wrap_24271023">
 											<dl class="survey_result answer01">
 												<dt>
-													<a href="#"
-														onclick="userLvlCho('24271023', '24271023', 'und');">
+													<a href="#"	>
 														<p style="width: 65.7051282051282%;">쉬워요!</p>
 													</a>
 												</dt>
@@ -404,15 +419,13 @@
 									</div>
 									<div class="btn_wrap">
 										<div class="btn_row btn_down_row">
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadP('/20240904/go3/korB_1_mun_4II3M1ST_1.pdf', '/fullserv_down/202409043/kor_mun', '202409043', '301', '2', '140118', '0', '/20240904/go3/korB_1_mun_4II3M1ST_1', '24271023');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>문제</span>
 											</button>
 											<button type="button" class="btn_L_col2 has_down">
 												<span>정답</span>
 											</button>
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadH('/20240904/go3/korB_1_hsj_1P5Q6LIA.pdf', '/fullserv_down/202409043/kor_mun', '202409043', '301', '2', '140118', '0', '/20240904/go3/korB_1_hsj_1P5Q6LIA');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>해설</span>
 											</button>
 										</div>
@@ -420,9 +433,7 @@
 											<button type="button" class="btn_popup_class">
 												<span>해설강의</span>
 											</button>
-											<button type="button" class="btn_popup_test"
-												
-												style="width: 100%">
+											<button type="button" class="btn_popup_test" style="width: 100%">
 												<span>응시하기</span>
 											</button>
 										</div>
@@ -462,15 +473,13 @@
 									</div>
 									<div class="btn_wrap">
 										<div class="btn_row btn_down_row">
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadP('/20240904/go3/mathA_1_mun_122RDH64_1.pdf', '/fullserv_down/202409043/math_mun', '202409043', '302', '3', '140119', '0', '/20240904/go3/mathA_1_mun_122RDH64_1', '24271025');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>문제</span>
 											</button>
 											<button type="button" class="btn_L_col2 has_down">
 												<span>정답</span>
 											</button>
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadH('/20240904/go3/mathA_1_hsj_9DOE5Q44.pdf', '/fullserv_down/202409043/math_mun', '202409043', '302', '3', '140119', '0', '/20240904/go3/mathA_1_hsj_9DOE5Q44');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>해설</span>
 											</button>
 										</div>
@@ -517,23 +526,19 @@
 									</div>
 									<div class="btn_wrap">
 										<div class="btn_row btn_down_row">
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="test99()">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>문제</span>
 											</button>
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadR('/20240904/go3/eng_1_mp3_J4XB8XMK.mp3', '/fullserv_down/202409043/eng_mun', '202409043', '303', '1', '80003', '0', '/20240904/go3/eng_1_mp3_J4XB8XMK');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>듣기</span>
 											</button>
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadD('/20240904/go3/eng_1_scr_81C1153Y.pdf', '/fullserv_down/202409043/eng_mun', '202409043', '303', '1', '80003', '0', '/20240904/go3/eng_1_scr_81C1153Y');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>대본</span>
 											</button>
 											<button type="button" class="btn_L_col2 has_down">
 												<span>정답</span>
 											</button>
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadH('/20240904/go3/eng_main_hsj_N5791Z56_1.pdf', '/fullserv_down/202409043/eng_mun', '202409043', '303', '1', '80003', '0', '/20240904/go3/eng_main_hsj_N5791Z56_1');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>해설</span>
 											</button>
 										</div>
@@ -581,15 +586,13 @@
 
 									<div class="btn_wrap">
 										<div class="btn_row btn_down_row">
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadP('/20240904/go3/s_his_1_mun_Z655M233.pdf', '/fullserv_down/202409043/his_mun', '202409043', '304', '1', '63004', '0', '/20240904/go3/s_his_1_mun_Z655M233', '24271029');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>문제</span>
 											</button>
 											<button type="button" class="btn_L_col2 has_down">
 												<span>정답</span>
 											</button>
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadH('/20240904/go3/s_his_1_hsj_33N23Q6Z.pdf', '/fullserv_down/202409043/his_mun', '202409043', '304', '1', '63004', '0', '/20240904/go3/s_his_1_hsj_33N23Q6Z');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>해설</span>
 											</button>
 										</div>
@@ -637,15 +640,13 @@
 									</div>
 									<div class="btn_wrap">
 										<div class="btn_row btn_down_row">
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadP('/20240904/go3/s_ssnyr_mun_5S9RG5H5.pdf', '/fullserv_down/202409043/sat_mun', '202409043', '304', '9', '63002', '0', '/20240904/go3/s_ssnyr_mun_5S9RG5H5', '24271030');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>문제</span>
 											</button>
 											<button type="button" class="btn_L_col2 has_down">
 												<span>정답</span>
 											</button>
-											<button type="button" class="btn_L_col2 has_down"
-												onclick="goDownLoadH('/20240904/go3/s_ssnyr_hsj_IS842ND8.pdf', '/fullserv_down/202409043/sat_mun', '202409043', '304', '9', '63002', '0', '/20240904/go3/s_ssnyr_hsj_IS842ND8');">
+											<button type="button" class="btn_L_col2 has_down">
 												<span>해설</span>
 											</button>
 										</div>
