@@ -14,6 +14,8 @@
 </th:block>
 <th:block layout:fragment="customJs">
 	<script>
+	
+	
 		const $title = document.querySelector('title');
 		$title.textContent = '모의고사 결과분석';
 		Highcharts.chart('memRateArea2', {
@@ -83,10 +85,21 @@
 									<th>영역</th>
 									<td>
 										<div class="tbl_in--atc" id="mDomCdDiv">
-
+											<label id="">국어</label>
+											
+											<label id="">수학</label>
+											
+											<label id="">영어</label>
+											
 											<label id="mDomCdHI" onclick="fncSetDom('HI')" class="on">한국사</label>
 
-											<label id="mDomCdSC" onclick="fncSetDom('SC')">과학탐구</label>
+											<label id="mDomCdSC" onclick="fncSetDom('SC')" >과학탐구</label>
+											
+											<label id="">사회탐구</label>
+											
+											<label id="">직업탐구</label>
+											
+											<label id="">제2외국어</label>											
 
 										</div>
 									</td>
@@ -137,10 +150,9 @@
 										<div
 											style="width: 100%; display: flex; justify-content: flex-end;padding-right: 20px !important; align-items: center;">
 											<span class="g_legen"
-												style="margin-right: 10px;font-size: 1.5rem;font-weight: bolder;color: black;">Period
-												: </span>
+												style="margin-right: 10px;font-size: 1.5rem;font-weight: bolder;color: black;">Period: </span>
 											<!-- 부모 div에 width: 100% 추가 -->
-											<select name="dateVal" id="dateVal" onchange="fncSetDate(this.value)">
+											<select name="dateVal" id="dateVal" onchange="fncSetDate(this.value)" style="min-width: 80px; max-width: 200px; width: auto;">
 												<option value="W">주</option>
 												<option value="M">월</option>
 												<option value="Y">년</option>

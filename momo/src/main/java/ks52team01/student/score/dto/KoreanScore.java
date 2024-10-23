@@ -20,4 +20,5 @@ public class KoreanScore {
 	private Date   korScrUpdateTime;
 
 	private SubjectScore subjectScore;
+	private SubjectMinorCategory subjectMinorCategory;
 }
