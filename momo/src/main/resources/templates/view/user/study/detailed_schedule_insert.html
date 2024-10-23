@@ -33,9 +33,6 @@
 						<div class="column_top">
 							<!-- 상단 메뉴 시작 -->
 							<div class="column_right cust_test" id="contents">
-								<p
-									style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
-									상세 스케쥴 추가</p>
 								<div id="tabContent">
 
 									<div class="myWorkbook">
@@ -50,12 +47,12 @@
 												
 											</div>
 											<div id="MyTestArea">
-												<form action="/study/addDetailedSchedule" method="post"
+												<form th:action="@{/study/addDetailedSchedule}" method="post"
 													class="insert">
 													<!-- 나중에 js로 수정해야 할 부분 -->
-													<input type="hidden" name="detailedSchedule" value="second" /> 
-													<input type="hidden" name="userCode" th:value="${session.loggedInUser.userCode}" /> <a>추가할
-														학습계획 선택 : <select name="learningSchedule" style="width: 500px">
+												<!-- 	<input type="hidden" name="detailedSchedule" value="second" /> -->
+													<input type="hidden" name="userCode" th:value="${session.loggedInUser.userCode}" />  
+													<a>추가할 학습계획 선택 : <select name="learningSchedule" style="width: 500px">
 															<option value="les1">1번</option>
 															<option value="les2">2번</option>
 															<option value="les3">3번</option>

@@ -46,7 +46,7 @@
 											<div class="sort_select"
 												style="width: 150px; margin-bottom: 20px;"></div>
 											<div id="MyTestArea">
-												<form action="/study/modifyDetailedSchedule" method="post"
+												<form th:action="@{/study/modifyDetailedSchedule}" method="post"
 													class="insert">
 													<input type="hidden" name="detailedSchedule" th:value=${listIdx}> 
 														학습계획 선택 : <select name="learningSchedule" style="width: 500px">
@@ -54,7 +54,7 @@
 															<option value="les2">2번</option>
 															<option value="les3">3번</option>
 													</select>
-													</a><br />
+													<br />
 													 <a>일정 메모 : <input type="text" name="detailedScheduleMemo" 	style="width: 500px;"></a><br /> 
 													 <a>일정 시작 일자 : <input 	type="date" name="detailedScheduleDate" style="width: 500px;"></a><br />
 													<a>일정 시작 시간 : <input type="time" name="detailedScheduleStartTime" style="width: 500px;"></a><br /> 
@@ -74,6 +74,6 @@
 		</section>
 
 	</div>
-</div>
+
 
 </html>

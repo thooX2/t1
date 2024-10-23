@@ -40,7 +40,7 @@
 
 									<div class="myWorkbook">
 										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											<a th:href = "@{/study/addCast}">수능과목생성</a>
+											<a th:href = "@{/study/addCastSubject}">수능과목생성</a>
 										</div>
 										<div id="MyTestArea">
 											<table class="bot_tbl--type">
@@ -57,7 +57,6 @@
 												</colgroup>
 												<thead>
 													<tr>
-														<th>유저 코드</th>
 														<th>국어 공통과목</th>
 														<th>국어 선택과목</th>
 														<th>수학 공통과목</th>
@@ -67,13 +66,11 @@
 														<th>영어 공통과목</th>
 														<th>제2외국어 공통과목</th>
 														<th>한국사 공통과목</th>
-														
 														<th>수정</th>
 														<th>삭제</th>
 													</tr>
 												</thead>
 													<tr th:each="list : ${CastSubjectList}">
-														<td th:text="${list.usercode}"></td>
 														<td th:text="${list.smcck}"></td>
 														<td th:text="${list.smcsk}"></td>
 														<td th:text="${list.smccm}"></td>
@@ -83,8 +80,8 @@
 														<td th:text="${list.smcl1}"></td>
 														<td th:text="${list.smcl2}"></td>
 														<td th:text="${list.smck}"></td>
-														<td><a th:href="@{/study/modifyCast(list.idx=*{list.idx})}">수정</a></td>
-														<td><a th:href="@{/study/deleteCast(list.idx=*{list.idx})}">삭제</a></td>
+														<td><a th:href="@{/study/modifyCastSubject(list.idx=*{list.idx})}">수정</a></td>
+														<td><a th:href="@{/study/removeCastSubject(list.idx=*{list.idx})}">삭제</a></td>
 													</tr>
 												</tbody>							
 											</table>

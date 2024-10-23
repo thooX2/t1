@@ -39,7 +39,7 @@
 								<div id="tabContent">
 									<div class="myWorkbook">
 										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											<a th:href = "@{/study/addUniversity}">목표대학교 추가</a>
+											<a th:href = "@{/study/addTargetUniversity}">목표대학교 추가</a>
 										</div>
 
 										<div id="MyTestArea">
@@ -68,8 +68,8 @@
 														<td th:text="${list.targetUniversityName}"></td>
 														<td th:text="${list.targetUniversityLesson}"></td>
 														<td th:text="${list.targetUniversityRangking}"></td>
-														<td><a th:href="@{/study/modifyUniversity(list.targetUniverseCode=*{list.targetUniverseCode})}">수정</a></td>
-														<td><a th:href="@{/study/deleteUniversity(list.targetUniverseCode=*{list.targetUniverseCode})}">삭제</a></td>
+														<td><a th:href="@{/study/modifyTargetUniversity(list.targetUniverseCode=*{list.targetUniverseCode})}">수정</a></td>
+														<td><a th:href="@{/study/removeTargetUniversity(list.targetUniverseCode=*{list.targetUniverseCode})}">삭제</a></td>
 													</tr>
 												</tbody>
 											</table>

@@ -41,7 +41,7 @@
 
 									<div class="myWorkbook">
 										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											<a href = "/study/addGrade">목표등급 생성</a>
+											<a th:href = "@{/study/addTargetGrade}">목표등급 생성</a>
 										</div>
 
 										<div id="MyTestArea">
@@ -67,15 +67,14 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr th:each="list : ${TargetGradeList}">
-														
+													<tr th:each="list : ${TargetGradeList}">	
 														<td th:text="${list.smjcc}"></td>
 														<td th:text="${list.smicc}"></td>
 														<td th:text="${list.lastGrade}"></td>
 														<td th:text="${list.recentGrade}"></td>
 														<td th:text="${list.tar_grade_set}"></td>
-														<td><a th:href="@{/study/modifyGrade(list.gradeCode=*{list.gradeCode})}">수정</a></td>
-														<td><a th:href="@{/study/deleteGrade(list.gradeCode=*{list.gradeCode})}">삭제</a></td>
+														<td><a th:href="@{/study/modifyTargetGrade(list.gradeCode=*{list.gradeCode})}">수정</a></td>
+														<td><a th:href="@{/study/removeTargetGrade(list.gradeCode=*{list.gradeCode})}">삭제</a></td>
 													</tr>
 											</table>
 										</div>
