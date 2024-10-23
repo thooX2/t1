@@ -3,7 +3,89 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.admin.exam.mapper.AdminExamMapper">
+	<resultMap type="SubMirCate" id="SubMirCateMap">
+		<id column="sub_mir_cat_code" property="subMirCatCode"></id>
+		<result column="sub_mjr_cat_code" property="subMjrCatCode"></result>
+		<result column="sub_mir_cat_nm" property="subMirCatNm"></result>
+		<result column="comm_slt" property="commSlt"></result>
+		<result column="cur_exam_user_state" property="curExamUserState"></result>
+		<result column="sub_mjr_cat_nm" property="subMjrName"></result>
+		<result column="subMirState" property="subMirState"></result>
+		
+		<association javaType="SubMjrCate" property="subMjrCate" >
+			<id 	column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
+			<result column="sub_mjr_cat_nm" 	property="subMjrCatNm" />
+			<result column="sub_exam_time" 	property="subExamTime" />
+			<result column="sub_exam_order" 	property="subExamOrder" />
+			<result column="sub_qst_num" 	property="subQstNum" />
+			<result column="sub_qst_total_scr" 	property="subQstTotalScr" />
+			<result column="cur_exam_user_state" 	property="curExamUserState" />
+		</association>
+	</resultMap>
+	<resultMap type="ks52team01.student.user.dto.User" id="userResultMap">
+			<id column="user_code" property="userCode" />
+			<result column="user_id" property="userId" />
+			<result column="grade_code" property="gradeCode" />
+			<result column="area_city_code" property="areaCityCode" />
+			<result column="user_pw" property="userPw" />
+			<result column="user_email" property="userEmail" />
+			<result column="user_address" property="userAddress" />
+			<result column="user_detail_address" property="userDetailAddress" />
+			<result column="user_phone" property="userPhone" />
+			<result column="user_name" property="userName" />
+			<result column="user_birth_date" property="userBirthDate" />
+			<result column="user_gender" property="userGender" />
+			<result column="user_sign_date" property="userSignDate" />
+			<result column="user_update_date" property="userUpdateDate" />
+			<result column="user_delete_date" property="userDeleteDate" />
+			<result column="user_dormant_status" property="userDormantStatus" />
+			<result column="user_delete_staus" property="userDeleteStatus" />
+		</resultMap>
 
+
+
+	<select id="getAdminExamCategoryList" resultMap="SubMirCateMap">
+		SELECT
+			smic.sub_mir_cat_code,
+			smjc.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			smic.sub_mir_cat_nm,
+			smic.comm_slt,
+			smjc.cur_exam_user_state,
+			smic.cur_exam_user_state as subMirState
+		FROM
+			sub_mir_cat smic RIGHT JOIN sub_mjr_cat smjc
+			ON smic.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+		ORDER BY
+			CAST(SUBSTRING(smjc.sub_mjr_cat_code,7) AS UNSIGNED);
+	</select>
+<select id="getUserListByGrade" parameterType="String" resultMap="userResultMap">
+    SELECT
+        user_code,
+        user_id,
+        grade_code,
+        area_city_code,
+        user_pw,
+        user_email,
+        user_address,
+        user_detail_address,
+        user_phone,
+        user_name,
+        user_birth_date,
+        user_gender,
+        user_sign_date,
+        user_update_date,
+        user_delete_date,
+        user_dormant_status,
+        user_delete_status
+    FROM
+        `user`
+    <where>
+        <if test="gradeCode != null and gradeCode != ''">
+            grade_code = #{gradeCode}
+        </if>
+    </where>
+</select>
 
 
 

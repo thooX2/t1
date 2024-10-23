@@ -85,74 +85,120 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
-		$(function () {
-			// 트리 데이터를 JSON 형식으로 정의
-			var treeData = [
-				{
-					title: "카테고리",
+	<script th:inline="javascript">
+
+		// 트리 데이터를 JSON 형식으로 정의
+		var treeData = [
+			{
+				title: "현행시험과목",
+				folder: true,
+				expanded: true,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			},
+			{
+				title: "과거시험과목",
+				folder: true,
+				expanded: false,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			}
+		];
+
+		/* 타임리프에서 전달받은 categoryList 데이터를 자바스크립트 변수로 변환 */
+		var categoryList = /*[[${categoryList}]]*/[];
+
+		var categoryMap = {};
+
+		// categoryList에서 subMjrName을 추출하여 HashMap에 저장
+		categoryList.forEach(element => {
+			const subMjrName = element['subMjrName'];
+
+			if (!categoryMap[subMjrName]) {
+				categoryMap[subMjrName] = {
+					title: subMjrName,
 					folder: true,
-					expanded: true,  // 카테고리 노드를 기본으로 확장 상태로 설정
-					children: [
-						{
-							title: "사교원테스트",
-							folder: true,
-							children: [
-								{title: "레벨 1"},
-								{title: "직무"}
-							]
-						},
-						{
-							title: "비행기",
-							folder: true,
-							children: [
-								{title: "자동차"},
-								{title: "IT 자격증"}
-							]
-						},
-						{
-							title: "공통시험",
-							folder: true,
-							children: [
-								{title: "집합과정 관리 과정"},
-								{title: "소아청소년과"}
-							]
+					children: []
+				};
+			}
+
+		});
+		for (const key in categoryMap) {
+			treeData[0]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+		for (const key in categoryMap) {
+			treeData[1]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+
+
+		// subMirCatNm을 treeData[0]의 children에 추가
+		categoryList.forEach(element => {
+			for (let elem of treeData[0]['children']) {
+				// subMjrName이 일치하는 경우
+				if (element['subMjrName'] === elem['title']) {
+					// treeData[0]의 children에만 추가
+					if (element['curExamUserState'] == 'Y'&& (element['subMirState'] =='Y'||element['subMirState'] == null)) {
+						if (elem['title'] == '한국사') {
+							elem['children'].push({title: '한국사'});
+						} else {
+							elem['children'].push({title: element['subMirCatNm']});
 						}
-					]
+					}
 				}
-			];
+			}
+			for (let elem of treeData[1]['children']) {
+				// subMjrName이 일치하는 경우
+				if (element['subMjrName'] === elem['title']) {
+					// treeData[0]의 children에만 추가
+					if (element['curExamUserState'] == 'N' || element['subMirState']=='N') {
+						if (elem['title'] == '한국사') {
+							elem['children'].push({title: '한국사'});
+						} else {
+							elem['children'].push({title: element['subMirCatNm']});
+						}
+					}
+				}
+			}
+		});
 
-			// FancyTree 플러그인을 사용하여 트리 생성
-			$("#tree").fancytree({
-				source: treeData,       // 트리 데이터
-				extensions: ["glyph"],  // 아이콘 확장 사용
-				clickFolderMode: 2,     // 폴더 클릭 시 하위 트리 펼치기
-				selectMode: 1,          // 한 번에 하나의 항목만 선택 가능
-				glyph: {                // 폴더와 노드의 아이콘 설정
-					map: {}
-				},
 
-			});
+		// FancyTree 플러그인을 사용하여 트리 생성
+		$("#tree").fancytree({
+			source: treeData,       // 트리 데이터
+			extensions: ["glyph"],  // 아이콘 확장 사용
+			clickFolderMode: 2,     // 폴더 클릭 시 하위 트리 펼치기
+			selectMode: 1,          // 한 번에 하나의 항목만 선택 가능
+			glyph: {                // 폴더와 노드의 아이콘 설정
+				map: {}
+			},
 
-			// 모두 펼치기 버튼 클릭 시 모든 노드를 펼침
-			$("#expandAll").on("click", function () {
-				$("#tree").fancytree("getTree").visit(function (node) {
-					node.setExpanded(true);
-				});
-			});
+		});
 
-			// 모두 접기 버튼 클릭 시 모든 노드를 접음
-			$("#collapseAll").on("click", function () {
-				$("#tree").fancytree("getTree").visit(function (node) {
-					node.setExpanded(false);
-				});
-			});
-
-			// 노드 클릭 시 이벤트 처리
-			$("#tree").on("fancytreeactivate", function (event, data) {
-				alert("선택된 노드: " + data.node.title);
+		// 모두 펼치기 버튼 클릭 시 모든 노드를 펼침
+		$("#expandAll").on("click", function () {
+			$("#tree").fancytree("getTree").visit(function (node) {
+				node.setExpanded(true);
 			});
 		});
+
+		// 모두 접기 버튼 클릭 시 모든 노드를 접음
+		$("#collapseAll").on("click", function () {
+			$("#tree").fancytree("getTree").visit(function (node) {
+				node.setExpanded(false);
+			});
+		});
+
+		// 노드 클릭 시 이벤트 처리
+		$("#tree").on("fancytreeactivate", function (event, data) {
+			alert("선택된 과목: " + data.node.title);
+		});
+
 		$(function () {
 			$('.js-example-basic-single').select2({
 				placeholder: '담당자 선택', // 플레이스홀더 텍스트 설정
