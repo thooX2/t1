@@ -2,10 +2,77 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ks52team01.exam.mapper.ExamMapper">
+<mapper namespace="ks52team01.student.exam.mapper.ExamMapper">
 
-
-
-
+	<resultMap type="TookExamInfo" id="TookExamInfoMap">
+		<id 	column="took_exam_info_code" property="tookExamInfoCode"/>
+		<result column="user_code" 			 property="userCode"/>
+		<result column="area_code" 			 property="areaCode"/>
+		<result column="area_city_code" 	 property="areaCityCode"/>
+		<result column="exam_code" 			 property="examCode"/>
+		<result column="kor_slt_sub_mjr" 	 property="korSltSubMjr"/>
+		<result column="kor_slt_sub" 		 property="korSltSub"/>
+		<result column="math_slt_sub_mjr" 	 property="mathSltSubMjr"/>
+		<result column="math_slt_sub" 		 property="mathSltSub"/>
+		<result column="inq1_slt_sub_mjr" 	 property="inq1SltSubMjr"/>
+		<result column="inq1_slt_sub" 		 property="inq1SltSub"/>
+		<result column="inq2_slt_sub_mjr" 	 property="inq2SltSubMjr"/>
+		<result column="inq2_slt_sub" 		 property="inq2SltSub"/>
+		<result column="eng_slt_sub_mjr" 	 property="engSltSubMjr"/>
+		<result column="eng_slt_sub" 		 property="engSltSub"/>
+		<result column="kor_his_slt_sub_mjr" property="korHisSltSubMjr"/>
+		<result column="kor_his_slt_sub" 	 property="korHisSltSub"/>
+		<result column="frn_slt_sub_mjr" 	 property="frnSltSubMjr"/>
+		<result column="frn_slt_sub" 		 property="frnSltSub"/>
+	
+		<association property="examInfo" javaType="ExamInfo">
+			<id 	column="exam_code" 	  property="examCode"/>
+			<result column="user_code" 	  property="userCode"/>
+			<result column="exam_nm" 	  property="examNm"/>
+			<result column="exam_type" 	  property="examType"/>
+			<result column="exam_oe_type" property="examOEType"/>
+			<result column="exam_tar_grd" property="examTarGrd"/>
+			<result column="exam_date" 	  property="examDate"/>
+			<result column="exam_inst" 	  property="examInst"/>
+		</association>
+	</resultMap>
+	
+	<select id="getTookExamList" parameterType="String" resultMap="TookExamInfoMap">
+		SELECT
+			tei.took_exam_info_code,
+            tei.user_code,
+            tei.area_code,
+            tei.area_city_code,
+            tei.exam_code,
+            tei.kor_slt_sub_mjr,
+            tei.kor_slt_sub,
+            tei.math_slt_sub_mjr,
+            tei.math_slt_sub,
+            tei.inq1_slt_sub_mjr,
+            tei.inq1_slt_sub,
+            tei.inq2_slt_sub_mjr,
+            tei.inq2_slt_sub,
+            tei.eng_slt_sub_mjr,
+            tei.eng_slt_sub,
+            tei.kor_his_slt_sub_mjr,
+            tei.kor_his_slt_sub,
+            tei.frn_slt_sub_mjr,
+            tei.frn_slt_sub,
+            ei.exam_code as ei_exam_code,
+            ei.user_code as ei_user_code,
+            ei.exam_nm,
+            ei.exam_type,
+            ei.exam_oe_type,
+            ei.exam_tar_grd,
+            ei.exam_date,
+            ei.exam_inst
+		FROM
+			took_exam_info tei INNER JOIN exam_info ei
+			ON tei.exam_code = ei.exam_code
+		WHERE
+			tei.user_code = #{userCode}
+		ORDER BY
+			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC;
+	</select>
 
 </mapper>
