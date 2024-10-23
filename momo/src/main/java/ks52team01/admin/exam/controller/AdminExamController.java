@@ -28,7 +28,7 @@ public class AdminExamController {
 
 		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
 		categoryList = adminExamService.getAdminExamCategoryList();
-
+	
 		model.addAttribute("categoryList", categoryList);
 		return "view/admin/exam/admin_exam_category";
 	}
@@ -44,8 +44,7 @@ public class AdminExamController {
 		categoryList = adminExamService.getAdminExamCategoryList();
 		List<User> userList = new ArrayList<User>();
 		userList = adminExamService.getUserListByGrade("ugc1");
-		
-		
+
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("userList", userList);
 

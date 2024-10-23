@@ -16,11 +16,14 @@ public class SubMirCate {
 	// 공통선택
 	private String commSlt;
 
-	// 현행시험 사용여부
+	// 현행시험 사용여부(subject_major_category)
 	private String curExamUserState;
 	
 	// 과목대분류
 	private String subMjrName;
+	
+	// 현행시험 사용여부(subject_minor_category)
+	private String subMirState;
 	
 	private SubMjrCate subMjrCate; 
 }

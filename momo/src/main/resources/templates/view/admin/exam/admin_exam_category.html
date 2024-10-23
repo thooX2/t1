@@ -111,7 +111,7 @@
 		// categoryList에서 subMjrName을 추출하여 HashMap에 저장
 		categoryList.forEach(element => {
 			const subMjrName = element['subMjrName'];
-			// HashMap에 subMjrName을 키로 하고 기본 구조를 값으로 설정
+
 			if (!categoryMap[subMjrName]) {
 				categoryMap[subMjrName] = {
 					title: subMjrName,
@@ -119,10 +119,8 @@
 					children: []
 				};
 			}
+
 		});
-		console.log(categoryMap);
-
-
 		for (const key in categoryMap) {
 			treeData[0]['children'].push({
 				title: categoryMap[key].title,
@@ -145,17 +143,25 @@
 				// subMjrName이 일치하는 경우
 				if (element['subMjrName'] === elem['title']) {
 					// treeData[0]의 children에만 추가
-					if (element['curExamUserState'] == 'Y') {
-						elem['children'].push({title: element['subMirCatNm']});
+					if (element['curExamUserState'] == 'Y'&& (element['subMirState'] =='Y'||element['subMirState'] == null)) {
+						if (elem['title'] == '한국사') {
+							elem['children'].push({title: '한국사'});
+						} else {
+							elem['children'].push({title: element['subMirCatNm']});
+						}
 					}
 				}
 			}
 			for (let elem of treeData[1]['children']) {
 				// subMjrName이 일치하는 경우
-				if (element['subMjrName'] === elem['title']) {	
+				if (element['subMjrName'] === elem['title']) {
 					// treeData[0]의 children에만 추가
-					if (element['curExamUserState'] == 'N') {
-						elem['children'].push({title: element['subMirCatNm']});
+					if (element['curExamUserState'] == 'N' || element['subMirState']=='N') {
+						if (elem['title'] == '한국사') {
+							elem['children'].push({title: '한국사'});
+						} else {
+							elem['children'].push({title: element['subMirCatNm']});
+						}
 					}
 				}
 			}

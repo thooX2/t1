@@ -10,6 +10,7 @@
 		<result column="comm_slt" property="commSlt"></result>
 		<result column="cur_exam_user_state" property="curExamUserState"></result>
 		<result column="sub_mjr_cat_nm" property="subMjrName"></result>
+		<result column="subMirState" property="subMirState"></result>
 		
 		<association javaType="SubMjrCate" property="subMjrCate" >
 			<id 	column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
@@ -19,7 +20,6 @@
 			<result column="sub_qst_num" 	property="subQstNum" />
 			<result column="sub_qst_total_scr" 	property="subQstTotalScr" />
 			<result column="cur_exam_user_state" 	property="curExamUserState" />
-	
 		</association>
 	</resultMap>
 	<resultMap type="ks52team01.student.user.dto.User" id="userResultMap">
@@ -47,16 +47,17 @@
 	<select id="getAdminExamCategoryList" resultMap="SubMirCateMap">
 		SELECT
 			smic.sub_mir_cat_code,
-			smic.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_code,
 			smjc.sub_mjr_cat_nm,
 			smic.sub_mir_cat_nm,
 			smic.comm_slt,
-			smic.cur_exam_user_state
+			smjc.cur_exam_user_state,
+			smic.cur_exam_user_state as subMirState
 		FROM
-			sub_mir_cat smic INNER JOIN sub_mjr_cat smjc
+			sub_mir_cat smic RIGHT JOIN sub_mjr_cat smjc
 			ON smic.sub_mjr_cat_code = smjc.sub_mjr_cat_code
 		ORDER BY
-			CAST(SUBSTRING(smic.sub_mir_cat_code,7) AS UNSIGNED);
+			CAST(SUBSTRING(smjc.sub_mjr_cat_code,7) AS UNSIGNED);
 	</select>
 <select id="getUserListByGrade" parameterType="String" resultMap="userResultMap">
     SELECT
