@@ -51,7 +51,7 @@ public class ScoreController {
 		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(tookExamInfoCode);
 		log.info("tookExam : {}", tookExamList);
 //		log.info("koreanHistoryScore : {}", koreanHistoryScore);
-//		log.info("koreanScore : {}", koreanScore);
+		log.info("koreanScore : {}", koreanScore);
 //		log.info("mathScore : {}", mathScore);
 //		log.info("englishScore : {}", englishScore);
 //		log.info("inquiry1Score : {}", inquiry1Score);
