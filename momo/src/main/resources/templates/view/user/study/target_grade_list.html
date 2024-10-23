@@ -74,8 +74,8 @@
 														<td th:text="${list.lastGrade}"></td>
 														<td th:text="${list.recentGrade}"></td>
 														<td th:text="${list.tar_grade_set}"></td>
-														<td><a th:href="@{/modifyGrade(list.gradeCode=*{list.gradeCode})}">수정</a></td>
-														<td><a th:href="@{/deleteGrade(list.gradeCode=*{list.gradeCode})}">삭제</a></td>
+														<td><a th:href="@{/study/modifyGrade(list.gradeCode=*{list.gradeCode})}">수정</a></td>
+														<td><a th:href="@{/study/deleteGrade(list.gradeCode=*{list.gradeCode})}">삭제</a></td>
 													</tr>
 											</table>
 										</div>

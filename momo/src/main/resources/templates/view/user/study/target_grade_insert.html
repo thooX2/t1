@@ -46,8 +46,7 @@
 										<div id="MyTestArea">
 											<form action="/study/addTargetGrade" method="post" class="insert">
 				<!-- 나중에 js로 수정해야 할 부분 -->
-				<input type="hidden" name="gradeCode" value="second" />
-				<input type="hidden" name="UserCode" value="uc9" />
+				<input type="hidden" name="userCode" th:value="${session.loggedInUser.userCode}" />
 					
 					<a>대과목 선택 : 
 						<select name="smjcc" style="width: 500px">
