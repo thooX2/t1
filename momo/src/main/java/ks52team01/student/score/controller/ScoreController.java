@@ -41,14 +41,14 @@ public class ScoreController {
 		// Date 객체를 원하는 형식의 문자열로 변환
 		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
 		List<TookExam> tookExam = scoreExamAllService.getTookExam(userCode);
-		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode);
-		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode);
-		MathScore mathScore = scoreExamAllService.getMathScore(userCode);
-		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode);
-		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode);
-		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode);
-		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService
-				.getSecondLanguageAndChineseCharactersScore(userCode);
+		String tookExamInfoCode = tookExam.get(0).getTookExamInfoCode();
+		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(tookExamInfoCode);
+		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(tookExamInfoCode);
+		MathScore mathScore = scoreExamAllService.getMathScore(tookExamInfoCode);
+		EnglishScore englishScore = scoreExamAllService.getEnglishScore(tookExamInfoCode);
+		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(tookExamInfoCode);
+		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(tookExamInfoCode);
+		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(tookExamInfoCode);
 //		log.info("tookExam : {}", tookExam);
 //		log.info("koreanHistoryScore : {}", koreanHistoryScore);
 //		log.info("koreanScore : {}", koreanScore);
@@ -73,8 +73,7 @@ public class ScoreController {
 	@PostMapping("/searchTookExamScore")
 	@ResponseBody
 	public KoreanHistoryScore getScoreMain(String tookExamInfoCode, HttpSession session) {
-		log.info("========== {} ==========", tookExamInfoCode);
-		return scoreExamAllService.getKoreanHistoryScoreByTookExamCode(tookExamInfoCode);
+		return scoreExamAllService.getKoreanHistoryScore(tookExamInfoCode);
 	}
 
 	@GetMapping("/examAllScoreSummary")

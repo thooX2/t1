@@ -20,19 +20,17 @@ public interface ScoreMapper {
 	
 	public List<TookExam> getTookExam(String userCode);
 	
-	public KoreanHistoryScore getKoreanHistoryScore(String userCode);
+	public KoreanHistoryScore getKoreanHistoryScore(String tookExamInfoCode);
 	
-	public KoreanHistoryScore getKoreanHistoryScoreByTookExamCode(String tookExamInfoCode);
+	public KoreanScore getKoreanScore(String tookExamInfoCode);
 	
-	public KoreanScore getKoreanScore(String userCode);
+	public MathScore getMathScore(String tookExamInfoCode);
 	
-	public MathScore getMathScore(String userCode);
+	public EnglishScore getEnglishScore(String tookExamInfoCode);
 	
-	public EnglishScore getEnglishScore(String userCode);
+	public Inquiry1Score getInquiry1Score(String tookExamInfoCode);
 	
-	public Inquiry1Score getInquiry1Score(String userCode);
+	public Inquiry2Score getInquiry2Score(String tookExamInfoCode);
 	
-	public Inquiry2Score getInquiry2Score(String userCode);
-	
-	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String userCode);
+	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String tookExamInfoCode);
 }
