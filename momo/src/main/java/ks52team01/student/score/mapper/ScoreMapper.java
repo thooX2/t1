@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ks52team01.student.exam.dto.TookExamInfo;
 import ks52team01.student.score.dto.EnglishScore;
 import ks52team01.student.score.dto.Inquiry1Score;
 import ks52team01.student.score.dto.Inquiry2Score;
@@ -11,14 +12,11 @@ import ks52team01.student.score.dto.KoreanHistoryScore;
 import ks52team01.student.score.dto.KoreanScore;
 import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
-import ks52team01.student.score.dto.TookExam;
 
 @Mapper
 public interface ScoreMapper {
 
 	public void getScoreMain();
-	
-	public List<TookExam> getTookExam(String userCode);
 	
 	public KoreanHistoryScore getKoreanHistoryScore(String tookExamInfoCode);
 	

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import ks52team01.student.exam.dto.TookExamInfo;
+import ks52team01.student.exam.mapper.ExamMapper;
 import ks52team01.student.score.dto.EnglishScore;
 import ks52team01.student.score.dto.Inquiry1Score;
 import ks52team01.student.score.dto.Inquiry2Score;
@@ -11,7 +13,6 @@ import ks52team01.student.score.dto.KoreanHistoryScore;
 import ks52team01.student.score.dto.KoreanScore;
 import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
-import ks52team01.student.score.dto.TookExam;
 import ks52team01.student.score.mapper.ScoreMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 
+	private final ExamMapper examMapper;
 	private final ScoreMapper scoreMapper;
 	
 	@Override
@@ -47,9 +49,9 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	}
 
 	@Override
-	public List<TookExam> getTookExam(String userCode) {
+	public List<TookExamInfo> getTookExamList(String userCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getTookExam(userCode);
+		return examMapper.getTookExamList(userCode);
 	}
 
 	@Override

@@ -168,7 +168,7 @@ tr {
 						<div class="ss">
 							<strong>최근 응시하신&nbsp</strong>
 							<select id="took-exam-select">
-								<option th:each="l : ${tookExam}" th:value="${l.tookExamInfoCode}" th:text="${l.examNm}"></option>
+								<option th:each="l : ${tookExamList}" th:value="${l.tookExamInfoCode}" th:text="${l.examInfo.examNm}"></option>
 							</select>
 							<strong>의 점수입니다.</strong>
 						</div>
