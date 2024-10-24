@@ -20,4 +20,5 @@ public class Inquiry1Score {
 	private Date   inq1ScrUpdateTime;
 	
 	private SubjectScore subjectScore;
+	private SubjectMinorCategory subjectMinorCategory;
 }

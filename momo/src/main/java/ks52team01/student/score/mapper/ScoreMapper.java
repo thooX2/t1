@@ -18,17 +18,23 @@ public interface ScoreMapper {
 
 	public void getScoreMain();
 	
-	public KoreanHistoryScore getKoreanHistoryScore(String tookExamInfoCode);
+	public Double getNationAvg(String examCode, String korSubCode);
 	
-	public KoreanScore getKoreanScore(String tookExamInfoCode);
+	public Double getProvinceAvg(String examCode, String korSubCode, String provinceCode);
 	
-	public MathScore getMathScore(String tookExamInfoCode);
+	public Double getMunicipalityAvg(String examCode, String korSubCode, String municipalityCode);
 	
-	public EnglishScore getEnglishScore(String tookExamInfoCode);
+	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode);
 	
-	public Inquiry1Score getInquiry1Score(String tookExamInfoCode);
+	public KoreanScore getKoreanScore(String userCode, String tookExamInfoCode);
 	
-	public Inquiry2Score getInquiry2Score(String tookExamInfoCode);
+	public MathScore getMathScore(String userCode, String tookExamInfoCode);
 	
-	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String tookExamInfoCode);
+	public EnglishScore getEnglishScore(String userCode, String tookExamInfoCode);
+	
+	public Inquiry1Score getInquiry1Score(String userCode, String tookExamInfoCode);
+	
+	public Inquiry2Score getInquiry2Score(String userCode, String tookExamInfoCode);
+	
+	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String userCode, String tookExamInfoCode);
 }

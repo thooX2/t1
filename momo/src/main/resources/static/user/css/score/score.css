@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+table {
+	border: 2px solid rgba(0, 0, 0, 0.25);
+	text-align: center;
+	width: 100%;
+}
+
+thead, tbody, tr, th, td {
+	border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+td {
+	width: 12.5%;
+}
+
+tr {
+	height: 40px;
+}
+
+.report-card-subject-tr {
+	height: 80px;
+}
+
+.report-card-empty-row {
+	background-color: rgba(33, 37, 41, 0.25);
+}
+
+#momoDefault .sidebar__item ul li a:hover {
+	color: red;
+}
+
+#took-exam-div {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+#score-analysis-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#score-cat-button-div {
+	display: flex;
+	justify-content: cetner;
+	align-items: center;
+	width: 100%;
+}
+
+#score-cat-chart-div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	border-left: 2px solid rgba(0, 0, 0, 0.25);
+    border-right: 2px solid rgba(0, 0, 0, 0.25);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+    padding: 0px;
+}
+
+#score-card-div {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.score-btn {
+	width: 20% !important;
+	height: 50px !important;
+    font-size: 20px !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-top: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-left: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-bottom-left-radius: 0px !important;
+    border-right: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-bottom-right-radius: 0px !important;
+    background: #FFFFFF;
+}
+
+.score-btn:active {
+    color: rgba(0, 90, 167, 1) !important;
+    transition: all 0.25s !important;
+    border-bottom: 2px solid transparent !important;
+    border-top-color: rgba(0, 90, 167, 1) !important;
+    border-left-color: rgba(0, 90, 167, 1) !important;
+    border-right-color: rgba(0, 90, 167, 1) !important;
+    font-weight: 750;
+}
