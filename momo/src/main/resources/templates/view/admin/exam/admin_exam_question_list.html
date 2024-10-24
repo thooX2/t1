@@ -18,7 +18,7 @@
 		$(function () {
 			// Select2 초기화
 			$('.js-example-basic-single').select2({
-				placeholder: "카테고리를 선택하세요", // 기본 placeholder 설정
+				placeholder: "항목을 선택하세요", // 기본 placeholder 설정
 				allowClear: true, // 클리어 버튼 허용
 				language: {
 					noResults: function () {
@@ -90,7 +90,7 @@
 								<tr>
 									<td class="t_th01">카테고리</td>
 									<td class="t_td01" colspan="3">
-										<select name="s_category" class="js-example-basic-single">
+										<select name="subMirCatCode" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
 											<option value="category1">Category 1</option>
 											<option value="category2">Category 2</option>
@@ -99,61 +99,39 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="t_th01">난이도</td>
+									<td class="t_th01">문제 배점</td>
 									<td class="t_td01" colspan="3">
 										<label>
-											<input type="radio" name="s_grade" value="" class="ipt01" checked="" /> 전체
+											<input type="radio" name="qnaScr" value="" class="ipt01" checked="" /> 전체
 										</label>
 										&nbsp;
 										<label>
-											<input type="radio" name="s_grade" value="1" class="ipt01" /> A
+											<input type="radio" name="qnaScr" value="1" class="ipt01" /> 1
 										</label>
 										&nbsp;
 										<label>
-											<input type="radio" name="s_grade" value="2" class="ipt01"> B
+											<input type="radio" name="qnaScr" value="2" class="ipt01"> 2
 										</label>
 										&nbsp;
 										<label>
-											<input type="radio" name="s_grade" value="3" class="ipt01"> C
+											<input type="radio" name="qnaScr" value="3" class="ipt01"> 3
 										</label>
 										&nbsp;
 										<label>
-											<input type="radio" name="s_grade" value="4" class="ipt01" /> D
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="5" class="ipt01" /> E
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_grade" value="6" class="ipt01" /> F
+											<input type="radio" name="qnaScr" value="5" class="ipt01"> 4
 										</label>
 										&nbsp;
 									</td>
 								</tr>
 								<tr>
-									<td class="t_th01">문제유형</td>
+									<td class="t_th01">출제자</td>
 									<td class="t_td01">
-										<label>
-											<input type="radio" name="s_type" value="" class="ipt01" checked="" /> 전체
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_type" value="1" class="ipt01" /> 단일선택
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_type" value="2" class="ipt01"> 다중선택
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_type" value="3" class="ipt01"> 단답형
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_type" value="4" class="ipt01" /> 서술형
-										</label>
-										&nbsp;
+										<select name="subMirCatCode" class="js-example-basic-single">
+											<option value=""> - 전체 - </option>
+											<option value="category1">Category 1</option>
+											<option value="category2">Category 2</option>
+											<option value="category3">Category 3</option>
+										</select>
 									</td>
 									<td class="t_th01">상태</td>
 									<td class="t_td01">
@@ -175,9 +153,11 @@
 									<td class="t_th01">검색</td>
 									<td class="t_td01" colspan="3"><select name="s_field">
 											<option value="">- 전체 -</option>
-											<option value="a.question">문제</option>
-											<option value="a.question_text">문제설명</option>
-											<option value="a.question_item">문항</option>
+											<option value="a.question">문제 제목</option>
+											<option value="a.question_text">문제 내용</option>
+											<option value="a.question_item">출제 단원</option>
+											<option value="a.question_item">출제 유형</option>
+											<option value="a.question_item">문제 해설</option>
 										</select>
 										<input type="text" name="s_keyword" size="30" />
 										<button type="submit" class="bttn2">검색</button>
@@ -217,22 +197,27 @@
 						<table class="l_tb01" cellpadding="0" cellspacing="0">
 							<thead>
 								<tr align="center">
+									<td class="l_th01" width="20"><input type="checkbox" /></td>
 									<td class="l_th01">No</td>
 									<td class="l_th01"><span class="l_sort01" id="CL_a.question">문제</span></td>
 									<td class="l_th01">미리보기</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.grade">난이도</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.question_type">문제유형</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_u.user_nm">담당자</span></td>
+									<td class="l_th01"><span class="l_sort01" id="CL_a.grade">문항배점</span></td>
+
+									<td class="l_th01"><span class="l_sort01" id="CL_u.user_nm">출제자</span></td>
 									<td class="l_th01"><span class="l_sort01" id="CL_a.status">상태</span></td>
-									<td class="l_th01" width="20"><input type="checkbox" /></td>
+									<td class="l_th01" width="80"><span class="l_sort01"
+											id="CL_a.question_type">생성날짜</span></td>
+									<td class="l_th01" width="80"><span class="l_sort01"
+											id="CL_a.question_type">수정날짜</span></td>
+
 								</tr>
 							</thead>
 							<tbody>
-
 								<tr class="l_tr_even" align="center">
-									<td class="l_td01">390</td>
+									<td class="l_td01"><input type="checkbox" name="idx" value="792" /></td>
+									<td class="l_td01">1</td>
 									<td class="l_td01" align="left" title="인생에서 가장 멋진 일을 슈바이처 박사는 무엇이라고 하였는가?">
-										<p class="cate01">[DDM]</p>
+										<p class="cate01">[사회과학 - 성공적인 직업 생활]</p>
 										<div style="float: left; margin-top: 4px;">
 											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=792&amp;"
 												target="_Main">인생에서 가장 멋진 일을 슈바이처 박사는 무엇이라고 하였는가?</a>
@@ -240,173 +225,14 @@
 									</td>
 									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
 									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
+
 									<td class="l_td01" align="left"><span class="label red">공용</span></td>
 									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="792" /></td>
+
+									<td class="l_td01">24.09.12 </td>
+									<td class="l_td01">24.11.12 </td>
 								</tr>
 
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">389</td>
-									<td class="l_td01" align="left"
-										title="최근 많은 기업에서는 CS 고객 만족을 넘어 고객의 OO에 집중하고 있다. OO은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=791&amp;"
-												target="_Main">최근 많은 기업에서는 CS 고객 만족을 넘어 고객의 OO에 집중하고 있다. OO은 무엇인가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="791" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">388</td>
-									<td class="l_td01" align="left" title="최후의 보루를 뜻하며 가성비를 생각하는 소비 트렌드를 무엇이라 표현하는가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=790&amp;"
-												target="_Main">최후의 보루를 뜻하며 가성비를 생각하는 소비 트렌드를 무엇이라 표현하는가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="790" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">387</td>
-									<td class="l_td01" align="left" title="사람들은 선택의 대상이 많은 것을 원치 않는 것을 입증한 이론은?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=789&amp;"
-												target="_Main">사람들은 선택의 대상이 많은 것을 원치 않는 것을 입증한 이론은?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="789" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">386</td>
-									<td class="l_td01" align="left"
-										title="고객이 원하는 것을 물어보는 질문을 OO탐색 질문이라고 한다. OO에 들어갈 알맞은 표현은?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=788&amp;"
-												target="_Main">고객이 원하는 것을 물어보는 질문을 OO탐색 질문이라고 한다. OO에 들어갈 알맞은 표현은?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="788" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">385</td>
-									<td class="l_td01" align="left"
-										title="고객으로 하여금 수치스런 감정을 느끼지 않도록 자신의 그릇된 기준은 없는지 살펴보고 매 순간 자신의 (     )을 생각해야 한다.">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=787&amp;"
-												target="_Main">고객으로 하여금 수치스런 감정을 느끼지 않도록 자신의 그릇된 기준은 없는지 살펴보고 매 순간 자신의 (
-												...</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="787" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">384</td>
-									<td class="l_td01" align="left" title="자아가 손상 되었을 때 느껴지는 감정은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=786&amp;"
-												target="_Main">자아가 손상 되었을 때 느껴지는 감정은 무엇인가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="786" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">383</td>
-									<td class="l_td01" align="left" title="사람의 인상착의를 보고 단정 짓는 것을 표현하는 말은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=785&amp;"
-												target="_Main">사람의 인상착의를 보고 단정 짓는 것을 표현하는 말은 무엇인가?</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="785" /></td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">382</td>
-									<td class="l_td01" align="left"
-										title="미국 인터넷 매체 복스는 우리에게 로봇, 컴퓨터가 가질 수 없는 이것이 있기에 두려워할 필요가 없다고 하였다. 이것은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=784&amp;"
-												target="_Main">미국 인터넷 매체 복스는 우리에게 로봇, 컴퓨터가 가질 수 없는 이것이 있기에 두려워할 필요가 없다고
-												하...</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="784" /></td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">381</td>
-									<td class="l_td01" align="left"
-										title="서비스의 만족감은 고객의 OO와 관련이 있으며 고객의 사전 OO를 파악하는 것이 중요하다. 이 때 OO은 무엇인가?">
-										<p class="cate01">[DDM]</p>
-										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=783&amp;"
-												target="_Main">서비스의 만족감은 고객의 OO와 관련이 있으며 고객의 사전 OO를 파악하는 것이 중요하다. 이 때
-												OO은
-												무엇...</a>
-										</div>
-									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
-									<td class="l_td01">단답형</td>
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01"><input type="checkbox" name="idx" value="783" /></td>
-								</tr>
 
 							</tbody>
 						</table>
