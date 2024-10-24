@@ -105,12 +105,12 @@
 	        
 	        <!-- qna_cur_exam_state 조건 -->
 	        <if test="qnaCurExamState != null and qnaCurExamState != ''">
-	            AND qna_cur_exam_state = #{qnaCurExamState}
+	            AND  qb.qna_cur_exam_state = #{qnaCurExamState}
 	        </if>
 	
 	        <!-- user_code 조건 -->
 	        <if test="userCode != null and userCode != ''">
-	            AND user_code = #{userCode}
+	            AND  qb.user_code = #{userCode}
 	        </if>
 	
 	        <!-- qna_scr 조건 -->

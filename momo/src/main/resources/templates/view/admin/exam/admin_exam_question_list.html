@@ -73,13 +73,19 @@
 						} else {
 							questionState = '<span class="label red">중지</span>';
 						}
+						let subjectCategory = '';
+						if (item.subMirCatNm) {
+							subjectCategory = `[${item.subMjrCatNm} - ${item.subMirCatNm}]`;
+						} else {
+							subjectCategory = `[${item.subMjrCatNm}]`;
+						}
 
 						const newRow = `
 				    <tr class="l_tr_even" align="center">
 				        <td class="l_td01"><input type="checkbox" name="idx" value="${item.qnaCode}" /></td>
 				        <td class="l_td01">${item.qnaCode}</td>
 				        <td class="l_td01" align="left">
-				            <p class="cate01">[${item.subMjrCatNm} - ${item.subMirCatNm}]</p>
+				            <p class="cate01">${subjectCategory}</p>
 				            <div style="float: left; margin-top: 4px;">
 				                <a href="#" target="_Main">${item.qnaSubject}</a>
 				            </div>
