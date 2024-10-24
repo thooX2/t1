@@ -41,6 +41,66 @@
 			<result column="user_dormant_status" property="userDormantStatus" />
 			<result column="user_delete_staus" property="userDeleteStatus" />
 		</resultMap>
+		<resultMap id="qnaBankResultMap" type="ks52team01.admin.exam.dto.QnaBank">
+		    <id column="qna_code" property="qnaCode"/>
+		    <result column="user_code" property="userCode"/>
+		    <result column="sub_mjr_cat_code" property="subMjrCatCode"/>
+		    <result column="sub_mir_cat_code" property="subMirCatCode"/>
+		    <result column="qna_type" property="qnaType"/>
+		    <result column="qna_chap" property="qnaChap"/>
+		    <result column="qna_subject" property="qnaSubject"/>
+		    <result column="qna_qst" property="qnaQst"/>
+		    <result column="qna_slt1" property="qnaSlt1"/>
+		    <result column="qna_slt2" property="qnaSlt2"/>
+		    <result column="qna_slt3" property="qnaSlt3"/>
+		    <result column="qna_slt4" property="qnaSlt4"/>
+		    <result column="qna_slt5" property="qnaSlt5"/>
+		    <result column="qna_ans" property="qnaAns"/>
+		    <result column="qna_scr" property="qnaScr"/>
+		    <result column="qna_cmt" property="qnaCmt"/>
+		    <result column="qna_cur_exam_state" property="qnaCurExamState"/>
+		    <result column="qna_create_time" property="qnaCreateTime"/>
+		    <result column="qna_update_time" property="qnaUpdateTime"/>
+		    <result column="sub_mjr_cat_nm" property="subMjrCatNm"/>
+		    <result column="sub_mir_cat_nm" property="subMirCatNm"/>
+		    <result column="user_id" property="userId"/>
+		    <result column="user_name" property="userName"/>
+		</resultMap>
+
+	<select id="getQuestionListAll" resultMap="qnaBankResultMap">
+	 	SELECT
+			qb.qna_code,
+			qb.user_code,
+			u.user_id,
+			u.user_name,
+			qb.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mir_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.qna_type, qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
+		FROM
+			qna_bank qb LEFT JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			LEFT JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			LEFT JOIN user u
+			ON qb.user_code = u.user_code
+		ORDER BY
+		CAST(SUBSTRING(qb.qna_code,3) AS UNSIGNED) DESC;
+    </select>
+
 
 
 	<select id="addExamQuestion" parameterType="QnaBank">

@@ -14,19 +14,18 @@
 
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
-		$(function () {
-			// Select2 초기화
-			$('.js-example-basic-single').select2({
-				placeholder: "항목을 선택하세요", // 기본 placeholder 설정
-				allowClear: true, // 클리어 버튼 허용
-				language: {
-					noResults: function () {
-						return "결과가 없습니다"; // Set custom message when no results are found
-					}
+	<script th:inline="javascript">
+
+		// Select2 초기화
+		$('.js-example-basic-single').select2({
+			minimumResultsForSearch: 0, // 검색 기능 활성화
+			language: {
+				noResults: function () {
+					return "검색 결과가 없습니다"; // 사용자 정의 메시지
 				}
-			});
+			}
 		});
+
 		$('input').each((idx, element) => {
 			if ($(element).val() == "미리보기") {
 				$(element).click(function () {
@@ -37,7 +36,45 @@
 		$('#addQuestionBtn').click(function () {
 			location.href = "/admin/exam/addQuestion"
 		})
+		$('#searchBtn').click(function () {
 
+			const subMirCatCode = $('#subMirCatCode');
+			const qnaScr = $('#qnaScr');
+			const userCode = $('#userCode');
+			const qnaCurExamState = $('#qnaCurExamState');
+			const searchType = $('#searchType');
+			const searchKeyword = $('#searchKeyword');
+
+			const request = $.ajax({
+				url: '/admin/exam/searchQuestionList',
+				method: 'get',
+				data: {
+					'subMirCatCode': subMirCatCode,
+					'qnaScr': qnaScr,
+					'userCode': userCode,
+					'qnaCurExamState': qnaCurExamState,
+					'searchType': searchType,
+					'searchKeyword': searchKeyword,
+				},
+				dataType: 'json'
+			});
+			request.done(function (data) {
+
+				const searchList = data;
+
+
+
+				$(searchList).each(function (idx, item) {
+
+
+				});
+
+
+			});
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
+		})
 	</script>
 
 </th:block>
@@ -62,7 +99,7 @@
 			</div>
 			<div id="sys-page-util">
 
-				<a id="sys-page-util-refresh" href="javascript:window.location.reload(true);">
+				<a id="sys-page-util-refresh">
 					<i class="fa fa-retweet"></i>
 				</a>
 			</div>
@@ -71,103 +108,102 @@
 			<div id="sys-scroll">
 				<div id="alert_area"></div>
 				<div id="sys-contents">
-					<form name="form1" method="get">
-						<input type="hidden" name="ord" value="" />
-						<input type="hidden" name="mode" value="" />
-						<input type="hidden" name="cid" />
-						<table class="t_tb01" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
-							<colgroup>
-								<col style="width: 120px;">
-								<!-- 첫 번째 열의 너비를 120px로 설정 -->
-								<col>
-								<!-- 두 번째 열 (너비 기본값) -->
-								<col style="width: 120px;">
-								<!-- 세 번째 열의 너비를 120px로 설정 -->
-								<col>
-								<!-- 네 번째 열 (너비 기본값) -->
-							</colgroup>
-							<tbody>
-								<tr>
-									<td class="t_th01">카테고리</td>
-									<td class="t_td01" colspan="3">
-										<select name="subMirCatCode" class="js-example-basic-single">
-											<option value=""> - 전체 - </option>
-											<option value="category1">Category 1</option>
-											<option value="category2">Category 2</option>
-											<option value="category3">Category 3</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td class="t_th01">문제 배점</td>
-									<td class="t_td01" colspan="3">
-										<label>
-											<input type="radio" name="qnaScr" value="" class="ipt01" checked="" /> 전체
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="qnaScr" value="1" class="ipt01" /> 1
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="qnaScr" value="2" class="ipt01"> 2
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="qnaScr" value="3" class="ipt01"> 3
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="qnaScr" value="5" class="ipt01"> 4
-										</label>
-										&nbsp;
-									</td>
-								</tr>
-								<tr>
-									<td class="t_th01">출제자</td>
-									<td class="t_td01">
-										<select name="subMirCatCode" class="js-example-basic-single">
-											<option value=""> - 전체 - </option>
-											<option value="category1">Category 1</option>
-											<option value="category2">Category 2</option>
-											<option value="category3">Category 3</option>
-										</select>
-									</td>
-									<td class="t_th01">상태</td>
-									<td class="t_td01">
-										<label>
-											<input type="radio" name="s_status" value="" class="ipt01" checked="" /> 전체
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_status" value="1" class="ipt01" /> 사용
-										</label>
-										&nbsp;
-										<label>
-											<input type="radio" name="s_status" value="0" class="ipt01"> 중지
-										</label>
-										&nbsp;
-									</td>
-								</tr>
-								<tr>
-									<td class="t_th01">검색</td>
-									<td class="t_td01" colspan="3"><select name="s_field">
-											<option value="">- 전체 -</option>
-											<option value="a.question">문제 제목</option>
-											<option value="a.question_text">문제 내용</option>
-											<option value="a.question_item">출제 단원</option>
-											<option value="a.question_item">출제 유형</option>
-											<option value="a.question_item">문제 해설</option>
-										</select>
-										<input type="text" name="s_keyword" size="30" />
-										<button type="submit" class="bttn2">검색</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</form>
-					<form name="form2" method="post" action="https://demo.malgnlms.com/sysop/question/question_list.jsp"
-						target="sysfrm">
+					<table class="t_tb01" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+						<colgroup>
+							<col style="width: 120px;">
+							<!-- 첫 번째 열의 너비를 120px로 설정 -->
+							<col>
+							<!-- 두 번째 열 (너비 기본값) -->
+							<col style="width: 120px;">
+							<!-- 세 번째 열의 너비를 120px로 설정 -->
+							<col>
+							<!-- 네 번째 열 (너비 기본값) -->
+						</colgroup>
+						<tbody>
+							<tr>
+								<td class="t_th01">카테고리</td>
+								<td class="t_td01" colspan="3">
+									<select name="subMirCatCode" class="js-example-basic-single" id="subMirCatCode">
+										<option value=""> - 전체 - </option>
+										<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
+											th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
+											th:value="${cl.subMirCatCode}">
+										</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="t_th01">문제 배점</td>
+								<td class="t_td01" colspan="3">
+									<label>
+										<input type="radio" name="qnaScr" value="" class="ipt01" checked="" /> 전체
+									</label>
+									&nbsp;
+									<label>
+										<input type="radio" name="qnaScr" value="1" class="ipt01" /> 1
+									</label>
+									&nbsp;
+									<label>
+										<input type="radio" name="qnaScr" value="2" class="ipt01"> 2
+									</label>
+									&nbsp;
+									<label>
+										<input type="radio" name="qnaScr" value="3" class="ipt01"> 3
+									</label>
+									&nbsp;
+									<label>
+										<input type="radio" name="qnaScr" value="5" class="ipt01"> 4
+									</label>
+									&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td class="t_th01">출제자</td>
+								<td class="t_td01">
+									<select name="userCode" class="js-example-basic-single" id="userCode">
+										<option value=""> - 전체 - </option>
+										<option th:if="${userList !=null}" th:each="ul: ${userList}"
+											th:text="'['+${ul.userId}+'] '+ ${ul.userName}" th:value="${ul.userCode}">
+										</option>
+
+									</select>
+								</td>
+								<td class="t_th01">상태</td>
+								<td class="t_td01">
+									<label>
+										<input type="radio" name="qnaCurExamState" value="" class="ipt01" checked="" />
+										전체
+									</label>
+									&nbsp;
+									<label>
+										<input type="radio" name="qnaCurExamState" value="Y" class="ipt01" /> 사용
+									</label>
+									&nbsp;
+									<label>
+										<input type="radio" name="qnaCurExamState" value="N" class="ipt01"> 중지
+									</label>
+									&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td class="t_th01">검색</td>
+								<td class="t_td01" colspan="3">
+									<select name="searchType" id="searchType">
+										<option value="">- 전체 -</option>
+										<option value="qnaSubject">문제 제목</option>
+										<option value="qnaQst">문제 내용</option>
+										<option value="qnaChap">출제 단원</option>
+										<option value="qnaType">출제 유형</option>
+										<option value="qnaCmt">문제 해설</option>
+									</select>
+									<input type="text" name="searchKeyword" size="30" id="searchKeyword" />
+									<button type="button" class="bttn2" id="searchBtn">검색</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<form name="form2" method="post" action="#" target="sysfrm">
 						<input type="hidden" name="mode" value="status" />
 
 						<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
@@ -198,13 +234,15 @@
 							<thead>
 								<tr align="center">
 									<td class="l_th01" width="20"><input type="checkbox" /></td>
-									<td class="l_th01">No</td>
+									<td class="l_th01" width="80">No</td>
 									<td class="l_th01"><span class="l_sort01" id="CL_a.question">문제</span></td>
-									<td class="l_th01">미리보기</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.grade">문항배점</span></td>
+									<td class="l_th01" width="80">미리보기</td>
+									<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.grade">문항배점</span>
+									</td>
 
-									<td class="l_th01"><span class="l_sort01" id="CL_u.user_nm">출제자</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.status">상태</span></td>
+									<td class="l_th01" width="100"><span class="l_sort01" id="CL_u.user_nm">출제자</span>
+									</td>
+									<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.status">상태</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"
 											id="CL_a.question_type">생성날짜</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"
@@ -213,24 +251,37 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="l_tr_even" align="center">
+								<tr class="l_tr_even" align="center" th:if="${questionList !=null}"
+									th:each="ql:${questionList}">
 									<td class="l_td01"><input type="checkbox" name="idx" value="792" /></td>
-									<td class="l_td01">1</td>
-									<td class="l_td01" align="left" title="인생에서 가장 멋진 일을 슈바이처 박사는 무엇이라고 하였는가?">
-										<p class="cate01">[사회과학 - 성공적인 직업 생활]</p>
+									<td class="l_td01" th:text="${ql.qnaCode}">1</td>
+									<td class="l_td01" align="left">
+										<p class="cate01"
+											th:text="(${ql.subMirCatNm !=null})?'['+${ql.subMjrCatNm}+' - '+${ql.subMirCatNm}+']':'['+${ql.subMjrCatNm}+']'">
+										</p>
 										<div style="float: left; margin-top: 4px;">
-											<a href="https://demo.malgnlms.com/sysop/question/question_modify.jsp?id=792&amp;"
-												target="_Main">인생에서 가장 멋진 일을 슈바이처 박사는 무엇이라고 하였는가?</a>
+											<a href="#" target="_Main" th:text="${ql.qnaSubject}"> </a>
 										</div>
 									</td>
 									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
-									<td class="l_td01">B</td>
+									<td class="l_td01" th:text="${ql.qnaScr}+'점'"></td>
 
-									<td class="l_td01" align="left"><span class="label red">공용</span></td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
+									<td class="l_td01" align="center">
+										<p class="label blue"
+											style=" display: inline-block;padding:4px;font-weight: bolder;"
+											th:text="${ql.userId}">
+										</p>
+										<br>
+										<p th:text="${ql.userName}">홍길동</p>
+									</td>
+									<td class="l_td01"><span th:if="${ql.qnaCurExamState == 'Y'}"
+											class="label green">사용</span>
+										<span th:unless="${ql.qnaCurExamState == 'Y'}" class="label red">중지</span>
+									</td>
 
-									<td class="l_td01">24.09.12 </td>
-									<td class="l_td01">24.11.12 </td>
+									<td class="l_td01" th:text="${#dates.format(ql.qnaCreateTime, 'yy.MM.dd')}"></td>
+									<td class="l_td01" th:text="${#dates.format(ql.qnaUpdateTime, 'yy.MM.dd')}"></td>
+
 								</tr>
 
 

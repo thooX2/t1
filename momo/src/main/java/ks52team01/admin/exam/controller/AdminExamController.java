@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ks52team01.admin.exam.dto.ExamQnaChap;
 import ks52team01.admin.exam.dto.ExamQnaType;
@@ -26,6 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminExamController {
 
 	private final AdminExamService adminExamService;
+
+	@GetMapping("/searchQuestionList")
+	@ResponseBody
+	public List<QnaBank> searchQuestionList(QnaBank qnaBank) {
+		List<QnaBank> searchList = new ArrayList<QnaBank>();
+		log.error("searchKeyword:{}", qnaBank);
+		return searchList;
+	}
 
 	@PostMapping("/addQuestion")
 	public String adminExamAddQuestion(QnaBank qnaBank) {
@@ -82,7 +91,20 @@ public class AdminExamController {
 	}
 
 	@GetMapping("/questionList")
-	public String admintest() {
+	public String admintest(Model model) {
+		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		categoryList = adminExamService.getAdminExamCategoryList();
+
+		List<User> userList = new ArrayList<User>();
+		userList = adminExamService.getUserListByGrade("ugc1");
+
+		List<QnaBank> questionList = new ArrayList<QnaBank>();
+		questionList = adminExamService.getQuestionListAll();
+
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("userList", userList);
+		model.addAttribute("questionList", questionList);
+
 		return "view/admin/exam/admin_exam_question_list";
 	}
 

@@ -25,4 +25,10 @@ public class QnaBank {
 	private String qnaCurExamState; // 현생시험 사용여부
 	private Timestamp qnaCreateTime; // 문항 생성 시간
 	private Timestamp qnaUpdateTime; // 문항 수정 시간 (nullable)
+	private String searchKeyword; // 문항리스트 검색
+	private String searchType; // 문항리스트 검색타입
+	private String subMjrCatNm; // 문항 대분류명
+	private String subMirCatNm; // 문항 중분류명
+	private String userId;
+	private String userName;
 }
