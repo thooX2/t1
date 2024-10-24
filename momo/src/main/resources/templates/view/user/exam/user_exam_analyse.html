@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 
 <head>
-	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/style.css}">
-	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/common(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/layout(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/smartmath.css}">
+<link rel="stylesheet"
+	th:href="@{/user/css/exam/userExamAnalyse/style.css}">
+<link rel="stylesheet"
+	th:href="@{/user/css/exam/userExamAnalyse/common(1).css}">
+<link rel="stylesheet"
+	th:href="@{/user/css/exam/userExamAnalyse/layout(1).css}">
+<link rel="stylesheet"
+	th:href="@{/user/css/exam/userExamAnalyse/smartmath.css}">
 </head>
+
 <th:block layout:fragment="customJsFile">
 	<!-- Highcharts 라이브러리 로드 -->
 	<script src="https://code.highcharts.com/highcharts.js"></script>
@@ -15,63 +21,115 @@
 <th:block layout:fragment="customJs">
 	<script>
 	$(function() {
-	    // 각 label 클릭 시 처리
-	    $('#mDomCdDiv label').click(function() {
-	        // 모든 label에서 'on' 클래스 제거
-	        $('#mDomCdDiv label').removeClass('on');
+	    const subjectDetails = {
+	        '국어': {
+	            labels: ['독서', '문학', '화법과 작문', '언어와 매체'],
+	        },
+	        '수학': {
+	            labels: ['수학1', '수학2', '확률과 통계', '미분과 적분', '기하'],
+	        },
+	        '영어': {
+	            labels: ['영어1', '영어2'],
+	        },
+	        '한국사': {
+	            labels: ['한국사'],
+	        },
+	        '사회탐구': {
+	            labels: ['생활과 윤리', '윤리와 사상', '한국지리', '세계지리', '동아시아사', '세계사', '경제', '정치와 법', '사회문화'],
+	        },
+	        '과학탐구': {
+	            labels: ['물리1', '화학1', '생물1', '지구과학1', '물리2', '화학2', '생물2', '지구과학2'],
+	        },
+	        '직업탐구': {
+	            labels: ['성공적인 직업생활', '농업 기초 기술', '공업 일반', '상업 경제', '수산 해운 산업 기초', '인간 발달'],
+	        },
+	        '제2외국어': {
+	            labels: ['독일어1', '프랑스어1', '스페인어1', '중국어1', '일본어1', '러시아어1', '아랍어1', '베트남어1', '한문1'],
+	        }
+	    };
 
-	        // 클릭한 label에 'on' 클래스 추가
-	        $(this).addClass('on');
+	 // 영역 label 클릭 시 처리
+	    $('#mDomCdDiv').on('click', 'label', function() {
+	        // 모든 영역 label에서 'on' 클래스 제거 라벨 on/off에 따라 글씨 굵기 변경
+	        $('#mDomCdDiv label').removeClass('on').css('font-weight','normal');
+
+	        // 클릭한 영역 label에 'on' 클래스 추가
+	        $(this).addClass('on').css('font-weight','bold');
 
 	        // 선택된 과목에 대한 작업 수행
-	        fncSetDom($(this).attr('id').replace('mDomCd', ''));
+	        const subjectName = $(this).text();
+	        fncSetDom(subjectName);
 	    });
+
+	    // 선택된 과목에 대한 함수
+	    function fncSetDom(subjectName) {
+	        $('#subjectArea tr.subject-row').remove(); // 기존 과목 행 제거
+
+	        // 새로운 행 생성
+	        const newRow = $('<tr class="subject-row"><th>과목</th><td><div class="tbl_in--atc" ></div></td></tr>');
+	        const $div = newRow.find('div');
+
+	        // 선택된 과목의 라벨 가져오기
+	        const labels = subjectDetails[subjectName]?.labels || [];
+	        labels.forEach(label => {
+	            const newLabel = $('<label style="margin:0 auto">' + label + '</label>');
+
+	            // 과목 label 클릭 이벤트 추가 (이벤트 위임 방식)
+	            newLabel.on('click', function() {
+	                $div.find('label').removeClass('on').css('font-weight','normal'); // 다른 과목 라벨의 'on' 클래스 제거
+	                $(this).toggleClass('on').css('font-weight','bold'); // 클릭한 라벨에 'on' 클래스 추가/제거 라벨 on/off에 따라 글씨 굵기 변경
+	            });
+
+	            $div.append(newLabel);
+	        });
+
+	        // tbody에 새 행 추가
+	        $('#subjectArea').append(newRow);
+
+	    }
+
 	});
 
-	// 선택된 과목에 대한 함수
-	/* function fncSetDom(value) {
-	    console.log('선택된 과목:', value);
-	    // 추가 작업을 여기에 구현
-	} */
 
-	
+
 		const $title = document.querySelector('title');
 		$title.textContent = '모의고사 결과분석';
 		Highcharts.chart('memRateArea2', {
-			chart: {
-				type: 'line'
+			chart : {
+				type : 'line'
 			},
-			title: {
-				text: '기간별 성적변화'
+			title : {
+				text : '기간별 성적변화'
 			},
-			xAxis: {
-				categories: ['09-18', '09-19', '09-20', '09-21', '09-22',
-					'09-23', '09-24']
+			xAxis : {
+				categories : [ '09-18', '09-19', '09-20', '09-21', '09-22',
+						'09-23', '10-24' ]
 			},
-			yAxis: {
-				title: {
-					text: '점수'
+			yAxis : {
+				title : {
+					text : '점수'
 				},
-				labels: {
-					format: '{value}%'
+				labels : {
+					format : '{value}%'
 				},
-				max: 100,
-				min: 0
+				max : 100,
+				min : 0
 			},
-			series: [{
-				name: '나의 점수',
-				data: [0, 90, 0, 80, 0, 70, 0],
-				color: '#ff8484'
+			series : [ {
+				name : '나의 점수',
+				data : [ 0, 90, 0, 80, 0, 70, 0 ],
+				color : '#ff8484'
 			}, {
-				name: '평균점수',
-				data: [79, 84, 89, 93, 90, 72, 0],
-				color: '#b1bac2'
-			}]
+				name : '평균점수',
+				data : [ 79, 84, 89, 93, 90, 72, 0 ],
+				color : '#b1bac2'
+			} ]
 		});
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
-<div layout:fragment="content" id="examMain" style="max-width:1270px;margin:0 auto">
+<div layout:fragment="content" id="examMain"
+	style="max-width: 1270px; margin: 0 auto">
 	<!-- Include the sidebar fragment here -->
 	<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
 	<!-- container -->
@@ -80,7 +138,7 @@
 		<div class="sub_container" style="width: 100% !important;">
 			<!-- content -->
 
-			<div class="column_main" style="width:100%">
+			<div class="column_main" style="width: 100%">
 
 				<div class="column_right analysis">
 					<h3 class="areaLogo">성적 분석</h3>
@@ -99,27 +157,19 @@
 								<col width="110">
 								<col width="620">
 							</colgroup>
-							<tbody>
+							<tbody id="subjectArea">
 								<tr>
 									<th>영역</th>
 									<td>
-										<div class="tbl_in--atc" id="mDomCdDiv">
-											<label id="mDomCdKO">국어</label>
-											
+										<div class="tbl_in--atc" id="mDomCdDiv" >
+											<label id="mDomCdKO">국어</label> 
 											<label id="mDomCdMA">수학</label>
-											
-											<label id="mDomCdENG">영어</label>
-											
-											<label id="mDomCdHI"  class="on">한국사</label>
-
-											<label id="mDomCdSC"  >과학탐구</label>
-											
-											<label id="mDomCdSO">사회탐구</label>
-											
+											<label id="mDomCdENG">영어</label> 
+											<label id="mDomCdHI" >한국사</label> 
+											<label id="mDomCdSC">과학탐구</label> 
+											<label id="mDomCdSO">사회탐구</label> 
 											<label id="mDomCdJO">직업탐구</label>
-											
-											<label id="mDomCdFOR">제2외국어</label>											
-
+											<label id="mDomCdFOR">제2외국어</label>
 										</div>
 									</td>
 								</tr>
@@ -129,9 +179,9 @@
 
 					</div>
 					<div class="searchSection--menu ty2" id="schTabMenu">
-						<a href="JavaScript:;" onclick="fncTabSet(1)" class="on"><strong>분석1</strong>성적 변화</a>
-						<a href="/exam/ccr" onclick="fncTabSet(2)"><strong>분석2</strong>단원별 정답률</a>
-						<a href="/exam/weak" onclick="fncTabSet(3)"><strong>분석3</strong>취약 유형</a>
+						<a href="JavaScript:;" onclick="fncTabSet(1)" class="on"><strong>분석1</strong>성적 변화</a> 
+						<a href="/exam/ccr" onclick="fncTabSet(2)"><strong>분석2</strong>단원별 정답률</a> 
+						<a href="/exam/weak" onclick="fncTabSet(3)"><strong>분석3</strong>취약 	유형</a> 
 						<a href="/exam/chap" onclick="fncTabSet(4)"><strong>분석4</strong>단원/난도/문항별 분석</a>
 
 					</div>
@@ -159,25 +209,31 @@
 
 							<div class="section_analysis">
 								<div class="tit_analysis on" id="tit_main2">기간별 성적 변화</div>
-								<div class="cont_analysis" id="dtlCont2" style="margin-bottom: 15px;">
+								<div class="cont_analysis" id="dtlCont2"
+									style="margin-bottom: 15px;">
 									<div class="top_legend" style="margin-right: 20px">
-										<span class="g_legen"><span class="ic_qc1"></span>평균 정답률</span>
-										<span class="g_legen"><span class="ic_qc2"></span>나의 정답률</span>
+										<span class="g_legen"><span class="ic_qc1"></span>평균 	정답률</span> <span class="g_legen">
+										<span class="ic_qc2"></span>나의 정답률</span>
 
 									</div>
-									<div style="display: flex; flex-direction: column; align-items: flex-start;">
+									<div
+										style="display: flex; flex-direction: column; align-items: flex-start;">
 										<div
-											style="width: 100%; display: flex; justify-content: flex-end;padding-right: 20px !important; align-items: center;">
+											style="width: 100%; display: flex; justify-content: flex-end; padding-right: 20px !important; align-items: center;">
 											<span class="g_legen"
-												style="margin-right: 10px;font-size: 1.5rem;font-weight: bolder;color: black;">Period: </span>
+												style="margin-right: 10px; font-size: 1.5rem; font-weight: bolder; color: black;">Period:
+											</span>
 											<!-- 부모 div에 width: 100% 추가 -->
-											<select name="dateVal" id="dateVal" onchange="fncSetDate(this.value)" style="min-width: 80px; max-width: 200px; width: auto;">
+											<select name="dateVal" id="dateVal"
+												onchange="fncSetDate(this.value)"
+												style="min-width: 80px; max-width: 200px; width: auto;">
 												<option value="W">주</option>
 												<option value="M">월</option>
 												<option value="Y">년</option>
 											</select>
 										</div>
-										<div id="graphArea" style="margin: 10px auto;"> <!-- 위쪽 여백 추가 -->
+										<div id="graphArea" style="margin: 10px auto;">
+											<!-- 위쪽 여백 추가 -->
 											<div id="memRateArea2" style="width: 740px; height: 400px;"></div>
 										</div>
 									</div>
