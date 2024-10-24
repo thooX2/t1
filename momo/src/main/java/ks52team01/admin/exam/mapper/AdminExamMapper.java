@@ -26,4 +26,6 @@ public interface AdminExamMapper {
 
 	List<QnaBank> getQuestionListAll();
 
+	List<QnaBank> searchQuestionList(QnaBank qnaBank);
+
 }

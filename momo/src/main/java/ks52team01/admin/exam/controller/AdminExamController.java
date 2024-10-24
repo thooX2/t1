@@ -31,8 +31,9 @@ public class AdminExamController {
 	@GetMapping("/searchQuestionList")
 	@ResponseBody
 	public List<QnaBank> searchQuestionList(QnaBank qnaBank) {
+		log.error("list:{}", qnaBank);
 		List<QnaBank> searchList = new ArrayList<QnaBank>();
-		log.error("searchKeyword:{}", qnaBank);
+		searchList = adminExamService.searchQuestionList(qnaBank);
 		return searchList;
 	}
 

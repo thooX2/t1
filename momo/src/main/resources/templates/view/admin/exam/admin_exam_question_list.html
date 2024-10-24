@@ -38,13 +38,14 @@
 		})
 		$('#searchBtn').click(function () {
 
-			const subMirCatCode = $('#subMirCatCode');
-			const qnaScr = $('#qnaScr');
-			const userCode = $('#userCode');
-			const qnaCurExamState = $('#qnaCurExamState');
-			const searchType = $('#searchType');
-			const searchKeyword = $('#searchKeyword');
+			let subMirCatCode = $('#subMirCatCode').val();
+			const qnaScr = $('input[name="qnaScr"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
+			const userCode = $('#userCode').val();
+			const qnaCurExamState = $('input[name="qnaCurExamState"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
+			const searchType = $('#searchType').val();
+			const searchKeyword = $('#searchKeyword').val();
 
+			// Ajax 요청
 			const request = $.ajax({
 				url: '/admin/exam/searchQuestionList',
 				method: 'get',
@@ -58,23 +59,56 @@
 				},
 				dataType: 'json'
 			});
+
 			request.done(function (data) {
-
 				const searchList = data;
+				console.log(typeof searchList);
+				$('#questionListTable').empty();
+				if (searchList.length > 0) {
+					console.log(searchList);
+					$(searchList).each(function (idx, item) {
+						let questionState = '';
+						if (item.qnaCurExamState === 'Y') {
+							questionState = '<span class="label green">사용</span>';
+						} else {
+							questionState = '<span class="label red">중지</span>';
+						}
 
+						const newRow = `
+				    <tr class="l_tr_even" align="center">
+				        <td class="l_td01"><input type="checkbox" name="idx" value="${item.qnaCode}" /></td>
+				        <td class="l_td01">${item.qnaCode}</td>
+				        <td class="l_td01" align="left">
+				            <p class="cate01">[${item.subMjrCatNm} - ${item.subMirCatNm}]</p>
+				            <div style="float: left; margin-top: 4px;">
+				                <a href="#" target="_Main">${item.qnaSubject}</a>
+				            </div>
+				        </td>
+				        <td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
+				        <td class="l_td01">${item.qnaScr}점</td>
+				        <td class="l_td01" align="center">
+				            <p class="label blue" style="display: inline-block;padding:4px;font-weight: bolder;">${item.userId}</p>
+				            <br>
+				            <p>${item.userName}</p>
+				        </td>
+				        <td class="l_td01">${questionState}</td>
+				        <td class="l_td01">${new Date(item.qnaCreateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
+				        <td class="l_td01">${new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
+				    </tr>
+				    `;
 
-
-				$(searchList).each(function (idx, item) {
-
-
-				});
-
-
+						$('#questionListTable').append(newRow);  // 새로운 행을 테이블에 추가
+					});
+				} else {
+					const newRow = '<tr class="l_tr_even" align="center"><td class="l_td01" colspan="9" style="padding: 20px; font-weight: bold; color: #555;">검색결과에 해당하는 문제가 없습니다</td></tr>';
+					$('#questionListTable').append(newRow);
+				}
 			});
+
 			request.fail(function (jqXHR, textStatus, error) {
 				console.log(error);
 			});
-		})
+		});
 	</script>
 
 </th:block>
@@ -127,7 +161,7 @@
 										<option value=""> - 전체 - </option>
 										<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
 											th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
-											th:value="${cl.subMirCatCode}">
+											th:value="${(cl.subMirCatCode==null)?'korHis':cl.subMirCatCode}">
 										</option>
 									</select>
 								</td>
@@ -136,7 +170,7 @@
 								<td class="t_th01">문제 배점</td>
 								<td class="t_td01" colspan="3">
 									<label>
-										<input type="radio" name="qnaScr" value="" class="ipt01" checked="" /> 전체
+										<input type="radio" name="qnaScr" value="0" class="ipt01" checked="" /> 전체
 									</label>
 									&nbsp;
 									<label>
@@ -152,7 +186,7 @@
 									</label>
 									&nbsp;
 									<label>
-										<input type="radio" name="qnaScr" value="5" class="ipt01"> 4
+										<input type="radio" name="qnaScr" value="4" class="ipt01"> 4
 									</label>
 									&nbsp;
 								</td>
@@ -190,11 +224,11 @@
 								<td class="t_td01" colspan="3">
 									<select name="searchType" id="searchType">
 										<option value="">- 전체 -</option>
-										<option value="qnaSubject">문제 제목</option>
-										<option value="qnaQst">문제 내용</option>
-										<option value="qnaChap">출제 단원</option>
-										<option value="qnaType">출제 유형</option>
-										<option value="qnaCmt">문제 해설</option>
+										<option value="qna_subject">문제 제목</option>
+										<option value="qna_qst">문제 내용</option>
+										<option value="qna_chap">출제 단원</option>
+										<option value="qna_type">출제 유형</option>
+										<option value="qna_cmt">문제 해설</option>
 									</select>
 									<input type="text" name="searchKeyword" size="30" id="searchKeyword" />
 									<button type="button" class="bttn2" id="searchBtn">검색</button>
@@ -250,7 +284,7 @@
 
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="questionListTable">
 								<tr class="l_tr_even" align="center" th:if="${questionList !=null}"
 									th:each="ql:${questionList}">
 									<td class="l_td01"><input type="checkbox" name="idx" value="792" /></td>
