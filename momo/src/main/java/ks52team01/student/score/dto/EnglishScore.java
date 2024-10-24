@@ -19,5 +19,5 @@ public class EnglishScore {
 	private Date   engScrUpdateTime;
 	
 	private SubjectScore subjectScore;
-	
+	private SubjectMinorCategory subjectMinorCategory;
 }

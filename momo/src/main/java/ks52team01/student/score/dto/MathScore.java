@@ -20,4 +20,5 @@ public class MathScore {
 	private Date   mathScrUpdateTime;
 	
 	private SubjectScore subjectScore;
+	private SubjectMinorCategory subjectMinorCategory;
 }
