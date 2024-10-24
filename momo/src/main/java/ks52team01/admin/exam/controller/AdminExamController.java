@@ -1,10 +1,21 @@
 package ks52team01.admin.exam.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ks52team01.admin.exam.dto.ExamQnaChap;
+import ks52team01.admin.exam.dto.ExamQnaType;
+import ks52team01.admin.exam.dto.QnaBank;
+import ks52team01.admin.exam.dto.SubMirCate;
+import ks52team01.admin.exam.dto.SubMjrCate;
 import ks52team01.admin.exam.service.AdminExamService;
+import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,10 +27,20 @@ public class AdminExamController {
 
 	private final AdminExamService adminExamService;
 
-	@GetMapping("/category")
-	public String adminExamCategory() {
-		adminExamService.getAdminExamCategoryList();
+	@PostMapping("/addQuestion")
+	public String adminExamAddQuestion(QnaBank qnaBank) {
+		adminExamService.addExamQuestion(qnaBank);
 
+		return "redirect:/admin/exam/questionList";
+	}
+
+	@GetMapping("/category")
+	public String adminExamCategory(Model model) {
+
+		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		categoryList = adminExamService.getAdminExamCategoryList();
+
+		model.addAttribute("categoryList", categoryList);
 		return "view/admin/exam/admin_exam_category";
 	}
 
@@ -29,7 +50,24 @@ public class AdminExamController {
 	}
 
 	@GetMapping("/addQuestion")
-	public String admintest5() {
+	public String adminExamAddQuestion(Model model) {
+		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		categoryList = adminExamService.getAdminExamCategoryList();
+
+		List<User> userList = new ArrayList<User>();
+		userList = adminExamService.getUserListByGrade("ugc1");
+
+		List<ExamQnaType> qnaTypeList = new ArrayList<ExamQnaType>();
+		qnaTypeList = adminExamService.getQnaTypeList();
+
+		List<ExamQnaChap> qnaChapList = new ArrayList<ExamQnaChap>();
+		qnaChapList = adminExamService.getQnaChapList();
+
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("userList", userList);
+		model.addAttribute("qnaTypeList", qnaTypeList);
+		model.addAttribute("qnaChapList", qnaChapList);
+
 		return "view/admin/exam/admin_exam_add_question";
 	}
 

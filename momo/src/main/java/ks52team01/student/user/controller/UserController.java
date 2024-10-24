@@ -5,9 +5,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import ks52team01.common.ResponseError;
 import ks52team01.student.user.dto.User;
+import ks52team01.student.user.dto.UserJoinInfo;
 import ks52team01.student.user.service.UserService;
 import ks52team01.student.user.service.UserServiceImpl;
 
@@ -76,10 +79,18 @@ public class UserController {
 	public String userJoinMove() {
 		return "view/user/user/user_join_form";
 	}
-
-	public void userJoinAction() {
-
+	
+	@PostMapping("user/userJoinAction")
+	public String userJoinAction() {
+		return "redirect:/";
 	}
+
+	@PostMapping("/user/userJoinCheck")
+	@ResponseBody
+	public ResponseError getUserJoinCheck(UserJoinInfo userJoinInfo) {
+		return userService.userJoinCheck(userJoinInfo);
+	}
+
 
 	public void userInfoDetailAction() {
 

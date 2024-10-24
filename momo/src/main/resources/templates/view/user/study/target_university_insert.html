@@ -44,7 +44,7 @@
 										</div>
 
 										<div id="MyTestArea">
-											<form action="/study/addTargetUniversity" method="post" class="insert">
+											<form th:action="@{/study/addTargetUniversity}" method="post" class="insert">
 													<input type="hidden" name="usercode" th:value="${session.loggedInUser.userCode}" /> 
 																						
 													

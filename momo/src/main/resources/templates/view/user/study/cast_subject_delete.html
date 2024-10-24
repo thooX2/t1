@@ -45,9 +45,9 @@
 										</div>
 
 										<div id="MyTestArea">
-											<form action="/study/removeCastSubject" method="post" class="insert">
+											<form th:action="@{/study/removeCastSubject}" method="post" class="insert">
 												<h2>정말로 삭제하시겠습니까?</h2>
-												<input type="text" name="idx" th:value=${listIdx} /> <br /> <input
+												<input type="hidden" name="idx" th:value=${listIdx} /> <br /> <input
 													type="submit" value="목표과목삭제">
 											</form>
 										</div>

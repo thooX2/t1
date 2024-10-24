@@ -33,7 +33,9 @@
 		sub_mir_cat_kh
 
 		FROM
-		CSAT;
+		CSAT
+		where
+		  user_code = #{id};
 	</select>
 
 	<insert id='addCastSubject'
@@ -126,7 +128,9 @@
 		target_university_rangking
 
 		FROM
-		target_university;
+		target_university
+		where
+		  user_code = #{id};
 	</select>
 
 
@@ -224,7 +228,9 @@
 		count_grade_set
 
 		FROM
-		obejctive_grade;
+		obejctive_grade
+		where
+		  user_code = #{id};
 	</select>
 
 	<!-- 목표등급 추가 0 -->
@@ -337,7 +343,9 @@
 		learning_schedule_compleate
 
 		FROM
-		learning_schedule;
+		learning_schedule
+		where
+		  user_code = #{id};
 	</select>
 
 	<!-- 학습목표 추가 0 -->
@@ -451,7 +459,9 @@
 		detailed_schedule_result
 
 		FROM
-		detailed_schedule;
+		detailed_schedule
+		where
+		  user_code = #{id};
 	</select>
 
 	<!-- 상세일정 추가 0 -->

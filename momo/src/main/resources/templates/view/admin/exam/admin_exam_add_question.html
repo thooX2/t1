@@ -3,12 +3,11 @@
 	layout:decorate="~{layouts/admin_layout}">
 
 <head>
-	<link rel="stylesheet" type="text/css" href="/admin/css/adminExamAddQuestion/admin.css" />
-	<link rel="stylesheet" type="text/css" href="/admin/css/adminExamAddQuestion/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/font-awesome.min.css" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 	<style>
-
-
 		/* ---------------------------- */
 		/* 숨겨진 파일 입력 */
 		#fileInput {
@@ -82,15 +81,15 @@
 	</style>
 </head>
 <th:block layout:fragment="customJsFile">
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
 	<!-- Include the Korean language file -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
-
+	<!-- Select2 JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
+	<script th:inline="javascript">
 		$(document).ready(function () {
 			$('#summernote').summernote({
 				height: 300,  // 고정된 높이
@@ -120,7 +119,7 @@
 					['table', ['table']],
 					['para', ['ul', 'ol', 'paragraph']],
 					['height', ['height']],
-					['insert', ['picture', 'link', 'video', 'hr']],  // 수평선 추가
+					['insert', ['picture', 'link', 'hr']],  // 수평선 추가
 					['view', ['fullscreen', 'codeview', 'help']],  // 코드 보기 버튼 추가
 
 				],
@@ -185,6 +184,120 @@
 			}
 		}
 
+		// Select2 초기화
+		$('.js-example-basic-single').select2({
+			minimumResultsForSearch: 0, // 검색 기능 활성화
+			language: {
+				noResults: function () {
+					return "검색 결과가 없습니다"; // 사용자 정의 메시지
+				}
+			}
+		});
+		$('#goQuestionList').click(function () {
+			location.href = "/admin/exam/questionList";
+		})
+
+		$('select[name="item_cnt"]').click(function () {
+			if ($('select[name="item_cnt"]').val() == "4") {
+				$('input[name="qnaSlt5"]').closest('tr').css('display', 'none');
+				$('input[name="qnaSlt5"]').prop('disabled', 'true');
+			}
+			if ($('select[name="item_cnt"]').val() == "5") {
+				$('input[name="qnaSlt5"]').closest('tr').css('display', '');
+				$('input[name="qnaSlt5"]').prop('disabled', '');
+			}
+		})
+
+		// ---------------------------------------------------
+
+		var qnaTypeList = /*[[${qnaTypeList}]]*/[];
+		var qnaChapList = /*[[${qnaChapList}]]*/[];
+		var categoryList = /*[[${categoryList}]]*/[];
+
+		// 초기 옵션을 저장
+		const initialQnaChapList = $('#qnaChapList').html();
+		const initialQnaTypeListList = $('#qnaTypeList').html();
+
+		$('#categoryList').change(function () {
+			// value가 없고 text가 한국사인 select를 선택
+			if ($(this).val() == '' && $('#categoryList option:selected').text() == '한국사 > 한국사') {
+				// input hidden에 subject_major_catetory_code를 smjrcc4로 수동입력
+				$('#categorySubMjrCatCode').val('smjrcc4');
+				$('#qnaChapList').empty();
+				$('#qnaTypeList').empty();
+
+				// 위의 hidden value값을 기반으로 전체 문항타입목록에서 같은 값을 찾아 option을 생성 
+				qnaTypeList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+
+						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
+					}
+				})
+
+				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
+				qnaChapList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
+					}
+				})
+
+
+				// value가 없는 즉, 전체라고 쓰인 select를 선택하면 모든 리스트를 보여줌	
+			} else if ($(this).val() == '') {
+				$('#qnaChapList').html(initialQnaChapList);
+				$('#qnaTypeList').html(initialQnaTypeListList);
+			} else {
+				// 한국사를 제외한 다른 카테고리를 생성시 해당 카테고리의 출제단원과 출제유형만 보이게 설정
+				$('#qnaChapList').empty();
+				$('#qnaTypeList').empty();
+
+				// 전체 카테고리 리스트에서 select에서 현재 선택한 smjrcc를 찾아서 hidden에 부여
+				categoryList.forEach(element => {
+					if ($(this).val() == element['subMirCatCode']) {
+						$('#categorySubMjrCatCode').val(element['subMjrCatCode'])
+					}
+				})
+
+				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
+				qnaChapList.forEach(element => {
+					if (element['subMirCatCode'] == $(this).val()) {
+						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
+					}
+				})
+				// 위에서 부여한 hidden의 value를 기반으로 타입리스트를 순회해서 타입 select를 생성
+				qnaTypeList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
+					}
+				})
+
+
+				// 점수버튼 활성화 비활성화
+				if ($('#categorySubMjrCatCode').val() == "smjrcc2") {
+					$('input[name="qnaScr"]').eq(3).prop('disabled', false);
+				} else {
+					$('input[name="qnaScr"]').eq(3).prop('disabled', true);
+				}
+
+				if ($('#categorySubMjrCatCode').val() == "smjrcc8") {
+					$('input[name="qnaScr"]').eq(0).prop('disabled', false);
+					$('input[name="qnaScr"]').eq(2).prop('disabled', true);
+				} else {
+					$('input[name="qnaScr"]').eq(0).prop('disabled', true);
+					$('input[name="qnaScr"]').eq(2).prop('disabled', false);
+				}
+
+
+
+			}
+		});
+		/*
+		* 중요! : 1.출제단원 테이블의 내용이 과목대분류, 중분류와 맞지 않음
+		* 		  2. 모두 확인하지 않았지만 문제 출제유형은 과목대분류, 중분류와 맞는거 같음	
+		*/
+
+
+
 
 	</script>
 </th:block>
@@ -218,8 +331,9 @@
 			<div id="sys-scroll">
 				<div id="alert_area"></div>
 				<div id="sys-contents">
-					<form name="form1" method="post" enctype="multipart/form-data" target="sysfrm">
-						<input type="hidden" name="temp_id" value="792" />
+					<form name="adminExamAddQuestion" action="/admin/exam/addQuestion" method="post"
+						enctype="multipart/form-data">
+						<input type="hidden" id="categorySubMjrCatCode" name="subMjrCatCode" value="" />
 						<table class="c_tb01" cellpadding="0" cellspacing="0">
 							<tbody>
 								<tr>
@@ -238,66 +352,76 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<td class="f_th01">문제카테고리</td>
+									<td class="f_th01">문제 카테고리</td>
 									<td class="f_td01" colspan="3">
-										<select name="category_id" class="js-example-basic-single">
+										<select id="categoryList" name="subMirCatCode" class="js-example-basic-single"
+											required>
 											<option value=""> - 전체 - </option>
-
-											<option value="179"> 사교원테스트 </option>
-
-											<option value="180"> 사교원테스트 &gt; DDM </option>
-
-											<option value="49"> 음악 이야기 </option>
+											<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
+												th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
+												th:value="${cl.subMirCatCode}">
+											</option>
 										</select>
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">문제</td>
+									<td class="f_th01">문제 출제단원</td>
 									<td class="f_td01" colspan="3">
-										<input type="text" name="question" style="width:99%" />
+										<select id="qnaChapList" name="qnaChap" class="js-example-basic-single">
+											<option value=""> - 전체 - </option>
+											<option th:if="${qnaChapList !=null}" th:each="qcl:${qnaChapList}"
+												th:text="${qcl.examQnaChapNm}" value="${qcl.examQnaChapCode}">
+											</option>
+										</select>
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">난이도</td>
+									<td class="f_th01">문제 출제유형</td>
 									<td class="f_td01" colspan="3">
-
-										<label>
-											<input type="radio" name="grade" value="1" class="ipt01" /> A
-										</label>
-										&nbsp;
-
-										<label>
-											<input type="radio" name="grade" value="2" class="ipt01" /> B
-										</label>
-										&nbsp;
-
-										<label>
-											<input type="radio" name="grade" value="3" class="ipt01" /> C
-										</label>
-										&nbsp;
-
-										<label>
-											<input type="radio" name="grade" value="4" class="ipt01" /> D
-										</label>
-										&nbsp;
-
-										<label>
-											<input type="radio" name="grade" value="5" class="ipt01" /> E
-										</label>
-										&nbsp;
-
-										<label>
-											<input type="radio" name="grade" value="6" class="ipt01" /> F
-										</label>
-										&nbsp;
-
+										<select id="qnaTypeList" name="qnaType" class="js-example-basic-single">
+											<option value=""> - 전체 - </option>
+											<option th:if="${qnaTypeList !=null}" th:each="qtl:${qnaTypeList}"
+												th:text="${qtl.examQnaTypeNm}" value="${qtl.examQnaTypeCode}">
+											</option>
+										</select>
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">문제설명</td>
+									<td class="f_th01">문제 제목</td>
+									<td class="f_td01" colspan="3">
+										<input type="text" name="qnaSubject" style="width:99%" required />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 배점</td>
+									<td class="f_td01" colspan="3">
+
+										<label>
+											<input type="radio" name="qnaScr" value="1" class="ipt01" disabled /> 1
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="qnaScr" value="2" class="ipt01" required /> 2
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="qnaScr" value="3" class="ipt01" /> 3
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="qnaScr" value="4" class="ipt01" disabled /> 4
+										</label>
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 내용</td>
 									<td class="f_td01" colspan="3">
 										<div style="width:100%;">
-											<textarea id="summernote"></textarea>
+											<textarea id="summernote" name="qnaQst"></textarea>
 										</div>
 									</td>
 								</tr>
@@ -319,18 +443,15 @@
 									<td class="f_td01">
 										<select name="question_type">
 											<option value="1">단일선택</option>
-											<option value="2">다중선택</option>
-											<option value="3">단답형</option>
-											<option value="4">서술형</option>
+											<option value="2" disabled>다중선택</option>
+
 										</select>
 									</td>
 									<td class="f_th01">문항 갯수</td>
 									<td class="f_td01">
 										<select name="item_cnt">
-											<option value="2">2개</option>
-											<option value="3">3개</option>
 											<option value="4">4개</option>
-											<option value="5">5개</option>
+											<option value="5" selected>5개</option>
 										</select>
 									</td>
 								</tr>
@@ -382,21 +503,22 @@
 											</colgroup>
 											<tbody>
 												<tr>
-													<td class="l_th03">정답</td>
-													<td class="l_th03">번호</td>
-													<td class="l_th03">내용</td>
+													<th class="l_th03">정답</th>
+													<th class="l_th03">번호</th>
+													<th class="l_th03">내용</th>
 												</tr>
 											</tbody>
 											<tbody id="item_area">
 
 												<tr style="display: table-row;">
 													<td class="l_td01">
-														<div style="text-align:center"><input type="radio" required="Y"
-																hname="정답" name="answer" value="1"></div>
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="1" required>
+														</div>
 													</td>
 													<td class="l_td01" align="center">1</td>
 													<td class="l_td01">
-														<input type="text" name="item1" hname="문항(1)" size="95">
+														<input type="text" name="qnaSlt1" size="95" required>
 														<p class="mt3">
 															<input type="file" name="item1_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -407,12 +529,13 @@
 
 												<tr style="display: table-row;">
 													<td class="l_td01">
-														<div style="text-align:center"><input type="radio" required="Y"
-																hname="정답" name="answer" value="2"></div>
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="2">
+														</div>
 													</td>
 													<td class="l_td01" align="center">2</td>
 													<td class="l_td01">
-														<input type="text" name="item2" hname="문항(2)" size="95">
+														<input type="text" name="qnaSlt2" size="95" required>
 														<p class="mt3">
 															<input type="file" name="item2_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -423,12 +546,13 @@
 
 												<tr style="display: table-row;">
 													<td class="l_td01">
-														<div style="text-align:center"><input type="radio" required="Y"
-																hname="정답" name="answer" value="3"></div>
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="3">
+														</div>
 													</td>
 													<td class="l_td01" align="center">3</td>
 													<td class="l_td01">
-														<input type="text" name="item3" hname="문항(3)" size="95">
+														<input type="text" name="qnaSlt3" size="95" required>
 														<p class="mt3">
 															<input type="file" name="item3_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -439,12 +563,13 @@
 
 												<tr style="display: table-row;">
 													<td class="l_td01">
-														<div style="text-align:center"><input type="radio" required="Y"
-																hname="정답" name="answer" value="4"></div>
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="4">
+														</div>
 													</td>
 													<td class="l_td01" align="center">4</td>
 													<td class="l_td01">
-														<input type="text" name="item4" hname="문항(4)" size="95">
+														<input type="text" name="qnaSlt4" size="95" required>
 														<p class="mt3">
 															<input type="file" name="item4_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -455,12 +580,13 @@
 
 												<tr style="display: table-row;">
 													<td class="l_td01">
-														<div style="text-align:center"><input type="radio" required="Y"
-																hname="정답" name="answer" value="5"></div>
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="5">
+														</div>
 													</td>
 													<td class="l_td01" align="center">5</td>
 													<td class="l_td01">
-														<input type="text" name="item5" hname="문항(5)" size="95">
+														<input type="text" name="qnaSlt5" size="95" required>
 														<p class="mt3">
 															<input type="file" name="item5_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -473,19 +599,12 @@
 										</table>
 									</td>
 								</tr>
-								<tr id="corrent_tr" style="display: none;">
-									<td class="f_th01">정답</td>
-									<td class="f_td01" colspan="3">
-										<div id="correntType_1" style="display:inline;">
-											<input type="text" name="answer" size="80" value="모든 일에 감사하는 것" />
-										</div>
-									</td>
-								</tr>
+
 								<tr>
 									<td class="f_th01">정답설명</td>
-									<td class="f_td01" colspan="3"><textarea name="description" id="textarea1"
-											style="width:99%;height:150px;"
-											class="mceNoEditor">슈바이처 박사는 인생에서 가장 멋진 일을 모든 일에 감사는 것 이라고 했고 그렇기 때문에 감사한 일이 있으면 지체하지 말고 마음을 표현하라,라고 했다.</textarea>
+									<td class="f_td01" colspan="3">
+										<textarea name="qnaCmt" id="textarea1" style="width:99%;height:150px;"
+											class="mceNoEditor" placeholder="여기에 설명을 입력하세요" required></textarea>
 									</td>
 								</tr>
 								<tr>
@@ -496,48 +615,16 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="f_th01">담당자</td>
+									<td class="f_th01">출제자</td>
 									<td class="f_td01" colspan="3">
-										<select name="manager_id" class="js-example-basic-single">
+										<select name="userCode" class="js-example-basic-single">
 											<option value=""> - 담당자 선택 - </option>
-											<option value=" -99"> [공용] 모든 최고관리자, 운영자, 과정운영자 </option>
-
-											<option value="50425">[운영자] ttestt02</option>
-
-											<option value="50295">[운영자] 박수영</option>
-
-											<option value="50323">[운영자] 홍길동</option>
-
-											<option value="50093">[운영자] 홍길동1</option>
-
-											<option value="50005">[과정운영자] test3</option>
-
-											<option value="50006">[과정운영자] test4</option>
-
-											<option value="50427">[과정운영자] ttestt04</option>
-
-											<option value="50124">[과정운영자] 관리자</option>
-
-											<option value="50019">[과정운영자] 홍길동5</option>
-
-											<option value="50454">[최고관리자] admin5</option>
-
-											<option value="50460">[최고관리자] malgnjudy</option>
-
-											<option value="50424">[최고관리자] ttestt01</option>
-
-											<option value="50464">[최고관리자] wjdehdhs</option>
-
-											<option value="2073">[최고관리자] 나우수</option>
-
-											<option value="50112">[최고관리자] 맑은</option>
-
-											<option value="50277">[최고관리자] 영업왕 주대리</option>
-
-											<option value="2229">[최고관리자] 운영자</option>
-
-											<option value="2001">[최고관리자] 최고관리자</option>
-
+											<!-- <option th:if="${userList !=null}" th:each="ul:${userList}"
+												th:text="'['+${ul.userId}+'] '+${ul.userName}"
+												th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
+											<option th:if="${userList !=null}" th:each="ul:${userList}"
+												th:text="'['+${ul.userId}+'] '+${ul.userName}"
+												th:value="${ul.userCode}"></option>
 										</select>
 									</td>
 								</tr>
@@ -547,12 +634,13 @@
 									<td class="f_td01" colspan="3">
 
 										<label>
-											<input type="radio" name="status" value="1" class="ipt01" /> 사용
+											<input type="radio" name="qnaCurExamState" value="1" class="ipt01"
+												required /> 사용
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="status" value="0" class="ipt01" /> 중지
+											<input type="radio" name="qnaCurExamState" value="0" class="ipt01" /> 중지
 										</label>
 										&nbsp;
 									</td>
@@ -563,11 +651,11 @@
 							<tbody>
 								<tr>
 									<td>
-										<button type="button" class="bttn2">목록</button>
+										<button type="button" class="bttn2" id="goQuestionList">목록</button>
 									</td>
 									<td class="b_td01">
-										<button type="submit" class="bttn2">수정</button>
-										<button type="button" class="bttn2">삭제</button>
+										<button type="submit" class="bttn2">등록</button>
+										<button type="reset" class="bttn2">초기화</button>
 									</td>
 								</tr>
 							</tbody>

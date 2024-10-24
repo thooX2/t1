@@ -45,7 +45,7 @@
 
 										<div class="myWorkbook">
 											<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-												<a th:href = "@{/study/addDetailed}">상세스케쥴 생성</a>
+												<a th:href = "@{/study/addDetailedSchedule}">상세스케쥴 생성</a>
 											</div>
 											<div id="MyTestArea">
 												<table class="bot_tbl--type">
@@ -82,8 +82,8 @@
 															<td th:text="${list.detailedScheduleEndTime}"></td>
 															<td th:text="${list.detailedScheduleStudyTime}"></td>
 															<td th:text="${list.detailedScheduleResult}"></td>
-															<td><a th:href="@{/study/modifyDetailed(list.detailedSchedule=*{list.detailedSchedule})}">수정</a></td>
-															<td><a th:href="@{/study/deleteDetailed(list.detailedSchedule=*{list.detailedSchedule})}">삭제</a></td>
+															<td><a th:href="@{/study/modifyDetailedSchedule(list.detailedSchedule=*{list.detailedSchedule})}">수정</a></td>
+															<td><a th:href="@{/study/removeDetailedSchedule(list.detailedSchedule=*{list.detailedSchedule})}">삭제</a></td>
 														</tr>
 													</tbody>
 												</table>
