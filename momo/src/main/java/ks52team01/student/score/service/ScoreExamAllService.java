@@ -15,6 +15,8 @@ public interface ScoreExamAllService {
 	
 	public void getExamAllScoreSummary();
 	
+	public List<Double> getRegionalAvgList(TookExamInfo tookExamInfo);
+	
 	public List<TookExamInfo> getTookExamList(String userCode);
 	
 	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode);

@@ -18,6 +18,12 @@ public interface ScoreMapper {
 
 	public void getScoreMain();
 	
+	public Double getNationAvg(String examCode, String korSubCode);
+	
+	public Double getProvinceAvg(String examCode, String korSubCode, String provinceCode);
+	
+	public Double getMunicipalityAvg(String examCode, String korSubCode, String municipalityCode);
+	
 	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode);
 	
 	public KoreanScore getKoreanScore(String userCode, String tookExamInfoCode);

@@ -39,6 +39,48 @@
 		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
 	</resultMap>
 	
+	<select id="getNationAvg" parameterType="String" resultType="Double">
+		SELECT
+			AVG(subject_score_origin)
+		FROM
+			subject_score ss
+			INNER JOIN kor_scr ks
+			ON
+			ss.subject_score_code = ks.kor_subject_score_code
+		WHERE
+			ks.exam_code = #{examCode} AND kor_slt_sub = #{korSubCode};
+	</select>
+
+	<select id="getProvinceAvg" parameterType="String" resultType="Double">
+		SELECT
+			AVG(subject_score_origin)
+		FROM
+			subject_score ss
+			INNER JOIN kor_scr ks
+			ON
+			ss.subject_score_code = ks.kor_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON
+			ss.took_exam_info_code = tei.took_exam_info_code
+		WHERE
+			ks.exam_code = #{examCode} AND ks.kor_slt_sub = #{korSubCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getMunicipalityAvg" parameterType="String" resultType="Double">
+		SELECT
+			AVG(subject_score_origin)
+		FROM
+			subject_score ss
+			INNER JOIN kor_scr ks
+			ON
+			ss.subject_score_code = ks.kor_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON
+			ss.took_exam_info_code = tei.took_exam_info_code
+		WHERE
+			ks.exam_code = #{examCode} AND ks.kor_slt_sub = #{korSubCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+	</select>
+	
 	<select id="getKoreanScore" parameterType="String" resultMap="KoreanScoreMap">
 		/* 국어 점수 조회 */
 		SELECT

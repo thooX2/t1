@@ -37,11 +37,18 @@ public class ScoreController {
 	public String getScoreMain(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loggedInUser");
 		String userCode = user.getUserCode();
+		String userAreaCityCode = user.getAreaCityCode();
 		// 출력 날짜 형식 정의
 		SimpleDateFormat outputFormat = new SimpleDateFormat("yy.MM.dd");
 		// Date 객체를 원하는 형식의 문자열로 변환
 		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
 		List<TookExamInfo> tookExamList = scoreExamAllService.getTookExamList(userCode);
+		String examCode = tookExamList.get(0).getExamCode();
+		String korSubCode = tookExamList.get(0).getKorSltSub();
+		// 전국, 도, 시별 과목 원점수 평균
+		List<Double> regionalAvgList = scoreExamAllService.getRegionalAvgList(tookExamList.get(0));
+		log.info("::::::::::::::::: regoin ::::::: {}", regionalAvgList);
+		model.addAttribute("regionalAvgList", regionalAvgList);
 		String tookExamInfoCode = tookExamList.get(0).getTookExamInfoCode();
 		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
 		MathScore mathScore = scoreExamAllService.getMathScore(userCode, tookExamInfoCode);

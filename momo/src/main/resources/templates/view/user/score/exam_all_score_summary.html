@@ -4,63 +4,23 @@
 	layout:decorate="~{layouts/layout}">
 
 <head>
-
-<style>
-table {
-	border: 2px solid;
-	text-align: center;
-	width: 100%;
-}
-
-thead, tbody, tr, th, td {
-	border: 1px solid;
-}
-
-td {
-	width: 12.5%;
-}
-
-tr {
-	height: 40px;
-}
-
-.report-card-subject-tr {
-	height: 80px;
-}
-
-.report-card-empty-row {
-	background-color: rgba(33, 37, 41, 0.25);
-}
-
-#momoDefault .sidebar__item ul li a:hover {
-	color: red;
-}
-
-.ss {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.score-btn {
-	width: 20%;
-	height: 50px;
-	border-top-radius: 5px;
-}
-
-
-</style>
+	<link rel="stylesheet" type="text/css" href="/user/css/score/score.css" />
 </head>
 <th:block layout:fragment="customJsFile">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
+		const examScore = [[${examScore}]];
+		let koreanScore = examScore.koreanScore;
+		let mathScore = examScore.mathScore;
+		let englishScore = examScore.englishScore;
+		let koreanHistoryScore = examScore.koreanHistoryScore;
+		let inquiry1Score = examScore.inquiry1Score;
+		let inquiry2Score = examScore.inquiry2Score;
+		let frnScore = examScore.secondLanguageAndChineseCharactersScore;
 		$('#took-exam-select').change(function() {
 			const val = $(this).val();
-			console.log(val);
 			const request = $.ajax({
 										url : '/score/searchTookExamScore',
 										method : 'POST',
@@ -70,6 +30,13 @@ tr {
 												}
 									});
 			request.done(function(data) {
+				koreanScore = data.koreanScore;
+				mathScore = data.mathScore;
+				englishScore = data.englishScore;
+				koreanHistoryScore = data.koreanHistoryScore;
+				inquiry1Score = data.inquiry1Score;
+				inquiry2Score = data.inquiry2Score;
+				frnScore = data.secondLanguageAndChineseCharactersScore;
 				$('#korean-select-subject').text(`${data.koreanScore.subjectMinorCategory.subMirCatNm}`);
 				$('#math-select-subject').text(`${data.mathScore.subjectMinorCategory.subMirCatNm}`);
 				$('#inquiry1-select-subject').text(`${data.inquiry1Score.subjectMinorCategory.subMirCatNm}`);
@@ -93,40 +60,86 @@ tr {
 		});
 		
 		const ctx = document.getElementById('scoreChart').getContext('2d');
-
 		const data = {
 			labels : [ '국어', '수학', '영어', '한국사', '탐구1', '탐구2', '제2외국어 및 한문' ],
-			datasets : [ {
+			datasets : [
+			{
+				label : '전국 평균',
+				data : [50.8,
+						 20,
+						 30,
+						 40,
+						 50,
+						 60,
+						 0],
+						 
+				backgroundColor: 'rgba(198, 93, 143, 1)',
+				borderColor: 'rgba(198, 93, 143, 1)',
+				borderWidth: 2,
+				tension: 0.25,
+				fill: false,
+				type: 'line'
+			},
+			{
+				label : '도 평균',
+				data : [60.8,
+						 10,
+						 40,
+						 30,
+						 60,
+						 50,
+						 0],
+						 
+				backgroundColor: 'rgba(84, 127, 214, 1)',
+				borderColor: 'rgba(84, 127, 214, 1)',
+				borderWidth: 2,
+				tension: 0.25,
+				fill: false,
+				type: 'line'
+			},
+			{
+				label : '시 평균',
+				data : [65.8,
+						 15,
+						 45,
+						 35,
+						 65,
+						 55,
+						 10],
+						 
+				backgroundColor: 'rgba(70, 134, 184, 1)',
+				borderColor: 'rgba(70, 134, 184, 1)',
+				borderWidth: 2,
+				tension: 0.25,
+				fill: false,
+				type: 'line'
+			},
+			{
 				label : '원점수',
-				data : [ 58, 19, 44, 49, 10, 21, 28 ],
-				backgroundColor : 'rgba(220, 53, 69, 0.5)',
-				borderColor : 'rgba(220, 53, 69, 1)',
-				borderWidth : 1
-			}, {
-				label : '표준점수',
-				data : [ 95, 69, 0, 0, 100, 100, 0 ],
-				backgroundColor : 'rgba(253, 126, 20, 0.5)',
-				borderColor : 'rgba(253, 126, 20, 1)',
-				borderWidth : 1
-			}, {
-				label : '백분위',
-				data : [ 45, 13, 0, 0, 50, 50, 0 ],
-				backgroundColor : 'rgba(255, 193, 7, 0.5)',
-				borderColor : 'rgba(255, 193, 7, 1)',
-				borderWidth : 1
-			}, {
-				label : '등급',
-				data : [ 5, 6, 6, 1, 1, 1, 5 ],
-				backgroundColor : 'rgba(40, 167, 69, 0.5)',
-				borderColor : 'rgba(40, 167, 69, 1)',
-				borderWidth : 1
-			}, {
-				label : '석차',
-				data : [ 6, 4, 8, 1, 1, 1, 1 ],
-				backgroundColor : 'rgba(0, 123, 255, 0.5)',
-				borderColor : 'rgba(0, 123, 255, 1)',
-				borderWidth : 1
-			} ]
+				data : [`${koreanScore.subjectScore.subjectScoreOrigin}`,
+						`${mathScore.subjectScore.subjectScoreOrigin}`,
+						`${englishScore.subjectScore.subjectScoreOrigin}`,
+						`${koreanHistoryScore.subjectScore.subjectScoreOrigin}`,
+						`${inquiry1Score.subjectScore.subjectScoreOrigin}`,
+						`${inquiry2Score.subjectScore.subjectScoreOrigin}`,
+						0],
+						 
+				backgroundColor: ['rgba(255, 173, 173, 0.75)',
+					              'rgba(255, 214, 165, 0.75)',
+					              'rgba(253, 255, 182, 0.75)',
+					              'rgba(202, 255, 191, 0.75)',
+					              'rgba(155, 246, 255, 0.75)',
+					              'rgba(160, 196, 255, 0.75)',
+					              'rgba(189, 178, 255, 0.75)'],
+				borderColor: ['rgba(255, 173, 173, 1)',
+				              'rgba(255, 214, 165, 1)',
+				              'rgba(253, 255, 182, 1)',
+				              'rgba(202, 255, 191, 1)',
+				              'rgba(155, 246, 255, 1)',
+				              'rgba(160, 196, 255, 1)',
+				              'rgba(189, 178, 255, 1)'],
+				borderWidth: 1
+			}]
 		};
 
 		const config = {
@@ -178,27 +191,27 @@ tr {
 						</div>
 					</div>
 					<div class="col-lg-9 col-md-7">
-						<div class="ss">
+						<div id="took-exam-div">
 							<strong>최근 응시하신&nbsp</strong>
 							<select id="took-exam-select">
 								<option th:each="l : ${tookExamList}" th:value="${l.tookExamInfoCode}" th:text="${l.examInfo.examNm}"></option>
 							</select>
 							<strong>의 점수입니다.</strong>
 						</div>
-						<div>
-							<div class="ss">
+						<div id="score-analysis-div">
+							<div id="score-cat-button-div">
 								<button class="score-btn">원점수</button>
 								<button class="score-btn">표준점수</button>
 								<button class="score-btn">백분위</button>
 								<button class="score-btn">등급</button>
 								<button class="score-btn">석차</button>
 							</div>
-							<div>
+							<div id="score-cat-chart-div">
 								<canvas id="scoreChart" width="800" height="400px"
 									max-height="400px"></canvas>
 							</div>
 						</div>
-						<div>
+						<div id="score-card-div">
 							<table>
 								<thead>
 									<tr>
@@ -309,8 +322,7 @@ tr {
 											th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.inq1Grd : ''}"></td>
 										<td
 											th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.inq2Grd : ''}"></td>
-										<td
-											th:text="${examScore.secondLanguageAndChineseCharactersScore != null ? examScore.secondLanguageAndChineseCharactersScore.frnGrd : ''}"></td>
+										<td>hh</td>
 									</tr>
 								</tbody>
 							</table>
