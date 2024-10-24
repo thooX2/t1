@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ks52team01.admin.exam.dto.ExamQnaChap;
 import ks52team01.admin.exam.dto.ExamQnaType;
+import ks52team01.admin.exam.dto.QnaBank;
 import ks52team01.admin.exam.dto.SubMirCate;
 import ks52team01.admin.exam.dto.SubMjrCate;
 import ks52team01.admin.exam.service.AdminExamService;
@@ -24,6 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminExamController {
 
 	private final AdminExamService adminExamService;
+
+	@PostMapping("/addQuestion")
+	public String adminExamAddQuestion(QnaBank qnaBank) {
+		adminExamService.addExamQuestion(qnaBank);
+
+		return "redirect:/admin/exam/questionList";
+	}
 
 	@GetMapping("/category")
 	public String adminExamCategory(Model model) {
