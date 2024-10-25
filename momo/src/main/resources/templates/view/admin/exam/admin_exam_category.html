@@ -90,13 +90,25 @@
 		// 트리 데이터를 JSON 형식으로 정의
 		var treeData = [
 			{
-				title: "현행시험과목",
+				title: "[ 현행 시험 과목 ]",
 				folder: true,
 				expanded: true,  // 카테고리 노드를 기본으로 확장 상태로 설정
 				children: []
 			},
 			{
-				title: "과거시험과목",
+				title: "[ 폐지된 시험 과목 ]",
+				folder: true,
+				expanded: false,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			},
+			{
+				title: "[ 출제 유형 ]",
+				folder: true,
+				expanded: false,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			},
+			{
+				title: "[ 출제 단원 ]",
 				folder: true,
 				expanded: false,  // 카테고리 노드를 기본으로 확장 상태로 설정
 				children: []
@@ -105,7 +117,8 @@
 
 		/* 타임리프에서 전달받은 categoryList 데이터를 자바스크립트 변수로 변환 */
 		var categoryList = /*[[${categoryList}]]*/[];
-
+		var qnaTypeList = /*[[${qnaTypeList}]]*/[];
+		var qnaChapList = /*[[${qnaChapList}]]*/[];
 		var categoryMap = {};
 
 		// categoryList에서 subMjrName을 추출하여 HashMap에 저장
@@ -136,6 +149,49 @@
 			});
 		}
 
+		for (const key in categoryMap) {
+			treeData[2]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+		for (const key in categoryMap) {
+			treeData[3]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+		qnaTypeList.forEach((element) => {
+			switch (element['subMjrCatCode']) {
+				case 'smjrcc1':
+					treeData[2]['children'][0]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc2':
+					treeData[2]['children'][1]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc3':
+					treeData[2]['children'][2]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc4':
+					treeData[2]['children'][3]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc5':
+					treeData[2]['children'][4]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc6':
+					treeData[2]['children'][5]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc7':
+					treeData[2]['children'][6]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc8':
+					treeData[2]['children'][7]['children'].push({title: element['examQnaTypeNm']})
+					break;
+			}
+		})
+
 
 		// subMirCatNm을 treeData[0]의 children에 추가
 		categoryList.forEach(element => {
@@ -143,7 +199,7 @@
 				// subMjrName이 일치하는 경우
 				if (element['subMjrName'] === elem['title']) {
 					// treeData[0]의 children에만 추가
-					if (element['curExamUserState'] == 'Y'&& (element['subMirState'] =='Y'||element['subMirState'] == null)) {
+					if (element['curExamUserState'] == 'Y' && (element['subMirState'] == 'Y' || element['subMirState'] == null)) {
 						if (elem['title'] == '한국사') {
 							elem['children'].push({title: '한국사'});
 						} else {
@@ -156,7 +212,7 @@
 				// subMjrName이 일치하는 경우
 				if (element['subMjrName'] === elem['title']) {
 					// treeData[0]의 children에만 추가
-					if (element['curExamUserState'] == 'N' || element['subMirState']=='N') {
+					if (element['curExamUserState'] == 'N' || element['subMirState'] == 'N') {
 						if (elem['title'] == '한국사') {
 							elem['children'].push({title: '한국사'});
 						} else {
@@ -165,8 +221,43 @@
 					}
 				}
 			}
+			for (let elem of treeData[3]['children']) {
+				// subMjrName이 일치하는 경우
+				if (element['subMjrName'] === elem['title']) {
+					// treeData[0]의 children에만 추가
+
+					if (elem['title'] == '한국사') {
+						elem['children'].push({
+							title: '한국사',
+							folder: true,
+							expanded: false,
+							children: []
+						});
+					} else {
+						elem['children'].push({
+							title: element['subMirCatNm'],
+							folder: true,
+							expanded: false,
+							children: []
+						});
+					}
+
+				}
+			}
 		});
 
+		qnaChapList.forEach((element, idx) => {
+
+			console.log(element);
+			treeData[3]['children'].forEach(elem => {
+
+				elem['children'].forEach(el => {
+					if (element['subMirCatNm'] == el['title']) {
+						el['children'].push({title: element['examQnaChapNm']});
+					}
+				})
+			})
+		})
 
 		// FancyTree 플러그인을 사용하여 트리 생성
 		$("#tree").fancytree({

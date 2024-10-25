@@ -67,6 +67,32 @@
 		    <result column="user_name" property="userName"/>
 	</resultMap>
 
+	<select id="getQuestionInfo" parameterType="String" resultMap="qnaBankResultMap">
+		SELECT
+			qna_code,
+			user_code,
+			sub_mjr_cat_code,
+			sub_mir_cat_code,
+			qna_type, qna_chap,
+			qna_subject, qna_qst,
+			qna_slt1,
+			qna_slt2,
+			qna_slt3,
+			qna_slt4,
+			qna_slt5,
+			qna_ans,
+			qna_scr,
+			qna_cmt,
+			qna_cur_exam_state,
+			qna_create_time,
+			qna_update_time
+		FROM
+			qna_bank
+		WHERE
+			qna_code=#{qnaCode}
+	</select>
+
+
 	<select id="searchQuestionList" parameterType="QnaBank" resultMap="qnaBankResultMap">
 	    SELECT
 	        qb.qna_code,
@@ -182,13 +208,18 @@
 
 	<select id="getQnaChapList" resultType="ExamQnaChap">
 		SELECT
-			exam_qna_chap_code as examQnaChapCode,
-			user_code as userCode,
-			sub_mjr_cat_code as subMjrCatCode,
-			sub_mir_cat_code as subMirCatCode,
-			exam_qna_chap_nm as examQnaChapNm
+			eqc.exam_qna_chap_code as examQnaChapCode,
+			eqc.user_code as userCode,
+			eqc.sub_mjr_cat_code as subMjrCatCode,
+			smjc.sub_mjr_cat_nm AS subMjrCatNm,
+			eqc.sub_mir_cat_code as subMirCatCode,
+			smic.sub_mir_cat_nm AS subMirCatNm,
+			eqc.exam_qna_chap_nm as examQnaChapNm
 		FROM
-			exam_qna_chap
+			exam_qna_chap eqc INNER JOIN sub_mir_cat smic
+			ON eqc.sub_mir_cat_code= smic.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smjc
+			ON eqc.sub_mjr_cat_code= smjc.sub_mjr_cat_code
 		ORDER BY
 			CAST(SUBSTRING(exam_qna_chap_code,5) AS UNSIGNED);
 	</select>

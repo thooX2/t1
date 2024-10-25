@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ks52team01.admin.exam.dto.ExamQnaChap;
@@ -27,6 +28,33 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminExamController {
 
 	private final AdminExamService adminExamService;
+
+	@GetMapping("/modifyQuestion")
+	public String modifyQuestion(@RequestParam(name = "qnaCode") String qnaCode, Model model) {
+
+		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		categoryList = adminExamService.getAdminExamCategoryList();
+
+		List<User> userList = new ArrayList<User>();
+		userList = adminExamService.getUserListByGrade("ugc1");
+
+		List<ExamQnaType> qnaTypeList = new ArrayList<ExamQnaType>();
+		qnaTypeList = adminExamService.getQnaTypeList();
+
+		List<ExamQnaChap> qnaChapList = new ArrayList<ExamQnaChap>();
+		qnaChapList = adminExamService.getQnaChapList();
+
+		QnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
+		log.error("test:{}", qnaBankInfo);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("userList", userList);
+		model.addAttribute("qnaTypeList", qnaTypeList);
+		model.addAttribute("qnaChapList", qnaChapList);
+		model.addAttribute("qnaBankInfo", qnaBankInfo);
+
+		return "view/admin/exam/admin_exam_modify_question";
+
+	}
 
 	@GetMapping("/searchQuestionList")
 	@ResponseBody
@@ -50,6 +78,14 @@ public class AdminExamController {
 		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
 		categoryList = adminExamService.getAdminExamCategoryList();
 
+		List<ExamQnaType> qnaTypeList = new ArrayList<ExamQnaType>();
+		qnaTypeList = adminExamService.getQnaTypeList();
+
+		List<ExamQnaChap> qnaChapList = new ArrayList<ExamQnaChap>();
+		qnaChapList = adminExamService.getQnaChapList();
+
+		model.addAttribute("qnaTypeList", qnaTypeList);
+		model.addAttribute("qnaChapList", qnaChapList);
 		model.addAttribute("categoryList", categoryList);
 		return "view/admin/exam/admin_exam_category";
 	}

@@ -24,4 +24,6 @@ public interface AdminExamService {
 
 	List<QnaBank> searchQuestionList(QnaBank qnaBank);
 
+	QnaBank getQuestionInfo(String qnaCode);
+
 }

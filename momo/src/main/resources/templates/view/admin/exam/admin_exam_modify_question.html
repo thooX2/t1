@@ -292,6 +292,11 @@
 			}
 		});
 
+
+
+
+
+
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -330,7 +335,7 @@
 						<table class="c_tb01" cellpadding="0" cellspacing="0">
 							<tbody>
 								<tr>
-									<td class="c_th01">등록</td>
+									<td class="c_th01">수정</td>
 									<td class="c_td01"></td>
 								</tr>
 							</tbody>
@@ -352,7 +357,8 @@
 											<option value=""> - 전체 - </option>
 											<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
 												th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
-												th:value="${cl.subMirCatCode}">
+												th:value="${cl.subMirCatCode}"
+												th:selected="${cl.subMirCatCode == qnaBankInfo.subMirCatCode}">
 											</option>
 										</select>
 									</td>
@@ -374,7 +380,8 @@
 										<select id="qnaTypeList" name="qnaType" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
 											<option th:if="${qnaTypeList !=null}" th:each="qtl:${qnaTypeList}"
-												th:text="${qtl.examQnaTypeNm}" value="${qtl.examQnaTypeCode}">
+												th:text="${qtl.examQnaTypeNm}" value="${qtl.examQnaTypeCode}"
+												th:selected="${qtl.examQnaTypeCode==qnaBankInfo.examQnaTypeCode}">
 											</option>
 										</select>
 									</td>
@@ -382,7 +389,8 @@
 								<tr>
 									<td class="f_th01">문제 제목</td>
 									<td class="f_td01" colspan="3">
-										<input type="text" name="qnaSubject" style="width:99%" required />
+										<input type="text" name="qnaSubject" style="width:99%" required
+											th:value="${qnaBankInfo.qnaSubject}" />
 									</td>
 								</tr>
 								<tr>
@@ -414,7 +422,8 @@
 									<td class="f_th01">문제 내용</td>
 									<td class="f_td01" colspan="3">
 										<div style="width:100%;">
-											<textarea id="summernote" name="qnaQst"></textarea>
+											<textarea id="summernote" name="qnaQst"
+												th:value="qnaBankInfo.qnaQst"></textarea>
 										</div>
 									</td>
 								</tr>
@@ -511,7 +520,8 @@
 													</td>
 													<td class="l_td01" align="center">1</td>
 													<td class="l_td01">
-														<input type="text" name="qnaSlt1" size="95" required>
+														<input type="text" name="qnaSlt1" size="95" required
+															th:value="${qnaBankInfo.qnaSlt1}">
 														<p class="mt3">
 															<input type="file" name="item1_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -528,7 +538,8 @@
 													</td>
 													<td class="l_td01" align="center">2</td>
 													<td class="l_td01">
-														<input type="text" name="qnaSlt2" size="95" required>
+														<input type="text" name="qnaSlt2" size="95" required
+															th:value="${qnaBankInfo.qnaSlt2}">
 														<p class="mt3">
 															<input type="file" name="item2_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -545,7 +556,8 @@
 													</td>
 													<td class="l_td01" align="center">3</td>
 													<td class="l_td01">
-														<input type="text" name="qnaSlt3" size="95" required>
+														<input type="text" name="qnaSlt3" size="95" required
+															th:value="${qnaBankInfo.qnaSlt3}">
 														<p class="mt3">
 															<input type="file" name="item3_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -562,7 +574,8 @@
 													</td>
 													<td class="l_td01" align="center">4</td>
 													<td class="l_td01">
-														<input type="text" name="qnaSlt4" size="95" required>
+														<input type="text" name="qnaSlt4" size="95" required
+															th:value="${qnaBankInfo.qnaSlt4}">
 														<p class="mt3">
 															<input type="file" name="item4_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -579,7 +592,8 @@
 													</td>
 													<td class="l_td01" align="center">5</td>
 													<td class="l_td01">
-														<input type="text" name="qnaSlt5" size="95" required>
+														<input type="text" name="qnaSlt5" size="95" required
+															th:value="${qnaBankInfo.qnaSlt1}">
 														<p class="mt3">
 															<input type="file" name="item5_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -597,7 +611,8 @@
 									<td class="f_th01">정답설명</td>
 									<td class="f_td01" colspan="3">
 										<textarea name="qnaCmt" id="textarea1" style="width:99%;height:150px;"
-											class="mceNoEditor" placeholder="여기에 설명을 입력하세요" required></textarea>
+											class="mceNoEditor" placeholder="여기에 설명을 입력하세요" required
+											th:value="${qnaBankInfo.qnaCmt}"></textarea>
 									</td>
 								</tr>
 								<tr>
@@ -616,8 +631,8 @@
 												th:text="'['+${ul.userId}+'] '+${ul.userName}"
 												th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
 											<option th:if="${userList !=null}" th:each="ul:${userList}"
-												th:text="'['+${ul.userId}+'] '+${ul.userName}"
-												th:value="${ul.userCode}"></option>
+												th:text="'['+${ul.userId}+'] '+${ul.userName}" th:value="${ul.userCode}"
+												th:selected="${ul.userCode==qnaBankInfo.userCode}"></option>
 										</select>
 									</td>
 								</tr>
@@ -647,7 +662,7 @@
 										<button type="button" class="bttn2" id="goQuestionList">목록</button>
 									</td>
 									<td class="b_td01">
-										<button type="submit" class="bttn2">등록</button>
+										<button type="submit" class="bttn2">수정</button>
 										<button type="reset" class="bttn2">초기화</button>
 									</td>
 								</tr>
