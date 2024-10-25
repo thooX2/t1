@@ -50,7 +50,7 @@
 		FROM
 			user
 		WHERE
-			#{searchType} = #{searchValue};
+			${searchType} = #{searchValue};
 	</select>
 
 	<insert id="userJoinAction" parameterType="UserJoinInfo">
@@ -72,11 +72,21 @@
 			user_sign_date, user_update_date, 
 			user_delete_date, user_dormant_status, user_delete_status)
 		VALUES 
-			(#{userCode}, #{userId}, 'ugc2', #{userZip}, #{userPw},
-			#{userEmail}, #{userAddress}, #{userDetailAddress}, #{userPhone},
+			(#{userCode}, #{userId}, 'ugc2', #{userAddrSigungu}, #{userPw},
+			#{userEmail}, #{userRoadJibun}, #{userDetailAddress}, #{userPhone},
 			#{userName}, #{userBirthDate}, #{userGender},
 			NOW(), NOW(),
 			null, 0, 0);
 	</insert>
+
+	<select id="searchAreaCode" parameterType="string" resultType="string">
+	/* 시군구를 기반으로 지역코드 검색 */
+	SELECT
+		area_city_code
+	FROM
+		area_city 
+	WHERE
+		#{userAddress} = CONCAT(area_nm, ' ', area_city_nm);
+	</select>
 
 </mapper>

@@ -80,7 +80,7 @@ public class UserController {
 		return "view/user/user/user_join_form";
 	}
 	
-	@PostMapping("user/userJoinAction")
+	@PostMapping("/user/userJoinAction")
 	public String userJoinAction() {
 		return "redirect:/";
 	}

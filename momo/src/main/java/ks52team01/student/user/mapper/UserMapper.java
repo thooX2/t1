@@ -27,4 +27,6 @@ public interface UserMapper {
 	public User getUserById(User user);
 
 	public boolean searchUser(String searchType, String searchValue);
+
+	public String searchAreaCode(String userAddress);
 }
