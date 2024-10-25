@@ -20,4 +20,8 @@ public interface AdminExamService {
 
 	void addExamQuestion(QnaBank qnaBank);
 
+	List<QnaBank> getQuestionListAll();
+
+	List<QnaBank> searchQuestionList(QnaBank qnaBank);
+
 }
