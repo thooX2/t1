@@ -90,7 +90,8 @@
 </th:block>
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
-		$(document).ready(function () {
+		$(function () {
+			const questionContent = /*[[${qnaBankInfo.qnaQst}]]*/ '';
 			$('#summernote').summernote({
 				height: 300,  // 고정된 높이
 				minHeight: 300,  // 최소 높이 설정 (고정)
@@ -129,6 +130,9 @@
 				disableResize: false,  // 에디터 크기 조정 비활성화 (주석 처리)
 
 			});
+
+			$('#summernote').summernote('code', questionContent); // Summernote에 초기 내용을 설정
+
 		});
 
 		// ====================================
@@ -291,11 +295,7 @@
 
 			}
 		});
-
-
-
-
-
+		// 문제배점과 
 
 	</script>
 </th:block>
@@ -329,9 +329,13 @@
 			<div id="sys-scroll">
 				<div id="alert_area"></div>
 				<div id="sys-contents">
-					<form name="adminExamAddQuestion" action="/admin/exam/addQuestion" method="post"
+					<form name="adminModifyQuestionForm" action="/admin/exam/modifyQuestion" method="post"
 						enctype="multipart/form-data">
-						<input type="hidden" id="categorySubMjrCatCode" name="subMjrCatCode" value="" />
+
+						<input type="hidden" name="qnaCode" th:value="${qnaBankInfo.qnaCode}" />
+						<input type="hidden" name="qnaCreateTime" th:value="${qnaBankInfo.qnaCreateTime}" />
+						<input type="hidden" id="categorySubMjrCatCode" name="subMjrCatCode"
+							th:value="${qnaBankInfo.subMjrCatCode}" />
 						<table class="c_tb01" cellpadding="0" cellspacing="0">
 							<tbody>
 								<tr>
@@ -349,6 +353,18 @@
 								<col />
 							</colgroup>
 							<tbody>
+								<tr>
+									<td class="f_th01">문항 생성시간</td>
+									<td class="f_td01">
+										<span
+											th:text="${#dates.format(qnaBankInfo.qnaCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+									</td>
+									<td class="f_th01">문항 수정시간</td>
+									<td class="f_td01">
+										<span
+											th:text="${#dates.format(qnaBankInfo.qnaUpdateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+									</td>
+								</tr>
 								<tr>
 									<td class="f_th01">문제 카테고리</td>
 									<td class="f_td01" colspan="3">
@@ -369,7 +385,8 @@
 										<select id="qnaChapList" name="qnaChap" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
 											<option th:if="${qnaChapList !=null}" th:each="qcl:${qnaChapList}"
-												th:text="${qcl.examQnaChapNm}" value="${qcl.examQnaChapCode}">
+												th:text="${qcl.examQnaChapNm}" th:value="${qcl.examQnaChapCode}"
+												th:selected="${qcl.examQnaChapCode == qnaBankInfo.qnaChap}">
 											</option>
 										</select>
 									</td>
@@ -380,8 +397,8 @@
 										<select id="qnaTypeList" name="qnaType" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
 											<option th:if="${qnaTypeList !=null}" th:each="qtl:${qnaTypeList}"
-												th:text="${qtl.examQnaTypeNm}" value="${qtl.examQnaTypeCode}"
-												th:selected="${qtl.examQnaTypeCode==qnaBankInfo.examQnaTypeCode}">
+												th:text="${qtl.examQnaTypeNm}" th:value="${qtl.examQnaTypeCode}"
+												th:selected="${qtl.examQnaTypeCode==qnaBankInfo.qnaType}">
 											</option>
 										</select>
 									</td>
@@ -398,22 +415,28 @@
 									<td class="f_td01" colspan="3">
 
 										<label>
-											<input type="radio" name="qnaScr" value="1" class="ipt01" disabled /> 1
+											<input type="radio" name="qnaScr" value="1" class="ipt01"
+												th:disabled="${qnaBankInfo.qnaScr != 1}"
+												th:checked="${qnaBankInfo.qnaScr == 1}" /> 1
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="qnaScr" value="2" class="ipt01" required /> 2
+											<input type="radio" name="qnaScr" value="2" class="ipt01" required
+												th:checked="${qnaBankInfo.qnaScr == 2}" /> 2
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="qnaScr" value="3" class="ipt01" /> 3
+											<input type="radio" name="qnaScr" value="3" class="ipt01"
+												th:checked="${qnaBankInfo.qnaScr == 3}" /> 3
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="qnaScr" value="4" class="ipt01" disabled /> 4
+											<input type="radio" name="qnaScr" value="4" class="ipt01"
+												th:disabled="${qnaBankInfo.qnaScr != 4}"
+												th:checked="${qnaBankInfo.qnaScr == 4}" /> 4
 										</label>
 										&nbsp;
 									</td>
@@ -515,7 +538,8 @@
 												<tr style="display: table-row;">
 													<td class="l_td01">
 														<div style="text-align:center">
-															<input type="radio" name="qnaAns" value="1" required>
+															<input type="radio" name="qnaAns" value="1" required
+																th:checked="${qnaBankInfo.qnaAns ==1}">
 														</div>
 													</td>
 													<td class="l_td01" align="center">1</td>
@@ -533,7 +557,8 @@
 												<tr style="display: table-row;">
 													<td class="l_td01">
 														<div style="text-align:center">
-															<input type="radio" name="qnaAns" value="2">
+															<input type="radio" name="qnaAns" value="2"
+																th:checked="${qnaBankInfo.qnaAns ==2}">
 														</div>
 													</td>
 													<td class="l_td01" align="center">2</td>
@@ -551,7 +576,8 @@
 												<tr style="display: table-row;">
 													<td class="l_td01">
 														<div style="text-align:center">
-															<input type="radio" name="qnaAns" value="3">
+															<input type="radio" name="qnaAns" value="3"
+																th:checked="${qnaBankInfo.qnaAns ==3}">
 														</div>
 													</td>
 													<td class="l_td01" align="center">3</td>
@@ -569,7 +595,8 @@
 												<tr style="display: table-row;">
 													<td class="l_td01">
 														<div style="text-align:center">
-															<input type="radio" name="qnaAns" value="4">
+															<input type="radio" name="qnaAns" value="4"
+																th:checked="${qnaBankInfo.qnaAns ==4}">
 														</div>
 													</td>
 													<td class="l_td01" align="center">4</td>
@@ -587,13 +614,14 @@
 												<tr style="display: table-row;">
 													<td class="l_td01">
 														<div style="text-align:center">
-															<input type="radio" name="qnaAns" value="5">
+															<input type="radio" name="qnaAns" value="5"
+																th:checked="${qnaBankInfo.qnaAns ==5}">
 														</div>
 													</td>
 													<td class="l_td01" align="center">5</td>
 													<td class="l_td01">
 														<input type="text" name="qnaSlt5" size="95" required
-															th:value="${qnaBankInfo.qnaSlt1}">
+															th:value="${qnaBankInfo.qnaSlt5}">
 														<p class="mt3">
 															<input type="file" name="item5_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -612,7 +640,7 @@
 									<td class="f_td01" colspan="3">
 										<textarea name="qnaCmt" id="textarea1" style="width:99%;height:150px;"
 											class="mceNoEditor" placeholder="여기에 설명을 입력하세요" required
-											th:value="${qnaBankInfo.qnaCmt}"></textarea>
+											th:text="${qnaBankInfo.qnaCmt}"></textarea>
 									</td>
 								</tr>
 								<tr>
@@ -642,13 +670,14 @@
 									<td class="f_td01" colspan="3">
 
 										<label>
-											<input type="radio" name="qnaCurExamState" value="1" class="ipt01"
-												required /> 사용
+											<input type="radio" name="qnaCurExamState" value="Y" class="ipt01" required
+												th:checked="${qnaBankInfo.qnaCurExamState =='Y'}" /> 사용
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="qnaCurExamState" value="0" class="ipt01" /> 중지
+											<input type="radio" name="qnaCurExamState" value="N" class="ipt01"
+												th:checked="${qnaBankInfo.qnaCurExamState =='N'}" /> 중지
 										</label>
 										&nbsp;
 									</td>

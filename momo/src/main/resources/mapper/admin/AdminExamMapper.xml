@@ -67,6 +67,30 @@
 		    <result column="user_name" property="userName"/>
 	</resultMap>
 
+	<update id="modifyQuestionProc" parameterType="QnaBank">
+		UPDATE qna_bank
+        SET 
+            user_code = #{userCode},
+            sub_mjr_cat_code = #{subMjrCatCode},
+            sub_mir_cat_code = #{subMirCatCode},
+            qna_type = #{qnaType},
+            qna_chap = #{qnaChap},
+            qna_subject = #{qnaSubject},
+            qna_qst = #{qnaQst},
+            qna_slt1 = #{qnaSlt1},
+            qna_slt2 = #{qnaSlt2},
+            qna_slt3 = #{qnaSlt3},
+            qna_slt4 = #{qnaSlt4},
+            qna_slt5 = #{qnaSlt5},
+            qna_ans = #{qnaAns},
+            qna_scr = #{qnaScr},
+            qna_cmt = #{qnaCmt},
+            qna_cur_exam_state = #{qnaCurExamState},
+            qna_create_time = #{qnaCreateTime},
+            qna_update_time = NOW()
+        WHERE qna_code = #{qnaCode}
+	</update>
+
 	<select id="getQuestionInfo" parameterType="String" resultMap="qnaBankResultMap">
 		SELECT
 			qna_code,

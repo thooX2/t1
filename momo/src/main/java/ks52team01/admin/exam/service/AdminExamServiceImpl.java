@@ -26,6 +26,13 @@ public class AdminExamServiceImpl implements AdminExamService {
 	private final CommonMapper commonMapper;
 
 	@Override
+	public void modifyQuestionProc(QnaBank qnaBank) {
+
+		adminExamMapper.modifyQuestionProc(qnaBank);
+
+	}
+
+	@Override
 	public QnaBank getQuestionInfo(String qnaCode) {
 
 		return adminExamMapper.getQuestionInfo(qnaCode);

@@ -30,4 +30,6 @@ public interface AdminExamMapper {
 
 	QnaBank getQuestionInfo(String qnaCode);
 
+	int modifyQuestionProc(QnaBank qnaBank);
+
 }

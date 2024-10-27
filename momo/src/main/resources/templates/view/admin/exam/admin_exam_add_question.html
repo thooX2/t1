@@ -324,7 +324,7 @@
 			<div id="sys-scroll">
 				<div id="alert_area"></div>
 				<div id="sys-contents">
-					<form name="adminExamAddQuestion" action="/admin/exam/addQuestion" method="post"
+					<form name="adminExamAddQuestionForm" action="/admin/exam/addQuestion" method="post"
 						enctype="multipart/form-data">
 						<input type="hidden" id="categorySubMjrCatCode" name="subMjrCatCode" value="" />
 						<table class="c_tb01" cellpadding="0" cellspacing="0">
@@ -363,7 +363,7 @@
 										<select id="qnaChapList" name="qnaChap" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
 											<option th:if="${qnaChapList !=null}" th:each="qcl:${qnaChapList}"
-												th:text="${qcl.examQnaChapNm}" value="${qcl.examQnaChapCode}">
+												th:text="${qcl.examQnaChapNm}" th:value="${qcl.examQnaChapCode}">
 											</option>
 										</select>
 									</td>
@@ -374,7 +374,7 @@
 										<select id="qnaTypeList" name="qnaType" class="js-example-basic-single">
 											<option value=""> - 전체 - </option>
 											<option th:if="${qnaTypeList !=null}" th:each="qtl:${qnaTypeList}"
-												th:text="${qtl.examQnaTypeNm}" value="${qtl.examQnaTypeCode}">
+												th:text="${qtl.examQnaTypeNm}" th:value="${qtl.examQnaTypeCode}">
 											</option>
 										</select>
 									</td>
@@ -422,7 +422,7 @@
 									<td class="f_th01">문제이미지</td>
 									<td class="f_td01" colspan="3">
 										<!-- 실제 파일 입력 (숨김) -->
-										<input type="file" id="fileInput" accept="image/*" multiple>
+										<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
 
 										<!-- 커스텀 버튼과 파일 이름 표시 -->
 										<label for="fileInput" id="customButton">파일 선택</label>
@@ -448,43 +448,7 @@
 										</select>
 									</td>
 								</tr>
-								<tr id="item_tr" style="display: none;">
-									<td class="f_th01">문항</td>
-									<td class="f_td01" colspan="3">
-										<table class="l_tb01" cellpadding="0" cellspacing="0">
-											<colgroup>
-												<col width="40" />
-												<col width="40" />
-												<col />
-											</colgroup>
-											<tbody>
-												<tr>
-													<td class="l_th03">정답</td>
-													<td class="l_th03">번호</td>
-													<td class="l_th03">내용</td>
-												</tr>
-											</tbody>
-											<tbody id="item_area">
-
-												<tr style="display:none">
-													<td class="l_td01">
-														<div style="text-align:center">
-															<input type="text" name="radio" value="1" />
-														</div>
-													</td>
-													<td class="l_td01" align="center">1</td>
-													<td class="l_td01">
-														<input type="text" name="item1" size="95" />
-														<p class="mt3">
-															<input type="file" name="item1_file" size="80"
-																style="border:1px solid #d1d1d1;" />
-														</p>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
-								</tr>
+						
 								<tr id="item_tr" style="display: table-row;">
 									<td class="f_th01">문항</td>
 									<td class="f_td01" colspan="3">
@@ -609,6 +573,7 @@
 								</tr>
 								<tr>
 									<td class="f_th01">출제자</td>
+									
 									<td class="f_td01" colspan="3">
 										<select name="userCode" class="js-example-basic-single">
 											<option value=""> - 담당자 선택 - </option>
@@ -627,13 +592,13 @@
 									<td class="f_td01" colspan="3">
 
 										<label>
-											<input type="radio" name="qnaCurExamState" value="1" class="ipt01"
+											<input type="radio" name="qnaCurExamState" value="Y" class="ipt01"
 												required /> 사용
 										</label>
 										&nbsp;
 
 										<label>
-											<input type="radio" name="qnaCurExamState" value="0" class="ipt01" /> 중지
+											<input type="radio" name="qnaCurExamState" value="N" class="ipt01" /> 중지
 										</label>
 										&nbsp;
 									</td>

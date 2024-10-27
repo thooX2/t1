@@ -26,4 +26,6 @@ public interface AdminExamService {
 
 	QnaBank getQuestionInfo(String qnaCode);
 
+	void modifyQuestionProc(QnaBank qnaBank);
+
 }
