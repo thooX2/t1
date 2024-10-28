@@ -23,38 +23,38 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	@Override
-	public List<StudyTarget> findAll(){
-		return studyMapper.findAll();
+	public List<StudyTarget> getStudyTarget(String id){
+		return studyMapper.getStudyTarget(id);
 	}
 	
 	@Override
-	public List<TargetUniversity> findAll2(){
-		return studyMapper.findAll2();
+	public List<TargetUniversity> getTargetUniversity(String id){
+		return studyMapper.getTargetUniversity(id);
 	}
 	
 	@Override
-	public List<TargetGrade>  findAll3(){
-		return studyMapper.findAll3();
+	public List<TargetGrade>  getTargetGrade(String id){
+		return studyMapper.getTargetGrade(id);
 	}
 	
 	@Override
-	public List<StudySchedule> findAll4(){
-		return studyMapper.findAll4();
+	public List<StudySchedule> getStudySchedule(String id){
+		return studyMapper.getStudySchedule(id);
 	}
 	
 	@Override
-	public List<DetailedSchedule> findAll5(){
-		return studyMapper.findAll5();
+	public List<DetailedSchedule> getDetailedSchedule(String id){
+		return studyMapper.getDetailedSchedule(id);
 	}
 
 	@Override
-	public List<ProblemScrape> findAll6(){
-		return studyMapper.findAll6();
+	public List<ProblemScrape> getProblemScrape(){
+		return studyMapper.getProblemScrape();
 	}
 	
 	@Override
-	public List<ProblemSolving> findAll7(){
-		return studyMapper.findAll7();
+	public List<ProblemSolving> getProblemSolving(){
+		return studyMapper.getProblemSolving();
 	}
 	
 

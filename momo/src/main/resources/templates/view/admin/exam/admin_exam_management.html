@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/admin_layout}">
+
+<head>
+</head>
+<th:block layout:fragment="customJsFile">
+</th:block>
+<th:block layout:fragment="customJs">
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+
+	<div class="sidebar">
+		<div th:replace="fragments/admin/exam/sidebar :: sidebar"></div>
+	</div>
+	<div class="content" style="padding:0px">
+		<div id="sys-breadcrumb">
+			<button id="sys-breadcrumb-arrow" type="button">
+				<i class="fa fa-angle-left"></i>
+			</button>
+			<div id="sys-page-title">
+				<span id="sys-page-title-nm">시험관리</span>
+				<button type="button" class="btn_simp yellow">
+					<i class="fa fa-star"></i>
+					퀵메뉴추가
+				</button>
+
+			</div>
+			<div id="sys-page-util">
+				<a id="sys-page-util-refresh">
+					<i class="fa fa-retweet"></i>
+				</a>
+			</div>
+		</div>
+		<div id="sys-wrap">
+			<div id="sys-scroll">
+				<div id="alert_area"></div>
+				<div id="sys-contents">
+					<form name="form1" method="post">
+						<input type="hidden" name="temp_id" value="149" />
+						<table class="c_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td class="c_th01"> 수정</td>
+									<td class="c_td01"></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="f_tb01" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+							<colgroup>
+								<col width="140" />
+								<col />
+								<col width="140" />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<td class="f_th01">구분</td>
+									<td class="f_td01" colspan="3">온라인교육</td>
+								</tr>
+								<tr>
+									<td class="f_th01">과정카테고리
+										<br />
+										(과정등록참고용)
+									</td>
+									<td class="f_td01" colspan="3">
+										<select name="category_id" class="js-example-basic-single">
+
+											<option value=" 1750">서비스</option>
+
+											<option value="1753">서비스 &gt; ㅇㅇㅇㅇ</option>
+
+											<option value="1757">서비스 &gt; test</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">시험명 *</td>
+									<td class="f_td01" colspan="3">
+										<input type="text" name="exam_nm" size="70" />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">시험시간</td>
+									<td class="f_td01">
+										<input type="text" name="exam_time" size="5"
+											style="text-align:right;padding-right:3px;" /> 분
+									</td>
+									<td class="f_th01">보기섞기</td>
+									<td class="f_td01">
+										<label>
+											<input type="radio" name="shuffle_yn" value="Y" class="ipt01" /> Y
+										</label>
+										&nbsp;
+										<label>
+											<input type="radio" name="shuffle_yn" value="N" class="ipt01" /> N
+										</label>
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">자동채점여부 *</td>
+									<td class="f_td01" colspan="3">
+										<label>
+											<input type="radio" name="auto_complete_yn" value="Y" class="ipt01" /> Y
+										</label>
+										&nbsp;
+										<label>
+											<input type="radio" name="auto_complete_yn" value="N" class="ipt01" /> N
+										</label>
+										&nbsp;
+										<span class="desc01"> 주관식이 포함되어 있는 경우 자동채점이 되지 않습니다.</span>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="f_th01">시험 설명</td>
+									<td class="f_td01" colspan="3">
+										<textarea name="content"
+											style="width:99%;height:80px;resize:none;">이수를 위한 필수입니다</textarea>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="f_th01">담당자</td>
+									<td class="f_td01" colspan="3">
+										<select name="manager_id" class="js-example-basic-single">
+											<option value=""> - 담당자 선택 - </option>
+											<option value="-99"> [공용] 모든 최고관리자, 운영자, 과정운영자 </option>
+
+											<option value="50425">[운영자] ttestt02</option>
+
+											<option value="50295">[운영자] 박수영</option>
+
+											<option value="50323">[운영자] 홍길동</option>
+
+											<option value="50093">[운영자] 홍길동1</option>
+
+											<option value="50005">[과정운영자] test3</option>
+
+											<option value="50006">[과정운영자] test4</option>
+
+											<option value="50427">[과정운영자] ttestt04</option>
+
+											<option value="50124">[과정운영자] 관리자</option>
+
+											<option value="50019">[과정운영자] 홍길동5</option>
+
+											<option value="50454">[최고관리자] admin5</option>
+
+											<option value="50460">[최고관리자] malgnjudy</option>
+
+											<option value="50424">[최고관리자] ttestt01</option>
+
+											<option value="50464">[최고관리자] wjdehdhs</option>
+
+											<option value="2073">[최고관리자] 나우수</option>
+
+											<option value="50112">[최고관리자] 맑은</option>
+
+											<option value="50277">[최고관리자] 영업왕 주대리</option>
+
+											<option value="2229">[최고관리자] 운영자</option>
+
+											<option value="2001">[최고관리자] 최고관리자</option>
+
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="f_th01">문제카테고리
+										<br />
+										(문제은행 출제범위)
+									</td>
+									<td class="f_td01" colspan="3">
+										<div style="float:left;margin-right:10px;">
+											<input type="button" class="btn_simp" value="카테고리 추가" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">상태 *</td>
+									<td class="f_td01" colspan="3">
+										<label>
+											<input type="radio" value="1" name="status" class="ipt01" /> 사용
+										</label>
+										&nbsp;
+										<label>
+											<input type="radio" value="0" name="status" class="ipt01" /> 중지
+										</label>
+										&nbsp;
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="c_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td class="c_th01">배점 관리</td>
+									<td class="c_td01">
+										※ 총점은 <strong style="color:#4C5BA9">반드시 100점</strong>이어야 합니다.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div id="assignArea">
+							<table class="f_tb01" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+								<colgroup>
+									<col width="120" />
+									<col />
+
+								</colgroup>
+								<tbody>
+									<tr>
+										<td class="f_th01">[A] 난이도</td>
+										<td class="f_td01">
+
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">[A] 난이도</td>
+										<td class="f_td01">
+
+										</td>
+									</tr>
+
+									<tr>
+										<td class="f_th01">[A] 난이도</td>
+										<td class="f_td01">
+
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">[A] 난이도</td>
+										<td class="f_td01">
+
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">[A] 난이도</td>
+										<td class="f_td01">
+
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">[A] 난이도</td>
+										<td class="f_td01">
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+
+						<table class="b_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td>
+										<button type="button" class="bttn2">목록</button>
+									</td>
+									<td class="b_td01">
+										<button type="submit" class="bttn2">수정</button>
+										<button type="button" class="bttn2">삭제</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+
+					<table class="c_tb01" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td class="c_th01">사용중인 과정 목록</td>
+								<td class="c_td01" style="font-weight:normal">3 개</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="l_tb01" cellpadding="0" cellspacing="0">
+						<colgroup>
+							<col width="50" />
+							<col width="60" />
+							<col width="60" />
+							<col width="60" />
+							<col />
+							<col width="200" />
+							<col width="70" />
+						</colgroup>
+						<thead>
+							<tr align="center">
+								<td class="l_th03">No</td>
+								<td class="l_th03">구분</td>
+								<td class="l_th03">년도</td>
+								<td class="l_th03">기수</td>
+								<td class="l_th03">과정명</td>
+								<td class="l_th03">학습기간</td>
+								<td class="l_th03">상태</td>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr class="l_tr_" align="center">
+								<td class="l_td01">1</td>
+								<td class="l_td01">온라인</td>
+								<td class="l_td01">2024</td>
+								<td class="l_td01">1</td>
+								<td class="l_td01" align="left" title="학습도시">학습도시</td>
+								<td class="l_td01">
+
+									상시
+								</td>
+								<!--<td class="l_td01">정상</td>-->
+								<td class="l_td01">정상</td>
+							</tr>
+
+							<tr class="l_tr_" align="center">
+								<td class="l_td01">2</td>
+								<td class="l_td01">온라인</td>
+								<td class="l_td01">2024</td>
+								<td class="l_td01">1</td>
+								<td class="l_td01" align="left" title="쿠폰적용 결제 테스트">쿠폰적용 결제 테스트</td>
+								<td class="l_td01">
+
+									상시
+								</td>
+								<!--<td class="l_td01">정상</td>-->
+								<td class="l_td01">정상</td>
+							</tr>
+
+							<tr class="l_tr_" align="center">
+								<td class="l_td01">3</td>
+								<td class="l_td01">혼합</td>
+								<td class="l_td01">2024</td>
+								<td class="l_td01">1</td>
+								<td class="l_td01" align="left" title="20241018 혼합 과정">20241018 혼합 과정</td>
+								<td class="l_td01">
+
+									2024.10.18 - 2024.10.31
+								</td>
+								<!--<td class="l_td01">숨김</td>-->
+								<td class="l_td01">정상</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+</html>

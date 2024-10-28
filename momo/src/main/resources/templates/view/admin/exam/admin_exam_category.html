@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/admin_layout}">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/admin/css/exam/admin.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/admin/css/exam/select2.css}" />
+	<!-- FancyTree CSS CDN -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.1/skin-lion/ui.fancytree.min.css" />
+
+	<!-- Bootstrap Icons (FontAwesome 대용으로 사용 가능) -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css" />
+	<!-- Select2 CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+	<style>
+		#examMain {
+			display: flex;
+			/* 플렉스 박스를 사용하여 레이아웃 설정 */
+		}
+
+		.sidebar {
+			width: 250px;
+			padding: 0px;
+			height: 100vh;
+		}
+
+
+		@font-face {
+			font-family: 'Didact Gothic';
+			src:
+				url(chrome-extension://ignghjdjmgleolgiaifohmdlnbjklkij/assets/fonts/didactgothic.woff2) format('woff2');
+			font-weight: normal;
+			font-style: normal;
+		}
+
+		/* Flexbox 레이아웃 적용 */
+		.container {
+			display: flex;
+			width: 100%;
+			height: 100vh;
+		}
+
+		.left-section,
+		.right-section {
+			padding: 10px;
+			box-sizing: border-box;
+		}
+
+		/* 왼쪽 섹션 스타일 */
+		.left-section {
+			width: 50%;
+
+		}
+
+		/* 오른쪽 섹션 스타일 */
+		.right-section {
+			width: 50%;
+		}
+
+		.c_tb01,
+		.f_tb01 {
+			width: 100%;
+		}
+
+		.fancytree-container {
+			border: none;
+			/* FancyTree 테두리 없애기 */
+		}
+
+		.fancytree-title {
+			font-weight: normal;
+		}
+	</style>
+</head>
+<th:block layout:fragment="customJsFile">
+	<!-- jQuery CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<!-- FancyTree JS CDN -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.1/jquery.fancytree-all-deps.min.js"></script>
+	<!-- Select2 JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+
+		// 트리 데이터를 JSON 형식으로 정의
+		var treeData = [
+			{
+				title: "[ 현행 시험 과목 ]",
+				folder: true,
+				expanded: true,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			},
+			{
+				title: "[ 폐지된 시험 과목 ]",
+				folder: true,
+				expanded: false,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			},
+			{
+				title: "[ 출제 유형 ]",
+				folder: true,
+				expanded: false,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			},
+			{
+				title: "[ 출제 단원 ]",
+				folder: true,
+				expanded: false,  // 카테고리 노드를 기본으로 확장 상태로 설정
+				children: []
+			}
+		];
+
+		/* 타임리프에서 전달받은 categoryList 데이터를 자바스크립트 변수로 변환 */
+		var categoryList = /*[[${categoryList}]]*/[];
+		var qnaTypeList = /*[[${qnaTypeList}]]*/[];
+		var qnaChapList = /*[[${qnaChapList}]]*/[];
+		var categoryMap = {};
+
+		// categoryList에서 subMjrName을 추출하여 HashMap에 저장
+		categoryList.forEach(element => {
+			const subMjrName = element['subMjrName'];
+
+			if (!categoryMap[subMjrName]) {
+				categoryMap[subMjrName] = {
+					title: subMjrName,
+					folder: true,
+					children: []
+				};
+			}
+
+		});
+		for (const key in categoryMap) {
+			treeData[0]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+		for (const key in categoryMap) {
+			treeData[1]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+
+		for (const key in categoryMap) {
+			treeData[2]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+		for (const key in categoryMap) {
+			treeData[3]['children'].push({
+				title: categoryMap[key].title,
+				folder: categoryMap[key].folder,
+				children: [] // 새로운 children 배열 생성
+			});
+		}
+		qnaTypeList.forEach((element) => {
+			switch (element['subMjrCatCode']) {
+				case 'smjrcc1':
+					treeData[2]['children'][0]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc2':
+					treeData[2]['children'][1]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc3':
+					treeData[2]['children'][2]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc4':
+					treeData[2]['children'][3]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc5':
+					treeData[2]['children'][4]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc6':
+					treeData[2]['children'][5]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc7':
+					treeData[2]['children'][6]['children'].push({title: element['examQnaTypeNm']})
+					break;
+				case 'smjrcc8':
+					treeData[2]['children'][7]['children'].push({title: element['examQnaTypeNm']})
+					break;
+			}
+		})
+
+
+		// subMirCatNm을 treeData[0]의 children에 추가
+		categoryList.forEach(element => {
+			for (let elem of treeData[0]['children']) {
+				// subMjrName이 일치하는 경우
+				if (element['subMjrName'] === elem['title']) {
+					// treeData[0]의 children에만 추가
+					if (element['curExamUserState'] == 'Y' && (element['subMirState'] == 'Y' || element['subMirState'] == null)) {
+						if (elem['title'] == '한국사') {
+							elem['children'].push({title: '한국사'});
+						} else {
+							elem['children'].push({title: element['subMirCatNm']});
+						}
+					}
+				}
+			}
+			for (let elem of treeData[1]['children']) {
+				// subMjrName이 일치하는 경우
+				if (element['subMjrName'] === elem['title']) {
+					// treeData[0]의 children에만 추가
+					if (element['curExamUserState'] == 'N' || element['subMirState'] == 'N') {
+						if (elem['title'] == '한국사') {
+							elem['children'].push({title: '한국사'});
+						} else {
+							elem['children'].push({title: element['subMirCatNm']});
+						}
+					}
+				}
+			}
+			for (let elem of treeData[3]['children']) {
+				// subMjrName이 일치하는 경우
+				if (element['subMjrName'] === elem['title']) {
+					// treeData[0]의 children에만 추가
+
+					if (elem['title'] == '한국사') {
+						elem['children'].push({
+							title: '한국사',
+							folder: true,
+							expanded: false,
+							children: []
+						});
+					} else {
+						elem['children'].push({
+							title: element['subMirCatNm'],
+							folder: true,
+							expanded: false,
+							children: []
+						});
+					}
+
+				}
+			}
+		});
+
+		qnaChapList.forEach((element, idx) => {
+
+			console.log(element);
+			treeData[3]['children'].forEach(elem => {
+
+				elem['children'].forEach(el => {
+					if (element['subMirCatNm'] == el['title']) {
+						el['children'].push({title: element['examQnaChapNm']});
+					}
+				})
+			})
+		})
+
+		// FancyTree 플러그인을 사용하여 트리 생성
+		$("#tree").fancytree({
+			source: treeData,       // 트리 데이터
+			extensions: ["glyph"],  // 아이콘 확장 사용
+			clickFolderMode: 2,     // 폴더 클릭 시 하위 트리 펼치기
+			selectMode: 1,          // 한 번에 하나의 항목만 선택 가능
+			glyph: {                // 폴더와 노드의 아이콘 설정
+				map: {}
+			},
+
+		});
+
+		// 모두 펼치기 버튼 클릭 시 모든 노드를 펼침
+		$("#expandAll").on("click", function () {
+			$("#tree").fancytree("getTree").visit(function (node) {
+				node.setExpanded(true);
+			});
+		});
+
+		// 모두 접기 버튼 클릭 시 모든 노드를 접음
+		$("#collapseAll").on("click", function () {
+			$("#tree").fancytree("getTree").visit(function (node) {
+				node.setExpanded(false);
+			});
+		});
+
+		// 노드 클릭 시 이벤트 처리
+		$("#tree").on("fancytreeactivate", function (event, data) {
+			alert("선택된 과목: " + data.node.title);
+		});
+
+		$(function () {
+			$('.js-example-basic-single').select2({
+				placeholder: '담당자 선택', // 플레이스홀더 텍스트 설정
+				allowClear: true, // 클리어 버튼 허용
+				language: {
+					noResults: function () {
+						return "결과가 없습니다"; // Set custom message when no results are found
+					}
+				}
+			});
+		});
+	</script>
+
+</th:block>
+
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+
+	<div class="sidebar">
+		<div th:replace="fragments/admin/exam/sidebar :: sidebar"></div>
+	</div>
+	<div class="content" style="padding:0px">
+		<div id="sys-breadcrumb">
+			<button id="sys-breadcrumb-arrow" type="button">
+				<i class="fa fa-minus" style="font-size: 12px;"></i>
+			</button>
+			<div id="sys-page-title">
+				<span id="sys-page-title-nm">문제은행</span>
+				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
+				<button type="button" class="btn_simp yellow">
+					<i class="fa fa-star"></i> 퀵메뉴추가
+				</button>
+
+			</div>
+			<div id="sys-page-util">
+
+				<a id="sys-page-util-refresh" href="javascript:window.location.reload(true);">
+					<i class="fa fa-retweet"></i>
+				</a>
+			</div>
+		</div>
+		<div id="sys-wrap">
+			<div id="sys-scroll">
+				<div id="sys-contents">
+					<div class="container">
+						<!-- 왼쪽 섹션 -->
+						<div class="left-section">
+							<div style="padding:3px">
+								<button id="expandAll" class="btn btn-primary">모두 펼치기</button>
+								<button id="collapseAll" class="btn btn-danger">모두 접기</button>
+							</div>
+							<!-- 트리가 생성될 div 요소 -->
+							<div id="tree" class="mt-3"></div>
+						</div>
+
+						<!-- 오른쪽 섹션 -->
+						<div class="right-section">
+
+							<form name="form1" method="post">
+								<table class="c_tb01" cellpadding="0" cellspacing="0">
+									<tbody>
+										<tr>
+											<td class="c_th01">카테고리 등록</td>
+											<td class="c_td01"></td>
+										</tr>
+									</tbody>
+								</table>
+
+								<table class="f_tb01" cellpadding="0" cellspacing="0">
+									<tbody>
+										<tr>
+											<td class="f_th01">상위 카테고리</td>
+											<td class="f_td01">
+												<span id="parent_name">-</span> &nbsp;
+											</td>
+										</tr>
+										<tr>
+											<td class="f_th01">카테고리명</td>
+											<td class="f_td01">
+												<input type="text" name="category_nm" style="width:90%" hname="카테고리명"
+													required="Y" />
+											</td>
+										</tr>
+
+										<tr>
+											<td class="f_th01">순서</td>
+											<td class="f_td01">
+												<select name="sort" id="sortArea" hname="정렬" required="Y"
+													option="number">
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+													<option value="13">13</option>
+													<option value="14">14</option>
+													<option value="15">15</option>
+													<option value="16">16</option>
+													<option value="17">17</option>
+													<option value="18">18</option>
+													<option value="19">19</option>
+													<option value="20">20</option>
+													<option value="21">21</option>
+													<option value="22">22</option>
+													<option value="23">23</option>
+													<option value="24">24</option>
+													<option value="25">25</option>
+													<option value="26">26</option>
+													<option value="27">27</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td class="f_th01">담당자</td>
+											<td class="f_td01" colspan="3">
+												<select name="manager_id" class="js-example-basic-single select2"
+													hname="담당자" required="Y">
+													<option value=""> - 담당자 선택 - </option>
+													<option value="-99"> [공용] 모든 최고관리자, 운영자, 과정운영자 </option>
+													<option value="50425">[운영자] ttestt02</option>
+													<option value="50295">[운영자] 박수영</option>
+													<option value="50323">[운영자] 홍길동</option>
+													<option value="50093">[운영자] 홍길동1</option>
+													<option value="50005">[과정운영자] test3</option>
+													<option value="50006">[과정운영자] test4</option>
+													<option value="50427">[과정운영자] ttestt04</option>
+													<option value="50124">[과정운영자] 관리자</option>
+													<option value="50019">[과정운영자] 홍길동5</option>
+													<option value="50454">[최고관리자] admin5</option>
+													<option value="50460">[최고관리자] malgnjudy</option>
+													<option value="50424">[최고관리자] ttestt01</option>
+													<option value="50464">[최고관리자] wjdehdhs</option>
+													<option value="2073">[최고관리자] 나우수</option>
+													<option value="50112">[최고관리자] 맑은</option>
+													<option value="50277">[최고관리자] 영업왕 주대리</option>
+													<option value="2229">[최고관리자] 운영자</option>
+													<option value="2001">[최고관리자] 최고관리자</option>
+												</select>
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td class="b_th01"></td>
+											<td class="b_td01">
+												<button type="submit" class="bttn2">등록</button>
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+</html>

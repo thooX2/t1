@@ -294,7 +294,7 @@ function addSpanToRadioValue(questionNumber, value, check) {
 }
 
 // 시험 채점후 정답/해설보기에서 채점결과를 가지고 해설페이지로 이동
-$('#examDoneMenu > .button-txt__exam button-txt__exam--size_flow button-txt__exam--color_red').click(function() {
+$('#examSolutionBtn').click(function() {
 	if (nextFlag) {
 		const examAnswer = [4, 2, 5, 1, 1, 4, 4, 1, 4, 3, 3, 1, 1, 4, 5, 4, 4, 3, 1, 3];
 		const $form = $(`<form><input type="hidden" name="userAnswer" value="${checkAnswer().join(',')}"/>

@@ -9,44 +9,126 @@
 	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/smartmath.css}">
 </head>
 <th:block layout:fragment="customJsFile">
-<!--	<script src="https://code.jquery.com/jquery-3.7.1.js"
+	<!--	<script src="https://code.jquery.com/jquery-3.7.1.js"
 		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
 	<!-- Highcharts 라이브러리 로드 -->
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
 	<script>
-		const $title = document.querySelector('title');
-		$title.textContent = '모의고사 결과분석'
-		function fncShowDtl(id) {
-			const content = document.getElementById('dtlCont' + id);
-			const classname = document.getElementById('tit_main' + id);
-			if (content.style.display == "none"
-				|| content.style.display == "") {
-				content.style.display = "block";
-				classname.classList.remove("off");
-				classname.classList.add("on");
-			} else {
-				content.style.display = "none";
-				classname.classList.remove("on");
-				classname.classList.add("off");
-			}
-		}
+	
+	$(function() {
+	    const subjectDetails = {
+	        '국어': {
+	            labels: ['독서', '문학', '화법과 작문', '언어와 매체'],
+	        },
+	        '수학': {
+	            labels: ['수학1', '수학2', '확률과 통계', '미분과 적분', '기하'],
+	        },
+	        '영어': {
+	            labels: ['영어1', '영어2'],
+	        },
+	        '한국사': {
+	            labels: ['한국사'],
+	        },
+	        '사회탐구': {
+	            labels: ['생활과 윤리', '윤리와 사상', '한국지리', '세계지리', '동아시아사', '세계사', '경제', '정치와 법', '사회문화'],
+	        },
+	        '과학탐구': {
+	            labels: ['물리1', '화학1', '생물1', '지구과학1', '물리2', '화학2', '생물2', '지구과학2'],
+	        },
+	        '직업탐구': {
+	            labels: ['성공적인 직업생활', '농업 기초 기술', '공업 일반', '상업 경제', '수산 해운 산업 기초', '인간 발달'],
+	        },
+	        '제2외국어': {
+	            labels: ['독일어1', '프랑스어1', '스페인어1', '중국어1', '일본어1', '러시아어1', '아랍어1', '베트남어1', '한문1'],
+	        }
+	    };
+
+	 // 영역 label 클릭 시 처리
+	    $('#mDomCdDiv').on('click', 'label', function() {
+	        // 모든 영역 label에서 'on' 클래스 제거 라벨 on/off에 따라 글씨 굵기 변경
+	        $('#mDomCdDiv label').removeClass('on').css('font-weight','normal');
+
+	        // 클릭한 영역 label에 'on' 클래스 추가
+	        $(this).addClass('on').css('font-weight','bold');
+
+	        // 선택된 과목에 대한 작업 수행
+	        const subjectName = $(this).text();
+	        fncSetDom(subjectName);
+	    });
+
+	    // 선택된 과목에 대한 함수
+	    function fncSetDom(subjectName) {
+	        $('#subjectArea tr.subject-row').remove(); // 기존 과목 행 제거
+
+	        // 새로운 행 생성
+	        const newRow = $('<tr class="subject-row"><th>과목</th><td><div class="tbl_in--atc" ></div></td></tr>');
+	        const $div = newRow.find('div');
+
+	        // 선택된 과목의 라벨 가져오기
+	        const labels = subjectDetails[subjectName]?.labels || [];
+	        labels.forEach(label => {
+	            const newLabel = $('<label style="margin:0 auto">' + label + '</label>');
+
+	            // 과목 label 클릭 이벤트 추가 (이벤트 위임 방식)
+	            newLabel.on('click', function() {
+	                $div.find('label').removeClass('on').css('font-weight','normal'); // 다른 과목 라벨의 'on' 클래스 제거
+	                $(this).toggleClass('on').css('font-weight','bold'); // 클릭한 라벨에 'on' 클래스 추가/제거 라벨 on/off에 따라 글씨 굵기 변경
+	            });
+
+	            $div.append(newLabel);
+	        });
+
+	        // tbody에 새 행 추가
+	        $('#subjectArea').append(newRow);
+
+	    }
+
+	});
+	
+	
+	const $title = document.querySelector('title');
+	$title.textContent = '모의고사 결과분석';
+
+	function fncShowDtl(id) {
+	    const content = document.getElementById('dtlCont' + id);
+	    const classname = document.getElementById('tit_main' + id);
+	    
+	    // 모든 내용 숨기기
+	    const allContents = document.querySelectorAll('[id^="dtlCont"]');
+	    const allClassNames = document.querySelectorAll('[id^="tit_main"]');
+	    allContents.forEach((item) => {
+	        item.style.display = "none";
+	    });
+	    allClassNames.forEach((item) => {
+	        item.classList.remove("on");
+	        item.classList.add("off");
+	    });
+
+	    // 클릭한 항목 표시하기
+	    if (content.style.display == "none" || content.style.display == "") {
+	        content.style.display = "block";
+	        classname.classList.remove("off");
+	        classname.classList.add("on");
+	    }
+	}
+
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
-<div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container" style="margin-left:15px !important">
-		<!-- sub_container -->
-		<div class="sub_container">
+<div layout:fragment="content" id="examMain" style="max-width:1270px;margin:0 auto">
 			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+	<!-- container -->
+	<section class="container" style="max-width: 80%; width: 100%">
+		<!-- sub_container -->
+		<div class="sub_container" style="width: 100% !important;">
 			<!-- content -->
-			<div id="wrap_2014">
-				<div class="column_main">
-					<div class="column_right analysis" style="margin-left: 20px; margin-bottom:15px!important;">
-						<h3 class="areaLogo" style="margin-bottom: 10px;">성적 분석</h3>
+			
+				<div class="column_main" style="width:100%">
+					<div class="column_right analysis" style="margin-bottom: 10px;">
+						<h3 class="areaLogo" >성적 분석</h3>
 						<div class="review--topTxt">
 							<ul>
 								<li>응시한 문제지를 과목·단원·유형·난도별로 성적이 분석됩니다.</li>
@@ -65,15 +147,26 @@
 									<col width="110">
 									<col width="620">
 								</colgroup>
-								<tbody>
+								<tbody id="subjectArea">
 									<tr>
 										<th>영역</th>
 										<td>
 											<div class="tbl_in--atc" id="mDomCdDiv">
-
-												<label id="mDomCdHI" onclick="fncSetDom('HI')" class="on">한국사</label>
-
-												<label id="mDomCdSC" onclick="fncSetDom('SC')">과학탐구</label>
+												<label id="mDomCdKO">국어</label>
+											
+												<label id="mDomCdMA">수학</label>
+												
+												<label id="mDomCdENG">영어</label>
+												
+												<label id="mDomCdHI"  >한국사</label>
+	
+												<label id="mDomCdSC"  >과학탐구</label>
+												
+												<label id="mDomCdSO">사회탐구</label>
+												
+												<label id="mDomCdJO">직업탐구</label>
+												
+												<label id="mDomCdFOR">제2외국어</label>											
 
 											</div>
 										</td>
@@ -84,13 +177,10 @@
 
 						</div>
 						<div class="searchSection--menu ty2" id="schTabMenu">
-							<a href="/exam/userExamAnalyse" onclick="fncTabSet(1)" class=""><strong>분석1</strong>성적
-								변화</a>
-							<a href="JavaScript:;" onclick="fncTabSet(2)" class="on"><strong>분석2</strong>단원별
-								정답률</a>
-							<a href="/exam/weak" onclick="fncTabSet(3)" class=""><strong>분석3</strong>취약 유형</a>
-							<a href="/exam/chap" onclick="fncTabSet(4)" class=""><strong>분석4</strong>단원/난도/문항별
-								분석</a>
+							<a href="/exam/userExamAnalyse" onclick="fncTabSet(1)" ><strong>분석1</strong>성적 변화</a>
+							<a href="JavaScript:;" onclick="fncTabSet(2)"  class="on"><strong>분석2</strong>단원별	정답률</a>
+							<a href="/exam/weak" onclick="fncTabSet(3)" ><strong>분석3</strong>취약 유형</a>
+							<a href="/exam/chap" onclick="fncTabSet(4)" ><strong>분석4</strong>단원/난도/문항별	분석</a>
 
 						</div>
 
@@ -394,8 +484,8 @@
 												</div>
 
 												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:50%"></div>
-													<span class="percent my">50%</span>
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">100%</span>
 												</div>
 											</div>
 											<ul class="bx_question_total">
@@ -405,11 +495,11 @@
 												</li>
 												<li>
 													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
+													<div class="qnum ty2">2</div>
 												</li>
 												<li>
 													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
+													<div class="qnum ty3">0</div>
 												</li>
 											</ul>
 										</div>
@@ -844,7 +934,7 @@
 					</div>
 				</div>
 
-			</div>
+			
 			<div id="criteo-tags-div" style="display: none;"></div>
 			<!-- //content -->
 		</div>

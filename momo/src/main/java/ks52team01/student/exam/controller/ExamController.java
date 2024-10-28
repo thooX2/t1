@@ -4,12 +4,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ks52team01.student.exam.service.ExamService;
 import ks52team01.student.exam.service.ExamServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
+@RequestMapping("/exam")
 public class ExamController {
 
 	private final ExamService examService;
@@ -18,68 +22,76 @@ public class ExamController {
 		this.examService = examServiceImpl;
 	}
 
-	@GetMapping("/exam/examMain")
-	public String moveExamMain() {
-		System.out.println("모의고사 메인으로 이동");
-		return "view/user/exam/exam_main";
+	@GetMapping("/examList")
+	public String moveExamList() {
+		log.info("모의고사 메인으로 이동");
+		return "view/user/exam/user_exam_list";
 	}
 
-	@GetMapping("/exam/userExamCreate")
+
+	@GetMapping("/examMain")
+	public String moveExamMain() {
+		log.info("모의고사 메인으로 이동");
+		return "view/user/exam/user_exam_list";
+	}
+
+	@GetMapping("/userExamCreate")
 	public String moveExamCreate() {
-		System.out.println("모의고사 생성으로 이동");
+		log.info("모의고사 생성으로 이동");
 		return "view/user/exam/user_exam_create";
 	}
 
-	@GetMapping("/exam/userExamResultList")
+	@GetMapping("/userExamResultList")
 	public String userExamResultList() {
-		System.out.println("모의고사 응시 목록으로 이동");
+		log.info("모의고사 응시 목록으로 이동");
 		return "view/user/exam/user_exam_took_list";
 	}
 
-	@GetMapping("/exam/userExamAnalyzePopup")
+	@GetMapping("/userExamAnalyzePopup")
 	public String userExamAnalyzePopup() {
-		System.out.println("모의고사 결과분석 팝업으로 이동");
+		log.info("모의고사 결과분석 팝업으로 이동");
 		return "view/user/exam/user_exam_analyze_popup";
 	}
 
-	@GetMapping("/exam/userExamTake")
+	@GetMapping("/userExamTake")
 	public String userExamTake() {
-		System.out.println("모의고사 응시로 이동");
+
+		log.info("모의고사 응시로 이동");
 		return "view/user/exam/user_exam_take";
 	}
 
-	@GetMapping("/exam/userExamAnalyse")
+	@GetMapping("/userExamAnalyse")
 	public String userExamAnalyse() {
-		System.out.println("모의고사 결과분석으로 이동");
+		log.info("모의고사 결과분석으로 이동");
 		return "view/user/exam/user_exam_analyse";
 	}
 
-	@PostMapping("/exam/userExamSolution")
+	@PostMapping("/userExamSolution")
 	public String userExamSolution(@RequestParam String userAnswer, @RequestParam String examAnswer, Model model) {
 
 		model.addAttribute("userAnswer", userAnswer);
 		model.addAttribute("examAnswer", examAnswer);
 
-		System.out.println("모의고사 해설화면으로 이동");
+		log.info("모의고사 해설화면으로 이동");
 
 		return "view/user/exam/user_exam_solution";
 	}
 
-	@GetMapping("/exam/ccr")
+	@GetMapping("/ccr")
 	public String userExamAnalyseCcr() {
-		System.out.println("단원별정답률분석페이지로 이동");
+		log.info("단원별정답률분석페이지로 이동");
 		return "view/user/exam/user_exam_analyse_ccr";
 	}
 
-	@GetMapping("/exam/weak")
+	@GetMapping("/weak")
 	public String userExamAnalyseWeak() {
-		System.out.println("취약파트로 이동");
+		log.info("취약파트로 이동");
 		return "view/user/exam/user_exam_analyse_weak_type";
 	}
 
-	@GetMapping("/exam/chap")
+	@GetMapping("/chap")
 	public String userExamAnalyseChap() {
-		System.out.println("취약단원파트로 이동");
+		log.info("취약단원파트로 이동");
 		return "view/user/exam/user_exam_analyse_chap";
 	}
 }

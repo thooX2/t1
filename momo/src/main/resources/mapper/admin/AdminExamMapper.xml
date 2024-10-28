@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks52team01.admin.exam.mapper.AdminExamMapper">
+	<resultMap type="SubMirCate" id="SubMirCateMap">
+		<id column="sub_mir_cat_code" property="subMirCatCode"></id>
+		<result column="sub_mjr_cat_code" property="subMjrCatCode"></result>
+		<result column="sub_mir_cat_nm" property="subMirCatNm"></result>
+		<result column="comm_slt" property="commSlt"></result>
+		<result column="cur_exam_user_state" property="curExamUserState"></result>
+		<result column="sub_mjr_cat_nm" property="subMjrName"></result>
+		<result column="subMirState" property="subMirState"></result>
+		
+		<association javaType="SubMjrCate" property="subMjrCate" >
+			<id 	column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
+			<result column="sub_mjr_cat_nm" 	property="subMjrCatNm" />
+			<result column="sub_exam_time" 	property="subExamTime" />
+			<result column="sub_exam_order" 	property="subExamOrder" />
+			<result column="sub_qst_num" 	property="subQstNum" />
+			<result column="sub_qst_total_scr" 	property="subQstTotalScr" />
+			<result column="cur_exam_user_state" 	property="curExamUserState" />
+		</association>
+	</resultMap>
+	<resultMap type="ks52team01.student.user.dto.User" id="userResultMap">
+			<id column="user_code" property="userCode" />
+			<result column="user_id" property="userId" />
+			<result column="grade_code" property="gradeCode" />
+			<result column="area_city_code" property="areaCityCode" />
+			<result column="user_pw" property="userPw" />
+			<result column="user_email" property="userEmail" />
+			<result column="user_address" property="userAddress" />
+			<result column="user_detail_address" property="userDetailAddress" />
+			<result column="user_phone" property="userPhone" />
+			<result column="user_name" property="userName" />
+			<result column="user_birth_date" property="userBirthDate" />
+			<result column="user_gender" property="userGender" />
+			<result column="user_sign_date" property="userSignDate" />
+			<result column="user_update_date" property="userUpdateDate" />
+			<result column="user_delete_date" property="userDeleteDate" />
+			<result column="user_dormant_status" property="userDormantStatus" />
+			<result column="user_delete_staus" property="userDeleteStatus" />
+	</resultMap>
+	<resultMap id="qnaBankResultMap" type="ks52team01.admin.exam.dto.QnaBank">
+		    <id column="qna_code" property="qnaCode"/>
+		    <result column="user_code" property="userCode"/>
+		    <result column="sub_mjr_cat_code" property="subMjrCatCode"/>
+		    <result column="sub_mir_cat_code" property="subMirCatCode"/>
+		    <result column="qna_type" property="qnaType"/>
+		    <result column="qna_chap" property="qnaChap"/>
+		    <result column="qna_subject" property="qnaSubject"/>
+		    <result column="qna_qst" property="qnaQst"/>
+		    <result column="qna_slt1" property="qnaSlt1"/>
+		    <result column="qna_slt2" property="qnaSlt2"/>
+		    <result column="qna_slt3" property="qnaSlt3"/>
+		    <result column="qna_slt4" property="qnaSlt4"/>
+		    <result column="qna_slt5" property="qnaSlt5"/>
+		    <result column="qna_ans" property="qnaAns"/>
+		    <result column="qna_scr" property="qnaScr"/>
+		    <result column="qna_cmt" property="qnaCmt"/>
+		    <result column="qna_cur_exam_state" property="qnaCurExamState"/>
+		    <result column="qna_create_time" property="qnaCreateTime"/>
+		    <result column="qna_update_time" property="qnaUpdateTime"/>
+		    <result column="sub_mjr_cat_nm" property="subMjrCatNm"/>
+		    <result column="sub_mir_cat_nm" property="subMirCatNm"/>
+		    <result column="user_id" property="userId"/>
+		    <result column="user_name" property="userName"/>
+	</resultMap>
+
+	<update id="modifyQuestionProc" parameterType="QnaBank">
+		UPDATE qna_bank
+        SET 
+            user_code = #{userCode},
+            sub_mjr_cat_code = #{subMjrCatCode},
+            sub_mir_cat_code = #{subMirCatCode},
+            qna_type = #{qnaType},
+            qna_chap = #{qnaChap},
+            qna_subject = #{qnaSubject},
+            qna_qst = #{qnaQst},
+            qna_slt1 = #{qnaSlt1},
+            qna_slt2 = #{qnaSlt2},
+            qna_slt3 = #{qnaSlt3},
+            qna_slt4 = #{qnaSlt4},
+            qna_slt5 = #{qnaSlt5},
+            qna_ans = #{qnaAns},
+            qna_scr = #{qnaScr},
+            qna_cmt = #{qnaCmt},
+            qna_cur_exam_state = #{qnaCurExamState},
+            qna_create_time = #{qnaCreateTime},
+            qna_update_time = NOW()
+        WHERE qna_code = #{qnaCode}
+	</update>
+
+	<select id="getQuestionInfo" parameterType="String" resultMap="qnaBankResultMap">
+		SELECT
+			qna_code,
+			user_code,
+			sub_mjr_cat_code,
+			sub_mir_cat_code,
+			qna_type, qna_chap,
+			qna_subject, qna_qst,
+			qna_slt1,
+			qna_slt2,
+			qna_slt3,
+			qna_slt4,
+			qna_slt5,
+			qna_ans,
+			qna_scr,
+			qna_cmt,
+			qna_cur_exam_state,
+			qna_create_time,
+			qna_update_time
+		FROM
+			qna_bank
+		WHERE
+			qna_code=#{qnaCode}
+	</select>
+
+
+	<select id="searchQuestionList" parameterType="QnaBank" resultMap="qnaBankResultMap">
+	    SELECT
+	        qb.qna_code,
+	        qb.user_code,
+	        u.user_id,
+	        u.user_name,
+	        qb.sub_mjr_cat_code,
+	        smjc.sub_mjr_cat_nm,
+	        qb.sub_mir_cat_code,
+	        smic.sub_mir_cat_nm,
+	        qb.qna_type,
+	        qna_chap,
+	        qb.qna_subject,
+	        qb.qna_qst,
+	        qb.qna_slt1,
+	        qb.qna_slt2,
+	        qb.qna_slt3,
+	        qb.qna_slt4,
+	        qb.qna_slt5,
+	        qb.qna_ans,
+	        qb.qna_scr,
+	        qb.qna_cmt,
+	        qb.qna_cur_exam_state,
+	        qb.qna_create_time,
+	        qb.qna_update_time
+	    FROM
+	        qna_bank qb
+	        LEFT JOIN sub_mjr_cat smjc ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+	        LEFT JOIN sub_mir_cat smic ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+	        LEFT JOIN user u ON qb.user_code = u.user_code
+	    <where>
+	        <!-- searchType이 있고 searchKeyword가 있을 경우 -->
+	        <if test="searchType != null and searchType != '' and searchKeyword != null and searchKeyword != ''">
+	            ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+	        </if>
+	        
+	        <!-- qna_cur_exam_state 조건 -->
+	        <if test="qnaCurExamState != null and qnaCurExamState != ''">
+	            AND  qb.qna_cur_exam_state = #{qnaCurExamState}
+	        </if>
+	
+	        <!-- user_code 조건 -->
+	        <if test="userCode != null and userCode != ''">
+	            AND  qb.user_code = #{userCode}
+	        </if>
+	
+	        <!-- qna_scr 조건 -->
+	        <if test="qnaScr != null and qnaScr != 0">
+	            AND qna_scr = #{qnaScr}
+	        </if>
+	
+	        <!-- sub_mir_cat_code 조건 -->
+	        <if test="subMirCatCode != null and subMirCatCode != '' and subMirCatCode !='korHis'">
+	            AND  qb.sub_mir_cat_code = #{subMirCatCode}
+	        </if>
+	        <!-- sub_mir_cat_code 조건 :한국사-->
+	        <if test="subMirCatCode =='korHis'">
+	            AND  qb.sub_mjr_cat_code = 'smjrcc4'
+	        </if>
+	    </where>
+
+	    ORDER BY
+	        CAST(SUBSTRING(qna_code, 3) AS UNSIGNED) DESC
+	</select>
+
+
+
+	<select id="getQuestionListAll" resultMap="qnaBankResultMap">
+	 	SELECT
+			qb.qna_code,
+			qb.user_code,
+			u.user_id,
+			u.user_name,
+			qb.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mir_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.qna_type, qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
+		FROM
+			qna_bank qb LEFT JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			LEFT JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			LEFT JOIN user u
+			ON qb.user_code = u.user_code
+		ORDER BY
+		CAST(SUBSTRING(qb.qna_code,3) AS UNSIGNED) DESC;
+    </select>
+
+
+
+	<select id="addExamQuestion" parameterType="QnaBank">
+		INSERT INTO qna_bank
+			(qna_code, user_code, sub_mjr_cat_code, sub_mir_cat_code, qna_type, qna_chap, qna_subject, qna_qst,
+			 qna_slt1, qna_slt2, qna_slt3, qna_slt4, qna_slt5, qna_ans, qna_scr, qna_cmt, qna_cur_exam_state, qna_create_time, qna_update_time)
+		VALUES
+			(#{qnaCode}, #{userCode}, #{subMjrCatCode}, #{subMirCatCode}, #{qnaType}, #{qnaChap}, #{qnaSubject}, #{qnaQst},
+			 #{qnaSlt1}, #{qnaSlt2}, #{qnaSlt3}, #{qnaSlt4}, #{qnaSlt5}, #{qnaAns}, #{qnaScr}, #{qnaCmt}, 'Y', NOW(), NULL);
+	</select>
+
+
+	<select id="getQnaChapList" resultType="ExamQnaChap">
+		SELECT
+			eqc.exam_qna_chap_code as examQnaChapCode,
+			eqc.user_code as userCode,
+			eqc.sub_mjr_cat_code as subMjrCatCode,
+			smjc.sub_mjr_cat_nm AS subMjrCatNm,
+			eqc.sub_mir_cat_code as subMirCatCode,
+			smic.sub_mir_cat_nm AS subMirCatNm,
+			eqc.exam_qna_chap_nm as examQnaChapNm
+		FROM
+			exam_qna_chap eqc INNER JOIN sub_mir_cat smic
+			ON eqc.sub_mir_cat_code= smic.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smjc
+			ON eqc.sub_mjr_cat_code= smjc.sub_mjr_cat_code
+		ORDER BY
+			CAST(SUBSTRING(exam_qna_chap_code,5) AS UNSIGNED);
+	</select>
+	
+
+	<select id="getQnaTypeList" resultType="ExamQnaType">
+		SELECT
+			exam_qna_type_code as examQnaTypeCode,
+			sub_mjr_cat_code as subMjrCatCode,
+			sub_mir_cat_code as subMirCatCode,
+			user_code as userCode,
+			exam_qna_type_nm as examQnaTypeNm,
+			exam_qna_type_create_date as examQnaTypeCreateDate
+		FROM
+			exam_qna_type
+		ORDER BY
+			CAST(SUBSTRING(exam_qna_type_code,5) AS UNSIGNED)
+	</select>
+
+	<select id="getAdminExamCategoryList" resultMap="SubMirCateMap">
+		SELECT
+			smic.sub_mir_cat_code,
+			smjc.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			smic.sub_mir_cat_nm,
+			smic.comm_slt,
+			smjc.cur_exam_user_state,
+			smic.cur_exam_user_state as subMirState
+		FROM
+			sub_mir_cat smic RIGHT JOIN sub_mjr_cat smjc
+			ON smic.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+		ORDER BY
+			CAST(SUBSTRING(smjc.sub_mjr_cat_code,7) AS UNSIGNED);
+	</select>
+<select id="getUserListByGrade" parameterType="String" resultMap="userResultMap">
+    SELECT
+        user_code,
+        user_id,
+        grade_code,
+        area_city_code,
+        user_pw,
+        user_email,
+        user_address,
+        user_detail_address,
+        user_phone,
+        user_name,
+        user_birth_date,
+        user_gender,
+        user_sign_date,
+        user_update_date,
+        user_delete_date,
+        user_dormant_status,
+        user_delete_status
+    FROM
+        `user`
+    <where>
+        <if test="gradeCode != null and gradeCode != ''">
+            grade_code = #{gradeCode}
+        </if>
+    </where>
+</select>
+
+
+
+
+</mapper>

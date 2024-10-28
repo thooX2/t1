@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<link rel="stylesheet" type="text/css" th:href="@{/admin/css/exam/adminCustom.css}" />
+
+	<style>
+		/* 기본적인 스타일 */
+		body {
+			font-family: Dotum, 돋움, Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f9f9f9;
+		}
+
+		.scbox {
+			height: 595px;
+			overflow-y: auto;
+			border: 1px solid #ccc;
+			background-color: #fff;
+			border-radius: 8px;
+			padding: 10px;
+			position: relative;
+		}
+
+		.bttn2 {
+			cursor: pointer;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+		}
+
+		.f_td01 input[type="text"] {
+			width: 100%;
+			border: 1px solid #d1d1d1;
+			padding: 5px;
+			border-radius: 4px;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			/* 셀 간격을 없애고 경계선을 결합 */
+			border: none;
+			/* border="0" 대신 사용 */
+		}
+
+		table th,
+		table td {
+			border: 1px solid #ccc;
+			/* 테이블 경계선 */
+			padding: 10px;
+			/* 테이블 내부 여백 (cellpadding 대체) */
+		}
+
+		/* th의 텍스트 스타일 */
+		table th {
+			background-color: #f1f1f1;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+
+	<table>
+		<tbody>
+			<tr>
+				<td style="border:0;">
+					<table id="p_title_pop">
+						<tbody>
+							<tr height="42">
+								<td style="padding-left:5px;border:0">
+									<div id="_ttl_">
+										<div class="blt"><!----></div>
+										<div><strong style="font-size:17px;">문제 미리보기</strong></div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table>
+						<tbody>
+							<tr>
+								<td style="padding:10px;border:0">
+									<form name="form1" method="post" action="your_action_url_here">
+										<div class="scbox">
+											<table class="c_tb01">
+												<tbody>
+													<tr>
+														<th colspan="2">문제 1</th>
+
+													</tr>
+												</tbody>
+											</table>
+											<table class="f_tb01">
+												<colgroup>
+													<col width="80">
+													<col width="*">
+													<col width="80">
+													<col width="*">
+												</colgroup>
+												<tbody>
+													<tr>
+														<th>카테고리</th>
+														<td colspan="3">DDM</td>
+													</tr>
+													<tr>
+														<th>문제유형</th>
+														<td>단답형</td>
+														<th>난이도</th>
+														<td>B</td>
+													</tr>
+													<tr>
+														<th>문제</th>
+														<td colspan="3">
+															<p style="font-weight:bold">
+																<img src="/admin/img/exam/adminExamQuestionPopup/icon_question.gif" alt="질문 아이콘"
+																	style="vertical-align:-3px;"> &nbsp;인생에서 가장 멋진 일을
+																슈바이처 박사는 무엇이라고 하였는가?
+															</p>
+															<table style="width:98%; margin-top:3px;">
+																<tbody>
+																	<tr>
+																		<td style="padding:10px; background:#f1f1f1;">
+																			<input disabled type="text" name="answer"
+																				placeholder="정답을 입력하세요"
+																				style="width: 100%;">
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</td>
+													</tr>
+													<tr>
+														<th>정답</th>
+														<td colspan="3">모든 일에 감사하는 것</td>
+													</tr>
+												</tbody>
+											</table>
+
+											<!-- 닫기 버튼 -->
+											<button type="button" class="bttn2" aria-label="닫기">닫기</button>
+
+										</div>
+										<table class="b_tb01">
+											<tbody>
+
+											</tbody>
+										</table>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+
+</html>

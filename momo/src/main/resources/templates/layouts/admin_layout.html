@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+
+	<title>관리자페이지</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<!--<link rel="shortcut icon" href="https://cdn.malgnlms.com/sysop/favicon_servicesysop.ico" />-->
+
+	<!-- CSS Files -->
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/all.min.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/select2.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/colorpicker.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/codemirror.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/jquery-ui-1.12.1-base_malgncustom.css" />
+	<!--[if gte IE 9]><!-->
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/jquery.mCustomScrollbar.css" />
+	<!--<![endif]-->
+	<link rel="stylesheet" href="/admin/css/home/kopubdotum.min.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/home/customCss.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+	<!-- JavaScript Files -->
+	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-1.12.3.min.js"
+		charset="utf-8"></script>
+	<script language="javascript" type="text/javascript" src="/admin/js/home/jquery-ui-1.12.1_malgncustom.js"></script>
+
+	<!--<![endif]-->
+
+	<!-- Css Styles -->
+	<th:block layout:fragment="customCss"></th:block>
+
+	<style>
+		/* 기본적인 레이아웃을 위한 CSS */
+		.container {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+		}
+
+
+		.content {
+			flex-grow: 1;
+			/* 나머지 영역을 채움 */
+			padding: 15px;
+		}
+
+		.arrow {
+			display: inline-block;
+			transition: transform 0.3s;
+		}
+
+		.arrow.open {
+			transform: rotate(90deg);
+			/* 90도 회전 */
+		}
+
+		#examMain {
+			display: flex;
+			/* 플렉스 박스를 사용하여 레이아웃 설정 */
+		}
+
+		.sidebar {
+			width: 250px;
+			padding: 0px;
+			height: 100vh;
+		}
+
+
+		@font-face {
+			font-family: 'Didact Gothic';
+			src:
+				url(chrome-extension://ignghjdjmgleolgiaifohmdlnbjklkij/assets/fonts/didactgothic.woff2) format('woff2');
+			font-weight: normal;
+			font-style: normal;
+		}
+
+		/* 기존 CSS 코드에 추가 */
+		#sys-scroll {
+			max-height: 88vh;
+			/* 조정 필요 */
+			overflow-y: auto;
+			/* 세로 스크롤 */
+		}
+
+		#sys-wrap {
+			max-height: 100vh;
+			/* 화면 높이로 제한 */
+			overflow: hidden;
+			/* 이 부분도 auto로 바꿔야 할 수 있음 */
+		}
+	</style>
+</head>
+
+<body style="margin: 0 !important;">
+	<!-- th:replace 속성은 해당 속성이 선언된 html 태그를 다른 html 파일로 치환. fragments 폴더 아래 header.html 파일의 "th:fragment=header" 영역을 가져옴 -->
+	<div th:replace="~{fragments/admin/admin_header :: header}"></div>
+
+	<!-- main 태그는 페이지의 주요 콘텐츠를 담는 영역. -->
+	<main class="main">
+		<!-- layout에서 변경되는 영역을 fragment로 설정. -->
+		<!-- 페이지별로 custom content를 대체하여 동적으로 변경 가능 -->
+		<th:block layout:fragment="content"></th:block>
+	</main>
+
+	<!-- Js Plugins -->
+	<script>
+		$(function () {
+			const currentAddr = window.location.href.split('/').pop();
+			$('.acc-sub a').each((idx, element) => {
+				const hrefAddr = $(element).attr('href').split('/').pop();
+				if (currentAddr == hrefAddr) $(element).addClass('active');
+			});
+		});
+
+
+
+
+		var timerTimeObj;
+		Date.prototype.format = function (f) {
+			if (!this.valueOf())
+				return " ";
+
+			var weekName = ["일", "월", "화", "수", "목", "금", "토"];
+			var d = this;
+
+			return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function ($1) {
+				switch ($1) {
+					case "yyyy":
+						return d.getFullYear();
+					case "yy":
+						return (d.getFullYear() % 1000).zf(2);
+					case "MM":
+						return (d.getMonth() + 1).zf(2);
+					case "dd":
+						return d.getDate().zf(2);
+					case "E":
+						return weekName[d.getDay()];
+					case "HH":
+						return d.getHours().zf(2);
+					case "hh":
+						return ((h = d.getHours() % 12) ? h : 12).zf(2);
+					case "mm":
+						return d.getMinutes().zf(2);
+					case "ss":
+						return d.getSeconds().zf(2);
+					case "a/p":
+						return d.getHours() < 12 ? "오전" : "오후";
+					default:
+						return $1;
+				}
+			});
+		};
+
+		String.prototype.string = function (len) {
+			var s = '', i = 0;
+			while (i++ < len) {
+				s += this;
+			}
+			return s;
+		};
+		String.prototype.zf = function (len) {
+			return "0".string(len - this.length) + this;
+		};
+		Number.prototype.zf = function (len) {
+			return this.toString().zf(len);
+		};
+
+		function timer() {
+			document.getElementById("time").innerHTML = new Date().toLocaleString();
+			timerTimeObj = window.setTimeout("timer()", 1000);
+		}
+
+		$(document).ready(function () {
+			timer();
+		});
+
+		$(document).ready(function () {
+			// 페이지 로드 시 모든 섹션을 열어둠
+			$('ul.acc-sub').show();  // 모든 ul.acc-sub 요소를 보여줌
+			$('li.acc-title > a').find('.arrow').addClass('open');  // 모든 섹션의 아이콘을 열림 상태로
+			// a 태그를 클릭했을 때
+			$('li.acc-title > a').click(function (e) {
+				e.preventDefault(); // 기본 동작 막기
+
+				// 클릭한 a 태그 바로 아래에 있는 ul.acc-sub를 찾아서 토글
+				$(this).next('ul.acc-sub').slideToggle();
+
+				// 아이콘이 회전하는 것을 위해 arrow 클래스도 토글
+				$(this).find('.arrow').toggleClass('open');
+			});
+		});
+	</script>
+
+	<th:block layout:fragment="customJsFile"></th:block>
+	<th:block layout:fragment="customJs"></th:block>
+</body>
+
+</html>

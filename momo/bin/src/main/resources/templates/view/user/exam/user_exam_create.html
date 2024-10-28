@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<head>
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamCreate/exam_new.css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamCreate/main2015.css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamCreate/style.css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamCreate/common(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamCreate/layout(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamCreate/board(1).css}">
+	<link rel="stylesheet" th:href="@{/user/css/exam/userExamCreate/past_question.css}">
+</head>
+<th:block layout:fragment="customJsFile"></th:block>
+<th:block layout:fragment="customJs">
+	<script>
+		const $title = document.querySelector('title');
+		$title.textContent = '나만의 모의고사 생성';
+	</script>
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+	<!-- container -->
+	<section class="container">
+		<!-- sub_container -->
+		<div class="sub_container">
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/exam/sidebar :: sidebar"></div>
+			<!-- content -->
+			<div class="content">
+				<div class="container" id="wrap_2014" style="text-align: left;">
+					<div class="entinfo contents-wrap" style="margin: 0 !important;">
+						<!-- Left 메뉴 종료 -->
+						<div id="contents" class="cont_test--exam">
+							<div class="top_cont--wrap">
+								<div class="cont--box">
+									<ul>
+										<li>더 편리하고, 더 빠르게! 원하는 기출 문제만 선택!</li>
+									</ul>
+								</div>
+								<div>
+									<img usemap="#ex_con2" src="/user/img/exam/ex_top_240429.jpg" alt="기출 문제은행">
+								</div>
+
+								<!--	<map name="ex_con2">
+										<area shape="rect" coords="249,571,571,620"
+											href="https://www.megastudy.net/Entinfo/ex_test_realtest/pop_guide.asp"
+											onclick="window.open(this.href,'pop_guide','width=840, height=800, scrollbars=1');return false;"
+											alt="MEGA 문제은행 이렇게 활용하세요">
+									</map>-->
+
+							</div>
+
+							<div class="mid_cont--wrap" style="padding-right: 20px !important;">
+								<h3 class="mid_cont__title">문제지 만들기</h3>
+
+								<div id="tabContent" class="mid_tab--cont">
+									<!-- 공통 인클루드 페이지 시작 -->
+
+									<!-- 공통 인클루드 페이지 종료 -->
+
+
+									<ul class="mid_step--area">
+										<li class="step01 on">
+											<div class="step01_inner01">
+												<strong>단계 1. </strong>과목/유형별 문제 검색
+											</div>
+											<div class="step01_inner02">
+												<a href="javascript:;" onclick="fncPrev();"><span><strong>단계
+															1. </strong>과목/유형별 문제 검색</span></a>
+											</div>
+										</li>
+										<li class="arrow"><img src="/user/img/exam/arrow_r.png"></li>
+										<li class="step02"><strong>단계 2. </strong>문제 선택</li>
+									</ul>
+									<div id="searchCndArea">
+
+										<input type="radio" name="eduProc" value="15" checked="" style="display: none;">
+										<table class="mid_tbl--type" border="1" cellspacing="0">
+											<colgroup>
+												<col width="110">
+												<col width="620">
+											</colgroup>
+											<tbody>
+												<tr>
+													<th>영역 *</th>
+													<td>
+														<ul class="tbl_in--atc">
+
+															<li><input type="radio" name="domCd" value="KO" checked=""
+																	onclick="fncDom('KO');" id="t1">&nbsp;<label
+																	for="t1">국어</label></li>
+
+															<li><input type="radio" name="domCd" value="MA"
+																	onclick="fncDom('MA');" id="t2">&nbsp;<label
+																	for="t2">수학</label></li>
+
+															<li><input type="radio" name="domCd" value="EN"
+																	onclick="fncDom('EN');" id="t3">&nbsp;<label
+																	for="t3">영어</label></li>
+
+															<li><input type="radio" name="domCd" value="HI"
+																	onclick="fncDom('HI');" id="t4">&nbsp;<label
+																	for="t4">한국사</label></li>
+
+															<li><input type="radio" name="domCd" value="SO"
+																	onclick="fncDom('SO');" id="t5">&nbsp;<label
+																	for="t5">사회탐구</label></li>
+
+															<li><input type="radio" name="domCd" value="SC"
+																	onclick="fncDom('SC');" id="t6">&nbsp;<label
+																	for="t6">과학탐구</label></li>
+
+														</ul>
+													</td>
+												</tr>
+												<tr>
+													<th>과목 *</th>
+													<td>
+														<ul id="subjectArea" class="tbl_in--atc">
+															<!-- 공통 인클루드 페이지 시작 -->
+
+															<!-- 공통 인클루드 페이지 종료 -->
+
+															<li><input type="checkbox" name="subCd" value="ALL"
+																	onclick="fncSubAll();">&nbsp;<label>전체</label>
+															</li>
+
+															<li><input type="checkbox" name="subCd" value="12100037"
+																	onclick="fncSubNotAll();">&nbsp;<label>독서</label>
+															</li>
+
+															<li><input type="checkbox" name="subCd" value="12100040"
+																	onclick="fncSubNotAll();">&nbsp;<label>문학</label>
+															</li>
+
+															<li><input type="checkbox" name="subCd" value="12100035"
+																	onclick="fncSubNotAll();">&nbsp;<label>화법</label>
+															</li>
+
+															<li><input type="checkbox" name="subCd" value="12100036"
+																	onclick="fncSubNotAll();">&nbsp;<label>작문</label>
+															</li>
+
+															<li><input type="checkbox" name="subCd" value="12100038"
+																	onclick="fncSubNotAll();">&nbsp;<label>언어</label>
+															</li>
+
+															<li><input type="checkbox" name="subCd" value="12100039"
+																	onclick="fncSubNotAll();">&nbsp;<label>매체</label>
+															</li>
+														</ul>
+													</td>
+												</tr>
+
+											</tbody>
+										</table>
+
+										<div class="mid_tabl--txt">(*) 표시된 항목은 필수 선택입니다.</div>
+										<p class="mid_hypen--txt">
+											2015 교육과정에 해당하는 문제들로 검색됩니다.<br> 2009 교육과정(시행년도 2014~2019년)
+											중에서도 2015 교육과정에 맞는 일부 문항들도 검색됩니다.
+										</p>
+
+										<div class="mid_sel--cont mb0">
+											<h3>
+												+ 선택 검색 조건 <span class="desc">(선택하지 않을 경우 ‘전체’로 검색 됩니다.)</span>
+											</h3>
+										</div>
+
+										<table class="mid_tbl--type" border="1" cellspacing="0">
+											<colgroup>
+												<col width="110">
+												<col width="620">
+											</colgroup>
+											<tbody>
+												<tr>
+													<th>유형/단원</th>
+													<td>
+														<div id="typeArea" class="mid_sel--area">
+															<p class="mid_sel--none">영역/과목을 선택해주세요.</p>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+											<tbody id="detailSchArea">
+												<!-- 공통 인클루드 페이지 시작 -->
+
+												<!-- 공통 인클루드 페이지 종료 -->
+
+
+												<tr>
+													<th>출처</th>
+													<td>
+														<ul class="tbl_in--atc">
+															<li><input type="checkbox" name="TestSource" value="ALL"
+																	onclick="fncTestSAll();">&nbsp;<label>전체</label>
+															</li>
+															<li><input type="checkbox" name="TestSource" value="01"
+																	onclick="fncTestSNotAll();">&nbsp;<label>대학수학능력시험</label>
+															</li>
+															<li><input type="checkbox" name="TestSource" value="02"
+																	onclick="fncTestSNotAll();">&nbsp;<label>모의평가</label>
+															</li>
+															<li><input type="checkbox" name="TestSource" value="03"
+																	onclick="fncTestSNotAll();">&nbsp;<label>학력평가</label>
+															</li>
+														</ul>
+													</td>
+												</tr>
+												<tr>
+													<th>시행년도</th>
+													<td>
+														<ul class="tbl_in--atc">
+															<li><input type="checkbox" name="examYear" value="ALL"
+																	onclick="fncYearAll();">&nbsp;<label>전체</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2024"
+																	onclick="fncYearNotAll();">&nbsp;<label>2024</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2023"
+																	onclick="fncYearNotAll();">&nbsp;<label>2023</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2022"
+																	onclick="fncYearNotAll();">&nbsp;<label>2022</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2021"
+																	onclick="fncYearNotAll();">&nbsp;<label>2021</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2020"
+																	onclick="fncYearNotAll();">&nbsp;<label>2020</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2019"
+																	onclick="fncYearNotAll();">&nbsp;<label>2019</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2018"
+																	onclick="fncYearNotAll();">&nbsp;<label>2018</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2017"
+																	onclick="fncYearNotAll();">&nbsp;<label>2017</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2016"
+																	onclick="fncYearNotAll();">&nbsp;<label>2016</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2015"
+																	onclick="fncYearNotAll();">&nbsp;<label>2015</label>
+															</li>
+
+															<li><input type="checkbox" name="examYear" value="2014"
+																	onclick="fncYearNotAll();">&nbsp;<label>2014</label>
+															</li>
+
+														</ul>
+													</td>
+												</tr>
+												<tr>
+													<th>시행 월</th>
+													<td>
+														<ul class="tbl_in--atc">
+															<li><input type="checkbox" name="examMon" value="ALL"
+																	onclick="fncMonAll();">&nbsp;<label>전체</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="12"
+																	onclick="fncMonNotAll();">&nbsp;<label>12월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="11"
+																	onclick="fncMonNotAll();">&nbsp;<label>11월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="10"
+																	onclick="fncMonNotAll();">&nbsp;<label>10월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="9"
+																	onclick="fncMonNotAll();">&nbsp;<label>9월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="8"
+																	onclick="fncMonNotAll();">&nbsp;<label>8월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="7"
+																	onclick="fncMonNotAll();">&nbsp;<label>7월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="6"
+																	onclick="fncMonNotAll();">&nbsp;<label>6월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="5"
+																	onclick="fncMonNotAll();">&nbsp;<label>5월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="4"
+																	onclick="fncMonNotAll();">&nbsp;<label>4월</label>
+															</li>
+
+															<li><input type="checkbox" name="examMon" value="3"
+																	onclick="fncMonNotAll();">&nbsp;<label>3월</label>
+															</li>
+
+														</ul>
+													</td>
+												</tr>
+												<tr>
+													<th>정답률</th>
+													<td>
+														<ul class="tbl_in--atc">
+															<li><input type="checkbox" name="jungdabRate" value="ALL"
+																	onclick="fncodabRateAll();" id="w1">&nbsp;<label
+																	for="w1">전체</label></li>
+															<li><input type="checkbox" name="jungdabRate" value="1"
+																	onclick="fncodabRateNotAll();" id="w2">&nbsp;<label
+																	for="w2">20%이하</label></li>
+															<li><input type="checkbox" name="jungdabRate" value="2"
+																	onclick="fncodabRateNotAll();" id="w3">&nbsp;<label
+																	for="w3">21~40% </label>
+															</li>
+															<li><input type="checkbox" name="jungdabRate" value="3"
+																	onclick="fncodabRateNotAll();" id="w4">&nbsp;<label
+																	for="w4">41~60%</label>
+															</li>
+															<li><input type="checkbox" name="jungdabRate" value="4"
+																	onclick="fncodabRateNotAll();" id="w5">&nbsp;<label
+																	for="w5">61~80%</label>
+															</li>
+															<li><input type="checkbox" name="jungdabRate" value="5"
+																	onclick="fncodabRateNotAll();" id="w6">&nbsp;<label
+																	for="w6">81%이상</label></li>
+														</ul>
+													</td>
+												</tr>
+												<tr>
+													<th>배점</th>
+													<td>
+														<ul class="tbl_in--atc">
+															<li><input type="checkbox" name="qstMtfl" value="ALL"
+																	onclick="fncqstMtflAll();" id="d1">&nbsp;<label
+																	for="d1">전체</label>
+															</li>
+															<li><input type="checkbox" name="qstMtfl" value="2"
+																	onclick="fncqstMtflNotAll();" id="d2">&nbsp;<label
+																	for="d2">2점</label></li>
+															<li><input type="checkbox" name="qstMtfl" value="3"
+																	onclick="fncqstMtflNotAll();" id="d3">&nbsp;<label
+																	for="d3">3점</label></li>
+															<li><input type="checkbox" name="qstMtfl" value="4"
+																	onclick="fncqstMtflNotAll();" id="d4"
+																	disabled="">&nbsp;<label for="d4">4점</label>
+															</li>
+														</ul>
+													</td>
+												</tr>
+												<tr>
+													<th>해설강의</th>
+													<td>
+														<ul class="tbl_in--atc">
+															<li><input type="checkbox" name="vodflg" value="ALL"
+																	onclick="fncvodflgAll();">&nbsp;<label>전체</label>
+															</li>
+															<li><input type="checkbox" name="vodflg" value="Y"
+																	onclick="fncvodflgNotAll();">&nbsp;<label>있음</label>
+															</li>
+															<li><input type="checkbox" name="vodflg" value="N"
+																	onclick="fncvodflgNotAll();">&nbsp;<label>없음</label>
+															</li>
+														</ul>
+													</td>
+												</tr>
+												<tr>
+													<th>나의 문제지</th>
+													<td>
+														<ul class="tbl_in--atc">
+															<li><input type="radio" name="myTestFlg" value="Y"
+																	onclick="fncMyTestSel();"
+																	checked="">&nbsp;<label>포함</label>
+															</li>
+															<li><input type="radio" name="myTestFlg" value="N"
+																	onclick="fncMyTestSel();">&nbsp;<label>미포함</label>
+															</li>
+														</ul>
+													</td>
+												</tr>
+
+
+											</tbody>
+										</table>
+										<span class="mid_btn_area" id="searchBtn"> <a href="javascript:;"
+												onclick="fncQstZipSearch();" class="btn_ty01" style="color:white">문제
+												검색</a>
+										</span>
+									</div>
+									<div id="searchResultArea" class="bot_ques--area"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- //content -->
+		</div>
+		<!-- //sub_container -->
+	</section>
+	<!-- container //-->
+</div>
+
+</html>

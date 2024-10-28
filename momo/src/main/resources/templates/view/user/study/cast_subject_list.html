@@ -17,74 +17,75 @@
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
-	<!-- container -->
-	<section class="container">
-		<!-- sub_container -->
-		<div class="sub_container">
-			<!-- Include the sidebar fragment here -->
-			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
-			<!-- content -->
-			<div class="content">
-				<div id="wrap_2014">
-					<div class="column_top">
-						<!-- 상단 메뉴 시작 -->
-						<div class="column_right cust_test" id="contents">
-							<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
-								수능과목리스트
-							</p>
-							<div id="tabContent">
+		<!-- container -->
+		<section class="container">
+			<!-- sub_container -->
+			<div class="sub_container">
 
-								<div class="myWorkbook">
-									<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-										<a href="/addCast">수능과목생성</a>
-									</div>
+				<!-- Include the sidebar fragment here -->
+				<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
 
-									<div id="MyTestArea">
-										<table class="bot_tbl--type">
-											<colgroup>
-												<col width="50">
-												<col width="90">
-												<col width="">
-												<col width="90">
-												<col width="90">
-												<col width="90">
-												<col width="70">
-												<col width="70">
-												<col width="70">
-											</colgroup>
-											<thead>
-												<tr>
-													<th>유저 코드</th>
-													<th>국어 공통과목</th>
-													<th>국어 선택과목</th>
-													<th>수학 공통과목</th>
-													<th>수학 선택과목</th>
-													<th>탐구 선택과목</th>
-													<th>탐구2 선택과목</th>
-													<th>영어 공통과목</th>
-													<th>제2외국어 공통과목</th>
-													<th>한국사 공통과목</th>
-													<th>수정</a></th>
-													<th>삭제</a></th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr th:each="list : ${CastSubjectList}">
-													<td th:text="${list.usercode}"></td>
-													<td th:text="${list.smcck}"></td>
-													<td th:text="${list.smcsk}"></td>
-													<td th:text="${list.smccm}"></td>
-													<td th:text="${list.smcsm}"></td>
-													<td th:text="${list.smci1}"></td>
-													<td th:text="${list.smci2}"></td>
-													<td th:text="${list.smcl1}"></td>
-													<td th:text="${list.smcl2}"></td>
-													<td th:text="${list.smck}"></td>
-													<td><a href="/modifyCast">수정</a></td>
-													<td><a href="/deleteCast">삭제</a></td>
-												</tr>
-											</tbody>
-										</table>
+
+
+				<!-- content -->
+				<div class="content">
+					<div id="wrap_2014">
+						<div class="column_top">
+							<!-- 상단 메뉴 시작 -->
+							<div class="column_right cust_test" id="contents">
+								<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
+									수능과목리스트
+								</p>
+								<div id="tabContent">
+
+									<div class="myWorkbook">
+										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
+											<a th:href = "@{/study/addCastSubject}">수능과목생성</a>
+										</div>
+										<div id="MyTestArea">
+											<table class="bot_tbl--type">
+												<colgroup>
+													<col width="50">
+													<col width="90">
+													<col width="50">
+													<col width="90">
+													<col width="90">
+													<col width="90">
+													<col width="70">
+													<col width="70">
+													<col width="70">
+												</colgroup>
+												<thead>
+													<tr>
+														<th>국어 공통과목</th>
+														<th>국어 선택과목</th>
+														<th>수학 공통과목</th>
+														<th>수학 선택과목</th>
+														<th>탐구 선택과목</th>
+														<th>탐구2 선택과목</th>
+														<th>영어 공통과목</th>
+														<th>제2외국어 공통과목</th>
+														<th>한국사 공통과목</th>
+														<th>수정</th>
+														<th>삭제</th>
+													</tr>
+												</thead>
+													<tr th:each="list : ${CastSubjectList}">
+														<td th:text="${list.smcck}"></td>
+														<td th:text="${list.smcsk}"></td>
+														<td th:text="${list.smccm}"></td>
+														<td th:text="${list.smcsm}"></td>
+														<td th:text="${list.smci1}"></td>
+														<td th:text="${list.smci2}"></td>
+														<td th:text="${list.smcl1}"></td>
+														<td th:text="${list.smcl2}"></td>
+														<td th:text="${list.smck}"></td>
+														<td><a th:href="@{/study/modifyCastSubject(list.idx=*{list.idx})}">수정</a></td>
+														<td><a th:href="@{/study/removeCastSubject(list.idx=*{list.idx})}">삭제</a></td>
+													</tr>
+												</tbody>							
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -92,9 +93,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
+	</div>
 </div>
 
 </html>

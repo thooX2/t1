@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/admin_layout}">
+
+<head>
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/font-awesome.min.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+	<style>
+		/* ---------------------------- */
+		/* 숨겨진 파일 입력 */
+		#fileInput {
+			display: none;
+		}
+
+		/* 커스텀 버튼 스타일 */
+		#customButton {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		#customButton:hover {
+			background-color: #0056b3;
+		}
+
+		/* 파일 이름 텍스트 */
+		#fileName {
+			margin-left: 10px;
+			color: #555;
+			font-style: italic;
+		}
+
+		#fileList {
+			list-style-type: none;
+			padding: 0;
+			border: 1px solid #ccc;
+			background: #fff;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		#fileList li {
+			padding: 10px;
+			border-bottom: 1px solid #eee;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		#fileList li:last-child {
+			border-bottom: none;
+		}
+
+		.remove-button {
+			background-color: #ff4d4d;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		.remove-button:hover {
+			background-color: #e60000;
+		}
+
+		.thumbnail {
+			width: 50px;
+			/* 썸네일의 너비 */
+			height: auto;
+			/* 높이는 비율에 따라 자동으로 설정 */
+			margin-right: 10px;
+			/* 이미지와 텍스트 사이의 간격 */
+		}
+	</style>
+</head>
+<th:block layout:fragment="customJsFile">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+	<!-- Include the Korean language file -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+	<!-- Select2 JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+		$(document).ready(function () {
+			$('#summernote').summernote({
+				height: 300,  // 고정된 높이
+				minHeight: 300,  // 최소 높이 설정 (고정)
+				maxHeight: 300,  // 최대 높이 설정 (고정)
+				placeholder: '여기에 내용을 입력하세요...',  // 플레이스홀더
+				focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+				lang: "ko-KR",                // 한글 설정
+				callbacks: {
+					onImageUpload: function (files) {
+						// 파일 업로드 핸들러
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							$('#summernote').summernote('insertImage', e.target.result);
+						};
+						reader.readAsDataURL(files[0]);
+					},
+					onChange: function (contents, $editable) {
+						console.log('Content changed:', contents);
+					}
+				},
+				toolbar: [
+					['fontname', ['fontname']],
+					['fontsize', ['fontsize']],
+					['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+					['color', ['forecolor', 'backcolor']],  // 텍스트 색상 및 배경 색상 추가
+					['table', ['table']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['insert', ['picture', 'link', 'hr']],  // 수평선 추가
+					['view', ['fullscreen', 'codeview', 'help']],  // 코드 보기 버튼 추가
+
+				],
+				fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+				fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+				airMode: false,  // 공기 모드 활성화 여부
+				disableResize: false,  // 에디터 크기 조정 비활성화 (주석 처리)
+
+			});
+		});
+
+		// ====================================
+		const fileInput = document.getElementById('fileInput');
+		const fileName = document.getElementById('fileName');
+		const fileList = document.getElementById('fileList');
+
+		// 파일 선택 시
+		fileInput.addEventListener('change', function () {
+			// 선택된 파일들 가져오기
+			const files = Array.from(fileInput.files);
+
+			// 파일명을 표시
+			if (files.length > 0) {
+				fileName.textContent = files.length === 1 ? files[0].name : `${files.length}개의 파일 선택됨`;
+			} else {
+				fileName.textContent = '선택된 파일이 없습니다.';
+			}
+
+			// 기존 파일 리스트 초기화
+			fileList.innerHTML = '';
+
+			// 파일 리스트에 추가
+			files.forEach(file => {
+				const listItem = document.createElement('li');
+				const img = document.createElement('img');
+				img.src = URL.createObjectURL(file); // 이미지 미리보기
+				img.className = 'thumbnail';
+				listItem.appendChild(img);
+				listItem.appendChild(document.createTextNode(file.name));
+
+				// 제거 버튼 생성
+				const removeButton = document.createElement('button');
+				removeButton.textContent = '제거';
+				removeButton.className = 'remove-button';
+				removeButton.onclick = () => {
+					fileList.removeChild(listItem);
+					updateFileInput();
+				};
+
+				listItem.appendChild(removeButton);
+				fileList.appendChild(listItem);
+			});
+		});
+
+		function updateFileInput() {
+			const updatedFiles = Array.from(fileList.children).map(item => item.childNodes[1].textContent);
+			console.log(updatedFiles); // 선택된 파일 목록을 콘솔에 출력
+
+			// 파일 리스트가 비어 있으면 파일명 텍스트 초기화
+			if (fileList.children.length === 0) {
+				fileName.textContent = '선택된 파일이 없습니다.';
+			}
+		}
+
+		// Select2 초기화
+		$('.js-example-basic-single').select2({
+			minimumResultsForSearch: 0, // 검색 기능 활성화
+			language: {
+				noResults: function () {
+					return "검색 결과가 없습니다"; // 사용자 정의 메시지
+				}
+			}
+		});
+		$('#goQuestionList').click(function () {
+			location.href = "/admin/exam/questionList";
+		})
+
+		$('select[name="item_cnt"]').click(function () {
+			if ($('select[name="item_cnt"]').val() == "4") {
+				$('input[name="qnaSlt5"]').closest('tr').css('display', 'none');
+				$('input[name="qnaSlt5"]').prop('disabled', 'true');
+			}
+			if ($('select[name="item_cnt"]').val() == "5") {
+				$('input[name="qnaSlt5"]').closest('tr').css('display', '');
+				$('input[name="qnaSlt5"]').prop('disabled', '');
+			}
+		})
+
+		// ---------------------------------------------------
+
+		var qnaTypeList = /*[[${qnaTypeList}]]*/[];
+		var qnaChapList = /*[[${qnaChapList}]]*/[];
+		var categoryList = /*[[${categoryList}]]*/[];
+		console.log(categoryList)
+		// 초기 옵션을 저장
+		const initialQnaChapList = $('#qnaChapList').html();
+		const initialQnaTypeListList = $('#qnaTypeList').html();
+
+		$('#categoryList').change(function () {
+			// value가 없고 text가 한국사인 select를 선택
+			if ($(this).val() == '' && $('#categoryList option:selected').text() == '한국사 > 한국사') {
+				// input hidden에 subject_major_catetory_code를 smjrcc4로 수동입력
+				$('#categorySubMjrCatCode').val('smjrcc4');
+				$('#qnaChapList').empty();
+				$('#qnaTypeList').empty();
+
+				// 위의 hidden value값을 기반으로 전체 문항타입목록에서 같은 값을 찾아 option을 생성 
+				qnaTypeList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+
+						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
+					}
+				})
+
+				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
+				qnaChapList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
+					}
+				})
+
+
+				// value가 없는 즉, 전체라고 쓰인 select를 선택하면 모든 리스트를 보여줌	
+			} else if ($(this).val() == '') {
+				$('#qnaChapList').html(initialQnaChapList);
+				$('#qnaTypeList').html(initialQnaTypeListList);
+			} else {
+				// 한국사를 제외한 다른 카테고리를 생성시 해당 카테고리의 출제단원과 출제유형만 보이게 설정
+				$('#qnaChapList').empty();
+				$('#qnaTypeList').empty();
+
+				// 전체 카테고리 리스트에서 select에서 현재 선택한 smjrcc를 찾아서 hidden에 부여
+				categoryList.forEach(element => {
+					if ($(this).val() == element['subMirCatCode']) {
+						$('#categorySubMjrCatCode').val(element['subMjrCatCode'])
+					}
+				})
+
+				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
+				qnaChapList.forEach(element => {
+					if (element['subMirCatCode'] == $(this).val()) {
+						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
+					}
+				})
+				// 위에서 부여한 hidden의 value를 기반으로 타입리스트를 순회해서 타입 select를 생성
+				qnaTypeList.forEach(element => {
+					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
+						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
+					}
+				})
+
+
+				// 점수버튼 활성화 비활성화
+				if ($('#categorySubMjrCatCode').val() == "smjrcc2") {
+					$('input[name="qnaScr"]').eq(3).prop('disabled', false);
+				} else {
+					$('input[name="qnaScr"]').eq(3).prop('disabled', true);
+				}
+
+				if ($('#categorySubMjrCatCode').val() == "smjrcc8") {
+					$('input[name="qnaScr"]').eq(0).prop('disabled', false);
+					$('input[name="qnaScr"]').eq(2).prop('disabled', true);
+				} else {
+					$('input[name="qnaScr"]').eq(0).prop('disabled', true);
+					$('input[name="qnaScr"]').eq(2).prop('disabled', false);
+				}
+
+
+
+			}
+		});
+
+	</script>
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+
+	<div class="sidebar">
+		<div th:replace="fragments/admin/exam/sidebar :: sidebar"></div>
+	</div>
+	<div class="content" style="padding:0px">
+		<div id="sys-breadcrumb">
+			<button id="sys-breadcrumb-arrow" type="button">
+				<i class="fa fa-angle-left"></i>
+			</button>
+			<div id="sys-page-title">
+				<span id="sys-page-title-nm">문제은행</span>
+
+				<button type="button" class="btn_simp yellow">
+					<i class="fa fa-star"></i>
+					퀵메뉴추가
+				</button>
+
+			</div>
+			<div id="sys-page-util">
+				<a id="sys-page-util-refresh">
+					<i class="fa fa-retweet"></i>
+				</a>
+			</div>
+		</div>
+		<div id="sys-wrap">
+			<div id="sys-scroll">
+				<div id="alert_area"></div>
+				<div id="sys-contents">
+					<form name="adminExamAddQuestionForm" action="/admin/exam/addQuestion" method="post"
+						enctype="multipart/form-data">
+						<input type="hidden" id="categorySubMjrCatCode" name="subMjrCatCode" value="" />
+						<table class="c_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td class="c_th01">등록</td>
+									<td class="c_td01"></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="f_tb01" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+							<colgroup>
+								<col width="120" />
+								<col />
+								<col width="120" />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<td class="f_th01">문제 카테고리</td>
+									<td class="f_td01" colspan="3">
+										<select id="categoryList" name="subMirCatCode" class="js-example-basic-single"
+											required>
+											<option value=""> - 전체 - </option>
+											<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
+												th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
+												th:value="${cl.subMirCatCode}">
+											</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 출제단원</td>
+									<td class="f_td01" colspan="3">
+										<select id="qnaChapList" name="qnaChap" class="js-example-basic-single">
+											<option value=""> - 전체 - </option>
+											<option th:if="${qnaChapList !=null}" th:each="qcl:${qnaChapList}"
+												th:text="${qcl.examQnaChapNm}" th:value="${qcl.examQnaChapCode}">
+											</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 출제유형</td>
+									<td class="f_td01" colspan="3">
+										<select id="qnaTypeList" name="qnaType" class="js-example-basic-single">
+											<option value=""> - 전체 - </option>
+											<option th:if="${qnaTypeList !=null}" th:each="qtl:${qnaTypeList}"
+												th:text="${qtl.examQnaTypeNm}" th:value="${qtl.examQnaTypeCode}">
+											</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 제목</td>
+									<td class="f_td01" colspan="3">
+										<input type="text" name="qnaSubject" style="width:99%" required />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 배점</td>
+									<td class="f_td01" colspan="3">
+
+										<label>
+											<input type="radio" name="qnaScr" value="1" class="ipt01" disabled /> 1
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="qnaScr" value="2" class="ipt01" required /> 2
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="qnaScr" value="3" class="ipt01" /> 3
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="qnaScr" value="4" class="ipt01" disabled /> 4
+										</label>
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제 내용</td>
+									<td class="f_td01" colspan="3">
+										<div style="width:100%;">
+											<textarea id="summernote" name="qnaQst"></textarea>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제이미지</td>
+									<td class="f_td01" colspan="3">
+										<!-- 실제 파일 입력 (숨김) -->
+										<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
+
+										<!-- 커스텀 버튼과 파일 이름 표시 -->
+										<label for="fileInput" id="customButton">파일 선택</label>
+										<span id="fileName">선택된 파일이 없습니다.</span> <!-- 파일명을 표시하는 텍스트 -->
+
+										<ul id="fileList"></ul>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">문제유형</td>
+									<td class="f_td01">
+										<select name="question_type">
+											<option value="1">단일선택</option>
+											<option value="2" disabled>다중선택</option>
+
+										</select>
+									</td>
+									<td class="f_th01">문항 갯수</td>
+									<td class="f_td01">
+										<select name="item_cnt">
+											<option value="4">4개</option>
+											<option value="5" selected>5개</option>
+										</select>
+									</td>
+								</tr>
+						
+								<tr id="item_tr" style="display: table-row;">
+									<td class="f_th01">문항</td>
+									<td class="f_td01" colspan="3">
+										<table class="l_tb01" cellpadding="0" cellspacing="0">
+											<colgroup>
+												<col width="40">
+												<col width="40">
+												<col>
+											</colgroup>
+											<tbody>
+												<tr>
+													<th class="l_th03">정답</th>
+													<th class="l_th03">번호</th>
+													<th class="l_th03">내용</th>
+												</tr>
+											</tbody>
+											<tbody id="item_area">
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="1" required>
+														</div>
+													</td>
+													<td class="l_td01" align="center">1</td>
+													<td class="l_td01">
+														<input type="text" name="qnaSlt1" size="95" required>
+														<p class="mt3">
+															<input type="file" name="item1_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="2">
+														</div>
+													</td>
+													<td class="l_td01" align="center">2</td>
+													<td class="l_td01">
+														<input type="text" name="qnaSlt2" size="95" required>
+														<p class="mt3">
+															<input type="file" name="item2_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="3">
+														</div>
+													</td>
+													<td class="l_td01" align="center">3</td>
+													<td class="l_td01">
+														<input type="text" name="qnaSlt3" size="95" required>
+														<p class="mt3">
+															<input type="file" name="item3_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="4">
+														</div>
+													</td>
+													<td class="l_td01" align="center">4</td>
+													<td class="l_td01">
+														<input type="text" name="qnaSlt4" size="95" required>
+														<p class="mt3">
+															<input type="file" name="item4_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+												<tr style="display: table-row;">
+													<td class="l_td01">
+														<div style="text-align:center">
+															<input type="radio" name="qnaAns" value="5">
+														</div>
+													</td>
+													<td class="l_td01" align="center">5</td>
+													<td class="l_td01">
+														<input type="text" name="qnaSlt5" size="95" required>
+														<p class="mt3">
+															<input type="file" name="item5_file" size="80"
+																style="border:1px solid #d1d1d1;">
+														</p>
+
+													</td>
+												</tr>
+
+											</tbody>
+										</table>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="f_th01">정답설명</td>
+									<td class="f_td01" colspan="3">
+										<textarea name="qnaCmt" id="textarea1" style="width:99%;height:150px;"
+											class="mceNoEditor" placeholder="여기에 설명을 입력하세요" required></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">정답설명이미지</td>
+									<td class="f_td01" colspan="3">
+										<input type="file" name="question_file" size="90"
+											style="border:1px solid #D1D1D1;" />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">출제자</td>
+									
+									<td class="f_td01" colspan="3">
+										<select name="userCode" class="js-example-basic-single">
+											<option value=""> - 담당자 선택 - </option>
+											<!-- <option th:if="${userList !=null}" th:each="ul:${userList}"
+												th:text="'['+${ul.userId}+'] '+${ul.userName}"
+												th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
+											<option th:if="${userList !=null}" th:each="ul:${userList}"
+												th:text="'['+${ul.userId}+'] '+${ul.userName}"
+												th:value="${ul.userCode}"></option>
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="f_th01">상태</td>
+									<td class="f_td01" colspan="3">
+
+										<label>
+											<input type="radio" name="qnaCurExamState" value="Y" class="ipt01"
+												required /> 사용
+										</label>
+										&nbsp;
+
+										<label>
+											<input type="radio" name="qnaCurExamState" value="N" class="ipt01" /> 중지
+										</label>
+										&nbsp;
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="b_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td>
+										<button type="button" class="bttn2" id="goQuestionList">목록</button>
+									</td>
+									<td class="b_td01">
+										<button type="submit" class="bttn2">등록</button>
+										<button type="reset" class="bttn2">초기화</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
+<div class="menu" th:fragment="header" id="momoDefault">
+	<!-- Header Section Begin -->
+	<header class="header">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="header__logo">
+						<a href="/"> <img src="/home/img/logo.png" alt="">
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<nav class="header__menu" style="position: relative; z-index: 20;">
+						<ul>
+							<li class="active"><a href="/">Home</a></li>
+							<li><a href="/exam/examMain">모의고사</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/exam/userExamCreate">모의고사 만들기</a></li>
+									<li><a href="/exam/examMain">모의고사목록</a></li>
+									<li><a href="/exam/userExamResultList">모의고사 응시목록</a></li>
+									<li><a href="/exam/userExamAnalyse">모의고사 결과분석</a></li>
+								</ul>
+							</li>
+							<li><a th:href="@{/score/scoreMain}">성적관리</a>
+								<ul class="header__menu__dropdown">
+									<li><a th:href="@{/score/examAllScoreSummary}">모의고사 성적 개요</a></li>
+									<li><a th:href="@{/score/examSubjectScoreSummary}">모의고사 과목별 성적 개요</a></li>
+									<li><a th:href="@{/score/examAllScoreList}">모의고사 성적 목록</a></li>
+								</ul>
+							</li>
+							<li><a href="#">학습관리</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/getCastSubjectList">목표 과목 관리</a></li>
+									<li><a href="/getTargetUniversityList">목표 대학 관리</a></li>
+									<li><a href="/getTargetGradeList">목표 등급 관리</a></li>
+									<li><a href="/getLearningScheduleList">학습 목표 관리</a></li>
+									<li><a href="/getQuestionScrapeList">문제 스크랩 관리</a></li>
+									<li><a href="/getProblemSolvingList">문제 노트 관리</a></li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				<div class="col-lg-3">
+					<div class="header__cart" th:if="${session.loggedInUser == null}">
+						<ul>
+							<li>
+								<div class="header__top__right__auth">
+									<a href="/user/loginMove"> <i class="fa fa-user"></i> 로그인
+									</a>
+								</div>
+							</li>
+							<li>
+								<div class="header__top__right__auth">
+									<a href="/user/userJoinMove"> <i class="fa fa-pencil"></i>
+										회원가입
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="header__cart" th:if="${session.loggedInUser != null}">
+						<div class="header__top__right__auth dropdown">
+							<a href="#" class="dropdown-toggle"> <i class="fa fa-user"></i> <span style="all: unset;"
+									th:text="${session.loggedInUser.userName}">사용자 이름</span>님!
+							</a>
+							<div class="dropdown-menu">
+								<a href="/user/userMyPage">프로필 보기</a>
+								<a href="/user/userInfoModfiy">회원정보수정</a>
+								<a href="/user/userJoinMove">user_join_form으로 이동</a>
+								<a href="/user/userDeleteMove">user_delete로 이동</a>
+								<a href="/user/logout">로그아웃</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="humberger__open">
+				<i class="fa fa-bars"></i>
+			</div>
+		</div>
+	</header>
+	<!-- Header Section End -->
+</div>
+
+
+</html>

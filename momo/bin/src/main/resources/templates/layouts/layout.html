@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="utf-8">
+	<title>ProjectMoMo</title>
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+	<!-- Css Styles -->
+	<link rel="stylesheet" href="/home/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/font-awesome.min.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/elegant-icons.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/nice-select.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/jquery-ui.min.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/owl.carousel.min.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/slicknav.min.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/style.css" type="text/css">
+	<link rel="stylesheet" href="/home/css/customHeadCss.css">
+	<th:block layout:fragment="customCss"></th:block>
+</head>
+
+<body style="margin: 0 !important;">
+	<!-- th:replace 속성은 해당 속성이 선언된 html 태그를 다른 html 파일로 치환. fragments 폴더 아래 header.html 파일의 "th:fragment=header" 영역을 가져옴 -->
+	<div th:replace="~{fragments/home/header :: header}"></div>
+
+
+	<!-- main 태그는 페이지의 주요 콘텐츠를 담는 영역. -->
+	<main class="main">
+		<!-- layout에서 변경되는 영역을 fragment로 설정. -->
+		<!-- 페이지별로 custom content를 대체하여 동적으로 변경 가능 -->
+		<th:block layout:fragment="content"></th:block>
+	</main>
+
+	<!-- header와 마찬가지로 fragments 폴더 아래에 footer.html의 "th:fragment=footer" 영역을 가져옴 -->
+	<div th:replace="~{fragments/home/footer :: footer}"></div>
+
+	<!-- Js Plugins -->
+	<script src="/home/js/jquery-3.3.1.min.js"></script>
+	<script src="/home/js/bootstrap.min.js"></script>
+	<script src="/home/js/jquery.nice-select.min.js"></script>
+	<script src="/home/js/jquery-ui.min.js"></script>
+	<script src="/home/js/jquery.slicknav.js"></script>
+	<script src="/home/js/mixitup.min.js"></script>
+	<script src="/home/js/owl.carousel.min.js"></script>
+	<script src="/home/js/main.js"></script>
+
+	<!-- 사용자정의 js -->
+	<th:block layout:fragment="customJsFile"></th:block>
+	<th:block layout:fragment="customJs"></th:block>
+</body>
+
+</html>

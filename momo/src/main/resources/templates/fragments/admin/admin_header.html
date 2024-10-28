@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
+<div th:fragment="header">
+	<div id="top_contents">
+		<div id="logo">
+			<!-- <a href="../main/index.jsp" target="_Main"><img src="../html/images/admin/main/main_logo_2016_2_default.png" align="absmiddle"></a> -->
+			<a class="txt_logo" href="#" target="_Main">
+				<i class="fa fa-desktop"></i> 교육통합관리시스템
+			</a>
+		</div>
+		<div id="gnb">
+			<ul id="top_menu">
+
+				<li><a href="#" class="" id="5">회원정보관리</a></li>
+
+				<li><a th:href="@{/admin/exam/category}" onclick="return go(this);" class="current" id="14">모의고사관리</a>
+				</li>
+
+				<li><a href="#" class="" id="4">홈페이지관리</a></li>
+			</ul>
+		</div>
+		<div id="utility">
+			<div id="buttons">
+				<button type="button" class="top_button blue" th:if="${session.loggedInUser !=null}"
+					onclick="if(confirm('로그아웃하시겠습니까?')) top.location.href='/user/logout';">로그아웃</button>
+				<button type="button" class="top_button green">
+					고객센터 <i class="fa fa-angle-right" aria-hidden="true"></i>
+				</button>
+				<button type="button" class="top_button white" onclick="location.href='/'" ;>
+					사이트 <i class="fa fa-angle-right" aria-hidden="true"></i>
+				</button>
+			</div>
+			<div id="user">
+				<strong th:text="${(session.loggedInUser !=null)?session.loggedInUser.userName:'로그인안한운영자'}"></strong>님,
+				환영합니다. <br><span id="time">2024. 10. 14.
+					오전 8:53:29</span>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+</html>

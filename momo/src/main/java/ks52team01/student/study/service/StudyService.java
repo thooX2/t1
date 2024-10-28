@@ -69,17 +69,17 @@ public interface StudyService {
 	
 	void removeProblemSolving(ProblemSolving problemsolvingDAO);
 
-	List<StudyTarget> findAll();
+	List<StudyTarget> getStudyTarget(String id);
 	
-	List<TargetUniversity> findAll2();
+	List<TargetUniversity> getTargetUniversity(String id);
 
-	List<TargetGrade> findAll3();
+	List<TargetGrade> getTargetGrade(String id);
 
-	List<StudySchedule> findAll4();
+	List<StudySchedule> getStudySchedule(String id);
 
-	List<DetailedSchedule> findAll5();
+	List<DetailedSchedule> getDetailedSchedule(String id);
 
-	List<ProblemScrape> findAll6();
+	List<ProblemScrape> getProblemScrape();
 	
-	List<ProblemSolving> findAll7();
+	List<ProblemSolving> getProblemSolving();
 }
