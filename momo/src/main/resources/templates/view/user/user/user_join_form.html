@@ -31,7 +31,7 @@
 												<input type="text" name="userId" value="" id="reg_mb_id" required=""
 													class="reg_input" minlength="4" maxlength="20"
 													placeholder="영문소문자/숫자, 8~20자">
-												<span id="msg_mb_id" class="reg_msg"></span>
+												<div id="msg_mb_id" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -41,7 +41,7 @@
 												<input type="password" name="userPw" id="reg_mb_password" required=""
 													class="reg_input" minlength="3" maxlength="20"
 													placeholder="영문대소문자/숫자/특수문자, 8~20자">
-												<span id="msg_mb_pw" class="reg_msg"></span>
+												<div id="msg_mb_pw" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -49,7 +49,7 @@
 											<td>
 												<input type="password" name="userPwCheck" id="reg_mb_password_re"
 													required="" class="reg_input" minlength="3" maxlength="20">
-												<span id="msg_mb_pw_check" class="reg_msg"></span>
+												<div id="msg_mb_pw_check" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -57,7 +57,7 @@
 											<td>
 												<input type="text" id="reg_mb_name" name="userName" value="" required=""
 													class="reg_input">
-												<span id="msg_mb_name" class="reg_msg"></span>
+												<div id="msg_mb_name" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -92,7 +92,7 @@
 													<input type="text" name="hp3" value="" id="hp3" class="reg_input" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
 														maxlength="4" required="">
 												</div>
-												<span id="msg_mb_phone" class="reg_msg"></span>
+												<div id="msg_mb_phone" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -112,7 +112,7 @@
 														<option value="hanmail.com">hanmail.com</option>
 													</select>
 												</div>
-												<span id="msg_mb_email" class="reg_msg"></span>
+												<div id="msg_mb_email" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -199,10 +199,10 @@
 					
 						const $joinBtn = document.getElementById('joinBtn');
 						const $fregisterform = document.getElementById('fregisterform');
-						$joinBtn.addEventListener('click', function(){
-														
-							fregisterform_submit($fregisterform, function(isSubmit){								
-								if(isSubmit) $fregisterform.submit();
+						$joinBtn.addEventListener('click', function() {
+								
+								fregisterform_submit($fregisterform, function(isSubmit){								
+									if(isSubmit) $fregisterform.submit();
 							})
 							
 						});
@@ -272,17 +272,13 @@
  							});
 				 		
   					 		request.done(function(response) {
-  					 			console.log(response)
-  					 			console.log(response.success);
  								if(!response.success) {
  									isSubmit = false;
- 									console.log(isSubmit);
- 									callback(isSubmit);
-/*  									let $errorPos;
+ 									let $errorPos;
  									if(response.errorCode == 'IdError') {
  										$errorPos = document.getElementById('msg_mb_id');
  									} else if(response.errorCode == 'PwError') {
- 										$errorPos = document.getElementById('msg_mb_pw]');
+ 										$errorPos = document.getElementById('msg_mb_pw');
  									} else if(response.errorCode == 'PwCheckError') {
  										$errorPos = document.getElementById('msg_mb_pw_check');
  									} else if(response.errorCode == 'NameError') {
@@ -292,7 +288,8 @@
  									} else if(response.errorCode == 'EmailError') {
  										$errorPos = document.getElementById('msg_mb_email');
  									}
- 									$errorPos.textContent=response.errorMessage; */
+ 									$errorPos.textContent=response.errorMessage;
+ 									callback(isSubmit);
  								}
  							});
 						
@@ -300,7 +297,6 @@
  								
  							});
 					 		
-  					 		console.log(isSubmit);
   					 		isSubmit = false;
   					 		return isSubmit;
 							//return response.isSuccess;
