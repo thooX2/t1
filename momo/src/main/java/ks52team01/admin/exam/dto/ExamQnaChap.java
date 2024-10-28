@@ -13,5 +13,7 @@ public class ExamQnaChap {
 	private String subMirCatCode; // 과목중분류코드
 	private String examQnaChapNm; // 문항유형명
 	private Timestamp examQnaChapNmCreateDate; // 등록날짜
+	private String subMirCatNm; // 과목중분류이름
+	private String subMjrCatNm; // 과목중분류이름
 
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="package ks52team01.common.files.mapper.FileMapper">
+	<resultMap id="QnaImgResultMap" type="ks52team01.common.files.dto.QnaImg">
+	    <id property="qnaImgCode" column="qna_img_code" />
+	    <result property="qnaCode" column="qna_code" />
+	    <result property="userCode" column="user_code" />
+	    <result property="qnaImgType" column="qna_img_type" />
+	    <result property="qnaImgPath" column="qna_img_path" />
+	    <result property="qnaImgSortCol" column="qna_img_sort_col" />
+	    <result property="qnaImgOriginalName" column="qna_img_original_name" />
+	    <result property="qnaImgNewName" column="qna_img_new_name" />
+	    <result property="qnaFileSize" column="qna_file_size" />
+	    <result property="qnaImgCreateTime" column="qna_img_create_time" />
+	    <result property="qnaImgUpdateTime" column="qna_img_update_time" />
+	</resultMap>
+
+	<insert id="addFile" parameterType="ks52team01.common.files.dto.QnaImg">
+	    INSERT INTO qna_img (
+	        qna_img_code,
+	        qna_code,
+	        user_code,
+	        qna_img_type,
+	        qna_img_path,
+	        qna_img_sort_col,
+	        qna_img_original_name,
+	        qna_img_new_name,
+	        qna_file_size,
+	        qna_img_create_time,
+	        qna_img_update_time
+	    ) VALUES (
+	        #{qnaImgCode},
+	        #{qnaCode},
+	        #{userCode},
+	        #{qnaImgType},
+	        #{qnaImgPath},
+	        #{qnaImgSortCol},
+	        #{qnaImgOriginalName},
+	        #{qnaImgNewName},
+	        #{qnaFileSize},
+	        #{qnaImgCreateTime},
+	        #{qnaImgUpdateTime}
+	    )
+	</insert>
+	<insert id="addQnaImgs" parameterType="java.util.List">
+	    /* 다중 문항 이미지 정보 등록 */
+	    INSERT INTO qna_img (
+	        qna_img_code,
+	        qna_code,
+	        user_code,
+	        qna_img_type,
+	        qna_img_path,
+	        qna_img_sort_col,
+	        qna_img_original_name,
+	        qna_img_new_name,
+	        qna_file_size,
+	        qna_img_create_time,
+	        qna_img_update_time
+	    )
+	    VALUES 
+	    <foreach collection="list" item="img" separator=",">
+	        (#{img.qnaImgCode}, #{img.qnaCode}, #{img.userCode}, #{img.qnaImgType}, #{img.qnaImgPath}, 
+	        #{img.qnaImgSortCol}, #{img.qnaImgOriginalName}, #{img.qnaImgNewName}, #{img.qnaFileSize}, 
+	        NOW(), #{img.qnaImgUpdateTime})
+	    </foreach>
+</insert>
+
+</mapper>
