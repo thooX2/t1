@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminExamServiceImpl implements AdminExamService {
 
 	private final AdminExamMapper adminExamMapper;
-	private final CommonMapper commonMapper;
 
 	@Override
 	public void modifyQuestionProc(QnaBank qnaBank) {
@@ -52,8 +51,6 @@ public class AdminExamServiceImpl implements AdminExamService {
 
 	@Override
 	public void addExamQuestion(QnaBank qnaBank) {
-		String newQnaCode = commonMapper.getPrimaryKey("qna_bank", "qna_code", "qc");
-		qnaBank.setQnaCode(newQnaCode);
 
 		adminExamMapper.addExamQuestion(qnaBank);
 	}

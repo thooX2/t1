@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +18,9 @@ import ks52team01.admin.exam.dto.ExamQnaType;
 import ks52team01.admin.exam.dto.QnaBank;
 import ks52team01.admin.exam.dto.SubMirCate;
 import ks52team01.admin.exam.service.AdminExamService;
+import ks52team01.common.files.dto.QnaImg;
 import ks52team01.common.files.service.FileService;
+import ks52team01.common.mapper.CommonMapper;
 import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +33,18 @@ public class AdminExamController {
 
 	private final AdminExamService adminExamService;
 	private final FileService fileService;
+	private final CommonMapper commonMapper;
 
 	@PostMapping("/modifyQuestion")
-	public String modifyQuestion(QnaBank qnaBank) {
+	public String modifyQuestion(@RequestPart(name = "fileInput", required = false) MultipartFile[] fileInput,
+			@RequestParam(name = "item1_file", required = false) MultipartFile item1File,
+			@RequestParam(name = "item2_file", required = false) MultipartFile item2File,
+			@RequestParam(name = "item3_file", required = false) MultipartFile item3File,
+			@RequestParam(name = "item4_file", required = false) MultipartFile item4File,
+			@RequestParam(name = "item5_file", required = false) MultipartFile item5File,
+			@RequestParam(name = "question_file", required = false) MultipartFile questionFile, QnaBank qnaBank) {
 
-		adminExamService.modifyQuestionProc(qnaBank);
+		// adminExamService.modifyQuestionProc(qnaBank);
 
 		return "redirect:/admin/exam/questionList";
 	}
@@ -54,13 +64,16 @@ public class AdminExamController {
 		List<ExamQnaChap> qnaChapList = new ArrayList<ExamQnaChap>();
 		qnaChapList = adminExamService.getQnaChapList();
 
+		List<QnaImg> qnaImgList = new ArrayList<QnaImg>();
+		qnaImgList = fileService.getQnaImgListByQnaCode(qnaCode);
+
 		QnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
-		log.error("test:{}", qnaBankInfo);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("userList", userList);
 		model.addAttribute("qnaTypeList", qnaTypeList);
 		model.addAttribute("qnaChapList", qnaChapList);
 		model.addAttribute("qnaBankInfo", qnaBankInfo);
+		model.addAttribute("qnaImgList", qnaImgList);
 
 		return "view/admin/exam/admin_exam_modify_question";
 
@@ -76,25 +89,25 @@ public class AdminExamController {
 	}
 
 	@PostMapping("/addQuestion")
-	public String adminExamAddQuestion(@RequestParam(name = "fileInput") MultipartFile[] fileInput,
-			@RequestParam(name = "item1_file") MultipartFile item1File,
-			@RequestParam(name = "item2_file") MultipartFile item2File,
-			@RequestParam(name = "item3_file") MultipartFile item3File,
-			@RequestParam(name = "item4_file") MultipartFile item4File,
-			@RequestParam(name = "item5_file") MultipartFile item5File,
-			@RequestParam(name = "question_file") MultipartFile questionFile, QnaBank qnaBank) {
+	public String adminExamAddQuestion(@RequestPart(name = "fileInput", required = false) MultipartFile[] fileInput,
+			@RequestParam(name = "item1_file", required = false) MultipartFile item1File,
+			@RequestParam(name = "item2_file", required = false) MultipartFile item2File,
+			@RequestParam(name = "item3_file", required = false) MultipartFile item3File,
+			@RequestParam(name = "item4_file", required = false) MultipartFile item4File,
+			@RequestParam(name = "item5_file", required = false) MultipartFile item5File,
+			@RequestParam(name = "question_file", required = false) MultipartFile questionFile, QnaBank qnaBank) {
+
+		String newQnaCode = commonMapper.getPrimaryKey("qna_bank", "qna_code", "qc");
+		qnaBank.setQnaCode(newQnaCode);
+		adminExamService.addExamQuestion(qnaBank);
 
 		fileService.addFiles("fileInput", fileInput, qnaBank);
-		
-		for(int i =1; i<=5;i+=1) {
-			
-		}
-		
-		
-		fileService.addFile(null, questionFile, qnaBank);
-
-		// qnaBank와 params 처리
-		// adminExamService.addExamQuestion(qnaBank);
+		fileService.addFile("item1_file", item1File, qnaBank);
+		fileService.addFile("item2_file", item2File, qnaBank);
+		fileService.addFile("item3_file", item3File, qnaBank);
+		fileService.addFile("item4_file", item4File, qnaBank);
+		fileService.addFile("item5_file", item5File, qnaBank);
+		fileService.addFile("question_file", questionFile, qnaBank);
 
 		return "redirect:/admin/exam/questionList";
 	}

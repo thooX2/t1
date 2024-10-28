@@ -25,17 +25,29 @@ public class FileServiceImpl implements FileService {
 	private final CommonMapper commonMapper;
 
 	@Override
+	public List<QnaImg> getQnaImgListByQnaCode(String qnaCode) {
+
+		return fileMapper.getQnaImgListByQnaCode(qnaCode);
+	}
+
+	@Override
 	public void addFiles(String key, MultipartFile[] file, QnaBank qnaBank) {
 
-		String newQnaImgCode = commonMapper.getPrimaryKey("qna_img", "qna_img_code", "qic");
+		if (file == null || file.length == 0) {
+
+			return; // 파일이 없으면 메서드 종료
+		}
 
 		List<QnaImg> fileList = filesUtils.uploadFiles(file);
-
+		int plusIdx = 0;
 		for (QnaImg element : fileList) {
+			int newIdx = Integer.parseInt(element.getQnaImgCode().substring(3)) + plusIdx;
+			String newQnaCode = "qic" + newIdx;
+			element.setQnaImgCode(newQnaCode);
 			element.setQnaImgType(key);
 			element.setUserCode(qnaBank.getUserCode());
 			element.setQnaCode(qnaBank.getQnaCode());
-			element.setQnaImgCode(newQnaImgCode);
+			plusIdx += 1;
 		}
 
 		if (!fileList.isEmpty())
@@ -46,6 +58,10 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public void addFile(String key, MultipartFile file, QnaBank qnaBank) {
 
+		if (file == null || file.isEmpty()) {
+
+			return; // 파일이 없으면 메서드 종료
+		}
 		String newQnaImgCode = commonMapper.getPrimaryKey("qna_img", "qna_img_code", "qic");
 
 		QnaImg fileInfo = filesUtils.uploadFile(file);
@@ -53,9 +69,10 @@ public class FileServiceImpl implements FileService {
 		fileInfo.setUserCode(qnaBank.getUserCode());
 		fileInfo.setQnaCode(qnaBank.getQnaCode());
 		fileInfo.setQnaImgCode(newQnaImgCode);
+		if (fileInfo != null) {
 
-		if (fileInfo != null)
 			fileMapper.addFile(fileInfo);
+		}
 	}
 
 }
