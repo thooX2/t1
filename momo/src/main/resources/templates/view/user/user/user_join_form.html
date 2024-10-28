@@ -200,7 +200,10 @@
 						const $joinBtn = document.getElementById('joinBtn');
 						const $fregisterform = document.getElementById('fregisterform');
 						$joinBtn.addEventListener('click', function() {
-								
+								const $reg_msg = document.querySelectorAll('.reg_msg');
+								$reg_msg.forEach(element => {
+									element.textContent = '';
+								})
 								fregisterform_submit($fregisterform, function(isSubmit){								
 									if(isSubmit) $fregisterform.submit();
 							})
@@ -297,7 +300,6 @@
  								
  							});
 					 		
-  					 		isSubmit = false;
   					 		return isSubmit;
 							//return response.isSuccess;
 						}

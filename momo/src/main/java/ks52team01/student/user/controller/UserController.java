@@ -57,11 +57,10 @@ public class UserController {
 
 	}
 
-	@GetMapping("/user/logout")
+	@GetMapping("/user/userLogout")
 	public String logoutAction(HttpSession session) {
 		System.out.println("유저 로그아웃");
 		session.invalidate();
-
 		return "view/home/index";
 	}
 
@@ -82,7 +81,7 @@ public class UserController {
 	
 	@PostMapping("/user/userJoinAction")
 	public String userJoinAction() {
-		return "redirect:/";
+		return "view/home/index";
 	}
 
 	@PostMapping("/user/userJoinCheck")
@@ -122,6 +121,7 @@ public class UserController {
 	public void userFindPwAction() {
 
 	}
+	
 	@GetMapping("/user/userNotLogIn")
 	public String userNotLogIn() {
 		return "view/user/user/not_login";
