@@ -13,4 +13,6 @@ public interface FileMapper {
 
 	int addFiles(List<QnaImg> fileList);
 
+	List<QnaImg> getQnaImgListByQnaCode(String qnaCode);
+
 }

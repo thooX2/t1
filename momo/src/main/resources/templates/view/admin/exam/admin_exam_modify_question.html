@@ -78,6 +78,65 @@
 			margin-right: 10px;
 			/* 이미지와 텍스트 사이의 간격 */
 		}
+
+		.modal {
+			display: none;
+			/* 모달이 열릴 때만 display: block; 으로 전환 */
+			position: fixed;
+			z-index: 1000;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.7);
+		}
+
+		.modal-content {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 90%;
+			max-width: 800px;
+			background-color: #fff;
+			padding: 20px;
+			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+			text-align: center;
+		}
+
+		.image-container {
+			margin-top: 15px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.image-container img {
+			width: 60%;
+			/* 기본 크기를 적당히 설정 */
+			max-width: 80vw;
+			/* 가로 최대 크기를 화면 가로의 80%로 제한 */
+			max-height: 80vh;
+			/* 세로 최대 크기를 화면 세로의 80%로 제한 */
+			object-fit: contain;
+			/* 이미지 비율 유지 */
+			margin: 0 auto;
+		}
+
+		.folder-name-header {
+			font-size: 1.5em;
+			/* 폰트 크기 조정 */
+			font-weight: bold;
+			/* 두껍게 */
+			color: rgb(0, 0, 0);
+			/* 색상 변경 (파란색 계열) */
+			margin-bottom: 5px;
+			/* 아래쪽 여백 추가 (경계선과의 거리 조정) */
+			border-bottom: 3px solid #ddd;
+			/* 아래쪽 경계선 추가 */
+			padding-bottom: 10px;
+			/* 아래쪽 패딩 추가 (경계선과의 거리 조정) */
+		}
 	</style>
 </head>
 <th:block layout:fragment="customJsFile">
@@ -295,7 +354,40 @@
 
 			}
 		});
-		// 문제배점과 
+		// ------------- 이미지 모달 ------------------------------
+		// 모달을 여는 함수
+		function openModal(modalId) {
+			var modal = document.getElementById(modalId);
+			if (!modal) {
+				alert('해당 이미지가 없습니다');
+				return;
+			}
+			modal.style.display = "block"; // 모달을 보이게 함
+		}
+
+		// 모달을 닫는 함수
+		function closeModal(modalId) {
+			var modal = document.getElementById(modalId);
+			modal.style.display = "none"; // 모달을 숨김
+		}
+
+		// 모달 외부 클릭 시 닫기
+		window.onclick = function (event) {
+			var modals = document.getElementsByClassName('modal');
+			for (let modal of modals) { // 'for (let modal of modals)'로 수정
+				if (event.target === modal) {
+					closeModal(modal.id);
+				}
+			}
+		}
+
+
+
+		$('.closeModal').click(function () {
+			const parentId = $(this).closest('.modal').attr('id');
+			closeModal(parentId);
+		});
+
 
 	</script>
 </th:block>
@@ -546,6 +638,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt1" size="95" required
 															th:value="${qnaBankInfo.qnaSlt1}">
+														<button type="button" onclick="openModal('item1_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item1_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -565,6 +661,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt2" size="95" required
 															th:value="${qnaBankInfo.qnaSlt2}">
+														<button type="button" onclick="openModal('item2_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item2_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -584,6 +684,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt3" size="95" required
 															th:value="${qnaBankInfo.qnaSlt3}">
+														<button type="button" onclick="openModal('item3_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item3_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -603,6 +707,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt4" size="95" required
 															th:value="${qnaBankInfo.qnaSlt4}">
+														<button type="button" onclick="openModal('item4_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item4_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -622,6 +730,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt5" size="95" required
 															th:value="${qnaBankInfo.qnaSlt5}">
+														<button type="button" onclick="openModal('item5_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item5_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -648,6 +760,9 @@
 									<td class="f_td01" colspan="3">
 										<input type="file" name="question_file" size="90"
 											style="border:1px solid #D1D1D1;" />
+										<button type="button" onclick="openModal('question_file')" class="bttn2">
+											이미지보기
+										</button>
 									</td>
 								</tr>
 								<tr>
@@ -699,6 +814,20 @@
 						</table>
 					</form>
 				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 모달 -->
+	<div th:if="${qnaImgList != null}">
+		<div th:each="qil : ${qnaImgList}" th:id="${qil.qnaImgType}" class="modal">
+			<div class="modal-content">
+				<h2 class="folder-name-header" th:text="${qil.qnaImgOriginalName}"></h2>
+				<div class="image-container">
+					<img th:src="|@{${qil.qnaImgPath}}|" th:alt="${qil.qnaImgOriginalName}" style="width: 90%;" />
+				</div>
+				<button type="button" class="bttn2 closeModal"
+					style="float:right !important;margin-left: 10px;">닫기</button>
+				<button type="button" class="bttn2" style="float:right !important;">삭제</button>
 			</div>
 		</div>
 	</div>

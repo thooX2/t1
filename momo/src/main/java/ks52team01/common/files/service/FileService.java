@@ -1,8 +1,11 @@
 package ks52team01.common.files.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import ks52team01.admin.exam.dto.QnaBank;
+import ks52team01.common.files.dto.QnaImg;
 
 public interface FileService {
 
@@ -10,5 +13,8 @@ public interface FileService {
 	void addFiles(String key, MultipartFile[] file, QnaBank qnaBank);
 	// 단일파일 등록
 	void addFile(String key, MultipartFile file, QnaBank qnaBank);
+	
+	// 이미지목록
+	List<QnaImg> getQnaImgListByQnaCode(String qnaCode);
 
 }
