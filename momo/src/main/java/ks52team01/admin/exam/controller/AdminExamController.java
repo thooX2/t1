@@ -2,7 +2,6 @@ package ks52team01.admin.exam.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +16,6 @@ import ks52team01.admin.exam.dto.ExamQnaChap;
 import ks52team01.admin.exam.dto.ExamQnaType;
 import ks52team01.admin.exam.dto.QnaBank;
 import ks52team01.admin.exam.dto.SubMirCate;
-import ks52team01.admin.exam.dto.SubMjrCate;
 import ks52team01.admin.exam.service.AdminExamService;
 import ks52team01.common.files.service.FileService;
 import ks52team01.student.user.dto.User;
@@ -79,9 +76,22 @@ public class AdminExamController {
 	}
 
 	@PostMapping("/addQuestion")
-	public String adminExamAddQuestion(
-			@RequestPart(name = "fileInput", required = false) MultipartFile[] multipartFiles, // fileInput으로 오는 파일
-			@RequestParam(required = false) Map<String, String> params, QnaBank qnaBank) {
+	public String adminExamAddQuestion(@RequestParam(name = "fileInput") MultipartFile[] fileInput,
+			@RequestParam(name = "item1_file") MultipartFile item1File,
+			@RequestParam(name = "item2_file") MultipartFile item2File,
+			@RequestParam(name = "item3_file") MultipartFile item3File,
+			@RequestParam(name = "item4_file") MultipartFile item4File,
+			@RequestParam(name = "item5_file") MultipartFile item5File,
+			@RequestParam(name = "question_file") MultipartFile questionFile, QnaBank qnaBank) {
+
+		fileService.addFiles("fileInput", fileInput, qnaBank);
+		
+		for(int i =1; i<=5;i+=1) {
+			
+		}
+		
+		
+		fileService.addFile(null, questionFile, qnaBank);
 
 		// qnaBank와 params 처리
 		// adminExamService.addExamQuestion(qnaBank);
