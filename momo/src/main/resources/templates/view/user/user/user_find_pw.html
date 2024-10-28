@@ -8,9 +8,8 @@
 	<link href="/user/css/user/user_find_id.css" rel="stylesheet">
 </head>
 <hr>
-<div layout:fragment="content" style="padding:100px 0 100px 0;">
+<div layout:fragment="content" style="padding:50px 0 100px 0;">
 	<div id="momoDefault">
-
 		<div class="wrapper fadeInDown">
 		  <div id="formContent">
 	
@@ -18,39 +17,30 @@
 		      PW찾기
 		    </div>
 			
-			<form>
+			<form action="/user/userFindPwAciton" method="post">
+				<fieldset>
+					<label>
+						<input type="radio" name="contact" value="phone" checked />
+						<span>전화번호</span>
+					</label>
+					<label>
+						<input type="radio" name="contact" value="email" />
+						<span>이메일</span>
+					</label>
+				</fieldset>
 				<div class="input-group">
-					<input type="text" placeholder="ID입력" style="width: 350px; margin-bottom: 30px;">
+					<input type="text" name="inputId" placeholder="입력" style="width:300px; margin-top: 10px;">
+					<input type="text" name="searchInfo" placeholder="입력" style="width:300px; margin-top: 10px;">
+					<input type="button" value="인증코드받기" style="background-color: #4686B8; margin-top: 10px;">
+				</div>
+				<div class="input-group">
+					<input type="text" name="confirmCode" placeholder="인증코드 입력">
+					<input type="submit" value="ID찾기" style="background-color: #4686B8">
 				</div>
 			</form>
-			
-			<fieldset>
-			  <label>
-			    <input type="radio" name="contact" value="phone" checked />
-			    <span>전화번호</span>
-			  </label>
-			  <label>
-			    <input type="radio" name="contact" value="email" />
-			    <span>이메일</span>
-			  </label>
-			</fieldset>
-	
-			<form>
-				<div class="input-group">
-			    	<input type="text" placeholder="입력" style="margin-top: 30px;">
-			    	<input type="submit" value="인증코드받기" style="background-color: #4686B8; margin-top: 30px; ">
-			 	</div>
-			</form>
-
-			<form>
-				<div class="input-group">
-		      		<input type="text" placeholder="인증코드 입력">
-		      		<input type="submit" value="ID찾기" style="background-color: #4686B8;">
-			  	</div>
-		    </form>
-			
+		
 			<div id="formFooter">
-		      <a href="/user/userFindPwMove" style="color:#4686B8">ID찾기</a>
+		      <a href="/user/userFindIdMove" style="color:#4686B8">ID찾기</a>
 		    </div>
 			
 		  </div>
