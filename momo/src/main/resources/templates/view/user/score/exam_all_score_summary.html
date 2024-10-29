@@ -199,13 +199,23 @@
 							<strong>의 점수입니다.</strong>
 						</div>
 						<div id="score-analysis-div">
-							<div id="score-cat-button-div">
-								<button class="score-btn">원점수</button>
-								<button class="score-btn">표준점수</button>
-								<button class="score-btn">백분위</button>
-								<button class="score-btn">등급</button>
-								<button class="score-btn">석차</button>
-							</div>
+							<ul class="nav nav-tabs" id="score-cat-button-div">
+							  <li class="nav-item">
+							    <button class="nav-link active">원점수</button>
+							  </li>
+							  <li class="nav-item">
+							    <button class="nav-link">표준점수</button>
+							  </li>
+							  <li class="nav-item">
+							    <button class="nav-link">백분위</button>
+							  </li>
+							  <li class="nav-item">
+							    <button class="nav-link">등급</button>
+							  </li>
+							  <li class="nav-item">
+							    <button class="nav-link">석차</button>
+							  </li>
+							</ul>
 							<div id="score-cat-chart-div">
 								<canvas id="scoreChart" width="800" height="400px"
 									max-height="400px"></canvas>

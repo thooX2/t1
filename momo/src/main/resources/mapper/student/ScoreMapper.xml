@@ -39,6 +39,104 @@
 		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
 	</resultMap>
 	
+	<resultMap type="MathScore" id="MathScoreMap">
+		<id 	column="math_scr_code" 			 property="mathScrCode"/>
+		<result column="user_code" 				 property="userCode"/>
+		<result column="exam_code" 				 property="examCode"/>
+		<result column="math_slt_sub" 			 property="mathSltSub"/>
+		<result column="math_subject_score_code" property="mathSubjectScoreCode"/>
+		<result column="math_std_scr" 		 	 property="mathStdScr"/>
+		<result column="math_pct" 			 	 property="mathPct"/>
+		<result column="math_grd" 		 	 	 property="mathGrd"/>
+		<result column="math_ranking" 		 	 property="mathRanking"/>
+		<result column="math_scr_create_time" 	 property="mathScrCreateTime"/>
+		<result column="math_scr_update_time" 	 property="mathScrUpdateTime"/>
+
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
+	</resultMap>
+	
+	<resultMap type="EnglishScore" id="EnglishScoreMap">
+		<id 	column="eng_scr_code" 			property="engScrCode"/>
+		<result column="user_code" 				property="userCode"/>
+		<result column="exam_code" 				property="examCode"/>
+		<result column="eng_subject_score_code" property="engSubjectScoreCode"/>
+		<result column="eng_std_scr" 			property="engStdScr"/>
+		<result column="eng_pct" 				property="engPct"/>
+		<result column="eng_grd" 				property="engGrd"/>
+		<result column="eng_ranking" 			property="engRanking"/>
+		<result column="eng_scr_create_time" 	property="engScrCreateTime"/>
+		<result column="eng_scr_update_time" 	property="engScrUpdateTime"/>
+		
+		<association property="subjectScore" resultMap="SubjectScoreMap"/>
+	</resultMap>
+	
+	<resultMap type="KoreanHistoryScore" id="KoreanHistoryScoreMap">
+		<id 	column="kor_his_scr_code" 			property="korHisScrCode"/>
+		<result column="user_code" 					property="userCode"/>
+		<result column="exam_code" 					property="examCode"/>
+		<result column="kor_his_subject_score_code" property="korHisSubjectScoreCode"/>
+		<result column="kor_his_std_scr" 		 	property="korHisStdScr"/>
+		<result column="kor_his_pct" 			 	property="korHisPct"/>
+		<result column="kor_his_grd" 			 	property="korHisGrd"/>
+		<result column="kor_his_ranking" 		 	property="korHisRanking"/>
+		<result column="kor_his_scr_create_time" 	property="korHisScrCreateTime"/>
+		<result column="kor_his_scr_update_time" 	property="korHisScrUpdateTime"/>
+		
+		<association property="subjectScore" resultMap="SubjectScoreMap"/>
+	</resultMap>
+	
+	<resultMap type="Inquiry1Score" id="Inquiry1ScoreMap">
+		<id 	column="inq1_scr_code" 			 property="inq1ScrCode"/>
+		<result column="user_code" 				 property="userCode"/>
+		<result column="exam_code" 				 property="examCode"/>
+		<result column="inq1_slt_sub" 			 property="inq1SltSub"/>
+		<result column="inq1_subject_score_code" property="inq1subjectScoreCode"/>
+		<result column="inq1_std_scr" 			 property="inq1StdScr"/>
+		<result column="inq1_pct" 				 property="inq1Pct"/>
+		<result column="inq1_grd" 				 property="inq1Grd"/>
+		<result column="inq1_ranking" 			 property="inq1Ranking"/>
+		<result column="inq1_scr_create_time" 	 property="inq1ScrCreateTime"/>
+		<result column="inq1_scr_update_time" 	 property="inq1ScrUpdateTime"/>
+		
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
+	</resultMap>
+	
+	<resultMap type="Inquiry2Score" id="Inquiry2ScoreMap">
+		<id 	column="inq2_scr_code" 			 property="inq2ScrCode"/>
+		<result column="user_code" 				 property="userCode"/>
+		<result column="exam_code" 				 property="examCode"/>
+		<result column="inq2_slt_sub" 			 property="inq2SltSub"/>
+		<result column="inq2_subject_score_code" property="inq2subjectScoreCode"/>
+		<result column="inq2_std_scr" 			 property="inq2StdScr"/>
+		<result column="inq2_pct" 				 property="inq2Pct"/>
+		<result column="inq2_grd" 				 property="inq2Grd"/>
+		<result column="inq2_ranking" 			 property="inq2Ranking"/>
+		<result column="inq2_scr_create_time" 	 property="inq2ScrCreateTime"/>
+		<result column="inq2_scr_update_time" 	 property="inq2ScrUpdateTime"/>
+		
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
+	</resultMap>
+	
+	<resultMap type="SecondLanguageAndChineseCharactersScore" id="SecondLanguageAndChineseCharactersScoreMap">
+		<id 	column="frn_scr_code" 			 property="frnScrCode"/>
+		<result column="user_code" 				 property="userCode"/>
+		<result column="exam_code" 				 property="examCode"/>
+		<result column="frn_slt_sub" 			 property="frnSltSub"/>
+		<result column="frn_subject_score_code"  property="frnsubjectScoreCode"/>
+		<result column="frn_std_scr" 			 property="frnStdScr"/>
+		<result column="frn_pct" 				 property="frnPct"/>
+		<result column="frn_grd" 				 property="frnGrd"/>
+		<result column="frn_ranking" 			 property="frnRanking"/>
+		<result column="frn_scr_create_time" 	 property="frnScrCreateTime"/>
+		<result column="frn_scr_update_time" 	 property="frnScrUpdateTime"/>
+		
+		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
+		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
+	</resultMap>
+	
 	<select id="getNationAvg" parameterType="String" resultType="Double">
 		SELECT
 			AVG(subject_score_origin)
@@ -102,23 +200,6 @@
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 
-	<resultMap type="MathScore" id="MathScoreMap">
-		<id 	column="math_scr_code" 			 property="mathScrCode"/>
-		<result column="user_code" 				 property="userCode"/>
-		<result column="exam_code" 				 property="examCode"/>
-		<result column="math_slt_sub" 			 property="mathSltSub"/>
-		<result column="math_subject_score_code" property="mathSubjectScoreCode"/>
-		<result column="math_std_scr" 		 	 property="mathStdScr"/>
-		<result column="math_pct" 			 	 property="mathPct"/>
-		<result column="math_grd" 		 	 	 property="mathGrd"/>
-		<result column="math_ranking" 		 	 property="mathRanking"/>
-		<result column="math_scr_create_time" 	 property="mathScrCreateTime"/>
-		<result column="math_scr_update_time" 	 property="mathScrUpdateTime"/>
-
-		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
-		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
-	</resultMap>
-
 	<select id="getMathScore" parameterType="String" resultMap="MathScoreMap">
 		/* 수학 점수 조회 */
 		SELECT
@@ -139,21 +220,6 @@
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 
-	<resultMap type="EnglishScore" id="EnglishScoreMap">
-		<id 	column="eng_scr_code" 			property="engScrCode"/>
-		<result column="user_code" 				property="userCode"/>
-		<result column="exam_code" 				property="examCode"/>
-		<result column="eng_subject_score_code" property="engSubjectScoreCode"/>
-		<result column="eng_std_scr" 			property="engStdScr"/>
-		<result column="eng_pct" 				property="engPct"/>
-		<result column="eng_grd" 				property="engGrd"/>
-		<result column="eng_ranking" 			property="engRanking"/>
-		<result column="eng_scr_create_time" 	property="engScrCreateTime"/>
-		<result column="eng_scr_update_time" 	property="engScrUpdateTime"/>
-		
-		<association property="subjectScore" resultMap="SubjectScoreMap"/>
-	</resultMap>
-
 	<select id="getEnglishScore" parameterType="String" resultMap="EnglishScoreMap">
 		/* 영어 점수 조회 */
 		SELECT
@@ -168,21 +234,6 @@
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 	
-	<resultMap type="KoreanHistoryScore" id="KoreanHistoryScoreMap">
-		<id 	column="kor_his_scr_code" 			property="korHisScrCode"/>
-		<result column="user_code" 					property="userCode"/>
-		<result column="exam_code" 					property="examCode"/>
-		<result column="kor_his_subject_score_code" property="korHisSubjectScoreCode"/>
-		<result column="kor_his_std_scr" 		 	property="korHisStdScr"/>
-		<result column="kor_his_pct" 			 	property="korHisPct"/>
-		<result column="kor_his_grd" 			 	property="korHisGrd"/>
-		<result column="kor_his_ranking" 		 	property="korHisRanking"/>
-		<result column="kor_his_scr_create_time" 	property="korHisScrCreateTime"/>
-		<result column="kor_his_scr_update_time" 	property="korHisScrUpdateTime"/>
-		
-		<association property="subjectScore" resultMap="SubjectScoreMap"/>
-	</resultMap>
-	
 	<select id="getKoreanHistoryScore" parameterType="String" resultMap="KoreanHistoryScoreMap">
 		/* 한국사 점수 조회 */
 		SELECT
@@ -196,23 +247,6 @@
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
-	
-	<resultMap type="Inquiry1Score" id="Inquiry1ScoreMap">
-		<id 	column="inq1_scr_code" 			 property="inq1ScrCode"/>
-		<result column="user_code" 				 property="userCode"/>
-		<result column="exam_code" 				 property="examCode"/>
-		<result column="inq1_slt_sub" 			 property="inq1SltSub"/>
-		<result column="inq1_subject_score_code" property="inq1subjectScoreCode"/>
-		<result column="inq1_std_scr" 			 property="inq1StdScr"/>
-		<result column="inq1_pct" 				 property="inq1Pct"/>
-		<result column="inq1_grd" 				 property="inq1Grd"/>
-		<result column="inq1_ranking" 			 property="inq1Ranking"/>
-		<result column="inq1_scr_create_time" 	 property="inq1ScrCreateTime"/>
-		<result column="inq1_scr_update_time" 	 property="inq1ScrUpdateTime"/>
-		
-		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
-		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
-	</resultMap>
 	
 	<select id="getInquiry1Score" parameterType="String" resultMap="Inquiry1ScoreMap">
 		/* 탐구1 점수 조회 */
@@ -235,23 +269,6 @@
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 	
-	<resultMap type="Inquiry2Score" id="Inquiry2ScoreMap">
-		<id 	column="inq2_scr_code" 			 property="inq2ScrCode"/>
-		<result column="user_code" 				 property="userCode"/>
-		<result column="exam_code" 				 property="examCode"/>
-		<result column="inq2_slt_sub" 			 property="inq2SltSub"/>
-		<result column="inq2_subject_score_code" property="inq2subjectScoreCode"/>
-		<result column="inq2_std_scr" 			 property="inq2StdScr"/>
-		<result column="inq2_pct" 				 property="inq2Pct"/>
-		<result column="inq2_grd" 				 property="inq2Grd"/>
-		<result column="inq2_ranking" 			 property="inq2Ranking"/>
-		<result column="inq2_scr_create_time" 	 property="inq2ScrCreateTime"/>
-		<result column="inq2_scr_update_time" 	 property="inq2ScrUpdateTime"/>
-		
-		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
-		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
-	</resultMap>
-	
 	<select id="getInquiry2Score" parameterType="String" resultMap="Inquiry2ScoreMap">
 		/* 탐구2 점수 조회 */
 		SELECT
@@ -272,23 +289,6 @@
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
-	
-	<resultMap type="SecondLanguageAndChineseCharactersScore" id="SecondLanguageAndChineseCharactersScoreMap">
-		<id 	column="frn_scr_code" 			 property="frnScrCode"/>
-		<result column="user_code" 				 property="userCode"/>
-		<result column="exam_code" 				 property="examCode"/>
-		<result column="frn_slt_sub" 			 property="frnSltSub"/>
-		<result column="frn_subject_score_code"  property="frnsubjectScoreCode"/>
-		<result column="frn_std_scr" 			 property="frnStdScr"/>
-		<result column="frn_pct" 				 property="frnPct"/>
-		<result column="frn_grd" 				 property="frnGrd"/>
-		<result column="frn_ranking" 			 property="frnRanking"/>
-		<result column="frn_scr_create_time" 	 property="frnScrCreateTime"/>
-		<result column="frn_scr_update_time" 	 property="frnScrUpdateTime"/>
-		
-		<association property="subjectScore" 		 resultMap="SubjectScoreMap"/>
-		<association property="subjectMinorCategory" resultMap="SubjectMinorCategoryMap"/>
-	</resultMap>
 
 	<select id="getSecondLanguageAndChineseCharactersScore" parameterType="String" resultMap="SecondLanguageAndChineseCharactersScoreMap">
 		/* 제2외국어 및 한문 점수 조회 */
