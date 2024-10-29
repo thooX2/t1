@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import groovy.util.logging.Slf4j;
 import ks52team01.admin.exam.dto.QnaBank;
 import ks52team01.common.files.dto.QnaImg;
 import ks52team01.common.files.mapper.FileMapper;
 import ks52team01.common.files.util.FilesUtils;
 import ks52team01.common.mapper.CommonMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
@@ -23,6 +23,37 @@ public class FileServiceImpl implements FileService {
 	private final FilesUtils filesUtils;
 	private final FileMapper fileMapper;
 	private final CommonMapper commonMapper;
+
+	@Override
+	public void deleteImg(String qnaCode, String qnaImgOriginalName) {
+		List<QnaImg> fileInfoList = fileMapper.getFileInfoByQnaCodeAndQnaImgOriginalName(qnaImgOriginalName, qnaCode);
+		for (QnaImg element : fileInfoList) {
+			String path = "/home/teamproject" + element.getQnaImgPath();
+			boolean isDelete = filesUtils.deleteFileByPath(path);
+
+			if (isDelete)
+				fileMapper.removeFiles(element.getQnaImgType(), element.getQnaImgCode());
+		}
+
+	}
+
+	@Override
+	public void removeFiles(String key, String qnaCode) {
+		List<QnaImg> fileInfoList = fileMapper.getFileInfoByQnaCode(key, qnaCode);
+		for (QnaImg element : fileInfoList) {
+			String path = "/home/teamproject" + element.getQnaImgPath();
+			boolean isDelete = filesUtils.deleteFileByPath(path);
+
+			if (isDelete)
+				fileMapper.removeFiles(key, element.getQnaImgCode());
+		}
+	}
+
+	@Override
+	public List<QnaImg> getQnaImgFileInputListByQnaCode(String qnaCode) {
+
+		return fileMapper.getQnaImgFileInputListByQnaCode(qnaCode);
+	}
 
 	@Override
 	public List<QnaImg> getQnaImgListByQnaCode(String qnaCode) {
@@ -49,10 +80,8 @@ public class FileServiceImpl implements FileService {
 			element.setQnaCode(qnaBank.getQnaCode());
 			plusIdx += 1;
 		}
-
 		if (!fileList.isEmpty())
 			fileMapper.addFiles(fileList);
-
 	}
 
 	@Override
@@ -70,7 +99,6 @@ public class FileServiceImpl implements FileService {
 		fileInfo.setQnaCode(qnaBank.getQnaCode());
 		fileInfo.setQnaImgCode(newQnaImgCode);
 		if (fileInfo != null) {
-
 			fileMapper.addFile(fileInfo);
 		}
 	}

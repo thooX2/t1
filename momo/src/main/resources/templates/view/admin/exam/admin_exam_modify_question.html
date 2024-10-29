@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/font-awesome.min.css" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 	<style>
 		/* ---------------------------- */
 		/* 숨겨진 파일 입력 */
@@ -14,20 +15,7 @@
 			display: none;
 		}
 
-		/* 커스텀 버튼 스타일 */
-		#customButton {
-			display: inline-block;
-			padding: 10px 20px;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
 
-		#customButton:hover {
-			background-color: #0056b3;
-		}
 
 		/* 파일 이름 텍스트 */
 		#fileName {
@@ -106,6 +94,7 @@
 
 		.image-container {
 			margin-top: 15px;
+			margin-bottom: 15px;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -137,6 +126,53 @@
 			padding-bottom: 10px;
 			/* 아래쪽 패딩 추가 (경계선과의 거리 조정) */
 		}
+
+		/* 캐러셀 css */
+		/* 캐러셀 컨테이너 스타일 */
+		.carousel-container {
+			width: 80%;
+			max-width: 600px;
+			margin: auto;
+			overflow: hidden;
+			position: relative;
+		}
+
+		/* 슬라이드 래퍼 */
+		.carousel-slide {
+			display: flex;
+			transition: transform 0.5s ease;
+		}
+
+		/* 슬라이드 이미지 */
+		.carousel-slide img {
+			width: 100%;
+			flex: 0 0 100%;
+		}
+
+		/* 네비게이션 버튼 */
+		.carousel-button {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 24px;
+			background-color: rgba(0, 0, 0, 0.5);
+			color: white;
+			border: none;
+			padding: 10px;
+			cursor: pointer;
+		}
+
+		.prev-btn {
+			left: 10px;
+		}
+
+		.next-btn {
+			right: 10px;
+		}
+
+		.conceal {
+			display: none;
+		}
 	</style>
 </head>
 <th:block layout:fragment="customJsFile">
@@ -146,6 +182,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 	<!-- Select2 JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<!-- bootstrap v4.6 cdn-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
 </th:block>
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
@@ -282,35 +322,10 @@
 		const initialQnaTypeListList = $('#qnaTypeList').html();
 
 		$('#categoryList').change(function () {
-			// value가 없고 text가 한국사인 select를 선택
-			if ($(this).val() == '' && $('#categoryList option:selected').text() == '한국사 > 한국사') {
-				// input hidden에 subject_major_catetory_code를 smjrcc4로 수동입력
-				$('#categorySubMjrCatCode').val('smjrcc4');
-				$('#qnaChapList').empty();
-				$('#qnaTypeList').empty();
-
-				// 위의 hidden value값을 기반으로 전체 문항타입목록에서 같은 값을 찾아 option을 생성 
-				qnaTypeList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-
-						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
-					}
-				})
-
-				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
-				qnaChapList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
-					}
-				})
-
-
-				// value가 없는 즉, 전체라고 쓰인 select를 선택하면 모든 리스트를 보여줌	
-			} else if ($(this).val() == '') {
+			if ($(this).val() == '') {
 				$('#qnaChapList').html(initialQnaChapList);
 				$('#qnaTypeList').html(initialQnaTypeListList);
 			} else {
-				// 한국사를 제외한 다른 카테고리를 생성시 해당 카테고리의 출제단원과 출제유형만 보이게 설정
 				$('#qnaChapList').empty();
 				$('#qnaTypeList').empty();
 
@@ -381,14 +396,46 @@
 			}
 		}
 
-
-
 		$('.closeModal').click(function () {
 			const parentId = $(this).closest('.modal').attr('id');
 			closeModal(parentId);
 		});
 
+		$('#customButton').click(function () {
+			$('#fileInput').click();
+		})
 
+		/* 캐러셀 javascript */
+		let currentSlide = 0;
+
+		function moveSlide(direction) {
+			const slides = document.querySelectorAll('.carousel-slide img');
+			const totalSlides = slides.length;
+
+			// 슬라이드 이동
+			currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+			document.querySelector('.carousel-slide').style.transform = `translateX(-${currentSlide * 100}%)`;
+
+			$('h2[name="qnaImgTitle"]').removeClass('conceal').addClass('conceal');
+
+			$('h2[name="qnaImgTitle"]').eq(currentSlide).removeClass('conceal');
+		}
+
+		$('button').filter(function () {
+			return $(this).text() === '삭제';
+		}).click(function () {
+			//console.log($(this).siblings('h2').not('.conceal').text());
+			const isDelete = confirm('정말로 해당 이미지를 삭제하시겠습니까?');
+
+			const $newForm = $('<form action="/admin/exam/deleteImg" method="post"/>')
+			const $qnaCode = $('<input type="hidden" name="qnaCode"/>').val($('input[name="qnaCode"]').val());
+			const $qnaImgOriginalName = $('<input type="hidden" name="qnaImgOriginalName"/>').val($(this).siblings('h2').not('.conceal').text());
+			$newForm.append($qnaCode);
+			$newForm.append($qnaImgOriginalName);
+			$('body').append($newForm); // 폼을 body에 추가
+			if (isDelete)
+				$newForm.submit();
+		})
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -546,10 +593,16 @@
 									<td class="f_th01">문제이미지</td>
 									<td class="f_td01" colspan="3">
 										<!-- 실제 파일 입력 (숨김) -->
-										<input type="file" id="fileInput" accept="image/*" multiple>
+										<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
+
+										<button type="button" onclick="openModal('fileInputImg')" class="bttn2">
+											이미지보기
+										</button>
+
 
 										<!-- 커스텀 버튼과 파일 이름 표시 -->
-										<label for="fileInput" id="customButton">파일 선택</label>
+										<button type="button" id="customButton" class="bttn2">파일 선택</button>
+
 										<span id="fileName">선택된 파일이 없습니다.</span> <!-- 파일명을 표시하는 텍스트 -->
 
 										<ul id="fileList"></ul>
@@ -586,24 +639,6 @@
 													<td class="l_th03">정답</td>
 													<td class="l_th03">번호</td>
 													<td class="l_th03">내용</td>
-												</tr>
-											</tbody>
-											<tbody id="item_area">
-
-												<tr style="display:none">
-													<td class="l_td01">
-														<div style="text-align:center">
-															<input type="text" name="radio" value="1" />
-														</div>
-													</td>
-													<td class="l_td01" align="center">1</td>
-													<td class="l_td01">
-														<input type="text" name="item1" size="95" />
-														<p class="mt3">
-															<input type="file" name="item1_file" size="80"
-																style="border:1px solid #d1d1d1;" />
-														</p>
-													</td>
 												</tr>
 											</tbody>
 										</table>
@@ -774,8 +809,10 @@
 												th:text="'['+${ul.userId}+'] '+${ul.userName}"
 												th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
 											<option th:if="${userList !=null}" th:each="ul:${userList}"
-												th:text="'['+${ul.userId}+'] '+${ul.userName}" th:value="${ul.userCode}"
-												th:selected="${ul.userCode==qnaBankInfo.userCode}"></option>
+												th:text="'['+${ul.userId}+'] '+${ul.userName}"
+												th:selected="${ul.userCode == qnaBankInfo.userCode}"
+												th:value="${ul.userCode}">
+											</option>
 										</select>
 									</td>
 								</tr>
@@ -827,10 +864,30 @@
 				</div>
 				<button type="button" class="bttn2 closeModal"
 					style="float:right !important;margin-left: 10px;">닫기</button>
-				<button type="button" class="bttn2" style="float:right !important;">삭제</button>
+				<button type="button" class="bttn2" style="float:right !important;" id="deleteImgBtn">삭제</button>
 			</div>
 		</div>
 	</div>
+	<div id="fileInputImg" class="modal" th:if="${qnaImgFileInputList !=null && qnaImgFileInputList.size()>0}">
+		<div class="modal-content">
+			<h2 th:class="${status.index == 0} ? 'folder-name-header' : 'folder-name-header conceal'"
+				th:each="qifil,status:${qnaImgFileInputList}" name="qnaImgTitle" th:text="${qifil.qnaImgOriginalName}">
+				test1</h2>
+			<div class="image-container">
+				<div class="carousel-container">
+					<div class="carousel-slide">
+						<img th:each="qifil:${qnaImgFileInputList}" th:src="|@{${qifil.qnaImgPath}}|"
+							th:alt="${qifil.qnaImgOriginalName}" style="width: 90%;" />
+					</div>
+					<button class="carousel-button prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+					<button class="carousel-button next-btn" onclick="moveSlide(1)">&#10095;</button>
+				</div>
+			</div>
+			<button type="button" class="bttn2 closeModal" style="float:right !important;margin-left: 10px;">닫기</button>
+			<button type="button" class="bttn2" style="float:right !important;">삭제</button>
+		</div>
+	</div>
+
 </div>
 
 </html>

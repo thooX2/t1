@@ -11,10 +11,18 @@ public interface FileService {
 
 	// 다중파일 등록
 	void addFiles(String key, MultipartFile[] file, QnaBank qnaBank);
+
 	// 단일파일 등록
 	void addFile(String key, MultipartFile file, QnaBank qnaBank);
-	
+
 	// 이미지목록
 	List<QnaImg> getQnaImgListByQnaCode(String qnaCode);
+
+	// 이미지목록
+	List<QnaImg> getQnaImgFileInputListByQnaCode(String qnaCode);
+
+	void removeFiles(String key, String qnaCode);
+
+	void deleteImg(String qnaCode, String qnaImgOriginalName);
 
 }

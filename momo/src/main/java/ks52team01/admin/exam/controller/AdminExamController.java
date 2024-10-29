@@ -1,5 +1,6 @@
 package ks52team01.admin.exam.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,17 @@ public class AdminExamController {
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
 
+	@PostMapping("/deleteImg")
+	public String deleteImg(@RequestParam(name = "qnaCode") String qnaCode,
+			@RequestParam(name = "qnaImgOriginalName") String qnaImgOriginalName) {
+
+		log.error(qnaCode);
+		log.error(qnaImgOriginalName);
+		fileService.deleteImg(qnaCode, qnaImgOriginalName);
+
+		return "redirect:/admin/exam/questionList";
+	}
+
 	@PostMapping("/modifyQuestion")
 	public String modifyQuestion(@RequestPart(name = "fileInput", required = false) MultipartFile[] fileInput,
 			@RequestParam(name = "item1_file", required = false) MultipartFile item1File,
@@ -44,7 +56,47 @@ public class AdminExamController {
 			@RequestParam(name = "item5_file", required = false) MultipartFile item5File,
 			@RequestParam(name = "question_file", required = false) MultipartFile questionFile, QnaBank qnaBank) {
 
-		// adminExamService.modifyQuestionProc(qnaBank);
+		if (fileInput != null && !fileInput[0].isEmpty()) {
+			fileService.removeFiles("fileInput", qnaBank.getQnaCode());
+			fileService.addFiles("fileInput", fileInput, qnaBank);
+		}
+
+		if (item1File != null && !item1File.isEmpty()) {
+			fileService.removeFiles("item1_file", qnaBank.getQnaCode());
+			fileService.addFile("item1_file", item1File, qnaBank);
+		}
+
+		if (item2File != null && !item2File.isEmpty()) {
+
+			fileService.removeFiles("item2_file", qnaBank.getQnaCode());
+			fileService.addFile("item2_file", item2File, qnaBank);
+		}
+
+		if (item3File != null && !item3File.isEmpty()) {
+
+			fileService.removeFiles("item3_file", qnaBank.getQnaCode());
+			fileService.addFile("item3_file", item3File, qnaBank);
+		}
+
+		if (item4File != null && !item4File.isEmpty()) {
+
+			fileService.removeFiles("item4_file", qnaBank.getQnaCode());
+			fileService.addFile("item4_file", item4File, qnaBank);
+		}
+
+		if (item5File != null && !item5File.isEmpty()) {
+
+			fileService.removeFiles("item5_file", qnaBank.getQnaCode());
+			fileService.addFile("item5_file", item5File, qnaBank);
+		}
+
+		if (questionFile != null && !questionFile.isEmpty()) {
+
+			fileService.removeFiles("question_file", qnaBank.getQnaCode());
+			fileService.addFile("question_file", questionFile, qnaBank);
+		}
+
+		adminExamService.modifyQuestionProc(qnaBank);
 
 		return "redirect:/admin/exam/questionList";
 	}
@@ -67,6 +119,9 @@ public class AdminExamController {
 		List<QnaImg> qnaImgList = new ArrayList<QnaImg>();
 		qnaImgList = fileService.getQnaImgListByQnaCode(qnaCode);
 
+		List<QnaImg> qnaImgFileInputList = new ArrayList<QnaImg>();
+		qnaImgFileInputList = fileService.getQnaImgFileInputListByQnaCode(qnaCode);
+
 		QnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("userList", userList);
@@ -74,6 +129,7 @@ public class AdminExamController {
 		model.addAttribute("qnaChapList", qnaChapList);
 		model.addAttribute("qnaBankInfo", qnaBankInfo);
 		model.addAttribute("qnaImgList", qnaImgList);
+		model.addAttribute("qnaImgFileInputList", qnaImgFileInputList);
 
 		return "view/admin/exam/admin_exam_modify_question";
 

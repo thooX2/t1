@@ -17,6 +17,75 @@
 	    <result property="qnaImgUpdateTime" column="qna_img_update_time" />
 	</resultMap>
 	
+	<select id="getFileInfoByQnaCodeAndQnaImgOriginalName" parameterType="String" resultMap="QnaImgResultMap">
+		SELECT
+			qna_img_code,
+			qna_code,
+			user_code,
+			qna_img_type,
+			qna_img_path,
+			qna_img_sort_col,
+			qna_img_original_name,
+			qna_img_new_name,
+			qna_file_size,
+			qna_img_create_time,
+			qna_img_update_time
+		FROM
+			qna_img
+		WHERE
+			qna_img_original_name = #{qnaImgOriginalName} AND
+			qna_code=#{qnaCode}
+	</select>
+
+	<select id="getFileInfoByQnaCode" parameterType="String" resultMap="QnaImgResultMap">
+		SELECT
+			qna_img_code,
+			qna_code,
+			user_code,
+			qna_img_type,
+			qna_img_path,
+			qna_img_sort_col,
+			qna_img_original_name,
+			qna_img_new_name,
+			qna_file_size,
+			qna_img_create_time,
+			qna_img_update_time
+		FROM
+			qna_img
+		WHERE
+			qna_img_type = #{key} AND
+			qna_code=#{qnaCode}
+	</select>
+
+	<delete id="removeFiles" parameterType="String">
+		DELETE
+		FROM
+			qna_img
+		WHERE
+			qna_img_type=#{key} AND
+			qna_img_code=#{qnaImgCode}
+	</delete>
+	
+	<select id="getQnaImgFileInputListByQnaCode" parameterType="String" resultMap="QnaImgResultMap">
+		SELECT
+			qna_img_code,
+			qna_code,
+			user_code,
+			qna_img_type,
+			qna_img_path,
+			qna_img_sort_col,
+			qna_img_original_name,
+			qna_img_new_name,
+			qna_file_size,
+			qna_img_create_time,
+			qna_img_update_time
+		FROM
+			qna_img
+		WHERE
+			qna_img_type = 'fileInput' and
+			qna_code=#{qnaCode}
+	</select>
+	
 	<select id="getQnaImgListByQnaCode" parameterType="String" resultMap="QnaImgResultMap">
 		SELECT
 			qna_img_code,
