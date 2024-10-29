@@ -18,7 +18,7 @@
 		}
 
 		.scbox {
-			height: 595px;
+			height: 700px;
 			overflow-y: auto;
 			border: 1px solid #ccc;
 			background-color: #fff;
@@ -27,12 +27,6 @@
 			position: relative;
 		}
 
-		.bttn2 {
-			cursor: pointer;
-			position: absolute;
-			bottom: 10px;
-			right: 10px;
-		}
 
 		.f_td01 input[type="text"] {
 			width: 100%;
@@ -63,6 +57,19 @@
 			background-color: #f1f1f1;
 			font-weight: bold;
 		}
+
+		table.f_tb01 {
+			width: 100%;
+			border-collapse: collapse;
+			table-layout: fixed;
+			/* 고정된 너비를 적용 */
+		}
+
+		table.f_tb01 th,
+		table.f_tb01 td {
+			padding: 10px;
+			border: 1px solid #ccc;
+		}
 	</style>
 </head>
 
@@ -89,72 +96,83 @@
 						<tbody>
 							<tr>
 								<td style="padding:10px;border:0">
-									<form name="form1" method="post" action="your_action_url_here">
-										<div class="scbox">
-											<table class="c_tb01">
-												<tbody>
-													<tr>
-														<th colspan="2">문제 1</th>
 
-													</tr>
-												</tbody>
-											</table>
-											<table class="f_tb01">
-												<colgroup>
-													<col width="80">
-													<col width="*">
-													<col width="80">
-													<col width="*">
-												</colgroup>
-												<tbody>
-													<tr>
-														<th>카테고리</th>
-														<td colspan="3">DDM</td>
-													</tr>
-													<tr>
-														<th>문제유형</th>
-														<td>단답형</td>
-														<th>난이도</th>
-														<td>B</td>
-													</tr>
-													<tr>
-														<th>문제</th>
-														<td colspan="3">
-															<p style="font-weight:bold">
-																<img src="/admin/img/exam/adminExamQuestionPopup/icon_question.gif" alt="질문 아이콘"
-																	style="vertical-align:-3px;"> &nbsp;인생에서 가장 멋진 일을
-																슈바이처 박사는 무엇이라고 하였는가?
-															</p>
-															<table style="width:98%; margin-top:3px;">
-																<tbody>
-																	<tr>
-																		<td style="padding:10px; background:#f1f1f1;">
-																			<input disabled type="text" name="answer"
-																				placeholder="정답을 입력하세요"
-																				style="width: 100%;">
-																		</td>
-																	</tr>
-																</tbody>
-															</table>
-														</td>
-													</tr>
-													<tr>
-														<th>정답</th>
-														<td colspan="3">모든 일에 감사하는 것</td>
-													</tr>
-												</tbody>
-											</table>
-
-											<!-- 닫기 버튼 -->
-											<button type="button" class="bttn2" aria-label="닫기">닫기</button>
-
-										</div>
-										<table class="b_tb01">
+									<div class="scbox">
+										<table class="c_tb01">
 											<tbody>
+												<tr>
+													<th colspan="2">문제 1</th>
+
+												</tr>
+											</tbody>
+										</table>
+										<table class="f_tb01">
+											<colgroup>
+												<col width="80">
+												<col>
+												<col width="80">
+												<col>
+											</colgroup>
+											<tbody>
+												<tr>
+													<th>생성시간</th>
+													<td>20.10.29. 17:30</td>
+													<th>수정시간</th>
+													<td></td>
+												</tr>
+												<tr>
+													<th>문제유형</th>
+													<td colspan="3">국어</td>
+												</tr>
+												<tr>
+													<th>문제단원</th>
+													<td colspan="3">수학</td>
+												</tr>
+												<tr>
+													<th>카테고리</th>
+													<td colspan="3">수학</td>
+												</tr>
+												<tr>
+													<th>문제배점</th>
+													<td>3점</td>
+													<th>문제정답</th>
+													<td>3번</td>
+												</tr>
+												<tr>
+													<th>문제</th>
+													<td colspan="3">
+														<p style="font-weight:bold">
+															<img src="/admin/img/exam/adminExamQuestionPopup/icon_question.gif"
+																alt="질문 아이콘" style="vertical-align:-3px;"> &nbsp;인생에서 가장
+															멋진
+															일을
+															슈바이처 박사는 무엇이라고
+															하였는가?<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+														</p>
+														<table style="width:98%; margin-top:3px;">
+															<tbody>
+																<tr>
+																	<td style="padding:10px; background:#f1f1f1;">
+																		<input disabled type="text" name="answer"
+																			placeholder="정답을 입력하세요"
+																			style="width: 100%;">
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<tr>
+													<th>정답</th>
+													<td colspan="3">모든 일에 감사하는 것</td>
+												</tr>
 
 											</tbody>
 										</table>
-									</form>
+										<div style="text-align: right;margin-top:20px"> 
+											<button type="button" class="bttn2" aria-label="닫기">닫기</button>
+										</div>
+									</div>
 								</td>
 							</tr>
 						</tbody>
