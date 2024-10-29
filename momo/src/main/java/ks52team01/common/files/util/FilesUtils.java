@@ -17,12 +17,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import ks52team01.common.files.dto.QnaImg;
+import ks52team01.common.files.mapper.FileMapper;
+import ks52team01.common.mapper.CommonMapper;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class FilesUtils {
 
 	@Value("${file.path}")
 	private String fileRootPath;
+
+	private final CommonMapper commonMapper;
 
 	// 파일 삭제
 	public boolean deleteFileByPath(String path) {
@@ -104,13 +110,15 @@ public class FilesUtils {
 
 			DateTimeFormatter fileFormatter = DateTimeFormatter.ofPattern("yyMMdd");
 
-			String fileIdx = "qic" + now.format(fileFormatter) + Long.toString(System.nanoTime());
-
+			// String fileIdx = "qic" + now.format(fileFormatter) +
+			// Long.toString(System.nanoTime());
+			String newQnaImgCode = commonMapper.getPrimaryKey("qna_img", "qna_img_code", "qic");
 			// /attachment/20241025/image/asdlfjadfj.jpg
 			String filePath = "/attachment/" + now.format(formatter) + contentType + newFileName;
 
-			fileInfo = QnaImg.builder().qnaImgCode(fileIdx).qnaImgOriginalName(multipartFile.getOriginalFilename())
-					.qnaImgNewName(newFileName).qnaImgPath(filePath).qnaFileSize(multipartFile.getSize()).build();
+			fileInfo = QnaImg.builder().qnaImgCode(newQnaImgCode)
+					.qnaImgOriginalName(multipartFile.getOriginalFilename()).qnaImgNewName(newFileName)
+					.qnaImgPath(filePath).qnaFileSize(multipartFile.getSize()).build();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
