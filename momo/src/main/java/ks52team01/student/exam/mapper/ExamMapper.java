@@ -11,4 +11,7 @@ public interface ExamMapper {
 
 	// 회원이 응시한 모의고사 목록 조회
 	List<TookExamInfo> getTookExamList(String userCode);
+	
+	// 회원이 최초로 응시한 모의고사 목록 조회
+	List<TookExamInfo> getFirstTookExamList(String userCode);
 }

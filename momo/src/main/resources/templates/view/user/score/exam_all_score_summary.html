@@ -317,8 +317,8 @@
 											th:text="${examScore.inquiry1Score != null ? examScore.inquiry1Score.inq1Ranking : ''}"></td>
 										<td
 											th:text="${examScore.inquiry2Score != null ? examScore.inquiry2Score.inq2Ranking : ''}"></td>
-										<td
-											th:text="${examScore.secondLanguageAndChineseCharactersScore != null ? examScore.secondLanguageAndChineseCharactersScore.frnRanking : ''}"></td>
+										<td th:object="${examScore.secondLanguageAndChineseCharactersScore}"
+											th:text="${examScore.secondLanguageAndChineseCharactersScore != null} ? *{frnRanking} : ''"></td>
 									</tr>
 									<tr>
 										<td>등급</td>

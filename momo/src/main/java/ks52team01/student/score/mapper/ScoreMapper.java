@@ -4,14 +4,15 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import ks52team01.student.exam.dto.TookExamInfo;
 import ks52team01.student.score.dto.EnglishScore;
+import ks52team01.student.score.dto.ExamScore;
 import ks52team01.student.score.dto.Inquiry1Score;
 import ks52team01.student.score.dto.Inquiry2Score;
 import ks52team01.student.score.dto.KoreanHistoryScore;
 import ks52team01.student.score.dto.KoreanScore;
 import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
+import ks52team01.student.score.dto.Subject;
 
 @Mapper
 public interface ScoreMapper {
@@ -23,6 +24,8 @@ public interface ScoreMapper {
 	public Double getProvinceAvg(String examCode, String korSubCode, String provinceCode);
 	
 	public Double getMunicipalityAvg(String examCode, String korSubCode, String municipalityCode);
+	
+	public List<Subject> getSubjectScoreList(String userCode, String tookExamInfoCode);
 	
 	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode);
 	

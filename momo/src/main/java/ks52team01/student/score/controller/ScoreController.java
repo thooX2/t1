@@ -20,6 +20,7 @@ import ks52team01.student.score.dto.KoreanHistoryScore;
 import ks52team01.student.score.dto.KoreanScore;
 import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
+import ks52team01.student.score.dto.Subject;
 import ks52team01.student.score.service.ScoreExamAllService;
 import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
@@ -37,46 +38,26 @@ public class ScoreController {
 	public String getScoreMain(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loggedInUser");
 		String userCode = user.getUserCode();
+		List<TookExamInfo> firstTookExamList = scoreExamAllService.getFirstTookExamList(userCode);
+		/*
+		 * 그래프 영역 
+		// 전국, 도, 시별 과목 원점수 평균
+//		List<Double> regionalAvgList = scoreExamAllService.getRegionalAvgList(tookExamList.get(0));
+//		log.info("::::::::::::::::: regoin ::::::: {}", regionalAvgList);
+//		model.addAttribute("regionalAvgList", regionalAvgList);
 		String userAreaCityCode = user.getAreaCityCode();
+		 */
 		// 출력 날짜 형식 정의
 		SimpleDateFormat outputFormat = new SimpleDateFormat("yy.MM.dd");
 		// Date 객체를 원하는 형식의 문자열로 변환
 		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
-		List<TookExamInfo> tookExamList = scoreExamAllService.getTookExamList(userCode);
-		String examCode = tookExamList.get(0).getExamCode();
-		String korSubCode = tookExamList.get(0).getKorSltSub();
-		// 전국, 도, 시별 과목 원점수 평균
-		List<Double> regionalAvgList = scoreExamAllService.getRegionalAvgList(tookExamList.get(0));
-		log.info("::::::::::::::::: regoin ::::::: {}", regionalAvgList);
-		model.addAttribute("regionalAvgList", regionalAvgList);
-		String tookExamInfoCode = tookExamList.get(0).getTookExamInfoCode();
-		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
-		MathScore mathScore = scoreExamAllService.getMathScore(userCode, tookExamInfoCode);
-		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode, tookExamInfoCode);
-		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
-		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode, tookExamInfoCode);
-		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode, tookExamInfoCode);
-		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
-//		log.info("tookExam : {}", tookExamList);
-//		log.info("koreanHistoryScore : {}", koreanHistoryScore);
-//		log.info("koreanScore : {}", koreanScore);
-//		log.info("mathScore : {}", mathScore);
-//		log.info("englishScore : {}", englishScore);
-//		log.info("inquiry1Score : {}", inquiry1Score);
-//		log.info("inquiry2Score : {}", inquiry2Score);
-//		log.info("secondLanguageAndChineseCharactersScore : {}", secondLanguageAndChineseCharactersScore);
-		ExamScore examScore = new ExamScore();
-		examScore.setKoreanScore(koreanScore);
-		examScore.setMathScore(mathScore);
-		examScore.setEnglishScore(englishScore);
-		examScore.setKoreanHistoryScore(koreanHistoryScore);
-		examScore.setInquiry1Score(inquiry1Score);
-		examScore.setInquiry2Score(inquiry2Score);
-		examScore.setSecondLanguageAndChineseCharactersScore(secondLanguageAndChineseCharactersScore);
+		String tookExamInfoCode = firstTookExamList.get(0).getTookExamInfoCode();
+		List<Subject> subjectScoreList = scoreExamAllService.getSubjectScoreList(userCode, tookExamInfoCode);
+		log.info("subjectScoreList : {}", subjectScoreList);
 		model.addAttribute("user", user);
+		model.addAttribute("tookExamList", firstTookExamList);
 		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
-		model.addAttribute("tookExamList", tookExamList);
-		model.addAttribute("examScore", examScore);
+		model.addAttribute("subjectScoreList", subjectScoreList);
 		return "view/user/score/exam_all_score_summary";
 	}
 	

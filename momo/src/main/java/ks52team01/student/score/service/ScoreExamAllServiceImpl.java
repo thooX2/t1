@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ks52team01.student.exam.dto.TookExamInfo;
 import ks52team01.student.exam.mapper.ExamMapper;
 import ks52team01.student.score.dto.EnglishScore;
+import ks52team01.student.score.dto.ExamScore;
 import ks52team01.student.score.dto.Inquiry1Score;
 import ks52team01.student.score.dto.Inquiry2Score;
 import ks52team01.student.score.dto.KoreanHistoryScore;
@@ -16,6 +17,7 @@ import ks52team01.student.score.dto.KoreanScoreAvg;
 import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.MathScoreAvg;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
+import ks52team01.student.score.dto.Subject;
 import ks52team01.student.score.mapper.ScoreMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -52,9 +54,9 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	}
 
 	@Override
-	public List<TookExamInfo> getTookExamList(String userCode) {
+	public List<TookExamInfo> getFirstTookExamList(String userCode) {
 		// TODO Auto-generated method stub
-		return examMapper.getTookExamList(userCode);
+		return examMapper.getFirstTookExamList(userCode);
 	}
 
 	@Override
@@ -126,7 +128,7 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			KoreanScoreAvg koreanOriginScoreAvg = new KoreanScoreAvg();
 			koreanOriginScoreAvg.setKoreanOriginNationAvg(scoreMapper.getNationAvg(examCode, koreanMinorSubject));
 			koreanOriginScoreAvg.setKoreanOriginNationAvg(scoreMapper.getProvinceAvg(examCode, koreanMinorSubject, provinceCode));
-			koreanOriginScoreAvg.setKoreanOriginProvinceAvg(-1.0);
+			koreanOriginScoreAvg.setKoreanOriginProvinceAvg(-1.0); // 없는 값 처리 어떻게 할 것인지 수정
 			// 서울, 인천, 세종, 대전, 대구, 울산, 광주, 부산 출신이 아니라면
 			if (!(provinceCode.equals("11") || provinceCode.equals("28") || provinceCode.equals("26")
 					|| provinceCode.equals("27") || provinceCode.equals("29") || provinceCode.equals("27")
@@ -136,5 +138,11 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<Subject> getSubjectScoreList(String userCode, String tookExamInfoCode) {
+		// TODO Auto-generated method stub
+		return scoreMapper.getSubjectScoreList(userCode, tookExamInfoCode);
 	}
 }

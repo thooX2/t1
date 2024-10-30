@@ -10,6 +10,7 @@ import ks52team01.student.score.dto.KoreanHistoryScore;
 import ks52team01.student.score.dto.KoreanScore;
 import ks52team01.student.score.dto.MathScore;
 import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
+import ks52team01.student.score.dto.Subject;
 
 public interface ScoreExamAllService {
 	
@@ -17,7 +18,9 @@ public interface ScoreExamAllService {
 	
 	public List<Double> getRegionalAvgList(TookExamInfo tookExamInfo);
 	
-	public List<TookExamInfo> getTookExamList(String userCode);
+	public List<TookExamInfo> getFirstTookExamList(String userCode);
+	
+	public List<Subject> getSubjectScoreList(String userCode, String tookExamInfoCode);
 	
 	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode);
 	
