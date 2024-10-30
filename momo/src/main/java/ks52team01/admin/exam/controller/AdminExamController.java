@@ -1,6 +1,5 @@
 package ks52team01.admin.exam.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,20 @@ public class AdminExamController {
 	private final AdminExamService adminExamService;
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
+
+	@PostMapping("/questionState")
+	@ResponseBody
+	public boolean modifyQuestionState(@RequestParam(name = "qnaCode") List<String> qnaCode,
+			@RequestParam(name = "isState") boolean isState) {
+		boolean guestionState = false;
+
+		int result = adminExamService.modifyQustionState(qnaCode, isState);
+
+		if (result > 0)
+			guestionState = true;
+
+		return guestionState;
+	}
 
 	@PostMapping("/deleteImg")
 	public String deleteImg(@RequestParam(name = "qnaCode") String qnaCode,
@@ -214,7 +227,20 @@ public class AdminExamController {
 	}
 
 	@GetMapping("/questionPopup")
-	public String admintest4() {
+	public String getQuestionPopupInfo(@RequestParam(name = "qnaCode") String qnaCode, Model model) {
+
+		List<QnaImg> qnaImgList = new ArrayList<QnaImg>();
+		qnaImgList = fileService.getQnaImgListByQnaCode(qnaCode);
+
+		List<QnaImg> qnaImgFileInputList = new ArrayList<QnaImg>();
+		qnaImgFileInputList = fileService.getQnaImgFileInputListByQnaCode(qnaCode);
+
+		QnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
+		model.addAttribute("qnaBankInfo", qnaBankInfo);
+
+		model.addAttribute("qnaImgList", qnaImgList);
+		model.addAttribute("qnaImgFileInputList", qnaImgFileInputList);
+
 		return "view/admin/exam/admin_exam_question_popup";
 	}
 
