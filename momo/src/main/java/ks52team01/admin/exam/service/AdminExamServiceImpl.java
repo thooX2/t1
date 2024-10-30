@@ -1,6 +1,8 @@
 package ks52team01.admin.exam.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,25 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminExamServiceImpl implements AdminExamService {
 
 	private final AdminExamMapper adminExamMapper;
+
+	@Override
+	public int modifyQustionState(List<String> qnaCode, boolean isState) {
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+
+		String qnaState = "Y";
+		int isChanged = 0;
+		if (!isState) {
+			qnaState = "N";
+		}
+
+		paramMap.put("qnaState", qnaState);
+		paramMap.put("qnaCode", qnaCode);
+
+		isChanged = adminExamMapper.modifyQustionState(paramMap);
+
+		return isChanged;
+	}
 
 	@Override
 	public void modifyQuestionProc(QnaBank qnaBank) {

@@ -28,4 +28,6 @@ public interface AdminExamService {
 
 	void modifyQuestionProc(QnaBank qnaBank);
 
+	int modifyQustionState(List<String> qnaCode, boolean isState);
+
 }

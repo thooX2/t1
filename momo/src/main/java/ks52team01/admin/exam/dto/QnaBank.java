@@ -31,4 +31,6 @@ public class QnaBank {
 	private String subMirCatNm; // 문항 중분류명
 	private String userId;
 	private String userName;
+	private String qnaTypeNm;
+	private String qnaChapNm;
 }
