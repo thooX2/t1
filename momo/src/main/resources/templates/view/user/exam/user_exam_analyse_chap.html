@@ -16,33 +16,7 @@
 <th:block layout:fragment="customJs">
 	<script>
 	$(function() {
-	    const subjectDetails = {
-	        '국어': {
-	            labels: ['독서', '문학', '화법과 작문', '언어와 매체'],
-	        },
-	        '수학': {
-	            labels: ['수학1', '수학2', '확률과 통계', '미분과 적분', '기하'],
-	        },
-	        '영어': {
-	            labels: ['영어1', '영어2'],
-	        },
-	        '한국사': {
-	            labels: ['한국사'],
-	        },
-	        '사회탐구': {
-	            labels: ['생활과 윤리', '윤리와 사상', '한국지리', '세계지리', '동아시아사', '세계사', '경제', '정치와 법', '사회문화'],
-	        },
-	        '과학탐구': {
-	            labels: ['물리1', '화학1', '생물1', '지구과학1', '물리2', '화학2', '생물2', '지구과학2'],
-	        },
-	        '직업탐구': {
-	            labels: ['성공적인 직업생활', '농업 기초 기술', '공업 일반', '상업 경제', '수산 해운 산업 기초', '인간 발달'],
-	        },
-	        '제2외국어': {
-	            labels: ['독일어1', '프랑스어1', '스페인어1', '중국어1', '일본어1', '러시아어1', '아랍어1', '베트남어1', '한문1'],
-	        }
-	    };
-
+	    
 	 // 영역 label 클릭 시 처리
 	    $('#mDomCdDiv').on('click', 'label', function() {
 	        // 모든 영역 label에서 'on' 클래스 제거 라벨 on/off에 따라 글씨 굵기 변경
@@ -387,7 +361,7 @@
 							<a href="/exam/userExamAnalyse" onclick="fncTabSet(1)" class=""><strong>분석1</strong>성적 변화</a>
 							<a href="/exam/ccr" onclick="fncTabSet(2)" class=""><strong>분석2</strong>단원별 정답률</a>
 							<a href="/exam/weak" onclick="fncTabSet(3)" class=""><strong>분석3</strong>취약 유형</a>
-							<a href="JavaScript:;" onclick="fncTabSet(4)" class="on"><strong>분석4</strong>단원/난도/문항별 분석</a>
+							<a href="JavaScript:;" onclick="fncTabSet(4)" class="on"><strong>분석4</strong>단원/배점/문항별 분석</a>
 
 						</div>
 
@@ -407,7 +381,7 @@
 										id="tit_main1">우리 역사의 형성과 고대 국가의 발전</a>
 									<div class="cont_analysis" id="dtlCont1">
 
-										<p class="sub_txtinfo">난이도별 분석</p>
+										<p class="sub_txtinfo">배점별 분석</p>
 
 										<div class="item_cont" style="padding-bottom:0px;">
 											<div class="analysis_grapth">
@@ -426,7 +400,7 @@
 													</colgroup>
 													<thead>
 														<tr>
-															<th>난이도</th>
+															<th>배점</th>
 															<th>정답률</th>
 															<th>정답수/문제수</th>
 														</tr>
@@ -526,7 +500,7 @@
 										id="tit_main2">고려 귀족 사회의 형성과 변천</a>
 									<div class="cont_analysis" id="dtlCont2">
 
-										<p class="sub_txtinfo">난이도별 분석</p>
+										<p class="sub_txtinfo">배점별 분석</p>
 
 										<div class="item_cont" style="padding-bottom:0px;">
 											<div class="analysis_grapth">
@@ -544,7 +518,7 @@
 													</colgroup>
 													<thead>
 														<tr>
-															<th>난이도</th>
+															<th>배점</th>
 															<th>정답률</th>
 															<th>정답수/문제수</th>
 														</tr>
@@ -639,7 +613,7 @@
 										id="tit_main3">조선 유교 사회의 성립과 변화</a>
 									<div class="cont_analysis" id="dtlCont3">
 
-										<p class="sub_txtinfo">난이도별 분석</p>
+										<p class="sub_txtinfo">배점별 분석</p>
 
 										<div class="item_cont" style="padding-bottom:0px;">
 											<div class="analysis_grapth">
@@ -657,7 +631,7 @@
 													</colgroup>
 													<thead>
 														<tr>
-															<th>난이도</th>
+															<th>배점</th>
 															<th>정답률</th>
 															<th>정답수/문제수</th>
 														</tr>
@@ -758,7 +732,7 @@
 										id="tit_main4">국제 질서의 변동과 근대 국가 수립 운동</a>
 									<div class="cont_analysis" id="dtlCont4">
 
-										<p class="sub_txtinfo">난이도별 분석</p>
+										<p class="sub_txtinfo">배점별 분석</p>
 
 										<div class="item_cont" style="padding-bottom:0px;">
 											<div class="analysis_grapth">
@@ -776,7 +750,7 @@
 													</colgroup>
 													<thead>
 														<tr>
-															<th>난이도</th>
+															<th>배점</th>
 															<th>정답률</th>
 															<th>정답수/문제수</th>
 														</tr>
@@ -865,7 +839,7 @@
 										id="tit_main5">일제의 강점과 민족 운동의 전개</a>
 									<div class="cont_analysis" id="dtlCont5">
 
-										<p class="sub_txtinfo">난이도별 분석</p>
+										<p class="sub_txtinfo">배점별 분석</p>
 
 										<div class="item_cont" style="padding-bottom:0px;">
 											<div class="analysis_grapth">
@@ -883,7 +857,7 @@
 													</colgroup>
 													<thead>
 														<tr>
-															<th>난이도</th>
+															<th>배점</th>
 															<th>정답률</th>
 															<th>정답수/문제수</th>
 														</tr>
@@ -978,7 +952,7 @@
 										id="tit_main6">대한민국의 발전과 현대 세계의 변화</a>
 									<div class="cont_analysis" id="dtlCont6">
 
-										<p class="sub_txtinfo">난이도별 분석</p>
+										<p class="sub_txtinfo">배점별 분석</p>
 
 										<div class="item_cont" style="padding-bottom:0px;">
 											<div class="analysis_grapth">
@@ -996,7 +970,7 @@
 													</colgroup>
 													<thead>
 														<tr>
-															<th>난이도</th>
+															<th>배점</th>
 															<th>정답률</th>
 															<th>정답수/문제수</th>
 														</tr>
