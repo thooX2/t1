@@ -41,23 +41,21 @@ public class ScoreController {
 		List<TookExamInfo> firstTookExamList = scoreExamAllService.getFirstTookExamList(userCode);
 		/*
 		 * 그래프 영역 
-		// 전국, 도, 시별 과목 원점수 평균
-//		List<Double> regionalAvgList = scoreExamAllService.getRegionalAvgList(tookExamList.get(0));
-//		log.info("::::::::::::::::: regoin ::::::: {}", regionalAvgList);
-//		model.addAttribute("regionalAvgList", regionalAvgList);
-		String userAreaCityCode = user.getAreaCityCode();
+		 * 전국/도/시 과목 원점수/표준점수/백분위/등급/석차 평균
 		 */
+		String tookExamInfoCode = firstTookExamList.get(0).getTookExamInfoCode();
+		List<Subject> subjectScoreList = scoreExamAllService.getSubjectScoreList(userCode, tookExamInfoCode);
 		// 출력 날짜 형식 정의
 		SimpleDateFormat outputFormat = new SimpleDateFormat("yy.MM.dd");
 		// Date 객체를 원하는 형식의 문자열로 변환
 		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
-		String tookExamInfoCode = firstTookExamList.get(0).getTookExamInfoCode();
-		List<Subject> subjectScoreList = scoreExamAllService.getSubjectScoreList(userCode, tookExamInfoCode);
+		
 		log.info("subjectScoreList : {}", subjectScoreList);
+		
 		model.addAttribute("user", user);
 		model.addAttribute("tookExamList", firstTookExamList);
-		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
 		model.addAttribute("subjectScoreList", subjectScoreList);
+		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
 		return "view/user/score/exam_all_score_summary";
 	}
 	
