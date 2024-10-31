@@ -29,6 +29,20 @@ public class AdminExamServiceImpl implements AdminExamService {
 	private final CommonMapper commonMapper;
 
 	@Override
+	public List<AdminExamInfo> searchExamList(AdminExamInfo examInfo, String searchType, String searchKeyword,
+			String startDate, String endDate) {
+
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("examInfo", examInfo);
+		paramMap.put("searchType", searchType);
+		paramMap.put("searchKeyword", searchKeyword);
+		paramMap.put("startDate", startDate);
+		paramMap.put("endDate", endDate);
+
+		return adminExamMapper.searchExamList(paramMap);
+	}
+
+	@Override
 	public void modifyExamInfo(AdminExamInfo examInfo) {
 
 		adminExamMapper.modifyExamInfo(examInfo);

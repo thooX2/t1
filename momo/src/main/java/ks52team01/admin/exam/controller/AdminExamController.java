@@ -36,6 +36,19 @@ public class AdminExamController {
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
 
+	@GetMapping("/searchExamList")
+	@ResponseBody
+	public List<AdminExamInfo> searchExamList(AdminExamInfo examInfo,
+			@RequestParam(name = "searchType") String searchType,
+			@RequestParam(name = "searchKeyword") String searchKeyword,
+			@RequestParam(name = "startDate") String startDate, @RequestParam(name = "endDate") String endDate) {
+
+		List<AdminExamInfo> examInfoList = adminExamService.searchExamList(examInfo, searchType, searchKeyword,
+				startDate, endDate);
+
+		return examInfoList;
+	}
+
 	@PostMapping("/modifyExam")
 	public String modifyExamINfo(AdminExamInfo examInfo) {
 		adminExamService.modifyExamInfo(examInfo);
@@ -281,8 +294,10 @@ public class AdminExamController {
 	public String managementList(Model model) {
 
 		List<AdminExamInfo> examInfoList = adminExamService.getExamInfoList();
+		List<User> userList = adminExamService.getUserListByGrade("ugc1");
 
 		model.addAttribute("examInfoList", examInfoList);
+		model.addAttribute("userList", userList);
 
 		return "view/admin/exam/admin_exam_management_list";
 	}

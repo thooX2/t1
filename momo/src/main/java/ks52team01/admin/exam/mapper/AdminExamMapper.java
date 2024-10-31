@@ -43,4 +43,6 @@ public interface AdminExamMapper {
 
 	int modifyExamInfo(AdminExamInfo examInfo);
 
+	List<AdminExamInfo> searchExamList(Map<String, Object> paramMap);
+
 }

@@ -68,7 +68,7 @@
 	    <result column="exam_qna_type_nm" property="qnaTypeNm"/>
 	    <result column="exam_qna_chap_nm" property="qnaChapNm"/>
 	</resultMap>
-	<resultMap id="AdminExamInfo" type="ks52team01.admin.exam.dto.AdminExamInfo">
+	<resultMap id="AdminExamInfoMap" type="ks52team01.admin.exam.dto.AdminExamInfo">
 		<id 	column="exam_code" 	  property="examCode"/>
 		<result column="user_code" 	  property="userCode"/>
 		<result column="exam_nm" 	  property="examNm"/>
@@ -81,6 +81,57 @@
 		<result column="user_name" 	  property="userNm"/>
 		<result column="user_id" 	  property="userId"/>
 	</resultMap>
+	
+	<select id="searchExamList" parameterType="map" resultMap="AdminExamInfoMap">
+	    SELECT 
+	        exam_code, 
+	        ei.user_code,
+			u.user_name,
+			u.user_id, 
+	        exam_nm, 
+	        exam_type, 
+	        exam_oe_type, 
+	        exam_tar_grd, 
+	        exam_description, 
+	        exam_date, 
+	        exam_inst
+	    FROM 
+	        exam_info ei INNER JOIN `user` u
+	        ON ei.user_code=u.user_code
+	    <where>
+	    	u.grade_code ='ugc1'
+	        <!-- examInfo 객체 필드 조건 -->
+	        <if test="examInfo.examType != null and examInfo.examType != ''">
+	            AND exam_type = #{examInfo.examType}
+	        </if>
+	        
+	        <if test="examInfo.examTarGrd != null and examInfo.examTarGrd != ''">
+	            AND exam_tar_grd = #{examInfo.examTarGrd}
+	        </if>
+	        
+	        <if test="examInfo.examOeType != null and examInfo.examOeType != ''">
+	            AND exam_oe_type = #{examInfo.examOeType}
+	        </if>
+	        
+	        <if test="examInfo.userCode != null and examInfo.userCode != ''">
+	            AND u.user_code = #{examInfo.userCode}
+	        </if>
+	        
+	        <!-- 날짜 조건: startDate와 endDate 사이 -->
+	        <if test="startDate != null and startDate != ''">
+	            AND exam_date <![CDATA[ >= ]]> #{startDate}
+	        </if>
+	
+	        <if test="endDate != null and endDate != ''">
+	            AND exam_date <![CDATA[ <= ]]> #{endDate}
+	        </if>
+	        
+	        <!-- 동적 컬럼 검색 조건 -->
+	        <if test="searchType != null and searchType != '' and searchKeyword != null and searchKeyword != ''">
+	            AND ${searchType} LIKE CONCAT('%',#{searchKeyword},'%')                   
+	        </if>
+	    </where>
+	</select>
 	
 	<update id="modifyExamInfo" parameterType="ks52team01.admin.exam.dto.AdminExamInfo">
 	    UPDATE exam_info
@@ -118,7 +169,7 @@
 
 	
 	
-	<select id="getExamInfoByExamCode" parameterType="String" resultMap="AdminExamInfo">
+	<select id="getExamInfoByExamCode" parameterType="String" resultMap="AdminExamInfoMap">
 		SELECT
 			ei.exam_code,
 			ei.user_code,
@@ -141,7 +192,7 @@
 			CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
 	</select>
 	
-	<select id="getExamInfoList" resultMap="AdminExamInfo">
+	<select id="getExamInfoList" resultMap="AdminExamInfoMap">
 		SELECT
 			ei.exam_code,
 			ei.user_code,

@@ -5,6 +5,7 @@
 <head>
 	<!-- Select2 CSS -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 </head>
 <th:block layout:fragment="customJsFile">
 	<script src="https://code.jquery.com/jquery-3.7.1.js"
@@ -34,8 +35,8 @@
 		$('#addQuestionBtn').click(function () {
 			location.href = "/admin/exam/addQuestion"
 		})
-		
-		
+
+
 		$('#searchBtn').click(function () {
 
 			let subMirCatCode = $('#subMirCatCode').val();
@@ -44,6 +45,13 @@
 			const qnaCurExamState = $('input[name="qnaCurExamState"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
 			const searchType = $('#searchType').val();
 			const searchKeyword = $('#searchKeyword').val();
+
+			if (searchKeyword != '' && searchType == '') {
+				alert('검색타입을 선택해주세요');
+				return;
+			}
+
+
 
 			// Ajax 요청
 			const request = $.ajax({
@@ -82,6 +90,7 @@
 						const newRow = `
 				    <tr class="l_tr_even" align="center">
 				        <td class="l_td01"><input type="checkbox" name="idx" value="${item.qnaCode}" /></td>
+						<td class="l_td01">${searchList.length - idx}</td>
 				        <td class="l_td01">${item.qnaCode}</td>
 				        <td class="l_td01" align="left">
 				            <p class="cate01">${subjectCategory}</p>
@@ -101,11 +110,10 @@
 				        <td class="l_td01">${new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
 				    </tr>
 				    `;
-
 						$('#questionListTable').append(newRow);  // 새로운 행을 테이블에 추가
 					});
 				} else {
-					const newRow = '<tr class="l_tr_even" align="center"><td class="l_td01" colspan="9" style="padding: 20px; font-weight: bold; color: #555;">검색결과에 해당하는 문제가 없습니다</td></tr>';
+					const newRow = '<tr class="l_tr_even" align="center"><td class="l_td01" colspan="10" style="padding: 20px; font-weight: bold; color: #555;">검색결과에 해당하는 문제가 없습니다</td></tr>';
 					$('#questionListTable').append(newRow);
 				}
 			});
@@ -176,6 +184,22 @@
 			}
 		})
 
+		$('#searchReset').click(function () {
+
+			$('#searchType').val("");
+			$('#searchKeyword').val("");
+
+			$('input[name="qnaScr"]:checked').prop('checked', false);
+			$('input[name="qnaCurExamState"]:checked').prop('checked', false);
+
+			$('input[name="qnaScr"]').first().prop('checked', true);
+			$('input[name="qnaCurExamState"]').first().prop('checked', true);
+
+			$('#subMirCatCode').val(null).trigger('change');
+			$('#userCode').val(null).trigger('change');
+
+
+		})
 
 		var questionList = /*[[${questionList}]]*/[];
 		$('#questionCount').text(questionList.length);
@@ -295,15 +319,17 @@
 								<td class="t_th01">검색</td>
 								<td class="t_td01" colspan="3">
 									<select name="searchType" id="searchType">
-										<option value="">- 전체 -</option>
+										<option value="">검색타입선택</option>
 										<option value="qna_subject">문제 제목</option>
 										<option value="qna_qst">문제 내용</option>
 										<option value="qna_chap">출제 단원</option>
 										<option value="qna_type">출제 유형</option>
 										<option value="qna_cmt">문제 해설</option>
 									</select>
-									<input type="text" name="searchKeyword" size="30" id="searchKeyword" />
+									<input type="text" name="searchKeyword" size="30" id="searchKeyword"
+										placeholder="검색어를 입력해주세요" />
 									<button type="button" class="bttn2" id="searchBtn">검색</button>
+									<button type="button" class="bttn2" id="searchReset">초기화</button>
 								</td>
 							</tr>
 						</tbody>
@@ -342,15 +368,16 @@
 									<td class="l_th01" width="20">
 										<input type="checkbox" id="AllCheck" />
 									</td>
-									<td class="l_th01" width="80">Index</td>
+									<td class="l_th01" width="50">번호</td>
+									<td class="l_th01" width="80">문제코드</td>
 									<td class="l_th01"><span class="l_sort01">문제</span></td>
 									<td class="l_th01" width="80">미리보기</td>
-									<td class="l_th01" width="80"><span class="l_sort01" >문항배점</span>
+									<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
 									</td>
 
-									<td class="l_th01" width="100"><span class="l_sort01" >출제자</span>
+									<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
 									</td>
-									<td class="l_th01" width="80"><span class="l_sort01" >상태</span></td>
+									<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"
 											id="CL_a.question_type">생성날짜</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"
@@ -360,10 +387,11 @@
 							</thead>
 							<tbody id="questionListTable">
 								<tr class="l_tr_even" align="center" th:if="${questionList !=null}"
-									th:each="ql:${questionList}">
+									th:each="ql,status:${questionList}">
 									<td class="l_td01">
 										<input type="checkbox" name="idx" th:value="${ql.qnaCode}" />
 									</td>
+									<td class="l_td01" th:text="${status.size - status.index}">1</td>
 									<td class="l_td01" th:text="${ql.qnaCode}">1</td>
 									<td class="l_td01" align="left">
 										<p class="cate01"
