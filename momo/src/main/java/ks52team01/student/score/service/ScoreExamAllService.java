@@ -16,25 +16,25 @@ public interface ScoreExamAllService {
 	
 	public void getExamAllScoreSummary();
 	
-	public List<Double> getRegionalAvgList(TookExamInfo tookExamInfo);
-	
 	public List<TookExamInfo> getFirstTookExamList(String userCode);
 	
-	public List<Subject> getSubjectScoreList(String userCode, String tookExamInfoCode);
+	public List<Subject> getSubjectScoreList(String userCode, String tookExamInfoCode, String examCode, String areaCityCode);
 	
-	public KoreanHistoryScore getKoreanHistoryScore(String userCode, String tookExamInfoCode);
+	public List<Subject> getSubjectScoreAvgList();
 	
-	public KoreanScore getKoreanScore(String userCode, String tookExamInfoCode);
+	public Subject getKoreanHistoryScore(String userCode, String tookExamInfoCode);
 	
-	public MathScore getMathScore(String userCode, String tookExamInfoCode);
+	public Subject getKoreanScore(String userCode, String tookExamInfoCode);
 	
-	public EnglishScore getEnglishScore(String userCode, String tookExamInfoCode);
+	public Subject getMathScore(String userCode, String tookExamInfoCode);
 	
-	public Inquiry1Score getInquiry1Score(String userCode, String tookExamInfoCode);
+	public Subject getEnglishScore(String userCode, String tookExamInfoCode);
 	
-	public Inquiry2Score getInquiry2Score(String userCode, String tookExamInfoCode);
+	public Subject getInquiry1Score(String userCode, String tookExamInfoCode);
 	
-	public SecondLanguageAndChineseCharactersScore getSecondLanguageAndChineseCharactersScore(String userCode, String tookExamInfoCode);
+	public Subject getInquiry2Score(String userCode, String tookExamInfoCode);
+	
+	public Subject getSecondLanguageAndChineseCharactersScore(String userCode, String tookExamInfoCode);
 	
 	public void getExamAllStandardScore();
 	

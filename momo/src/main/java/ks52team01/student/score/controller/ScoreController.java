@@ -2,6 +2,7 @@ package ks52team01.student.score.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +45,42 @@ public class ScoreController {
 		 * 전국/도/시 과목 원점수/표준점수/백분위/등급/석차 평균
 		 */
 		String tookExamInfoCode = firstTookExamList.get(0).getTookExamInfoCode();
-		List<Subject> subjectScoreList = scoreExamAllService.getSubjectScoreList(userCode, tookExamInfoCode);
+		String examCode = firstTookExamList.get(0).getExamCode();
+		String areaCityCode = firstTookExamList.get(0).getAreaCityCode();
+		Map<String, Object> map;
+		List<Subject> subjectScoreAvgList = scoreExamAllService.getSubjectScoreAvgList();
+		List<Subject> subjectScoreList = scoreExamAllService.getSubjectScoreList(userCode, tookExamInfoCode, examCode, areaCityCode);
+		for(int i=0; i<subjectScoreList.size(); i++) {
+			String curSubjectMajorCategoryCode = subjectScoreList.get(i).getSubjectMajorCategoryCode();
+			switch(curSubjectMajorCategoryCode) {
+				case "smjrcc1" : // 대분류 국어 과목
+					subjectScoreList.get(i);
+					break;
+				case "smjrcc2" : // 대분류 수학 과목
+					subjectScoreList.get(i);
+					break;
+				case "smjrcc3" : // 대분류 영어 과목
+					subjectScoreList.get(i);
+					break;
+				case "smjrcc4" : // 대분류 한국사 과목
+					subjectScoreList.get(i);
+					break;
+				case "smjrcc5" : // 대분류 사회탐구 과목
+					subjectScoreList.get(i);
+					break;
+				case "smjrcc6" : // 대분류 과학탐구 과목
+					subjectScoreList.get(i);
+					break;
+				case "smjrcc7" : // 대분류 직업탐구 과목
+					subjectScoreList.get(i);
+					break;
+				case "smjrcc8" : // 대분류 제2외국어 및 한문 과목
+					subjectScoreList.get(i);
+					break;
+				default :
+					break;
+			}
+		}
 		// 출력 날짜 형식 정의
 		SimpleDateFormat outputFormat = new SimpleDateFormat("yy.MM.dd");
 		// Date 객체를 원하는 형식의 문자열로 변환
@@ -64,7 +100,7 @@ public class ScoreController {
 	public ExamScore getScoreMain(String tookExamInfoCode, HttpSession session) {
 		User user = (User) session.getAttribute("loggedInUser");
 		String userCode = user.getUserCode();
-		KoreanScore koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
+		Subject koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
 		MathScore mathScore = scoreExamAllService.getMathScore(userCode, tookExamInfoCode);
 		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode, tookExamInfoCode);
 		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
@@ -72,7 +108,7 @@ public class ScoreController {
 		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode, tookExamInfoCode);
 		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
 		ExamScore examScore = new ExamScore();
-		examScore.setKoreanScore(koreanScore);
+		// examScore.setKoreanScore(koreanScore);
 		examScore.setMathScore(mathScore);
 		examScore.setEnglishScore(englishScore);
 		examScore.setKoreanHistoryScore(koreanHistoryScore);

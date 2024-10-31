@@ -148,9 +148,9 @@
 	</resultMap>
 	
 	<resultMap type="Subject" id="SubjectMap">
-		<id 	column="took_exam_info_code" property="tookExamInfoCode"/>
-		<id     column="sub_mjr_cat_code" 	 property="subjectMajorCategoryCode"/>
-		<id     column="sub_mir_cat_code" 	 property="subjectMinorCategoryCode"/>
+		<result column="took_exam_info_code" property="tookExamInfoCode"/>
+		<result column="sub_mjr_cat_code" 	 property="subjectMajorCategoryCode"/>
+		<result column="sub_mir_cat_code" 	 property="subjectMinorCategoryCode"/>
 		<result column="sub_mjr_cat_nm" 	 property="subjectMajorCategoryName"/>
 		<result column="sub_mir_cat_nm" 	 property="subjectMinorCategoryName"/>
 		<result column="sub_og_scr" 		 property="subjectOriginalScore"/>
@@ -158,6 +158,24 @@
 		<result column="sub_pct" 			 property="subjectPercent"/>
 		<result column="sub_grd" 			 property="subjectGrade"/>
 		<result column="sub_rank" 			 property="subjectRank"/>
+	</resultMap>
+	
+	<resultMap type="SubjectAvg" id="SubjectAvgMap">
+		<result column="sub_og_scr_nat_avg"   property="subjectOriginalScoreNationAvg"/>
+		<result column="sub_og_scr_pvc_avg"   property="subjectOriginalScoreProvinceAvg"/>
+		<result column="sub_og_scr_mncp_avg"  property="subjectOriginalScoreMunicipalityAvg"/>
+		<result column="sub_std_scr_nat_avg"  property="subjectStandardScoreNationAvg"/>
+		<result column="sub_std_scr_pvc_avg"  property="subjectStandardScoreProvinceAvg"/>
+		<result column="sub_std_scr_mncp_avg" property="subjectStandardScoreMunicipalityAvg"/>
+		<result column="sub_pct_nat_avg" 	  property="subjectPercentNationAvg"/>
+		<result column="sub_pct_pvc_avg"      property="subjectPercentProvinceAvg"/>
+		<result column="sub_pct_mncp_avg"  	  property="subjectPercentMunicipalityAvg"/>
+		<result column="sub_grd_nat_avg"      property="subjectGradeNationAvg"/>
+		<result column="sub_grd_pvc_avg"      property="subjectGradeProvinceAvg"/>
+		<result column="sub_grd_mncp_avg"     property="subjectGradeMunicipalityAvg"/>
+		<result column="sub_rank_nat_avg"     property="subjectRankNationAvg"/>
+		<result column="sub_rank_pvc_avg"     property="subjectRankProvinceAvg"/>
+		<result column="sub_rank_mncp_avg"    property="subjectRankMunicipalityAvg"/>
 	</resultMap>
 	
 	<sql id="koreanScoreFrag">
@@ -348,175 +366,552 @@
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode}
 	</select>
 	
-	<select id="getNationAvg" parameterType="String" resultType="Double">
-		SELECT
-			AVG(subject_score_origin)
-		FROM
-			subject_score ss
-			INNER JOIN kor_scr ks
-			ON
-			ss.subject_score_code = ks.kor_subject_score_code
-		WHERE
-			ks.exam_code = #{examCode} AND kor_slt_sub = #{korSubCode};
-	</select>
-
-	<select id="getProvinceAvg" parameterType="String" resultType="Double">
-		SELECT
-			AVG(subject_score_origin)
-		FROM
-			subject_score ss
-			INNER JOIN kor_scr ks
-			ON
-			ss.subject_score_code = ks.kor_subject_score_code
-			INNER JOIN took_exam_info tei
-			ON
-			ss.took_exam_info_code = tei.took_exam_info_code
-		WHERE
-			ks.exam_code = #{examCode} AND ks.kor_slt_sub = #{korSubCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
-	</select>
-	
-	<select id="getMunicipalityAvg" parameterType="String" resultType="Double">
-		SELECT
-			AVG(subject_score_origin)
-		FROM
-			subject_score ss
-			INNER JOIN kor_scr ks
-			ON
-			ss.subject_score_code = ks.kor_subject_score_code
-			INNER JOIN took_exam_info tei
-			ON
-			ss.took_exam_info_code = tei.took_exam_info_code
-		WHERE
-			ks.exam_code = #{examCode} AND ks.kor_slt_sub = #{korSubCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
-	</select>
-	
-	<select id="getKoreanScore" parameterType="String" resultMap="KoreanScoreMap">
+	<select id="getKoreanScore" parameterType="String" resultMap="SubjectMap">
 		/* 국어 점수 조회 */
 		SELECT
 			ss.took_exam_info_code,
+			ss.sub_mjr_cat_code,
+			smc1.sub_mjr_cat_nm,	
 			ss.sub_mir_cat_code,
-			smc.sub_mir_cat_nm,
-			ss.subject_score_origin,
-			ks.kor_std_scr,
-			ks.kor_pct,
-			ks.kor_grd,
-			ks.kor_ranking
+			smc2.sub_mir_cat_nm,
+			ss.subject_score_origin AS sub_og_scr,
+			ks.kor_std_scr 			AS sub_std_scr,
+			ks.kor_pct 				AS sub_pct,
+			ks.kor_grd 				AS sub_grd,
+			ks.kor_ranking 			AS sub_rank
 		FROM
 			subject_score ss
 			INNER JOIN kor_scr ks
 			ON ss.subject_score_code = ks.kor_subject_score_code
-			INNER JOIN sub_mir_cat smc
-			ON ss.sub_mir_cat_code = smc.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smc1
+			ON ss.sub_mjr_cat_code = smc1.sub_mjr_cat_code
+			INNER JOIN sub_mir_cat smc2
+			ON ss.sub_mir_cat_code = smc2.sub_mir_cat_code
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
-
-	<select id="getMathScore" parameterType="String" resultMap="MathScoreMap">
-		/* 수학 점수 조회 */
+	
+	<select id="getKoreanScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 국어 점수 전국 평균 조회 */
 		SELECT
-			ss.took_exam_info_code,
-			ss.sub_mir_cat_code,
-			smc.sub_mir_cat_nm,
-			ss.subject_score_origin,
-			ms.math_std_scr,
-			ms.math_pct,
-			ms.math_grd,
-			ms.math_ranking
+			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
+			AVG(ks.kor_std_scr) 		 AS sub_std_scr_nat_avg,
+			AVG(ks.kor_pct) 			 AS sub_pct_nat_avg,
+			AVG(ks.kor_grd) 			 AS sub_grd_nat_avg,
+			AVG(ks.kor_ranking) 		 AS sub_rank_nat_avg
 		FROM
-			subject_score ss INNER JOIN math_scr ms
+			subject_score ss
+			INNER JOIN  kor_scr ks
+			ON ss.subject_score_code = ks.kor_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode};
+	</select>
+	
+	<select id="getKoreanScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 국어 점수 도 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
+			AVG(ks.kor_std_scr) 		 AS sub_std_scr_pvc_avg,
+			AVG(ks.kor_pct) 			 AS sub_pct_pvc_avg,
+			AVG(ks.kor_grd) 			 AS sub_grd_pvc_avg,
+			AVG(ks.kor_ranking) 		 AS sub_rank_pvc_avg
+		FROM
+			subject_score ss
+			INNER JOIN  kor_scr ks
+			ON ss.subject_score_code = ks.kor_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getKoreanScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 국어 점수 시 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
+			AVG(ks.kor_std_scr) 		 AS sub_std_scr_mncp_avg,
+			AVG(ks.kor_pct) 			 AS sub_pct_mncp_avg,
+			AVG(ks.kor_grd) 			 AS sub_grd_mncp_avg,
+			AVG(ks.kor_ranking) 		 AS sub_rank_mncp_avg
+		FROM
+			subject_score ss
+			INNER JOIN  kor_scr ks
+			ON ss.subject_score_code = ks.kor_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+	</select>
+
+	<select id="getMathScore" parameterType="String" resultMap="SubjectMap">
+		/* 수학 점수 조회 */
+		SELECT			
+			ss.took_exam_info_code,
+			ss.sub_mjr_cat_code,
+			smc1.sub_mjr_cat_nm,	
+			ss.sub_mir_cat_code,
+			smc2.sub_mir_cat_nm,
+			ss.subject_score_origin AS sub_og_scr,
+			ms.math_std_scr 		AS sub_std_scr,
+			ms.math_pct 			AS sub_pct,
+			ms.math_grd 			AS sub_grd,
+			ms.math_ranking 		AS sub_rank
+		FROM
+			subject_score ss
+			INNER JOIN math_scr ms
 			ON ss.subject_score_code = ms.math_subject_score_code
-			INNER JOIN sub_mir_cat smc
-			ON ss.sub_mir_cat_code = smc.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smc1
+			ON ss.sub_mjr_cat_code = smc1.sub_mjr_cat_code
+			INNER JOIN sub_mir_cat smc2
+			ON ss.sub_mir_cat_code = smc2.sub_mir_cat_code
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
+	
+	<select id="getMathScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 수학 점수 전국 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
+			AVG(ms.math_std_scr) 		 AS sub_std_scr_nat_avg,
+			AVG(ms.math_pct) 			 AS sub_pct_nat_avg,
+			AVG(ms.math_grd) 			 AS sub_grd_nat_avg,
+			AVG(ms.math_ranking) 		 AS sub_rank_nat_avg
+		FROM
+			subject_score ss
+			INNER JOIN  math_scr ms
+			ON ss.subject_score_code = ms.math_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode};
+	</select>
+	
+	<select id="getMathScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 수학 점수 도 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
+			AVG(ms.math_std_scr) 		 AS sub_std_scr_pvc_avg,
+			AVG(ms.math_pct) 			 AS sub_pct_pvc_avg,
+			AVG(ms.math_grd) 			 AS sub_grd_pvc_avg,
+			AVG(ms.math_ranking) 		 AS sub_rank_pvc_avg
+		FROM
+			subject_score ss
+			INNER JOIN  math_scr ms
+			ON ss.subject_score_code = ms.math_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getMathScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 수학 점수 시 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
+			AVG(ms.math_std_scr) 		 AS sub_std_scr_mncp_avg,
+			AVG(ms.math_pct) 			 AS sub_pct_mncp_avg,
+			AVG(ms.math_grd) 			 AS sub_grd_mncp_avg,
+			AVG(ms.math_ranking) 		 AS sub_rank_mncp_avg
+		FROM
+			subject_score ss
+			INNER JOIN  math_scr ms
+			ON ss.subject_score_code = ms.math_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+	</select>
 
-	<select id="getEnglishScore" parameterType="String" resultMap="EnglishScoreMap">
+	<select id="getEnglishScore" parameterType="String" resultMap="SubjectMap">
 		/* 영어 점수 조회 */
 		SELECT
 			ss.took_exam_info_code,
-			ss.subject_score_origin,
-			es.eng_grd,
-			es.eng_ranking
+			ss.sub_mjr_cat_code,
+			smc1.sub_mjr_cat_nm,	
+			ss.sub_mir_cat_code,
+			NULL sub_mir_cat_nm,
+			ss.subject_score_origin AS sub_og_scr,
+			eng_std_scr 			AS sub_std_scr,
+			eng_pct 				AS sub_pct,
+			es.eng_grd 				AS sub_grd,
+			es.eng_ranking 			AS sub_rank
 		FROM
-			subject_score ss INNER JOIN eng_scr es
+			subject_score ss
+			INNER JOIN eng_scr es
 			ON ss.subject_score_code = es.eng_subject_score_code
+			INNER JOIN sub_mjr_cat smc1
+			ON ss.sub_mjr_cat_code = smc1.sub_mjr_cat_code
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 	
-	<select id="getKoreanHistoryScore" parameterType="String" resultMap="KoreanHistoryScoreMap">
+	<select id="getEnglishScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 영어 점수 전국 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
+			AVG(es.eng_std_scr) 		 AS sub_std_scr_nat_avg,
+			AVG(es.eng_pct) 			 AS sub_pct_nat_avg,
+			AVG(es.eng_grd) 			 AS sub_grd_nat_avg,
+			AVG(es.eng_ranking) 		 AS sub_rank_nat_avg
+		FROM
+			subject_score ss
+			INNER JOIN  eng_scr es
+			ON ss.subject_score_code = es.eng_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode};
+	</select>
+	
+	<select id="getEnglishScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 영어 점수 도 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
+			AVG(es.eng_std_scr) 		 AS sub_std_scr_pvc_avg,
+			AVG(es.eng_pct) 			 AS sub_pct_pvc_avg,
+			AVG(es.eng_grd) 			 AS sub_grd_pvc_avg,
+			AVG(es.eng_ranking) 		 AS sub_rank_pvc_avg
+		FROM
+			subject_score ss
+			INNER JOIN  eng_scr es
+			ON ss.subject_score_code = es.eng_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getEnglishScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 영어 점수 시 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
+			AVG(es.eng_std_scr) 		 AS sub_std_scr_mncp_avg,
+			AVG(es.eng_pct) 			 AS sub_pct_mncp_avg,
+			AVG(es.eng_grd) 			 AS sub_grd_mncp_avg,
+			AVG(es.eng_ranking) 		 AS sub_rank_mncp_avg
+		FROM
+			subject_score ss
+			INNER JOIN  eng_scr es
+			ON ss.subject_score_code = es.eng_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+	</select>
+	
+	<select id="getKoreanHistoryScore" parameterType="String" resultMap="SubjectMap">
 		/* 한국사 점수 조회 */
 		SELECT
 			ss.took_exam_info_code,
-			ss.subject_score_origin,
-			khs.kor_his_grd,
-			khs.kor_his_ranking
+			ss.sub_mjr_cat_code,
+			smc1.sub_mjr_cat_nm,
+			ss.sub_mir_cat_code,
+			NULL sub_mir_cat_nm,
+			ss.subject_score_origin AS sub_og_scr,
+			kor_his_std_scr 		AS sub_std_scr,
+			kor_his_pct 			AS sub_pct,
+			khs.kor_his_grd 		AS sub_grd,
+			khs.kor_his_ranking 	AS sub_rank
 		FROM
-			subject_score ss INNER JOIN kor_his_scr khs
+			subject_score ss 
+			INNER JOIN kor_his_scr khs
 			ON ss.subject_score_code = khs.kor_his_subject_score_code
+			INNER JOIN sub_mjr_cat smc1
+			ON ss.sub_mjr_cat_code = smc1.sub_mjr_cat_code
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 	
-	<select id="getInquiry1Score" parameterType="String" resultMap="Inquiry1ScoreMap">
+	<select id="getKoreanHistoryScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 한국사 점수 전국 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
+			AVG(khs.kor_his_std_scr) 	 AS sub_std_scr_nat_avg,
+			AVG(khs.kor_his_pct) 		 AS sub_pct_nat_avg,
+			AVG(khs.kor_his_grd) 		 AS sub_grd_nat_avg,
+			AVG(khs.kor_his_ranking)	 AS sub_rank_nat_avg
+		FROM
+			subject_score ss
+			INNER JOIN  kor_his_scr khs
+			ON ss.subject_score_code = khs.kor_his_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode};
+	</select>
+	
+	<select id="getKoreanHistoryScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 한국사 점수 도 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
+			AVG(khs.kor_his_std_scr) 	 AS sub_std_scr_pvc_avg,
+			AVG(khs.kor_his_pct) 		 AS sub_pct_pvc_avg,
+			AVG(khs.kor_his_grd) 		 AS sub_grd_pvc_avg,
+			AVG(khs.kor_his_ranking) 	 AS sub_rank_pvc_avg
+		FROM
+			subject_score ss
+			INNER JOIN  kor_his_scr khs
+			ON ss.subject_score_code = khs.kor_his_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getKoreanHistoryScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 한국사 점수 시 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
+			AVG(khs.kor_his_std_scr) 	 AS sub_std_scr_mncp_avg,
+			AVG(khs.kor_his_pct) 		 AS sub_pct_mncp_avg,
+			AVG(khs.kor_his_grd) 		 AS sub_grd_mncp_avg,
+			AVG(khs.kor_his_ranking) 	 AS sub_rank_mncp_avg
+		FROM
+			subject_score ss
+			INNER JOIN  kor_his_scr khs
+			ON ss.subject_score_code = khs.kor_his_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+	</select>
+	
+	<select id="getInquiry1Score" parameterType="String" resultMap="SubjectMap">
 		/* 탐구1 점수 조회 */
 		SELECT
 			ss.took_exam_info_code,
+			ss.sub_mjr_cat_code,
+			smc1.sub_mjr_cat_nm,
 			ss.sub_mir_cat_code,
-			smc.sub_mir_cat_nm,
-			ss.subject_score_origin,
-			i1s.inq1_std_scr,
-			i1s.inq1_pct,
-			i1s.inq1_grd,
-			i1s.inq1_ranking
+			smc2.sub_mir_cat_nm,
+			ss.subject_score_origin AS sub_og_scr,
+			i1s.inq1_std_scr 		AS sub_std_scr,
+			i1s.inq1_pct 			AS sub_pct,
+			i1s.inq1_grd 			AS sub_grd,
+			i1s.inq1_ranking 		AS sub_rank
 		FROM
 			subject_score ss
 			INNER JOIN inq1_scr i1s
 			ON ss.subject_score_code = i1s.inq1_subject_score_code
-			INNER JOIN sub_mir_cat smc
-			ON ss.sub_mir_cat_code = smc.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smc1
+			ON ss.sub_mjr_cat_code = smc1.sub_mjr_cat_code
+			INNER JOIN sub_mir_cat smc2
+			ON ss.sub_mir_cat_code = smc2.sub_mir_cat_code
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
 	
-	<select id="getInquiry2Score" parameterType="String" resultMap="Inquiry2ScoreMap">
+	<select id="getInquiry1ScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구1 점수 전국 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
+			AVG(i1s.inq1_std_scr) 	 AS sub_std_scr_nat_avg,
+			AVG(i1s.inq1_pct) 		 AS sub_pct_nat_avg,
+			AVG(i1s.inq1_grd) 		 AS sub_grd_nat_avg,
+			AVG(i1s.inq1_ranking)	 AS sub_rank_nat_avg
+		FROM
+			subject_score ss
+			INNER JOIN  inq1_scr i1s
+			ON ss.subject_score_code = i1s.inq1_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode};
+	</select>
+	
+	<select id="getInquiry1ScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구1 점수 도 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
+			AVG(i1s.inq1_std_scr) 	 AS sub_std_scr_pvc_avg,
+			AVG(i1s.inq1_pct) 		 AS sub_pct_pvc_avg,
+			AVG(i1s.inq1_grd) 		 AS sub_grd_pvc_avg,
+			AVG(i1s.inq1_ranking) 	 AS sub_rank_pvc_avg
+		FROM
+			subject_score ss
+			INNER JOIN  inq1_scr i1s
+			ON ss.subject_score_code = i1s.inq1_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getInquiry1ScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구1 점수 시 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
+			AVG(i1s.inq1_std_scr) 	 	 AS sub_std_scr_mncp_avg,
+			AVG(i1s.inq1_pct) 		 	 AS sub_pct_mncp_avg,
+			AVG(i1s.inq1_grd) 		 	 AS sub_grd_mncp_avg,
+			AVG(i1s.inq1_ranking) 	 	 AS sub_rank_mncp_avg
+		FROM
+			subject_score ss
+			INNER JOIN inq1_scr i1s
+			ON ss.subject_score_code = i1s.inq1_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+	</select>
+	
+	<select id="getInquiry2Score" parameterType="String" resultMap="SubjectMap">
 		/* 탐구2 점수 조회 */
 		SELECT
 			ss.took_exam_info_code,
+			ss.sub_mjr_cat_code,
+			smc1.sub_mjr_cat_nm,
 			ss.sub_mir_cat_code,
-			smc.sub_mir_cat_nm,
-			ss.subject_score_origin,
-			i2s.inq2_std_scr,
-			i2s.inq2_pct,
-			i2s.inq2_grd,
-			i2s.inq2_ranking
+			smc2.sub_mir_cat_nm,
+			ss.subject_score_origin AS sub_og_scr,
+			i2s.inq2_std_scr 		AS sub_std_scr,
+			i2s.inq2_pct 			AS sub_pct,
+			i2s.inq2_grd 			AS sub_grd,
+			i2s.inq2_ranking 		AS sub_rank
 		FROM
 			subject_score ss
 			INNER JOIN inq2_scr i2s
 			ON ss.subject_score_code = i2s.inq2_subject_score_code
-			INNER JOIN sub_mir_cat smc
-			ON ss.sub_mir_cat_code = smc.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smc1
+			ON ss.sub_mjr_cat_code = smc1.sub_mjr_cat_code
+			INNER JOIN sub_mir_cat smc2
+			ON ss.sub_mir_cat_code = smc2.sub_mir_cat_code
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
 	</select>
+	
+	<select id="getInquiry2ScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구2 점수 전국 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
+			AVG(i2s.inq2_std_scr) 	 AS sub_std_scr_nat_avg,
+			AVG(i2s.inq2_pct) 		 AS sub_pct_nat_avg,
+			AVG(i2s.inq2_grd) 		 AS sub_grd_nat_avg,
+			AVG(i2s.inq2_ranking)	 AS sub_rank_nat_avg
+		FROM
+			subject_score ss
+			INNER JOIN  inq2_scr i2s
+			ON ss.subject_score_code = i2s.inq2_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode};
+	</select>
+	
+	<select id="getInquiry2ScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구2 점수 도 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
+			AVG(i2s.inq2_std_scr) 	 AS sub_std_scr_pvc_avg,
+			AVG(i2s.inq2_pct) 		 AS sub_pct_pvc_avg,
+			AVG(i2s.inq2_grd) 		 AS sub_grd_pvc_avg,
+			AVG(i2s.inq2_ranking) 	 AS sub_rank_pvc_avg
+		FROM
+			subject_score ss
+			INNER JOIN  inq2_scr i2s
+			ON ss.subject_score_code = i2s.inq2_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getInquiry2ScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구2 점수 시 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
+			AVG(i2s.inq2_std_scr) 	 	 AS sub_std_scr_mncp_avg,
+			AVG(i2s.inq2_pct) 		 	 AS sub_pct_mncp_avg,
+			AVG(i2s.inq2_grd) 		 	 AS sub_grd_mncp_avg,
+			AVG(i2s.inq2_ranking) 	 	 AS sub_rank_mncp_avg
+		FROM
+			subject_score ss
+			INNER JOIN inq2_scr i2s
+			ON ss.subject_score_code = i2s.inq2_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+	</select>
 
-	<select id="getSecondLanguageAndChineseCharactersScore" parameterType="String" resultMap="SecondLanguageAndChineseCharactersScoreMap">
+	<select id="getSecondLanguageAndChineseCharactersScore" parameterType="String" resultMap="SubjectMap">
 		/* 제2외국어 및 한문 점수 조회 */
 		SELECT
 			ss.took_exam_info_code,
+			ss.sub_mjr_cat_code,
+			smc1.sub_mjr_cat_nm,
 			ss.sub_mir_cat_code,
-			smc.sub_mir_cat_nm,
-			ss.subject_score_origin,
-			fs.frn_grd,
-			fs.frn_ranking
+			smc2.sub_mir_cat_nm,
+			ss.subject_score_origin AS sub_og_scr,
+			fs.frn_std_scr 			AS sub_std_scr,
+			fs.frn_pct 				AS sub_pct,
+			fs.frn_grd 				AS sub_grd,
+			fs.frn_ranking 			AS sub_rank
 		FROM
 			subject_score ss
 			INNER JOIN frn_scr fs
 			ON ss.subject_score_code = fs.frn_subject_score_code
-			INNER JOIN sub_mir_cat smc
-			ON ss.sub_mir_cat_code = smc.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smc1
+			ON ss.sub_mjr_cat_code = smc1.sub_mjr_cat_code
+			INNER JOIN sub_mir_cat smc2
+			ON ss.sub_mir_cat_code = smc2.sub_mir_cat_code
 		WHERE
 			ss.user_code = #{userCode} AND ss.took_exam_info_code = #{tookExamInfoCode};
+	</select>
+	
+	<select id="getSecondLanguageAndChineseCharactersScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구2 점수 전국 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
+			AVG(fs.frn_std_scr) 		 AS sub_std_scr_nat_avg,
+			AVG(fs.frn_pct) 			 AS sub_pct_nat_avg,
+			AVG(fs.frn_grd) 			 AS sub_grd_nat_avg,
+			AVG(fs.frn_ranking)			 AS sub_rank_nat_avg
+		FROM
+			subject_score ss
+			INNER JOIN  frn_scr fs
+			ON ss.subject_score_code = fs.frn_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode};
+	</select>
+	
+	<select id="getSecondLanguageAndChineseCharactersScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구2 점수 도 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
+			AVG(fs.frn_std_scr) 	 AS sub_std_scr_pvc_avg,
+			AVG(fs.frn_pct) 		 AS sub_pct_pvc_avg,
+			AVG(fs.frn_grd) 		 AS sub_grd_pvc_avg,
+			AVG(fs.frn_ranking) 	 AS sub_rank_pvc_avg
+		FROM
+			subject_score ss
+			INNER JOIN  frn_scr fs
+			ON ss.subject_score_code = fs.frn_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 2) = #{provinceCode};
+	</select>
+	
+	<select id="getSecondLanguageAndChineseCharactersScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
+		/* 탐구2 점수 시 평균 조회 */
+		SELECT
+			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
+			AVG(fs.frn_std_scr) 	 	 AS sub_std_scr_mncp_avg,
+			AVG(fs.frn_pct) 		 	 AS sub_pct_mncp_avg,
+			AVG(fs.frn_grd) 		 	 AS sub_grd_mncp_avg,
+			AVG(fs.frn_ranking) 	 	 AS sub_rank_mncp_avg
+		FROM
+			subject_score ss
+			INNER JOIN frn_scr fs
+			ON ss.subject_score_code = fs.frn_subject_score_code
+			INNER JOIN took_exam_info tei
+			ON tei.took_exam_info_code = ss.took_exam_info_code
+		WHERE
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
 	</select>
 </mapper>
