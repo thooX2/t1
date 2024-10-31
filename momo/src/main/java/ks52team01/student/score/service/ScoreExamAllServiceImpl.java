@@ -1,18 +1,13 @@
 package ks52team01.student.score.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import ks52team01.student.exam.dto.TookExamInfo;
 import ks52team01.student.exam.mapper.ExamMapper;
-import ks52team01.student.score.dto.EnglishScore;
-import ks52team01.student.score.dto.Inquiry1Score;
-import ks52team01.student.score.dto.Inquiry2Score;
-import ks52team01.student.score.dto.KoreanHistoryScore;
-import ks52team01.student.score.dto.KoreanScore;
-import ks52team01.student.score.dto.MathScore;
-import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
 import ks52team01.student.score.dto.Subject;
 import ks52team01.student.score.dto.SubjectAvg;
 import ks52team01.student.score.mapper.ScoreMapper;
@@ -26,82 +21,17 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	private final ScoreMapper scoreMapper;
 
 	@Override
-	public void getExamAllScoreSummary() {
-
-	}
-
-	@Override
-	public void getExamAllStandardScore() {
-
-	}
-
-	@Override
-	public void getExamAllPercentScore() {
-
-	}
-
-	@Override
-	public void getExamAllGradeScore() {
-
-	}
-
-	@Override
-	public void getExamAllRank() {
-
-	}
-
-	@Override
 	public List<TookExamInfo> getFirstTookExamList(String userCode) {
 		// TODO Auto-generated method stub
 		return examMapper.getFirstTookExamList(userCode);
 	}
 
 	@Override
-	public Subject getKoreanHistoryScore(String userCode, String tookExamInfoCode) {
+	public Map<String, Subject> getTookExamScore(String userCode, String areaCityCode, String examCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
-		return scoreMapper.getKoreanHistoryScore(userCode, tookExamInfoCode);
-	}
-
-	@Override
-	public Subject getKoreanScore(String userCode, String tookExamInfoCode) {
-		// TODO Auto-generated method stub
-		return scoreMapper.getKoreanScore(userCode, tookExamInfoCode);
-	}
-
-	@Override
-	public Subject getMathScore(String userCode, String tookExamInfoCode) {
-		// TODO Auto-generated method stub
-		return scoreMapper.getMathScore(userCode, tookExamInfoCode);
-	}
-
-	@Override
-	public Subject getEnglishScore(String userCode, String tookExamInfoCode) {
-		// TODO Auto-generated method stub
-		return scoreMapper.getEnglishScore(userCode, tookExamInfoCode);
-	}
-
-	@Override
-	public Subject getInquiry1Score(String userCode, String tookExamInfoCode) {
-		// TODO Auto-generated method stub
-		return scoreMapper.getInquiry1Score(userCode, tookExamInfoCode);
-	}
-
-	@Override
-	public Subject getInquiry2Score(String userCode, String tookExamInfoCode) {
-		// TODO Auto-generated method stub
-		return scoreMapper.getInquiry2Score(userCode, tookExamInfoCode);
-	}
-
-	@Override
-	public Subject getSecondLanguageAndChineseCharactersScore(String userCode, String tookExamInfoCode) {
-		// TODO Auto-generated method stub
-		return scoreMapper.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
-	}
-
-	@Override
-	public List<Subject> getSubjectScoreList(String userCode, String tookExamInfoCode, String examCode,
-			String areaCityCode) {
-		// TODO Auto-generated method stub
+		
+		Map<String, Subject> subjectMap = new HashMap<String, Subject>();
+		
 		String provinceCode = areaCityCode.substring(0, 2);
 		String municipalityCode = areaCityCode.substring(2, 4);
 
@@ -132,6 +62,7 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			koreanScore.setSubjectRankMunicipalityAvg(koreanScoreMunicipalityAvg.getSubjectRankMunicipalityAvg());
 			System.out.println(koreanScore); // test
 		}
+		subjectMap.put("koreanScore", koreanScore);
 
 		// 수학 과목 점수 산출
 		Subject mathScore = scoreMapper.getMathScore(userCode, tookExamInfoCode);
@@ -160,6 +91,8 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			mathScore.setSubjectRankMunicipalityAvg(mathScoreMunicipalityAvg.getSubjectRankMunicipalityAvg());
 			System.out.println(mathScore); // test
 		}
+		subjectMap.put("mathScore", mathScore);
+
 		
 		// 영어 과목 점수 산출
 		Subject englishScore = scoreMapper.getEnglishScore(userCode, tookExamInfoCode);
@@ -188,6 +121,7 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			englishScore.setSubjectRankMunicipalityAvg(englishScoreMunicipalityAvg.getSubjectRankMunicipalityAvg());
 			System.out.println(englishScore); // test
 		}
+		subjectMap.put("englishScore", englishScore);
 		
 		// 한국사 과목 점수 산출
 		Subject koreanHistoryScore = scoreMapper.getKoreanHistoryScore(userCode, tookExamInfoCode);
@@ -216,6 +150,7 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			koreanHistoryScore.setSubjectRankMunicipalityAvg(koreanHistoryScoreMunicipalityAvg.getSubjectRankMunicipalityAvg());
 			System.out.println(koreanHistoryScore); // test
 		}
+		subjectMap.put("koreanHistoryScore", koreanHistoryScore);
 		
 		// 탐구1 과목 점수 산출
 		Subject inquiry1Score = scoreMapper.getInquiry1Score(userCode, tookExamInfoCode);
@@ -244,6 +179,7 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			inquiry1Score.setSubjectRankMunicipalityAvg(inquiry1ScoreMunicipalityAvg.getSubjectRankMunicipalityAvg());
 			System.out.println(inquiry1Score); // test
 		}
+		subjectMap.put("inquiry1Score", inquiry1Score);
 		
 		// 탐구2 과목 점수 산출
 		Subject inquiry2Score = scoreMapper.getInquiry2Score(userCode, tookExamInfoCode);
@@ -272,6 +208,7 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			inquiry2Score.setSubjectRankMunicipalityAvg(inquiry2ScoreMunicipalityAvg.getSubjectRankMunicipalityAvg());
 			System.out.println(inquiry2Score); // test
 		}
+		subjectMap.put("inquiry2Score", inquiry2Score);
 		
 		// 제2외국어 및 한문 과목 점수 산출 널처리
 		Subject secondLanguageAndChineseCharactersScore = scoreMapper.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
@@ -300,13 +237,8 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 			secondLanguageAndChineseCharactersScore.setSubjectRankMunicipalityAvg(secondLanguageAndChineseCharactersScoreMunicipalityAvg.getSubjectRankMunicipalityAvg());
 			System.out.println(secondLanguageAndChineseCharactersScore); // test
 		}
+		subjectMap.put("secondLanguageAndChineseCharactersScore", secondLanguageAndChineseCharactersScore);
 
-		return null;
-	}
-
-	@Override
-	public List<Subject> getSubjectScoreAvgList() {
-		// TODO Auto-generated method stub
-		return null;
+		return subjectMap;
 	}
 }

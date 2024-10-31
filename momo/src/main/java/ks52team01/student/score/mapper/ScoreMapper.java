@@ -15,8 +15,6 @@ import ks52team01.student.score.dto.SubjectAvg;
 
 @Mapper
 public interface ScoreMapper {
-
-	public void getScoreMain();
 	
 	public List<Subject> getSubjectScoreList(String userCode, String tookExamInfoCode);
 	
@@ -54,6 +52,4 @@ public interface ScoreMapper {
 	public SubjectAvg getSecondLanguageAndChineseCharactersScoreNationAvg(String examCode); // 제2외국어 및 한문 점수 전국 평균 산출 쿼리
 	public SubjectAvg getSecondLanguageAndChineseCharactersScoreProvinceAvg(String examCode, String provinceCode); // 제2외국어 및 한문 점수 도 평균 산출 쿼리
 	public SubjectAvg getSecondLanguageAndChineseCharactersScoreMunicipalityAvg(String examCode, String municipalityCode); // 제2외국어 및 한문 점수 시 평균 산출 쿼리
-
-	public Subject getKoreanScoreAvg(String examCode);
 }

@@ -1,6 +1,7 @@
 package ks52team01.student.score.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,14 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import ks52team01.student.exam.dto.TookExamInfo;
-import ks52team01.student.score.dto.EnglishScore;
-import ks52team01.student.score.dto.ExamScore;
-import ks52team01.student.score.dto.Inquiry1Score;
-import ks52team01.student.score.dto.Inquiry2Score;
-import ks52team01.student.score.dto.KoreanHistoryScore;
-import ks52team01.student.score.dto.KoreanScore;
-import ks52team01.student.score.dto.MathScore;
-import ks52team01.student.score.dto.SecondLanguageAndChineseCharactersScore;
 import ks52team01.student.score.dto.Subject;
 import ks52team01.student.score.service.ScoreExamAllService;
 import ks52team01.student.user.dto.User;
@@ -38,84 +31,34 @@ public class ScoreController {
 	@GetMapping("/scoreMain")
 	public String getScoreMain(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loggedInUser");
+		
+		// 최초로 응시한 모의고사 목록 조회
 		String userCode = user.getUserCode();
 		List<TookExamInfo> firstTookExamList = scoreExamAllService.getFirstTookExamList(userCode);
-		/*
-		 * 그래프 영역 
-		 * 전국/도/시 과목 원점수/표준점수/백분위/등급/석차 평균
-		 */
-		String tookExamInfoCode = firstTookExamList.get(0).getTookExamInfoCode();
-		String examCode = firstTookExamList.get(0).getExamCode();
-		String areaCityCode = firstTookExamList.get(0).getAreaCityCode();
-		Map<String, Object> map;
-		List<Subject> subjectScoreAvgList = scoreExamAllService.getSubjectScoreAvgList();
-		List<Subject> subjectScoreList = scoreExamAllService.getSubjectScoreList(userCode, tookExamInfoCode, examCode, areaCityCode);
-		for(int i=0; i<subjectScoreList.size(); i++) {
-			String curSubjectMajorCategoryCode = subjectScoreList.get(i).getSubjectMajorCategoryCode();
-			switch(curSubjectMajorCategoryCode) {
-				case "smjrcc1" : // 대분류 국어 과목
-					subjectScoreList.get(i);
-					break;
-				case "smjrcc2" : // 대분류 수학 과목
-					subjectScoreList.get(i);
-					break;
-				case "smjrcc3" : // 대분류 영어 과목
-					subjectScoreList.get(i);
-					break;
-				case "smjrcc4" : // 대분류 한국사 과목
-					subjectScoreList.get(i);
-					break;
-				case "smjrcc5" : // 대분류 사회탐구 과목
-					subjectScoreList.get(i);
-					break;
-				case "smjrcc6" : // 대분류 과학탐구 과목
-					subjectScoreList.get(i);
-					break;
-				case "smjrcc7" : // 대분류 직업탐구 과목
-					subjectScoreList.get(i);
-					break;
-				case "smjrcc8" : // 대분류 제2외국어 및 한문 과목
-					subjectScoreList.get(i);
-					break;
-				default :
-					break;
-			}
-		}
-		// 출력 날짜 형식 정의
-		SimpleDateFormat outputFormat = new SimpleDateFormat("yy.MM.dd");
-		// Date 객체를 원하는 형식의 문자열로 변환
-		String formattedUserBirthDate = outputFormat.format(user.getUserBirthDate());
 		
-		log.info("subjectScoreList : {}", subjectScoreList);
+		// 현재 모의고사 점수 조회
+		TookExamInfo curTookExam = firstTookExamList.get(0);
+		String areaCityCode = curTookExam.getAreaCityCode();
+		String examCode = curTookExam.getExamCode();
+		String tookExamInfoCode = curTookExam.getTookExamInfoCode();
+		Map<String, Subject> subjectScoreMap = scoreExamAllService.getTookExamScore(userCode, areaCityCode, examCode, tookExamInfoCode);
+		
+		Date userBirthDate = user.getUserBirthDate();
+		String formattedUserBirthDate = new SimpleDateFormat("yy.MM.dd").format(userBirthDate);
+		
+		log.info("subjectScoreMap : {}", subjectScoreMap);
 		
 		model.addAttribute("user", user);
 		model.addAttribute("tookExamList", firstTookExamList);
-		model.addAttribute("subjectScoreList", subjectScoreList);
+		model.addAttribute("subjectScoreMap", subjectScoreMap);
 		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
 		return "view/user/score/exam_all_score_summary";
 	}
 	
 	@PostMapping("/searchTookExamScore")
 	@ResponseBody
-	public ExamScore getScoreMain(String tookExamInfoCode, HttpSession session) {
-		User user = (User) session.getAttribute("loggedInUser");
-		String userCode = user.getUserCode();
-		Subject koreanScore = scoreExamAllService.getKoreanScore(userCode, tookExamInfoCode);
-		MathScore mathScore = scoreExamAllService.getMathScore(userCode, tookExamInfoCode);
-		EnglishScore englishScore = scoreExamAllService.getEnglishScore(userCode, tookExamInfoCode);
-		KoreanHistoryScore koreanHistoryScore = scoreExamAllService.getKoreanHistoryScore(userCode, tookExamInfoCode);
-		Inquiry1Score inquiry1Score = scoreExamAllService.getInquiry1Score(userCode, tookExamInfoCode);
-		Inquiry2Score inquiry2Score = scoreExamAllService.getInquiry2Score(userCode, tookExamInfoCode);
-		SecondLanguageAndChineseCharactersScore secondLanguageAndChineseCharactersScore = scoreExamAllService.getSecondLanguageAndChineseCharactersScore(userCode, tookExamInfoCode);
-		ExamScore examScore = new ExamScore();
-		// examScore.setKoreanScore(koreanScore);
-		examScore.setMathScore(mathScore);
-		examScore.setEnglishScore(englishScore);
-		examScore.setKoreanHistoryScore(koreanHistoryScore);
-		examScore.setInquiry1Score(inquiry1Score);
-		examScore.setInquiry2Score(inquiry2Score);
-		examScore.setSecondLanguageAndChineseCharactersScore(secondLanguageAndChineseCharactersScore);
-		return examScore;
+	public Object getScoreMain(String tookExamInfoCode, HttpSession session) {
+		return null;
 	}
 
 	@GetMapping("/examAllScoreSummary")
