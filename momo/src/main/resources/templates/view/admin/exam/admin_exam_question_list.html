@@ -34,6 +34,8 @@
 		$('#addQuestionBtn').click(function () {
 			location.href = "/admin/exam/addQuestion"
 		})
+		
+		
 		$('#searchBtn').click(function () {
 
 			let subMirCatCode = $('#subMirCatCode').val();
@@ -60,7 +62,7 @@
 
 			request.done(function (data) {
 				const searchList = data;
-
+				$('#questionCount').text(data.length);
 				$('#questionListTable').empty();
 				if (searchList.length > 0) {
 					$(searchList).each(function (idx, item) {
@@ -173,6 +175,10 @@
 				$('#AllCheck').attr('checked', false);
 			}
 		})
+
+
+		var questionList = /*[[${questionList}]]*/[];
+		$('#questionCount').text(questionList.length);
 
 	</script>
 
@@ -311,7 +317,7 @@
 								<tr>
 									<td class="a_th01">
 										<span style="font-family: arial, dotum; font-weight: normal;">Total :
-											<font color="blue">390</font> 건
+											<font color="blue" id="questionCount"></font> 건
 										</span>
 										&nbsp;&nbsp;
 										<input type="button" value="전체문제 미리보기" class="btn_simp" />
@@ -336,15 +342,15 @@
 									<td class="l_th01" width="20">
 										<input type="checkbox" id="AllCheck" />
 									</td>
-									<td class="l_th01" width="80">No</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.question">문제</span></td>
+									<td class="l_th01" width="80">Index</td>
+									<td class="l_th01"><span class="l_sort01">문제</span></td>
 									<td class="l_th01" width="80">미리보기</td>
-									<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.grade">문항배점</span>
+									<td class="l_th01" width="80"><span class="l_sort01" >문항배점</span>
 									</td>
 
-									<td class="l_th01" width="100"><span class="l_sort01" id="CL_u.user_nm">출제자</span>
+									<td class="l_th01" width="100"><span class="l_sort01" >출제자</span>
 									</td>
-									<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.status">상태</span></td>
+									<td class="l_th01" width="80"><span class="l_sort01" >상태</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"
 											id="CL_a.question_type">생성날짜</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"

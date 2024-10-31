@@ -7,11 +7,12 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ks52team01.admin.exam.dto.ExamQnaChap;
-import ks52team01.admin.exam.dto.ExamQnaType;
-import ks52team01.admin.exam.dto.QnaBank;
-import ks52team01.admin.exam.dto.SubMirCate;
-import ks52team01.admin.exam.dto.SubMjrCate;
+import ks52team01.admin.exam.dto.AdminExamInfo;
+import ks52team01.admin.exam.dto.AdminExamQnaChap;
+import ks52team01.admin.exam.dto.AdminExamQnaType;
+import ks52team01.admin.exam.dto.AdminQnaBank;
+import ks52team01.admin.exam.dto.AdminSubMirCate;
+import ks52team01.admin.exam.dto.AdminSubMjrCate;
 import ks52team01.admin.exam.mapper.AdminExamMapper;
 import ks52team01.common.mapper.CommonMapper;
 import ks52team01.student.user.dto.User;
@@ -25,6 +26,34 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminExamServiceImpl implements AdminExamService {
 
 	private final AdminExamMapper adminExamMapper;
+	private final CommonMapper commonMapper;
+
+	@Override
+	public void modifyExamInfo(AdminExamInfo examInfo) {
+
+		adminExamMapper.modifyExamInfo(examInfo);
+	}
+
+	@Override
+	public AdminExamInfo getExamInfoByExamCode(String examCode) {
+
+		return adminExamMapper.getExamInfoByExamCode(examCode);
+	}
+
+	@Override
+	public List<AdminExamInfo> getExamInfoList() {
+
+		return adminExamMapper.getExamInfoList();
+	}
+
+	@Override
+	public void addExamInfo(AdminExamInfo examInfo) {
+
+		String newExamCode = commonMapper.getPrimaryKey("exam_info", "exam_code", "ec");
+		examInfo.setExamCode(newExamCode);
+
+		adminExamMapper.addExamInfo(examInfo);
+	}
 
 	@Override
 	public int modifyQustionState(List<String> qnaCode, boolean isState) {
@@ -46,44 +75,44 @@ public class AdminExamServiceImpl implements AdminExamService {
 	}
 
 	@Override
-	public void modifyQuestionProc(QnaBank qnaBank) {
+	public void modifyQuestionProc(AdminQnaBank qnaBank) {
 
 		adminExamMapper.modifyQuestionProc(qnaBank);
 
 	}
 
 	@Override
-	public QnaBank getQuestionInfo(String qnaCode) {
+	public AdminQnaBank getQuestionInfo(String qnaCode) {
 
 		return adminExamMapper.getQuestionInfo(qnaCode);
 	}
 
 	@Override
-	public List<QnaBank> searchQuestionList(QnaBank qnaBank) {
+	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank) {
 
 		return adminExamMapper.searchQuestionList(qnaBank);
 	}
 
 	@Override
-	public List<QnaBank> getQuestionListAll() {
+	public List<AdminQnaBank> getQuestionListAll() {
 
 		return adminExamMapper.getQuestionListAll();
 	}
 
 	@Override
-	public void addExamQuestion(QnaBank qnaBank) {
+	public void addExamQuestion(AdminQnaBank qnaBank) {
 
 		adminExamMapper.addExamQuestion(qnaBank);
 	}
 
 	@Override
-	public List<ExamQnaChap> getQnaChapList() {
+	public List<AdminExamQnaChap> getQnaChapList() {
 
 		return adminExamMapper.getQnaChapList();
 	}
 
 	@Override
-	public List<ExamQnaType> getQnaTypeList() {
+	public List<AdminExamQnaType> getQnaTypeList() {
 
 		return adminExamMapper.getQnaTypeList();
 	}
@@ -95,7 +124,7 @@ public class AdminExamServiceImpl implements AdminExamService {
 	}
 
 	@Override
-	public List<SubMirCate> getAdminExamCategoryList() {
+	public List<AdminSubMirCate> getAdminExamCategoryList() {
 
 		return adminExamMapper.getAdminExamCategoryList();
 	}

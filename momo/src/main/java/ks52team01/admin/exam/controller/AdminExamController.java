@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import ks52team01.admin.exam.dto.ExamQnaChap;
-import ks52team01.admin.exam.dto.ExamQnaType;
-import ks52team01.admin.exam.dto.QnaBank;
-import ks52team01.admin.exam.dto.SubMirCate;
+import ks52team01.admin.exam.dto.AdminExamInfo;
+import ks52team01.admin.exam.dto.AdminExamQnaChap;
+import ks52team01.admin.exam.dto.AdminExamQnaType;
+import ks52team01.admin.exam.dto.AdminQnaBank;
+import ks52team01.admin.exam.dto.AdminSubMirCate;
 import ks52team01.admin.exam.service.AdminExamService;
 import ks52team01.common.files.dto.QnaImg;
 import ks52team01.common.files.service.FileService;
@@ -34,6 +35,33 @@ public class AdminExamController {
 	private final AdminExamService adminExamService;
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
+
+	@PostMapping("/modifyExam")
+	public String modifyExamINfo(AdminExamInfo examInfo) {
+		adminExamService.modifyExamInfo(examInfo);
+		return "redirect:/admin/exam/managementList";
+	}
+
+	@GetMapping("/modifyExam")
+	public String modifyExamInfo(@RequestParam(name = "examCode") String examCode, Model model) {
+
+		AdminExamInfo examInfo = adminExamService.getExamInfoByExamCode(examCode);
+		List<User> userList = new ArrayList<User>();
+		userList = adminExamService.getUserListByGrade("ugc1");
+
+		model.addAttribute("userList", userList);
+		model.addAttribute("examInfo", examInfo);
+
+		return "view/admin/exam/admin_exam_modify";
+	}
+
+	@PostMapping("/addExamInfo")
+	public String addExamInfo(AdminExamInfo examInfo) {
+
+		adminExamService.addExamInfo(examInfo);
+
+		return "redirect:/admin/exam/managementList";
+	}
 
 	@PostMapping("/questionState")
 	@ResponseBody
@@ -67,7 +95,7 @@ public class AdminExamController {
 			@RequestParam(name = "item3_file", required = false) MultipartFile item3File,
 			@RequestParam(name = "item4_file", required = false) MultipartFile item4File,
 			@RequestParam(name = "item5_file", required = false) MultipartFile item5File,
-			@RequestParam(name = "question_file", required = false) MultipartFile questionFile, QnaBank qnaBank) {
+			@RequestParam(name = "question_file", required = false) MultipartFile questionFile, AdminQnaBank qnaBank) {
 
 		if (fileInput != null && !fileInput[0].isEmpty()) {
 			fileService.removeFiles("fileInput", qnaBank.getQnaCode());
@@ -117,16 +145,16 @@ public class AdminExamController {
 	@GetMapping("/modifyQuestion")
 	public String modifyQuestion(@RequestParam(name = "qnaCode") String qnaCode, Model model) {
 
-		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		List<AdminSubMirCate> categoryList = new ArrayList<AdminSubMirCate>();
 		categoryList = adminExamService.getAdminExamCategoryList();
 
 		List<User> userList = new ArrayList<User>();
 		userList = adminExamService.getUserListByGrade("ugc1");
 
-		List<ExamQnaType> qnaTypeList = new ArrayList<ExamQnaType>();
+		List<AdminExamQnaType> qnaTypeList = new ArrayList<AdminExamQnaType>();
 		qnaTypeList = adminExamService.getQnaTypeList();
 
-		List<ExamQnaChap> qnaChapList = new ArrayList<ExamQnaChap>();
+		List<AdminExamQnaChap> qnaChapList = new ArrayList<AdminExamQnaChap>();
 		qnaChapList = adminExamService.getQnaChapList();
 
 		List<QnaImg> qnaImgList = new ArrayList<QnaImg>();
@@ -135,7 +163,7 @@ public class AdminExamController {
 		List<QnaImg> qnaImgFileInputList = new ArrayList<QnaImg>();
 		qnaImgFileInputList = fileService.getQnaImgFileInputListByQnaCode(qnaCode);
 
-		QnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
+		AdminQnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("userList", userList);
 		model.addAttribute("qnaTypeList", qnaTypeList);
@@ -150,9 +178,8 @@ public class AdminExamController {
 
 	@GetMapping("/searchQuestionList")
 	@ResponseBody
-	public List<QnaBank> searchQuestionList(QnaBank qnaBank) {
-		log.error("list:{}", qnaBank);
-		List<QnaBank> searchList = new ArrayList<QnaBank>();
+	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank) {
+		List<AdminQnaBank> searchList = new ArrayList<AdminQnaBank>();
 		searchList = adminExamService.searchQuestionList(qnaBank);
 		return searchList;
 	}
@@ -164,7 +191,7 @@ public class AdminExamController {
 			@RequestParam(name = "item3_file", required = false) MultipartFile item3File,
 			@RequestParam(name = "item4_file", required = false) MultipartFile item4File,
 			@RequestParam(name = "item5_file", required = false) MultipartFile item5File,
-			@RequestParam(name = "question_file", required = false) MultipartFile questionFile, QnaBank qnaBank) {
+			@RequestParam(name = "question_file", required = false) MultipartFile questionFile, AdminQnaBank qnaBank) {
 
 		String newQnaCode = commonMapper.getPrimaryKey("qna_bank", "qna_code", "qc");
 		qnaBank.setQnaCode(newQnaCode);
@@ -184,13 +211,13 @@ public class AdminExamController {
 	@GetMapping("/category")
 	public String adminExamCategory(Model model) {
 
-		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		List<AdminSubMirCate> categoryList = new ArrayList<AdminSubMirCate>();
 		categoryList = adminExamService.getAdminExamCategoryList();
 
-		List<ExamQnaType> qnaTypeList = new ArrayList<ExamQnaType>();
+		List<AdminExamQnaType> qnaTypeList = new ArrayList<AdminExamQnaType>();
 		qnaTypeList = adminExamService.getQnaTypeList();
 
-		List<ExamQnaChap> qnaChapList = new ArrayList<ExamQnaChap>();
+		List<AdminExamQnaChap> qnaChapList = new ArrayList<AdminExamQnaChap>();
 		qnaChapList = adminExamService.getQnaChapList();
 
 		model.addAttribute("qnaTypeList", qnaTypeList);
@@ -200,22 +227,28 @@ public class AdminExamController {
 	}
 
 	@GetMapping("/management")
-	public String admintest6() {
-		return "view/admin/exam/admin_exam_management";
+	public String getExamInfo(Model model) {
+
+		List<User> userList = new ArrayList<User>();
+		userList = adminExamService.getUserListByGrade("ugc1");
+
+		model.addAttribute("userList", userList);
+
+		return "view/admin/exam/admin_exam_register";
 	}
 
 	@GetMapping("/addQuestion")
 	public String adminExamAddQuestion(Model model) {
-		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+		List<AdminSubMirCate> categoryList = new ArrayList<AdminSubMirCate>();
 		categoryList = adminExamService.getAdminExamCategoryList();
 
 		List<User> userList = new ArrayList<User>();
 		userList = adminExamService.getUserListByGrade("ugc1");
 
-		List<ExamQnaType> qnaTypeList = new ArrayList<ExamQnaType>();
+		List<AdminExamQnaType> qnaTypeList = new ArrayList<AdminExamQnaType>();
 		qnaTypeList = adminExamService.getQnaTypeList();
 
-		List<ExamQnaChap> qnaChapList = new ArrayList<ExamQnaChap>();
+		List<AdminExamQnaChap> qnaChapList = new ArrayList<AdminExamQnaChap>();
 		qnaChapList = adminExamService.getQnaChapList();
 
 		model.addAttribute("categoryList", categoryList);
@@ -235,7 +268,7 @@ public class AdminExamController {
 		List<QnaImg> qnaImgFileInputList = new ArrayList<QnaImg>();
 		qnaImgFileInputList = fileService.getQnaImgFileInputListByQnaCode(qnaCode);
 
-		QnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
+		AdminQnaBank qnaBankInfo = adminExamService.getQuestionInfo(qnaCode);
 		model.addAttribute("qnaBankInfo", qnaBankInfo);
 
 		model.addAttribute("qnaImgList", qnaImgList);
@@ -245,19 +278,24 @@ public class AdminExamController {
 	}
 
 	@GetMapping("/managementList")
-	public String admintest3() {
+	public String managementList(Model model) {
+
+		List<AdminExamInfo> examInfoList = adminExamService.getExamInfoList();
+
+		model.addAttribute("examInfoList", examInfoList);
+
 		return "view/admin/exam/admin_exam_management_list";
 	}
 
 	@GetMapping("/questionList")
-	public String admintest(Model model) {
-		List<SubMirCate> categoryList = new ArrayList<SubMirCate>();
+	public String questionList(Model model) {
+		List<AdminSubMirCate> categoryList = new ArrayList<AdminSubMirCate>();
 		categoryList = adminExamService.getAdminExamCategoryList();
 
 		List<User> userList = new ArrayList<User>();
 		userList = adminExamService.getUserListByGrade("ugc1");
 
-		List<QnaBank> questionList = new ArrayList<QnaBank>();
+		List<AdminQnaBank> questionList = new ArrayList<AdminQnaBank>();
 		questionList = adminExamService.getQuestionListAll();
 
 		model.addAttribute("categoryList", categoryList);
