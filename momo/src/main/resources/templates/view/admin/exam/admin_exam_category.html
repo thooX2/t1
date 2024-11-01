@@ -200,11 +200,9 @@
 				if (element['subMjrName'] === elem['title']) {
 					// treeData[0]의 children에만 추가
 					if (element['curExamUserState'] == 'Y' && (element['subMirState'] == 'Y' || element['subMirState'] == null)) {
-						if (elem['title'] == '한국사') {
-							elem['children'].push({title: '한국사'});
-						} else {
-							elem['children'].push({title: element['subMirCatNm']});
-						}
+
+						elem['children'].push({title: element['subMirCatNm']});
+
 					}
 				}
 			}
@@ -213,11 +211,9 @@
 				if (element['subMjrName'] === elem['title']) {
 					// treeData[0]의 children에만 추가
 					if (element['curExamUserState'] == 'N' || element['subMirState'] == 'N') {
-						if (elem['title'] == '한국사') {
-							elem['children'].push({title: '한국사'});
-						} else {
-							elem['children'].push({title: element['subMirCatNm']});
-						}
+
+						elem['children'].push({title: element['subMirCatNm']});
+
 					}
 				}
 			}
@@ -226,21 +222,14 @@
 				if (element['subMjrName'] === elem['title']) {
 					// treeData[0]의 children에만 추가
 
-					if (elem['title'] == '한국사') {
-						elem['children'].push({
-							title: '한국사',
-							folder: true,
-							expanded: false,
-							children: []
-						});
-					} else {
-						elem['children'].push({
-							title: element['subMirCatNm'],
-							folder: true,
-							expanded: false,
-							children: []
-						});
-					}
+
+					elem['children'].push({
+						title: element['subMirCatNm'],
+						folder: true,
+						expanded: false,
+						children: []
+					});
+
 
 				}
 			}

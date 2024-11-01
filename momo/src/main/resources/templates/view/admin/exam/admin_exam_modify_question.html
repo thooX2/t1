@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamAddQuestion/font-awesome.min.css" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 	<style>
 		/* ---------------------------- */
 		/* 숨겨진 파일 입력 */
@@ -14,20 +15,7 @@
 			display: none;
 		}
 
-		/* 커스텀 버튼 스타일 */
-		#customButton {
-			display: inline-block;
-			padding: 10px 20px;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
 
-		#customButton:hover {
-			background-color: #0056b3;
-		}
 
 		/* 파일 이름 텍스트 */
 		#fileName {
@@ -78,6 +66,113 @@
 			margin-right: 10px;
 			/* 이미지와 텍스트 사이의 간격 */
 		}
+
+		.modal {
+			display: none;
+			/* 모달이 열릴 때만 display: block; 으로 전환 */
+			position: fixed;
+			z-index: 1000;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.7);
+		}
+
+		.modal-content {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 90%;
+			max-width: 800px;
+			background-color: #fff;
+			padding: 20px;
+			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+			text-align: center;
+		}
+
+		.image-container {
+			margin-top: 15px;
+			margin-bottom: 15px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.image-container img {
+			width: 60%;
+			/* 기본 크기를 적당히 설정 */
+			max-width: 80vw;
+			/* 가로 최대 크기를 화면 가로의 80%로 제한 */
+			max-height: 80vh;
+			/* 세로 최대 크기를 화면 세로의 80%로 제한 */
+			object-fit: contain;
+			/* 이미지 비율 유지 */
+			margin: 0 auto;
+		}
+
+		.folder-name-header {
+			font-size: 1.5em;
+			/* 폰트 크기 조정 */
+			font-weight: bold;
+			/* 두껍게 */
+			color: rgb(0, 0, 0);
+			/* 색상 변경 (파란색 계열) */
+			margin-bottom: 5px;
+			/* 아래쪽 여백 추가 (경계선과의 거리 조정) */
+			border-bottom: 3px solid #ddd;
+			/* 아래쪽 경계선 추가 */
+			padding-bottom: 10px;
+			/* 아래쪽 패딩 추가 (경계선과의 거리 조정) */
+		}
+
+		/* 캐러셀 css */
+		/* 캐러셀 컨테이너 스타일 */
+		.carousel-container {
+			width: 80%;
+			max-width: 600px;
+			margin: auto;
+			overflow: hidden;
+			position: relative;
+		}
+
+		/* 슬라이드 래퍼 */
+		.carousel-slide {
+			display: flex;
+			transition: transform 0.5s ease;
+		}
+
+		/* 슬라이드 이미지 */
+		.carousel-slide img {
+			width: 100%;
+			flex: 0 0 100%;
+		}
+
+		/* 네비게이션 버튼 */
+		.carousel-button {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 24px;
+			background-color: rgba(0, 0, 0, 0.5);
+			color: white;
+			border: none;
+			padding: 10px;
+			cursor: pointer;
+		}
+
+		.prev-btn {
+			left: 10px;
+		}
+
+		.next-btn {
+			right: 10px;
+		}
+
+		.conceal {
+			display: none;
+		}
 	</style>
 </head>
 <th:block layout:fragment="customJsFile">
@@ -87,6 +182,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 	<!-- Select2 JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<!-- bootstrap v4.6 cdn-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
 </th:block>
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
@@ -223,35 +322,10 @@
 		const initialQnaTypeListList = $('#qnaTypeList').html();
 
 		$('#categoryList').change(function () {
-			// value가 없고 text가 한국사인 select를 선택
-			if ($(this).val() == '' && $('#categoryList option:selected').text() == '한국사 > 한국사') {
-				// input hidden에 subject_major_catetory_code를 smjrcc4로 수동입력
-				$('#categorySubMjrCatCode').val('smjrcc4');
-				$('#qnaChapList').empty();
-				$('#qnaTypeList').empty();
-
-				// 위의 hidden value값을 기반으로 전체 문항타입목록에서 같은 값을 찾아 option을 생성 
-				qnaTypeList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-
-						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
-					}
-				})
-
-				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
-				qnaChapList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
-					}
-				})
-
-
-				// value가 없는 즉, 전체라고 쓰인 select를 선택하면 모든 리스트를 보여줌	
-			} else if ($(this).val() == '') {
+			if ($(this).val() == '') {
 				$('#qnaChapList').html(initialQnaChapList);
 				$('#qnaTypeList').html(initialQnaTypeListList);
 			} else {
-				// 한국사를 제외한 다른 카테고리를 생성시 해당 카테고리의 출제단원과 출제유형만 보이게 설정
 				$('#qnaChapList').empty();
 				$('#qnaTypeList').empty();
 
@@ -295,8 +369,73 @@
 
 			}
 		});
-		// 문제배점과 
+		// ------------- 이미지 모달 ------------------------------
+		// 모달을 여는 함수
+		function openModal(modalId) {
+			var modal = document.getElementById(modalId);
+			if (!modal) {
+				alert('해당 이미지가 없습니다');
+				return;
+			}
+			modal.style.display = "block"; // 모달을 보이게 함
+		}
 
+		// 모달을 닫는 함수
+		function closeModal(modalId) {
+			var modal = document.getElementById(modalId);
+			modal.style.display = "none"; // 모달을 숨김
+		}
+
+		// 모달 외부 클릭 시 닫기
+		window.onclick = function (event) {
+			var modals = document.getElementsByClassName('modal');
+			for (let modal of modals) { // 'for (let modal of modals)'로 수정
+				if (event.target === modal) {
+					closeModal(modal.id);
+				}
+			}
+		}
+
+		$('.closeModal').click(function () {
+			const parentId = $(this).closest('.modal').attr('id');
+			closeModal(parentId);
+		});
+
+		$('#customButton').click(function () {
+			$('#fileInput').click();
+		})
+
+		/* 캐러셀 javascript */
+		let currentSlide = 0;
+
+		function moveSlide(direction) {
+			const slides = document.querySelectorAll('.carousel-slide img');
+			const totalSlides = slides.length;
+
+			// 슬라이드 이동
+			currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+			document.querySelector('.carousel-slide').style.transform = `translateX(-${currentSlide * 100}%)`;
+
+			$('h2[name="qnaImgTitle"]').removeClass('conceal').addClass('conceal');
+
+			$('h2[name="qnaImgTitle"]').eq(currentSlide).removeClass('conceal');
+		}
+
+		$('button').filter(function () {
+			return $(this).text() === '삭제';
+		}).click(function () {
+			//console.log($(this).siblings('h2').not('.conceal').text());
+			const isDelete = confirm('정말로 해당 이미지를 삭제하시겠습니까?');
+
+			const $newForm = $('<form action="/admin/exam/deleteImg" method="post"/>')
+			const $qnaCode = $('<input type="hidden" name="qnaCode"/>').val($('input[name="qnaCode"]').val());
+			const $qnaImgOriginalName = $('<input type="hidden" name="qnaImgOriginalName"/>').val($(this).siblings('h2').not('.conceal').text());
+			$newForm.append($qnaCode);
+			$newForm.append($qnaImgOriginalName);
+			$('body').append($newForm); // 폼을 body에 추가
+			if (isDelete)
+				$newForm.submit();
+		})
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -454,10 +593,16 @@
 									<td class="f_th01">문제이미지</td>
 									<td class="f_td01" colspan="3">
 										<!-- 실제 파일 입력 (숨김) -->
-										<input type="file" id="fileInput" accept="image/*" multiple>
+										<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
+
+										<button type="button" onclick="openModal('fileInputImg')" class="bttn2">
+											이미지보기
+										</button>
+
 
 										<!-- 커스텀 버튼과 파일 이름 표시 -->
-										<label for="fileInput" id="customButton">파일 선택</label>
+										<button type="button" id="customButton" class="bttn2">파일 선택</button>
+
 										<span id="fileName">선택된 파일이 없습니다.</span> <!-- 파일명을 표시하는 텍스트 -->
 
 										<ul id="fileList"></ul>
@@ -496,24 +641,6 @@
 													<td class="l_th03">내용</td>
 												</tr>
 											</tbody>
-											<tbody id="item_area">
-
-												<tr style="display:none">
-													<td class="l_td01">
-														<div style="text-align:center">
-															<input type="text" name="radio" value="1" />
-														</div>
-													</td>
-													<td class="l_td01" align="center">1</td>
-													<td class="l_td01">
-														<input type="text" name="item1" size="95" />
-														<p class="mt3">
-															<input type="file" name="item1_file" size="80"
-																style="border:1px solid #d1d1d1;" />
-														</p>
-													</td>
-												</tr>
-											</tbody>
 										</table>
 									</td>
 								</tr>
@@ -546,6 +673,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt1" size="95" required
 															th:value="${qnaBankInfo.qnaSlt1}">
+														<button type="button" onclick="openModal('item1_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item1_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -565,6 +696,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt2" size="95" required
 															th:value="${qnaBankInfo.qnaSlt2}">
+														<button type="button" onclick="openModal('item2_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item2_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -584,6 +719,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt3" size="95" required
 															th:value="${qnaBankInfo.qnaSlt3}">
+														<button type="button" onclick="openModal('item3_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item3_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -603,6 +742,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt4" size="95" required
 															th:value="${qnaBankInfo.qnaSlt4}">
+														<button type="button" onclick="openModal('item4_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item4_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -622,6 +765,10 @@
 													<td class="l_td01">
 														<input type="text" name="qnaSlt5" size="95" required
 															th:value="${qnaBankInfo.qnaSlt5}">
+														<button type="button" onclick="openModal('item5_file')"
+															class="bttn2">
+															이미지보기
+														</button>
 														<p class="mt3">
 															<input type="file" name="item5_file" size="80"
 																style="border:1px solid #d1d1d1;">
@@ -648,6 +795,9 @@
 									<td class="f_td01" colspan="3">
 										<input type="file" name="question_file" size="90"
 											style="border:1px solid #D1D1D1;" />
+										<button type="button" onclick="openModal('question_file')" class="bttn2">
+											이미지보기
+										</button>
 									</td>
 								</tr>
 								<tr>
@@ -659,8 +809,10 @@
 												th:text="'['+${ul.userId}+'] '+${ul.userName}"
 												th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
 											<option th:if="${userList !=null}" th:each="ul:${userList}"
-												th:text="'['+${ul.userId}+'] '+${ul.userName}" th:value="${ul.userCode}"
-												th:selected="${ul.userCode==qnaBankInfo.userCode}"></option>
+												th:text="'['+${ul.userId}+'] '+${ul.userName}"
+												th:selected="${ul.userCode == qnaBankInfo.userCode}"
+												th:value="${ul.userCode}">
+											</option>
 										</select>
 									</td>
 								</tr>
@@ -702,6 +854,40 @@
 			</div>
 		</div>
 	</div>
+	<!-- 모달 -->
+	<div th:if="${qnaImgList != null}">
+		<div th:each="qil : ${qnaImgList}" th:id="${qil.qnaImgType}" class="modal">
+			<div class="modal-content">
+				<h2 class="folder-name-header" th:text="${qil.qnaImgOriginalName}"></h2>
+				<div class="image-container">
+					<img th:src="|@{${qil.qnaImgPath}}|" th:alt="${qil.qnaImgOriginalName}" style="width: 90%;" />
+				</div>
+				<button type="button" class="bttn2 closeModal"
+					style="float:right !important;margin-left: 10px;">닫기</button>
+				<button type="button" class="bttn2" style="float:right !important;" id="deleteImgBtn">삭제</button>
+			</div>
+		</div>
+	</div>
+	<div id="fileInputImg" class="modal" th:if="${qnaImgFileInputList !=null && qnaImgFileInputList.size()>0}">
+		<div class="modal-content">
+			<h2 th:class="${status.index == 0} ? 'folder-name-header' : 'folder-name-header conceal'"
+				th:each="qifil,status:${qnaImgFileInputList}" name="qnaImgTitle" th:text="${qifil.qnaImgOriginalName}">
+				test1</h2>
+			<div class="image-container">
+				<div class="carousel-container">
+					<div class="carousel-slide">
+						<img th:each="qifil:${qnaImgFileInputList}" th:src="|@{${qifil.qnaImgPath}}|"
+							th:alt="${qifil.qnaImgOriginalName}" style="width: 90%;" />
+					</div>
+					<button class="carousel-button prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+					<button class="carousel-button next-btn" onclick="moveSlide(1)">&#10095;</button>
+				</div>
+			</div>
+			<button type="button" class="bttn2 closeModal" style="float:right !important;margin-left: 10px;">닫기</button>
+			<button type="button" class="bttn2" style="float:right !important;">삭제</button>
+		</div>
+	</div>
+
 </div>
 
 </html>

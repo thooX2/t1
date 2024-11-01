@@ -14,21 +14,6 @@
 			display: none;
 		}
 
-		/* 커스텀 버튼 스타일 */
-		#customButton {
-			display: inline-block;
-			padding: 10px 20px;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-
-		#customButton:hover {
-			background-color: #0056b3;
-		}
-
 		/* 파일 이름 텍스트 */
 		#fileName {
 			margin-left: 10px;
@@ -219,35 +204,10 @@
 		const initialQnaTypeListList = $('#qnaTypeList').html();
 
 		$('#categoryList').change(function () {
-			// value가 없고 text가 한국사인 select를 선택
-			if ($(this).val() == '' && $('#categoryList option:selected').text() == '한국사 > 한국사') {
-				// input hidden에 subject_major_catetory_code를 smjrcc4로 수동입력
-				$('#categorySubMjrCatCode').val('smjrcc4');
-				$('#qnaChapList').empty();
-				$('#qnaTypeList').empty();
-
-				// 위의 hidden value값을 기반으로 전체 문항타입목록에서 같은 값을 찾아 option을 생성 
-				qnaTypeList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-
-						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
-					}
-				})
-
-				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
-				qnaChapList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
-					}
-				})
-
-
-				// value가 없는 즉, 전체라고 쓰인 select를 선택하면 모든 리스트를 보여줌	
-			} else if ($(this).val() == '') {
+			if ($(this).val() == '') {
 				$('#qnaChapList').html(initialQnaChapList);
 				$('#qnaTypeList').html(initialQnaTypeListList);
 			} else {
-				// 한국사를 제외한 다른 카테고리를 생성시 해당 카테고리의 출제단원과 출제유형만 보이게 설정
 				$('#qnaChapList').empty();
 				$('#qnaTypeList').empty();
 
@@ -286,12 +246,11 @@
 					$('input[name="qnaScr"]').eq(0).prop('disabled', true);
 					$('input[name="qnaScr"]').eq(2).prop('disabled', false);
 				}
-
-
-
 			}
 		});
-
+		$('#customButton').click(function () {
+			$('#fileInput').click();
+		})
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -425,7 +384,7 @@
 										<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
 
 										<!-- 커스텀 버튼과 파일 이름 표시 -->
-										<label for="fileInput" id="customButton">파일 선택</label>
+										<button type="button" id="customButton" class="bttn2">파일 선택</button>
 										<span id="fileName">선택된 파일이 없습니다.</span> <!-- 파일명을 표시하는 텍스트 -->
 
 										<ul id="fileList"></ul>
@@ -448,7 +407,7 @@
 										</select>
 									</td>
 								</tr>
-						
+
 								<tr id="item_tr" style="display: table-row;">
 									<td class="f_th01">문항</td>
 									<td class="f_td01" colspan="3">
@@ -573,16 +532,18 @@
 								</tr>
 								<tr>
 									<td class="f_th01">출제자</td>
-									
+
 									<td class="f_td01" colspan="3">
 										<select name="userCode" class="js-example-basic-single">
 											<option value=""> - 담당자 선택 - </option>
-											<!-- <option th:if="${userList !=null}" th:each="ul:${userList}"
-												th:text="'['+${ul.userId}+'] '+${ul.userName}"
-												th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
 											<option th:if="${userList !=null}" th:each="ul:${userList}"
 												th:text="'['+${ul.userId}+'] '+${ul.userName}"
-												th:value="${ul.userCode}"></option>
+												th:selected="${(session.loggedInUser !=null)?ul.userId == session.loggedInUser.userId:''}"
+												th:value="${ul.userCode}">
+											</option>
+											<!-- <option th:if="${userList !=null}" th:each="ul:${userList}"
+													th:text="'['+${ul.userId}+'] '+${ul.userName}"
+													th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
 										</select>
 									</td>
 								</tr>
