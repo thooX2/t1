@@ -5,6 +5,7 @@
 <head>
 	<!-- Select2 CSS -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 </head>
 <th:block layout:fragment="customJsFile">
 	<script src="https://code.jquery.com/jquery-3.7.1.js"
@@ -26,16 +27,16 @@
 			}
 		});
 
-		$('input').each((idx, element) => {
-			if ($(element).val() == "미리보기") {
-				$(element).click(function () {
-					window.open('/admin/exam/questionPopup', '문제미리보기', 'width=600,height=800,scrollbars=yes');
-				})
-			}
-		})
+		$(document).on('click', 'input[value="미리보기"]', function () {
+			const $qnaCode = $(this).prop('id');
+			window.open(`/admin/exam/questionPopup?qnaCode=${$qnaCode}`, '문제미리보기', 'width=600,height=830,scrollbars=yes');
+		});
+
 		$('#addQuestionBtn').click(function () {
 			location.href = "/admin/exam/addQuestion"
 		})
+
+
 		$('#searchBtn').click(function () {
 
 			let subMirCatCode = $('#subMirCatCode').val();
@@ -44,6 +45,13 @@
 			const qnaCurExamState = $('input[name="qnaCurExamState"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
 			const searchType = $('#searchType').val();
 			const searchKeyword = $('#searchKeyword').val();
+
+			if (searchKeyword != '' && searchType == '') {
+				alert('검색타입을 선택해주세요');
+				return;
+			}
+
+
 
 			// Ajax 요청
 			const request = $.ajax({
@@ -62,10 +70,9 @@
 
 			request.done(function (data) {
 				const searchList = data;
-				console.log(typeof searchList);
+				$('#questionCount').text(data.length);
 				$('#questionListTable').empty();
 				if (searchList.length > 0) {
-					console.log(searchList);
 					$(searchList).each(function (idx, item) {
 						let questionState = '';
 						if (item.qnaCurExamState === 'Y') {
@@ -83,6 +90,7 @@
 						const newRow = `
 				    <tr class="l_tr_even" align="center">
 				        <td class="l_td01"><input type="checkbox" name="idx" value="${item.qnaCode}" /></td>
+						<td class="l_td01">${searchList.length - idx}</td>
 				        <td class="l_td01">${item.qnaCode}</td>
 				        <td class="l_td01" align="left">
 				            <p class="cate01">${subjectCategory}</p>
@@ -90,7 +98,7 @@
 				                <a href="/admin/exam/modifyQuestion?qnaCode=${item.qnaCode}" target="_Main">${item.qnaSubject}</a>
 				            </div>
 				        </td>
-				        <td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
+				        <td class="l_td01"><input type="button" class="btn_simp" id="${item.qnaCode}" value="미리보기" /></td>
 				        <td class="l_td01">${item.qnaScr}점</td>
 				        <td class="l_td01" align="center">
 				            <p class="label blue" style="display: inline-block;padding:4px;font-weight: bolder;">${item.userId}</p>
@@ -102,11 +110,10 @@
 				        <td class="l_td01">${new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
 				    </tr>
 				    `;
-
 						$('#questionListTable').append(newRow);  // 새로운 행을 테이블에 추가
 					});
 				} else {
-					const newRow = '<tr class="l_tr_even" align="center"><td class="l_td01" colspan="9" style="padding: 20px; font-weight: bold; color: #555;">검색결과에 해당하는 문제가 없습니다</td></tr>';
+					const newRow = '<tr class="l_tr_even" align="center"><td class="l_td01" colspan="10" style="padding: 20px; font-weight: bold; color: #555;">검색결과에 해당하는 문제가 없습니다</td></tr>';
 					$('#questionListTable').append(newRow);
 				}
 			});
@@ -115,6 +122,88 @@
 				console.log(error);
 			});
 		});
+
+
+		$(document).on('change', 'select[name="a_status"]', function () {
+			let isState = true;
+			if ($('select[name="a_status"]').val() == '1') {
+				isState = true;
+			}
+
+			if ($('select[name="a_status"]').val() == '0') {
+				isState = false;
+			}
+			const stateArray = [];
+			$('input[name="idx"]:checked').each((idx, element) => {
+				//console.log(element.value);
+				//const $stateForm = $('<form action="/admin/exam/questionState" method="post"/>');
+				stateArray.push(element.value);
+			})
+
+			if (stateArray.length == 0) {
+				alert('문항을 체크한다음에 실행해주세요');
+				return;
+			}
+
+
+			console.log(stateArray);
+			const request = $.ajax({
+				url: '/admin/exam/questionState',
+				method: 'post',
+				data: {
+					'qnaCode': stateArray,
+					'isState': isState
+				},
+				dataType: 'json'
+			});
+
+			request.done(function (data) {
+				if (data) location.reload();
+				if (!data) alert('변경안됨');
+			})
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
+		})
+		$(document).on('click', '#AllCheck', function () {
+			if ($('#AllCheck').is(':checked')) {
+				$('input[type="checkbox"]').not('#AllCheck').prop('checked', true);
+			} else {
+				$('input[type="checkbox"]').not('#AllCheck').prop('checked', false);
+			}
+		})
+
+		$(document).on('click', 'input[type="checkbox"]', function () {
+			const checkbox = $('input[type="checkbox"]').not('#AllCheck').length;
+			const checked = $('input[type="checkbox"]:checked').not('#AllCheck').length;
+
+			if (checkbox == checked) {
+				$('#AllCheck').attr('checked', true);
+			} else {
+				$('#AllCheck').attr('checked', false);
+			}
+		})
+
+		$('#searchReset').click(function () {
+
+			$('#searchType').val("");
+			$('#searchKeyword').val("");
+
+			$('input[name="qnaScr"]:checked').prop('checked', false);
+			$('input[name="qnaCurExamState"]:checked').prop('checked', false);
+
+			$('input[name="qnaScr"]').first().prop('checked', true);
+			$('input[name="qnaCurExamState"]').first().prop('checked', true);
+
+			$('#subMirCatCode').val(null).trigger('change');
+			$('#userCode').val(null).trigger('change');
+
+
+		})
+
+		var questionList = /*[[${questionList}]]*/[];
+		$('#questionCount').text(questionList.length);
+
 	</script>
 
 </th:block>
@@ -130,7 +219,7 @@
 				<i class="fa fa-minus" style="font-size: 12px;"></i>
 			</button>
 			<div id="sys-page-title">
-				<span id="sys-page-title-nm">문제은행</span>
+				<span id="sys-page-title-nm">문제등록</span>
 				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
 				<button type="button" class="btn_simp yellow">
 					<i class="fa fa-star"></i> 퀵메뉴추가
@@ -167,14 +256,14 @@
 										<option value=""> - 전체 - </option>
 										<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
 											th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm : cl.subMjrName + ' > ' + cl.subMirCatNm}"
-											th:value="${(cl.subMirCatCode==null)?'korHis':cl.subMirCatCode}">
+											th:value="${cl.subMirCatCode}">
 										</option>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<td class="t_th01">문제 배점</td>
-								
+
 								<td class="t_td01" colspan="3">
 									<label>
 										<input type="radio" name="qnaScr" value="0" class="ipt01" checked="" /> 전체
@@ -230,15 +319,17 @@
 								<td class="t_th01">검색</td>
 								<td class="t_td01" colspan="3">
 									<select name="searchType" id="searchType">
-										<option value="">- 전체 -</option>
+										<option value="">검색타입선택</option>
 										<option value="qna_subject">문제 제목</option>
 										<option value="qna_qst">문제 내용</option>
 										<option value="qna_chap">출제 단원</option>
 										<option value="qna_type">출제 유형</option>
 										<option value="qna_cmt">문제 해설</option>
 									</select>
-									<input type="text" name="searchKeyword" size="30" id="searchKeyword" />
+									<input type="text" name="searchKeyword" size="30" id="searchKeyword"
+										placeholder="검색어를 입력해주세요" />
 									<button type="button" class="bttn2" id="searchBtn">검색</button>
+									<button type="button" class="bttn2" id="searchReset">초기화</button>
 								</td>
 							</tr>
 						</tbody>
@@ -252,7 +343,7 @@
 								<tr>
 									<td class="a_th01">
 										<span style="font-family: arial, dotum; font-weight: normal;">Total :
-											<font color="blue">390</font> 건
+											<font color="blue" id="questionCount"></font> 건
 										</span>
 										&nbsp;&nbsp;
 										<input type="button" value="전체문제 미리보기" class="btn_simp" />
@@ -274,16 +365,19 @@
 						<table class="l_tb01" cellpadding="0" cellspacing="0">
 							<thead>
 								<tr align="center">
-									<td class="l_th01" width="20"><input type="checkbox" /></td>
-									<td class="l_th01" width="80">No</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.question">문제</span></td>
+									<td class="l_th01" width="20">
+										<input type="checkbox" id="AllCheck" />
+									</td>
+									<td class="l_th01" width="50">번호</td>
+									<td class="l_th01" width="80">문제코드</td>
+									<td class="l_th01"><span class="l_sort01">문제</span></td>
 									<td class="l_th01" width="80">미리보기</td>
-									<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.grade">문항배점</span>
+									<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
 									</td>
 
-									<td class="l_th01" width="100"><span class="l_sort01" id="CL_u.user_nm">출제자</span>
+									<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
 									</td>
-									<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.status">상태</span></td>
+									<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"
 											id="CL_a.question_type">생성날짜</span></td>
 									<td class="l_th01" width="80"><span class="l_sort01"
@@ -293,18 +387,24 @@
 							</thead>
 							<tbody id="questionListTable">
 								<tr class="l_tr_even" align="center" th:if="${questionList !=null}"
-									th:each="ql:${questionList}">
-									<td class="l_td01"><input type="checkbox" name="idx" value="792" /></td>
+									th:each="ql,status:${questionList}">
+									<td class="l_td01">
+										<input type="checkbox" name="idx" th:value="${ql.qnaCode}" />
+									</td>
+									<td class="l_td01" th:text="${status.size - status.index}">1</td>
 									<td class="l_td01" th:text="${ql.qnaCode}">1</td>
 									<td class="l_td01" align="left">
 										<p class="cate01"
 											th:text="(${ql.subMirCatNm !=null})?'['+${ql.subMjrCatNm}+' - '+${ql.subMirCatNm}+']':'['+${ql.subMjrCatNm}+']'">
 										</p>
 										<div style="float: left; margin-top: 4px;">
-											<a th:href="@{/admin/exam/modifyQuestion(qnaCode=${ql.qnaCode})}" target="_Main" th:text="${ql.qnaSubject}"> </a>
+											<a th:href="@{/admin/exam/modifyQuestion(qnaCode=${ql.qnaCode})}"
+												target="_Main" th:text="${ql.qnaSubject}"> </a>
 										</div>
 									</td>
-									<td class="l_td01"><input type="button" class="btn_simp" value="미리보기" /></td>
+									<td class="l_td01">
+										<input type="button" th:id="${ql.qnaCode}" class="btn_simp" value="미리보기" />
+									</td>
 									<td class="l_td01" th:text="${ql.qnaScr}+'점'"></td>
 
 									<td class="l_td01" align="center">

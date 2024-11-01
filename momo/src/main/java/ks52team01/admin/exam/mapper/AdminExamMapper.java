@@ -1,35 +1,50 @@
 package ks52team01.admin.exam.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import ks52team01.admin.exam.dto.ExamQnaChap;
-import ks52team01.admin.exam.dto.ExamQnaType;
-import ks52team01.admin.exam.dto.QnaBank;
-import ks52team01.admin.exam.dto.SubMirCate;
-import ks52team01.admin.exam.dto.SubMjrCate;
+import ks52team01.admin.exam.dto.AdminExamInfo;
+import ks52team01.admin.exam.dto.AdminExamQnaChap;
+import ks52team01.admin.exam.dto.AdminExamQnaType;
+import ks52team01.admin.exam.dto.AdminQnaBank;
+import ks52team01.admin.exam.dto.AdminSubMirCate;
 import ks52team01.student.user.dto.User;
 
 @Mapper
 public interface AdminExamMapper {
 
-	List<SubMirCate> getAdminExamCategoryList();
+	List<AdminSubMirCate> getAdminExamCategoryList();
 
 	List<User> getUserListByGrade(String gradeCode);
 
-	List<ExamQnaType> getQnaTypeList();
+	List<AdminExamQnaType> getQnaTypeList();
 
-	List<ExamQnaChap> getQnaChapList();
+	List<AdminExamQnaChap> getQnaChapList();
 
-	void addExamQuestion(QnaBank qnaBank);
+	void addExamQuestion(AdminQnaBank qnaBank);
 
-	List<QnaBank> getQuestionListAll();
+	List<AdminQnaBank> getQuestionListAll();
 
-	List<QnaBank> searchQuestionList(QnaBank qnaBank);
+	List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank);
 
-	QnaBank getQuestionInfo(String qnaCode);
+	AdminQnaBank getQuestionInfo(String qnaCode);
 
-	int modifyQuestionProc(QnaBank qnaBank);
+	int modifyQuestionProc(AdminQnaBank qnaBank);
+
+	int modifyQustionState(Map<String, Object> paramMap);
+
+	int addExamInfo(AdminExamInfo examInfo);
+
+	List<AdminExamInfo> getExamInfoList();
+
+	AdminExamInfo getExamInfoByExamCode(String examCode);
+
+	int modifyExamInfo(AdminExamInfo examInfo);
+
+	List<AdminExamInfo> searchExamList(Map<String, Object> paramMap);
+
+	List<AdminQnaBank> getQuestionListBySmjrcc(String smjrcc);
 
 }

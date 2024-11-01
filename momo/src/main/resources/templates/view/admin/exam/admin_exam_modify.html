@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/admin_layout}">
+
+<head>
+</head>
+<th:block layout:fragment="customJsFile">
+</th:block>
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+
+		$('select[name="examType"]').change(function () {
+
+			if ($(this).val() == '사설') {
+				$('#examInst').css('display', '');
+				$('input[name="examInst"]').val('');
+			} else {
+				$('#examInst').css('display', 'none');
+				$('input[name="examInst"]').val($(this).val());
+			}
+		})
+		$('#modifyExamBtn').click(function () {
+			let isSubmit = true;
+			let checkVal = true;
+
+			// 모든 입력 필드 체크
+
+			// 숨어있는 input때문에 순서를 select먼저로 함
+			$('select[class="js-example-basic-single"]').each((idx, element) => {
+				if ($(element).val() == '' || $(element).val() == null) {
+					const title = $(element).closest('td').prev().text();
+					alert(`${title}을 선택해주세요`)
+					isSubmit = false;
+					checkVal = false;
+					return false;
+				}
+			})
+			if (!checkVal) return;
+			$('input').each(function () {
+				if ($(this).val() == "" || $(this).val() == null) {
+					$(this).focus();
+					const title = $(this).closest('td').prev().text(); // 현재 필드의 제목을 가져오기
+					alert(`${title}을 선택해주세요`);
+					isSubmit = false;
+					return false; // .each() 루프 중단
+				}
+			});
+			/*	if ($('input[name="examDate"]').val() == null || $('input[name="examDate"]').val() == "") {
+					$(this).focus();
+					alert('날짜를 입력해주세요');
+					isSubmit = false;
+					return;
+				}*/
+
+
+
+
+			if (isSubmit)
+				$('#modifyExamForm').submit();
+
+		})
+		var examInfo = /*[[${examInfo}]]*/[];
+		console.log(examInfo)
+		$(function () {
+			if (examInfo['examType'] == '사설') {
+				$('#examInst').css('display', '');
+			}
+			$('select[name="examType"] option').each((idx, element) => {
+				if ($(element).val() == examInfo.examType) {
+					$(element).prop('selected', true);
+				}
+			});
+			$('select[name="examOeType"] option').each((idx, element) => {
+				if ($(element).val() == examInfo.examOeType) {
+					$(element).prop('selected', true);
+				}
+			});
+			$('select[name="examTarGrd"] option').each((idx, element) => {
+				if ($(element).val() == examInfo.examTarGrd) {
+					$(element).prop('selected', true);
+				}
+			});
+			$('textarea[name="examDescription"]').val(examInfo.examDescription)
+		})
+
+	</script>
+
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+
+	<div class="sidebar">
+		<div th:replace="fragments/admin/exam/sidebar :: sidebar"></div>
+	</div>
+	<div class="content" style="padding:0px">
+		<div id="sys-breadcrumb">
+			<button id="sys-breadcrumb-arrow" type="button">
+				<i class="fa fa-angle-left"></i>
+			</button>
+			<div id="sys-page-title">
+				<span id="sys-page-title-nm">시험관리</span>
+				<button type="button" class="btn_simp yellow">
+					<i class="fa fa-star"></i>
+					퀵메뉴추가
+				</button>
+
+			</div>
+			<div id="sys-page-util">
+				<a id="sys-page-util-refresh">
+					<i class="fa fa-retweet"></i>
+				</a>
+			</div>
+		</div>
+		<div id="sys-wrap">
+			<div id="sys-scroll">
+				<div id="alert_area"></div>
+				<div id="sys-contents">
+					<form id="modifyExamForm" name="modifyExamForm" action="/admin/exam/modifyExam" method="post">
+						<input type="hidden" name="examCode" th:value="${examInfo.examCode}">
+						<table class="c_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td class="c_th01">시험 수정</td>
+									<td class="c_td01"></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="f_tb01" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+							<colgroup>
+								<col width="140" />
+								<col />
+								<col width="140" />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<td class="f_th01">시험 이름</td>
+									<td class="f_td01" colspan="3">
+										<input type="text" name="examNm" size="140" placeholder="시험 이름을 입력해 주세요"
+											th:value="${examInfo.examNm}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">시험 유형</td>
+									<td class="f_td01">
+										<select name="examType" class="js-example-basic-single">
+											<option value="">===== 선택해주세요 =====</option>
+											<option value="평가원">평가원</option>
+											<option value="교육청">교육청</option>
+											<option value="사설">사설</option>
+										</select><br>
+									</td>
+									<td class="f_th01">문제 번호 분류</td>
+									<td class="f_td01">
+										<select name="examOeType" class="js-example-basic-single">
+											<option value="">===== 선택해주세요 =====</option>
+											<option value="홀수">홀수</option>
+											<option value="짝수">짝수</option>
+										</select>
+									</td>
+								</tr>
+								<tr id="examInst" style="display: none;">
+									<td class="f_th01">출제 기관</td>
+									<td class="f_td01" colspan="3">
+										<input type="text" name="examInst" size="140" placeholder="출제 기관을 입력해주세요"
+											th:value="${examInfo.examInst}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">대상학년</td>
+									<td class="f_td01">
+										<select name="examTarGrd" class="js-example-basic-single">
+											<option value="">===== 선택해주세요 =====</option>
+											<option value="1">1학년</option>
+											<option value="2">2학년</option>
+											<option value="3">3학년</option>
+										</select>
+									</td>
+									<td class="f_th01">시험날짜</td>
+									<td class="f_td01">
+										<input type="date" name="examDate" th:value="${examInfo.examDate}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="f_th01">시험 설명</td>
+									<td class="f_td01" colspan="3">
+										<textarea name="examDescription" style="width:99%;height:80px;resize:none;"
+											placeholder="시험에 대한 간단한 설명 및 수정사항에 대해서 입력해주세요"></textarea>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="f_th01">담당자</td>
+									<td class="f_td01" colspan="3">
+										<select name="userCode" class="js-example-basic-single">
+											<option value="">===== 담당자 선택 ======</option>
+											<option th:if="${userList !=null}" th:each="ul:${userList}"
+												th:text="'['+${ul.userId}+'] '+${ul.userName}"
+												th:selected="${ul.userId == examInfo.userId}" th:value="${ul.userCode}">
+											</option>
+										</select>
+									</td>
+								</tr>
+
+
+							</tbody>
+						</table>
+
+
+						<table class="b_tb01" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td>
+										<button type="button" class="bttn2">목록</button>
+									</td>
+									<td class="b_td01">
+										<button type="button" class="bttn2" id="modifyExamBtn">수정</button>
+										<button type="reset" class="bttn2">초기화</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</html>
+</div>
+</div>
+
+</html>

@@ -89,5 +89,57 @@
 		ORDER BY
 			CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC;
 	</select>
+	
+	<select id="getFirstTookExamList" parameterType="String" resultMap="TookExamInfoMap">
+	/* 회원이 최초로 응시한 모의고사 목록 조회 */
+	SELECT
+	    tei.took_exam_info_code,
+	    tei.user_code,
+	    tei.area_code,
+	    tei.area_city_code,
+	    tei.exam_code,
+	    tei.kor_slt_sub_mjr,
+	    tei.kor_slt_sub,
+	    tei.math_slt_sub_mjr,
+	    tei.math_slt_sub,
+	    tei.inq1_slt_sub_mjr,
+	    tei.inq1_slt_sub,
+	    tei.inq2_slt_sub_mjr,
+	    tei.inq2_slt_sub,
+	    tei.eng_slt_sub_mjr,
+	    tei.eng_slt_sub,
+	    tei.kor_his_slt_sub_mjr,
+	    tei.kor_his_slt_sub,
+	    tei.frn_slt_sub_mjr,
+	    tei.frn_slt_sub,
+	    ei.exam_code,
+	    ei.user_code,
+	    ei.exam_nm,
+	    ei.exam_type,
+	    ei.exam_oe_type,
+	    ei.exam_tar_grd,
+	    ei.exam_date,
+	    ei.exam_inst
+	FROM
+		took_exam_info tei
+		INNER JOIN exam_info ei
+		ON tei.exam_code = ei.exam_code
+		INNER JOIN (
+			SELECT
+		   		exam_code,
+		      	MIN(CAST(SUBSTRING(took_exam_info_code, 5) AS UNSIGNED)) AS first_took_exam_info_code
+		   	FROM
+		      	took_exam_info
+		   	WHERE
+		      	user_code = #{userCode}
+		   GROUP BY
+		      exam_code
+		) AS sq
+		ON tei.exam_code = sq.exam_code AND CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) = sq.first_took_exam_info_code
+	WHERE
+	    tei.user_code = #{userCode}
+	ORDER BY
+	    CAST(SUBSTRING(tei.took_exam_info_code, 5) AS UNSIGNED) DESC;
+	</select>
 
 </mapper>

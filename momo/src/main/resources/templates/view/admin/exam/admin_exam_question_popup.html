@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<link rel="stylesheet" type="text/css" th:href="@{/admin/css/exam/adminCustom.css}" />
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
 		/* 기본적인 스타일 */
 		body {
@@ -85,76 +85,164 @@
 						</tbody>
 					</table>
 
-					<table>
+					<table th:if="${qnaBankInfo !=null}" th:each="qbi:${qnaBankInfo}">
 						<tbody>
 							<tr>
 								<td style="padding:10px;border:0">
-									<form name="form1" method="post" action="your_action_url_here">
-										<div class="scbox">
-											<table class="c_tb01">
-												<tbody>
-													<tr>
-														<th colspan="2">문제 1</th>
 
-													</tr>
-												</tbody>
-											</table>
-											<table class="f_tb01">
-												<colgroup>
-													<col width="80">
-													<col width="*">
-													<col width="80">
-													<col width="*">
-												</colgroup>
-												<tbody>
-													<tr>
-														<th>카테고리</th>
-														<td colspan="3">DDM</td>
-													</tr>
-													<tr>
-														<th>문제유형</th>
-														<td>단답형</td>
-														<th>난이도</th>
-														<td>B</td>
-													</tr>
-													<tr>
-														<th>문제</th>
-														<td colspan="3">
-															<p style="font-weight:bold">
-																<img src="/admin/img/exam/adminExamQuestionPopup/icon_question.gif" alt="질문 아이콘"
-																	style="vertical-align:-3px;"> &nbsp;인생에서 가장 멋진 일을
-																슈바이처 박사는 무엇이라고 하였는가?
-															</p>
-															<table style="width:98%; margin-top:3px;">
-																<tbody>
-																	<tr>
-																		<td style="padding:10px; background:#f1f1f1;">
-																			<input disabled type="text" name="answer"
-																				placeholder="정답을 입력하세요"
-																				style="width: 100%;">
-																		</td>
-																	</tr>
-																</tbody>
-															</table>
-														</td>
-													</tr>
-													<tr>
-														<th>정답</th>
-														<td colspan="3">모든 일에 감사하는 것</td>
-													</tr>
-												</tbody>
-											</table>
-
-											<!-- 닫기 버튼 -->
-											<button type="button" class="bttn2" aria-label="닫기">닫기</button>
-
-										</div>
-										<table class="b_tb01">
+									<div class="scbox">
+										<table class="c_tb01">
 											<tbody>
+												<tr>
+													<th colspan="2" th:text="${qbi.qnaSubject}">문제 1</th>
+												</tr>
+											</tbody>
+										</table>
+										<table class="f_tb01">
+											<colgroup>
+												<col width="80">
+												<col>
+												<col width="80">
+												<col>
+											</colgroup>
+											<tbody>
+												<tr>
+													<th>생성시간</th>
+													<td th:text="${qbi.qnaCreateTime}">20.10.29. 17:30</td>
+													<th>수정시간</th>
+													<td th:text="${qbi.qnaUpdateTime}"></td>
+												</tr>
+												<tr>
+													<th>문제유형</th>
+													<td colspan="3" th:text="${qbi.qnaTypeNm}">국어</td>
+												</tr>
+												<tr>
+													<th>문제단원</th>
+													<td colspan="3" th:text="${qbi.qnaChapNm}">수학</td>
+												</tr>
+												<tr>
+													<th>카테고리</th>
+													<td colspan="3" th:text="${qbi.subMjrCatNm +' > '+qbi.subMirCatNm}">
+														수학
+													</td>
+												</tr>
+												<tr>
+													<th>문제배점</th>
+													<td>3점</td>
+													<th>문제정답</th>
+													<td>3번</td>
+												</tr>
+												<tr>
+													<th>문제지문</th>
+													<td colspan="3">
+														<p id="questionContent">
+
+														</p>
+													</td>
+												</tr>
+												<tr th:if="${qnaImgFileInputList != null}"
+													th:each="qifil, status : ${qnaImgFileInputList}">
+													<th th:utext="'문제<br>이미지'+ ${status.index+1}"
+														style="background-color: rgba(0, 90, 167, 0.2) !important;">
+													</th>
+													<td colspan="3">
+														<img th:src="|@{${qifil.qnaImgPath}}|"
+															th:alt="${qifil.qnaImgOriginalName}"
+															style="max-height: 100px;" />
+													</td>
+												</tr>
+
+												<tr>
+													<th>문항1</th>
+													<td colspan="3" th:text="${qbi.qnaSlt1}"></td>
+												</tr>
+												<tr th:each="img : ${qnaImgList}"
+													th:if="${img.qnaImgType == 'item1_file'}">
+													<th style="background-color: rgba(0, 90, 167, 0.2) !important;">
+														문항<br>이미지1</th>
+													<td colspan="3">
+														<img th:src="${img.qnaImgPath}"
+															th:alt="${img.qnaImgOriginalName}"
+															style="max-height: 100px;" />
+													</td>
+												</tr>
+												<tr th:each="img : ${qnaImgList}"
+													th:if="${img.qnaImgType == 'item1_file'}">
+													<th>문항2</th>
+													<td colspan="3" th:text="${qbi.qnaSlt2}"></td>
+												</tr>
+												<tr th:each="img : ${qnaImgList}"
+													th:if="${img.qnaImgType == 'item2_file'}">
+													<th style="background-color: rgba(0, 90, 167, 0.2) !important;">
+														문항<br>이미지2</th>
+													<td colspan="3">
+														<img th:src="${img.qnaImgPath}"
+															th:alt="${img.qnaImgOriginalName}"
+															style="max-height: 100px;" />
+													</td>
+												</tr>
+												<tr>
+													<th>문항3</th>
+													<td colspan="3" th:text="${qbi.qnaSlt3}"></td>
+												</tr>
+												<tr th:each="img : ${qnaImgList}"
+													th:if="${img.qnaImgType == 'item3_file'}">
+													<th style="background-color: rgba(0, 90, 167, 0.2) !important;">
+														문항<br>이미지3</th>
+													<td colspan="3">
+														<img th:src="${img.qnaImgPath}"
+															th:alt="${img.qnaImgOriginalName}"
+															style="max-height: 100px;" />
+													</td>
+												</tr>
+												<tr>
+													<th>문항4</th>
+													<td colspan="3" th:text="${qbi.qnaSlt4}"></td>
+												</tr>
+												<tr th:each="img : ${qnaImgList}"
+													th:if="${img.qnaImgType == 'item4_file'}">
+													<th style="background-color: rgba(0, 90, 167, 0.2) !important;">
+														문항<br>이미지4</th>
+													<td colspan="3">
+														<img th:src="${img.qnaImgPath}"
+															th:alt="${img.qnaImgOriginalName}"
+															style="max-height: 100px;" />
+													</td>
+												</tr>
+												<tr>
+													<th>문항5</th>
+													<td colspan="3" th:text="${qbi.qnaSlt5}"></td>
+												</tr>
+												<tr th:each="img : ${qnaImgList}"
+													th:if="${img.qnaImgType == 'item5_file'}">
+													<th style="background-color: rgba(0, 90, 167, 0.2) !important;">
+														문항<br>이미지5</th>
+													<td colspan="3">
+														<img th:src="${img.qnaImgPath}"
+															th:alt="${img.qnaImgOriginalName}"
+															style="max-height: 100px;" />
+													</td>
+												</tr>
+												<tr>
+													<th>문제<br>해설</th>
+													<td colspan="3" th:text="${qbi.qnaCmt}"
+														style="white-space: pre-wrap;"></td>
+												</tr>
+												<tr th:each="img : ${qnaImgList}"
+													th:if="${img.qnaImgType == 'question_file'}">
+													<th style="background-color: rgba(0, 90, 167, 0.2) !important;">
+														해설<br>이미지</th>
+													<td colspan="3">
+														<img th:src="${img.qnaImgPath}"
+															th:alt="${img.qnaImgOriginalName}"
+															style="max-height: 100px;" />
+													</td>
+												</tr>
 
 											</tbody>
 										</table>
-									</form>
+
+									</div>
 								</td>
 							</tr>
 						</tbody>
@@ -164,6 +252,20 @@
 			</tr>
 		</tbody>
 	</table>
+	<div style="text-align: right;margin-right: 35px;">
+		<button type="button" class="bttn2" aria-label="닫기">닫기</button>
+	</div>
+
+	<script th:inline="javascript">
+		var qnaQst = /*[[${qnaBankInfo.qnaQst}]]*/[];
+		console.log(qnaQst);
+		$('#questionContent').append(qnaQst);
+		// 닫기 버튼 클릭 이벤트 추가
+		$('.bttn2').click(function () {
+			window.close(); // 팝업 창 닫기
+		});
+	</script>
+
 
 </body>
 

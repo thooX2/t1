@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.admin.exam.mapper.AdminExamMapper">
-	<resultMap type="SubMirCate" id="SubMirCateMap">
+	<resultMap type="AdminSubMirCate" id="SubMirCateMap">
 		<id column="sub_mir_cat_code" property="subMirCatCode"></id>
 		<result column="sub_mjr_cat_code" property="subMjrCatCode"></result>
 		<result column="sub_mir_cat_nm" property="subMirCatNm"></result>
@@ -12,7 +12,7 @@
 		<result column="sub_mjr_cat_nm" property="subMjrName"></result>
 		<result column="subMirState" property="subMirState"></result>
 		
-		<association javaType="SubMjrCate" property="subMjrCate" >
+		<association javaType="AdminSubMjrCate" property="subMjrCate" >
 			<id 	column="sub_mjr_cat_code" 		property="subMjrCatCode"/>
 			<result column="sub_mjr_cat_nm" 	property="subMjrCatNm" />
 			<result column="sub_exam_time" 	property="subExamTime" />
@@ -41,33 +41,236 @@
 			<result column="user_dormant_status" property="userDormantStatus" />
 			<result column="user_delete_staus" property="userDeleteStatus" />
 	</resultMap>
-	<resultMap id="qnaBankResultMap" type="ks52team01.admin.exam.dto.QnaBank">
-		    <id column="qna_code" property="qnaCode"/>
-		    <result column="user_code" property="userCode"/>
-		    <result column="sub_mjr_cat_code" property="subMjrCatCode"/>
-		    <result column="sub_mir_cat_code" property="subMirCatCode"/>
-		    <result column="qna_type" property="qnaType"/>
-		    <result column="qna_chap" property="qnaChap"/>
-		    <result column="qna_subject" property="qnaSubject"/>
-		    <result column="qna_qst" property="qnaQst"/>
-		    <result column="qna_slt1" property="qnaSlt1"/>
-		    <result column="qna_slt2" property="qnaSlt2"/>
-		    <result column="qna_slt3" property="qnaSlt3"/>
-		    <result column="qna_slt4" property="qnaSlt4"/>
-		    <result column="qna_slt5" property="qnaSlt5"/>
-		    <result column="qna_ans" property="qnaAns"/>
-		    <result column="qna_scr" property="qnaScr"/>
-		    <result column="qna_cmt" property="qnaCmt"/>
-		    <result column="qna_cur_exam_state" property="qnaCurExamState"/>
-		    <result column="qna_create_time" property="qnaCreateTime"/>
-		    <result column="qna_update_time" property="qnaUpdateTime"/>
-		    <result column="sub_mjr_cat_nm" property="subMjrCatNm"/>
-		    <result column="sub_mir_cat_nm" property="subMirCatNm"/>
-		    <result column="user_id" property="userId"/>
-		    <result column="user_name" property="userName"/>
+	<resultMap id="qnaBankResultMap" type="ks52team01.admin.exam.dto.AdminQnaBank">
+	    <id column="qna_code" property="qnaCode"/>
+	    <result column="user_code" property="userCode"/>
+	    <result column="sub_mjr_cat_code" property="subMjrCatCode"/>
+	    <result column="sub_mir_cat_code" property="subMirCatCode"/>
+	    <result column="qna_type" property="qnaType"/>
+	    <result column="qna_chap" property="qnaChap"/>
+	    <result column="qna_subject" property="qnaSubject"/>
+	    <result column="qna_qst" property="qnaQst"/>
+	    <result column="qna_slt1" property="qnaSlt1"/>
+	    <result column="qna_slt2" property="qnaSlt2"/>
+	    <result column="qna_slt3" property="qnaSlt3"/>
+	    <result column="qna_slt4" property="qnaSlt4"/>
+	    <result column="qna_slt5" property="qnaSlt5"/>
+	    <result column="qna_ans" property="qnaAns"/>
+	    <result column="qna_scr" property="qnaScr"/>
+	    <result column="qna_cmt" property="qnaCmt"/>
+	    <result column="qna_cur_exam_state" property="qnaCurExamState"/>
+	    <result column="qna_create_time" property="qnaCreateTime"/>
+	    <result column="qna_update_time" property="qnaUpdateTime"/>
+	    <result column="sub_mjr_cat_nm" property="subMjrCatNm"/>
+	    <result column="sub_mir_cat_nm" property="subMirCatNm"/>
+	    <result column="user_id" property="userId"/>
+	    <result column="user_name" property="userName"/>
+	    <result column="exam_qna_type_nm" property="qnaTypeNm"/>
+	    <result column="exam_qna_chap_nm" property="qnaChapNm"/>
 	</resultMap>
+	<resultMap id="AdminExamInfoMap" type="ks52team01.admin.exam.dto.AdminExamInfo">
+		<id 	column="exam_code" 	  property="examCode"/>
+		<result column="user_code" 	  property="userCode"/>
+		<result column="exam_nm" 	  property="examNm"/>
+		<result column="exam_type" 	  property="examType"/>
+		<result column="exam_description" property="examDescription"/>
+		<result column="exam_oe_type" property="examOeType"/>
+		<result column="exam_tar_grd" property="examTarGrd"/>
+		<result column="exam_date" 	  property="examDate"/>
+		<result column="exam_inst" 	  property="examInst"/>
+		<result column="user_name" 	  property="userNm"/>
+		<result column="user_id" 	  property="userId"/>
+	</resultMap>
+	
+	<select id="getQuestionListBySmjrcc" parameterType="String" resultMap="qnaBankResultMap">
+		SELECT
+			qb.qna_code,
+			qb.user_code,
+			u.user_id,
+			u.user_name,
+			qb.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mir_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.qna_type, qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
+		FROM
+			qna_bank qb LEFT JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			LEFT JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			LEFT JOIN user u
+			ON qb.user_code = u.user_code
+		WHERE
+			qb.qna_cur_exam_state='Y' AND
+			qb.sub_mjr_cat_code= CONCAT('smjrcc',#{smjrcc})   
+		ORDER BY
+			CAST(SUBSTRING(qb.qna_code,3) AS UNSIGNED) DESC;
+	</select>
+	
+	
+	<select id="searchExamList" parameterType="map" resultMap="AdminExamInfoMap">
+	    SELECT 
+	        exam_code, 
+	        ei.user_code,
+			u.user_name,
+			u.user_id, 
+	        exam_nm, 
+	        exam_type, 
+	        exam_oe_type, 
+	        exam_tar_grd, 
+	        exam_description, 
+	        exam_date, 
+	        exam_inst
+	    FROM 
+	        exam_info ei INNER JOIN `user` u
+	        ON ei.user_code=u.user_code
+	    <where>
+	    	u.grade_code ='ugc1'
+	        <!-- examInfo 객체 필드 조건 -->
+	        <if test="examInfo.examType != null and examInfo.examType != ''">
+	            AND exam_type = #{examInfo.examType}
+	        </if>
+	        
+	        <if test="examInfo.examTarGrd != null and examInfo.examTarGrd != ''">
+	            AND exam_tar_grd = #{examInfo.examTarGrd}
+	        </if>
+	        
+	        <if test="examInfo.examOeType != null and examInfo.examOeType != ''">
+	            AND exam_oe_type = #{examInfo.examOeType}
+	        </if>
+	        
+	        <if test="examInfo.userCode != null and examInfo.userCode != ''">
+	            AND u.user_code = #{examInfo.userCode}
+	        </if>
+	        
+	        <!-- 날짜 조건: startDate와 endDate 사이 -->
+	        <if test="startDate != null and startDate != ''">
+	            AND exam_date <![CDATA[ >= ]]> #{startDate}
+	        </if>
+	
+	        <if test="endDate != null and endDate != ''">
+	            AND exam_date <![CDATA[ <= ]]> #{endDate}
+	        </if>
+	        
+	        <!-- 동적 컬럼 검색 조건 -->
+	        <if test="searchType != null and searchType != '' and searchKeyword != null and searchKeyword != ''">
+	            AND ${searchType} LIKE CONCAT('%',#{searchKeyword},'%')                   
+	        </if>
+	    </where>
+	</select>
+	
+	<update id="modifyExamInfo" parameterType="ks52team01.admin.exam.dto.AdminExamInfo">
+	    UPDATE exam_info
+	    <set>
+	        <if test="examCode != null and examCode != ''">
+	            exam_code = #{examCode},
+	        </if>
+	        <if test="userCode != null and userCode != ''">
+	            user_code = #{userCode},
+	        </if>
+	        <if test="examNm != null and examNm != ''">
+	            exam_nm = #{examNm},
+	        </if>
+	        <if test="examType != null and examType != ''">
+	            exam_type = #{examType},
+	        </if>
+	        <if test="examOeType != null and examOeType != ''">
+	            exam_oe_type = #{examOeType},
+	        </if>
+	        <if test="examTarGrd != null and examTarGrd != ''">
+	            exam_tar_grd = #{examTarGrd},
+	        </if>
+	        <if test="examDescription != null and examDescription != ''">
+	            exam_description = #{examDescription},
+	        </if>
+	        <if test="examDate != null">
+	            exam_date = #{examDate},
+	        </if>
+	        <if test="examInst != null and examInst != ''">
+	            exam_inst = #{examInst},
+	        </if>
+	    </set>
+	    WHERE exam_code = #{examCode}
+	</update>
 
-	<update id="modifyQuestionProc" parameterType="QnaBank">
+	
+	
+	<select id="getExamInfoByExamCode" parameterType="String" resultMap="AdminExamInfoMap">
+		SELECT
+			ei.exam_code,
+			ei.user_code,
+			u.user_name,
+			u.user_id,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			exam_inst
+		FROM
+			exam_info ei INNER JOIN `user` u
+			ON ei.user_code = u.user_code
+		WHERE
+			u.grade_code ='ugc1' AND
+			ei.exam_code = #{examCode}
+		Order by
+			CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
+	</select>
+	
+	<select id="getExamInfoList" resultMap="AdminExamInfoMap">
+		SELECT
+			ei.exam_code,
+			ei.user_code,
+			u.user_name,
+			u.user_id,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			exam_inst
+		FROM
+			exam_info ei INNER JOIN `user` u
+			ON ei.user_code = u.user_code
+		WHERE
+			u.grade_code ='ugc1'
+		Order by
+			CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
+	</select>
+
+	<insert id="addExamInfo" parameterType="AdminExamInfo">
+		INSERT INTO exam_info
+			(exam_code, user_code, exam_nm, exam_type, exam_oe_type, exam_tar_grd, exam_description, exam_date, exam_inst)
+		VALUES
+			(#{examCode}, #{userCode}, #{examNm}, #{examType}, #{examOeType}, #{examTarGrd}, #{examDescription}, #{examDate}, #{examInst});
+	</insert>
+
+	<update id="modifyQustionState" parameterType="Map">
+		UPDATE qna_bank
+		SET
+			qna_cur_exam_state=#{qnaState}
+		WHERE
+			  qna_code IN
+        <foreach collection="qnaCode" item="code" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+	</update>
+
+	<update id="modifyQuestionProc" parameterType="AdminQnaBank">
 		UPDATE qna_bank
         SET 
             user_code = #{userCode},
@@ -93,31 +296,43 @@
 
 	<select id="getQuestionInfo" parameterType="String" resultMap="qnaBankResultMap">
 		SELECT
-			qna_code,
-			user_code,
-			sub_mjr_cat_code,
-			sub_mir_cat_code,
-			qna_type, qna_chap,
-			qna_subject, qna_qst,
-			qna_slt1,
-			qna_slt2,
-			qna_slt3,
-			qna_slt4,
-			qna_slt5,
-			qna_ans,
-			qna_scr,
-			qna_cmt,
-			qna_cur_exam_state,
-			qna_create_time,
-			qna_update_time
+			qb.qna_code,
+			qb.user_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mjr_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.sub_mir_cat_code,
+			eqt.exam_qna_type_nm,
+			qb.qna_type,
+			eqc.exam_qna_chap_nm,
+			qb.qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
 		FROM
-			qna_bank
+			qna_bank qb INNER JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			INNER JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			INNER JOIN exam_qna_chap eqc
+			ON qb.qna_chap = eqc.exam_qna_chap_code
+			INNER JOIN exam_qna_type eqt
+			ON qb.qna_type = eqt.exam_qna_type_code
 		WHERE
 			qna_code=#{qnaCode}
 	</select>
 
 
-	<select id="searchQuestionList" parameterType="QnaBank" resultMap="qnaBankResultMap">
+	<select id="searchQuestionList" parameterType="AdminQnaBank" resultMap="qnaBankResultMap">
 	    SELECT
 	        qb.qna_code,
 	        qb.user_code,
@@ -220,7 +435,7 @@
 
 
 
-	<select id="addExamQuestion" parameterType="QnaBank">
+	<select id="addExamQuestion" parameterType="AdminQnaBank">
 		INSERT INTO qna_bank
 			(qna_code, user_code, sub_mjr_cat_code, sub_mir_cat_code, qna_type, qna_chap, qna_subject, qna_qst,
 			 qna_slt1, qna_slt2, qna_slt3, qna_slt4, qna_slt5, qna_ans, qna_scr, qna_cmt, qna_cur_exam_state, qna_create_time, qna_update_time)
@@ -230,7 +445,7 @@
 	</select>
 
 
-	<select id="getQnaChapList" resultType="ExamQnaChap">
+	<select id="getQnaChapList" resultType="AdminExamQnaChap">
 		SELECT
 			eqc.exam_qna_chap_code as examQnaChapCode,
 			eqc.user_code as userCode,
@@ -249,7 +464,7 @@
 	</select>
 	
 
-	<select id="getQnaTypeList" resultType="ExamQnaType">
+	<select id="getQnaTypeList" resultType="AdminExamQnaType">
 		SELECT
 			exam_qna_type_code as examQnaTypeCode,
 			sub_mjr_cat_code as subMjrCatCode,

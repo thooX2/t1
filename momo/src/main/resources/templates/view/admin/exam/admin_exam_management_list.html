@@ -4,6 +4,8 @@
 
 <head>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<!-- Select2 CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 	<style>
 		.flatpickr-current-month {
 			background-color: rgba(70, 134, 184, 1);
@@ -69,23 +71,18 @@
 
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
-		$(document).ready(function () {
-			$('.js-example-basic-single').select2({
-				placeholder: "카테고리를 선택하세요",
-				allowClear: true,
-				language: {
-					noResults: function () {
-						return "해당 검색 내용이 없습니다";  // 검색 결과가 없을 때 표시될 메시지
-					}
-				},
-				escapeMarkup: function (markup) {
-					return markup;
-				},
-				minimumResultsForSearch: 0,  // 검색 입력창 항상 보이게 설정
-				width: 'resolve'  // 드롭다운의 너비를 자동으로 조정
-			});
+	<script th:inline="javascript">
+
+		// Select2 초기화
+		$('select[name="userCode"]').select2({
+			minimumResultsForSearch: 0, // 검색 기능 활성화
+			language: {
+				noResults: function () {
+					return "검색 결과가 없습니다"; // 사용자 정의 메시지
+				}
+			}
 		});
+
 
 		$(function () {
 			var picker = flatpickr(".flatpicker", {locale: "ko"});
@@ -93,6 +90,98 @@
 		$('#addExamBtn').click(function () {
 			location.href = "/admin/exam/management";
 		})
+		var examInfoList = /*[[${examInfoList}]]*/[];
+		$('#examCount').text(examInfoList.length);
+
+		$('#searchBtn').click(function () {
+			const examType = $('select[name="examType"]').val();
+			const examTarGrd = $('input[name="examTarGrd"]:checked').val();
+			const examOeType = $('input[name="examOeType"]:checked').val();
+			const userCode = $('select[name="userCode"]').val();
+			const endDate = $('input[name="endDate"]').val();
+			const startDate = $('input[name="startDate"]').val();
+			const searchType = $('select[name="searchType"]').val();
+			const searchKeyword = $('input[name="searchKeyword"]').val();
+
+			if (searchKeyword != '' && searchType == '') {
+				alert('검색타입을 선택해주세요');
+				return;
+			}
+
+
+
+			const request = $.ajax({
+				url: '/admin/exam/searchExamList',
+				method: 'get',
+				data: {
+					'examType': examType,
+					'examTarGrd': examTarGrd,
+					'examOeType': examOeType,
+					'userCode': userCode,
+					'endDate': endDate,
+					'startDate': startDate,
+					'searchType': searchType,
+					'searchKeyword': searchKeyword,
+				},
+				dataType: 'json'
+			});
+			request.done(function (data) {
+				const searchList = data;
+				$('#examCount').text(data.length);
+				$('#examListTbody').empty();
+				if (searchList.length > 0) {
+					$(searchList).each(function (idx, item) {
+						const newRow = `<tr class="l_tr_even" align="center">
+						                  <td class="l_td01" >${searchList.length - idx}</td>
+						                  <td class="l_td01" >${item.examCode}</td>
+						                  <td class="l_td01" title="종합시험" align="left">
+						                      <a href="/admin/exam/modifyExam?examCode=${item.examCode}">${item.examNm}</a>
+						                  </td>
+						                  <td class="l_td01">${item.examTarGrd}학년</td>
+						                  <td class="l_td01">${item.examType}</td>
+						                  <td class="l_td01">${item.examInst}</td>
+						                  <td class="l_td01">${item.examOeType}</td>
+						                  <td class="l_td01" align="center">
+						                      <span class="label blue">${item.userId}</span>
+						                      <span>${item.userNm}</span>
+						                  </td>
+						                  <td class="l_td01">${item.examDate}</td>
+						              </tr>`;
+						$('#examListTbody').append(newRow);
+					});
+				} else {
+					const newRow = `<tr class="l_tr_even" align="center">
+										<td class="l_td01" colspan="9">해당 검색자료가 없습니다</td>
+									</tr>`
+					$('#examListTbody').append(newRow);
+				}
+
+
+
+			});
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
+		})
+
+		$('#searchReset').click(function () {
+			$('input[name="examTarGrd"]').val("");
+			$('input[name="endDate"]').val("");
+			$('input[name="startDate"]').val("");
+			$('input[name="searchKeyword"]').val("");
+
+			// Select 요소의 value를 초기화 (첫 번째 옵션 선택)
+			$('select[name="examType"]').prop('selectedIndex', 0);
+			$('select[name="searchType"]').prop('selectedIndex', 0);
+			$('select[name="userCode"]').val(null).trigger('change');
+
+			// Radio 버튼의 첫 번째 선택
+			$('input[name="examOeType"]').first().prop('checked', true);
+			$('input[name="examTarGrd"]').first().prop('checked', true);
+		})
+
+
+
 	</script>
 
 
@@ -113,122 +202,133 @@
 					퀵메뉴추가</button>
 
 			</div>
-			<div id="sys-page-util">
 
-				<a id="sys-page-util-refresh" href="javascript:window.location.reload(true);"><i
-						class="fa fa-retweet"></i></a>
-			</div>
 		</div>
 		<div id="sys-wrap">
 			<div id="sys-scroll">
 				<div id="alert_area"></div>
 				<div id="sys-contents">
-					<form name="form1" method="get">
 
-						<table class="t_tb01" cellpadding="0" cellspacing="0">
-							<colgroup>
-								<col class="col-width-120" />
-								<col />
-								<col class="col-width-120" />
-								<col />
-							</colgroup>
+					<table class="t_tb01" cellpadding="0" cellspacing="0">
+						<colgroup>
+							<col class="col-width-120" />
+							<col />
+							<col class="col-width-120" />
+							<col />
+						</colgroup>
 
-							<tbody>
-								<tr>
-									<td class="t_th01">카테고리</td>
-									<td class="t_td01" colspan="3">
-										<select name="s_category" class="js-example-basic-single" aria-label="카테고리 선택"
-											style="width: 100%;">
-											<option value=""> - 전체 - </option>
-											<option value="1750">서비스</option>
-											<option value="1800">제품</option>
-											<option value="1900">기타</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td class="t_th01">구분</td>
-									<td class="t_td01" colspan="3">
-										<label for="s_onofftype_all">
-											<input type="radio" id="s_onofftype_all" name="s_onofftype" value=""
-												class="ipt01" checked />
-											전체
-										</label>
+						<tbody>
+							<tr>
+								<td class="t_th01">시험 유형</td>
+								<td class="t_td01" colspan="3">
+									<select name="examType" class="js-example-basic-single" aria-label="카테고리 선택"
+										style="width: 100%;">
+										<option value=""> - 전체 - </option>
+										<option value="평가원">평가원</option>
+										<option value="교육청">교육청</option>
+										<option value="사설">사설</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="t_th01">대상 학년</td>
+								<td class="t_td01">
+									<label for="examTarGrdAll">
+										<input type="radio" id="examTarGrdAll" name="examTarGrd" value="" class="ipt01"
+											checked />
+										전체
+									</label>
 
-										<label for="s_onofftype_online">
-											<input type="radio" id="s_onofftype_online" name="s_onofftype" value="N"
-												class="ipt01" />
-											온라인
-										</label>
+									<label for="examTarGrd1">
+										<input type="radio" id="examTarGrd1" name="examTarGrd" value="1"
+											class="ipt01" />
+										1학년
+									</label>
 
-										<label for="s_onofftype_group">
-											<input type="radio" id="s_onofftype_group" name="s_onofftype" value="F"
-												class="ipt01" />
-											집합
-										</label>
-									</td>
+									<label for="examTarGrd2">
+										<input type="radio" id="examTarGrd2" name="examTarGrd" value="2"
+											class="ipt01" />
+										2학년
+									</label>
+									<label for="examTarGrd3">
+										<input type="radio" id="examTarGrd3" name="examTarGrd" value="3"
+											class="ipt01" />
+										3학년
+									</label>
+								</td>
+								<td class="t_th01">대상 분류</td>
+								<td class="t_td01">
+									<label>
+										<input type="radio" name="examOeType" value="" class="ipt01" checked="" />
+										전체
+									</label>
+									&nbsp;
 
-								</tr>
-								<tr>
-									<td class="t_th01">등록일</td>
-									<td class="t_td01">
+									<label>
+										<input type="radio" name="examOeType" value="홀수" class="ipt01" /> 홀수
+									</label>
+									&nbsp;
 
-										<input type="date" name="s_sdate" size="10" class="cal01 flatpicker"
-											id="dp1729133177442" placeholder="시작날짜"
-											style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;" />
+									<label>
+										<input type="radio" name="examOeType" value="짝수" class="ipt01" /> 짝수
+									</label>
+									&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td class="t_th01">담당자</td>
+								<td class="t_td01">
+									<select name="userCode" class="js-example-basic-single" aria-label="카테고리 선택"
+										style="width: 100%;">
+										<option value=""> - 전체 - </option>
+										<option th:if="${userList !=null}" th:each="ul: ${userList}"
+											th:text="'['+${ul.userId}+'] '+ ${ul.userName}" th:value="${ul.userCode}">
+										</option>
+									</select>
+								</td>
+								<td class="t_th01">시험 날짜</td>
+								<td class="t_td01">
 
-										<img class="ui-datepicker-trigger"
-											src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..."
-											title="..." />
-										-
-										<input type="text" name="s_edate" size="10" class="cal01 flatpicker" readonly=""
-											id="dp1729133177443" placeholder="끝날짜"
-											style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;" />
-										<img class="ui-datepicker-trigger"
-											src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..."
-											title="..." />
-									</td>
-									<td class="t_th01">상태</td>
-									<td class="t_td01">
-										<label>
-											<input type="radio" name="s_status" value="" class="ipt01" checked="" />
-											전체
-										</label>
-										&nbsp;
+									<input type="date" name="startDate" size="10" class="cal01 flatpicker"
+										id="dp1729133177442" placeholder="시작날짜"
+										style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;" />
 
-										<label>
-											<input type="radio" name="s_status" value="1" class="ipt01" /> 사용
-										</label>
-										&nbsp;
+									<img class="ui-datepicker-trigger"
+										src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..." title="..." />
+									-
+									<input type="text" name="endDate" size="10" class="cal01 flatpicker" readonly=""
+										id="dp1729133177443" placeholder="끝날짜"
+										style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;" />
+									<img class="ui-datepicker-trigger"
+										src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..." title="..." />
+								</td>
 
-										<label>
-											<input type="radio" name="s_status" value="0" class="ipt01" /> 중지
-										</label>
-										&nbsp;
-									</td>
-								</tr>
-								<tr>
-									<td class="t_th01">검색</td>
-									<td class="t_td01" colspan="3">
-										<select name="s_field">
-											<option value="">-전체-</option>
-											<option value="a.exam_nm">시험명</option>
-										</select>
-										<input type="text" name="s_keyword" size="30" />
-										<button type="submit" class="bttn2">검색</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</form>
+							</tr>
+							<tr>
+								<td class="t_th01">검색</td>
+								<td class="t_td01" colspan="3">
+									<select name="searchType">
+										<option value="">검색타입선택</option>
+										<option value="exam_nm">시험 이름</option>
+										<option value="a.exam_nm">출제 기관</option>
+
+									</select>
+									<input type="text" name="searchKeyword" size="30" placeholder="검색어를 입력해주세요" />
+									<button type="button" class="bttn2" id="searchBtn">검색</button>
+									<button type="button" class="bttn2" id="searchReset">초기화</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
 					<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
 						<tbody>
 							<tr>
 								<td class="a_th01"><span style="font-family:arial, dotum;font-weight:normal;">Total :
-										<font color="blue">66</font> 건
+										<font color="blue" id="examCount"></font> 건
 									</span></td>
 								<td class="a_td01">
-									<button type="button" class="bttn2" id="addExamBtn">등록 (온라인)</button>
+									<button type="button" class="bttn2" id="addExamBtn">등록</button>
 									<button type="button" class="bttn2">등록 (집합)</button>
 									<button type="button" class="bttn2">EXCEL</button>
 								</td>
@@ -239,110 +339,52 @@
 					<form name="form2" method="post">
 						<table class="l_tb01" cellpadding="0" cellspacing="0">
 							<colgroup>
-								<col width="50" />
+								<col width="60" />
 								<col width="80" />
 								<col />
-								<col width="70" />
-								<col width="70" />
+								<col width="100" />
 								<col width="100" />
 								<col width="180" />
-								<col width="80" />
-								<col width="80" />
+								<col width="100" />
+								<col width="140" />
+								<col width="100" />
+
 							</colgroup>
 							<thead>
 								<tr align="center">
 									<td class="l_th01">No</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.onoff_type">구분</span>
-									</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.exam_nm">시험명</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.exam_time">시험시간</span>
-									</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.question_cnt">문제수</span>
-									</td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.reg_date">등록일</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_u.user_nm">담당자</span></td>
-									<td class="l_th01"><span class="l_sort01" id="CL_a.status">상태</span></td>
-									<td class="l_th01">미리보기</td>
+									<td class="l_th01">시험 코드</td>
+									<td class="l_th01"><span class="l_sort01">시험 이름</span></td>
+									<td class="l_th01"><span class="l_sort01">대상 학년</span></td>
+									<td class="l_th01"><span class="l_sort01">시험 유형</span></td>
+									<td class="l_th01"><span class="l_sort01">출제 기관</span></td>
+									<td class="l_th01"><span class="l_sort01">대상 분류</span></td>
+									<td class="l_th01"><span class="l_sort01">담당자</span></td>
+									<td class="l_th01"><span class="l_sort01">시험 날짜</span></td>
 								</tr>
 							</thead>
-							<tbody>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">66</td>
-									<td class="l_td01">온라인</td>
+							<tbody id="examListTbody">
+								<tr class="l_tr_even" align="center" th:if="${examInfoList !=null}"
+									th:each="eil,status: ${examInfoList}">
+									<td class="l_td01" th:text="${status.size - status.index}"></td>
+									<td class="l_td01" th:text="${eil.examCode}"></td>
 									<td class="l_td01" title="종합시험" align="left">
-										<a href="#">종합시험</a>
+										<a th:href="@{/admin/exam/modifyExam(examCode=${eil.examCode})}"
+											th:text="${eil.examNm}"></a>
 									</td>
-									<td class="l_td01">60 분</td>
-									<td class="l_td01">25 문제</td>
-									<td class="l_td01">2024.08.11</td>
-									<td class="l_td01" align="left">
+									<td class="l_td01" th:text="${eil.examTarGrd+'학년'}"></td>
+									<td class="l_td01" th:text="${eil.examType}"></td>
+									<td class="l_td01" th:text="${eil.examInst}"></td>
+									<td class="l_td01" th:text="${eil.examOeType}"></td>
 
-										<span class="label red">공용</span>
+									<td class="l_td01" align="center">
+										<span class="label blue" th:text="${eil.userId}"></span><span
+											th:text="${eil.userNm}"></span>
 									</td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01">
-										<input type="button" value="미리보기" class="btn_simp" />
-									</td>
+									<td class="l_td01" th:text="${eil.examDate}"></td>
 								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">65</td>
-									<td class="l_td01">온라인</td>
-									<td class="l_td01" title="기말고사 2차시" align="left">
-										<a href="https://demo.malgnlms.com/sysop/exam/exam_modify.jsp?id=148&amp;">기말고사
-											2차시</a>
-									</td>
-									<td class="l_td01">60 분</td>
-									<td class="l_td01">1 문제</td>
-									<td class="l_td01">2024.06.19</td>
-									<td class="l_td01" align="left">
-
-										<span class="label red">공용</span>
-									</td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01">
-										<input type="button" value="미리보기" class="btn_simp" />
-									</td>
-								</tr>
-
-								<tr class="l_tr_even" align="center">
-									<td class="l_td01">64</td>
-									<td class="l_td01">온라인</td>
-									<td class="l_td01" title="2024.06.19 3:34 시험" align="left">
-										<a href="https://demo.malgnlms.com/sysop/exam/exam_modify.jsp?id=147&amp;">2024.06.19
-											3:34 시험</a>
-									</td>
-									<td class="l_td01">60 분</td>
-									<td class="l_td01">1 문제</td>
-									<td class="l_td01">2024.06.19</td>
-									<td class="l_td01" align="left">
-										<span class="label red">공용</span>
-									</td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01">
-										<input type="button" value="미리보기" class="btn_simp" />
-									</td>
-								</tr>
-
-								<tr class="l_tr_odd" align="center">
-									<td class="l_td01">63</td>
-									<td class="l_td01">온라인</td>
-									<td class="l_td01" title="기말고사 1차시" align="left">
-										<a href="https://demo.malgnlms.com/sysop/exam/exam_modify.jsp?id=146&amp;">기말고사
-											1차시</a>
-									</td>
-									<td class="l_td01">60 분</td>
-									<td class="l_td01">1 문제</td>
-									<td class="l_td01">2024.06.19</td>
-									<td class="l_td01" align="left">
-
-										<span class="label red">공용</span>
-									</td>
-									<td class="l_td01"><span class="label blue">사용</span></td>
-									<td class="l_td01">
-										<input type="button" value="미리보기" class="btn_simp" />
-									</td>
+								<tr class="l_tr_even" align="center" th:unless="${examInfoList !=null}">
+									<td class="l_td01" colspan="9">시험정보가 없습니다</td>
 								</tr>
 							</tbody>
 						</table>

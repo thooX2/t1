@@ -2,30 +2,46 @@ package ks52team01.admin.exam.service;
 
 import java.util.List;
 
-import ks52team01.admin.exam.dto.ExamQnaChap;
-import ks52team01.admin.exam.dto.ExamQnaType;
-import ks52team01.admin.exam.dto.QnaBank;
-import ks52team01.admin.exam.dto.SubMirCate;
+import ks52team01.admin.exam.dto.AdminExamInfo;
+import ks52team01.admin.exam.dto.AdminExamQnaChap;
+import ks52team01.admin.exam.dto.AdminExamQnaType;
+import ks52team01.admin.exam.dto.AdminQnaBank;
+import ks52team01.admin.exam.dto.AdminSubMirCate;
 import ks52team01.student.user.dto.User;
 
 public interface AdminExamService {
 
-	List<SubMirCate> getAdminExamCategoryList();
+	List<AdminSubMirCate> getAdminExamCategoryList();
 
 	List<User> getUserListByGrade(String gradeCode);
 
-	List<ExamQnaType> getQnaTypeList();
+	List<AdminExamQnaType> getQnaTypeList();
 
-	List<ExamQnaChap> getQnaChapList();
+	List<AdminExamQnaChap> getQnaChapList();
 
-	void addExamQuestion(QnaBank qnaBank);
+	void addExamQuestion(AdminQnaBank qnaBank);
 
-	List<QnaBank> getQuestionListAll();
+	List<AdminQnaBank> getQuestionListAll();
 
-	List<QnaBank> searchQuestionList(QnaBank qnaBank);
+	List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank);
 
-	QnaBank getQuestionInfo(String qnaCode);
+	AdminQnaBank getQuestionInfo(String qnaCode);
 
-	void modifyQuestionProc(QnaBank qnaBank);
+	void modifyQuestionProc(AdminQnaBank qnaBank);
+
+	int modifyQustionState(List<String> qnaCode, boolean isState);
+
+	void addExamInfo(AdminExamInfo examInfo);
+
+	List<AdminExamInfo> getExamInfoList();
+
+	AdminExamInfo getExamInfoByExamCode(String examCode);
+
+	void modifyExamInfo(AdminExamInfo examInfo);
+
+	List<AdminExamInfo> searchExamList(AdminExamInfo examInfo, String searchType, String searchKeyword,
+			String startDate, String endDate);
+
+	List<AdminQnaBank> getQuestionListBySmjrcc(String smjrcc);
 
 }

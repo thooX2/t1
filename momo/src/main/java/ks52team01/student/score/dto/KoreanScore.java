@@ -12,7 +12,7 @@ public class KoreanScore {
 	private String examCode;
 	private String korSltSub;
 	private String korSubjectScoreCode;
-	private int    korStdScr;
+	private int    StdScr;
 	private int    korPct;
 	private int    korGrd;
 	private int    korRanking;
@@ -20,5 +20,6 @@ public class KoreanScore {
 	private Date   korScrUpdateTime;
 
 	private SubjectScore subjectScore;
+	private SubjectMajorCategory subjectMajorCategory;
 	private SubjectMinorCategory subjectMinorCategory;
 }

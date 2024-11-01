@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class QnaBank {
+public class AdminQnaBank {
 	private String qnaCode; // 문항코드
 	private String userCode; // 출제자 코드
 	private String subMjrCatCode; // 과목 대분류 코드
@@ -31,4 +31,6 @@ public class QnaBank {
 	private String subMirCatNm; // 문항 중분류명
 	private String userId;
 	private String userName;
+	private String qnaTypeNm;
+	private String qnaChapNm;
 }

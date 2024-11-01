@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import ks52team01.admin.exam.dto.QnaBank;
+import ks52team01.admin.exam.dto.AdminQnaBank;
 import ks52team01.common.files.dto.QnaImg;
 import ks52team01.common.files.mapper.FileMapper;
 import ks52team01.common.files.util.FilesUtils;
@@ -62,7 +62,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void addFiles(String key, MultipartFile[] file, QnaBank qnaBank) {
+	public void addFiles(String key, MultipartFile[] file, AdminQnaBank qnaBank) {
 
 		if (file == null || file.length == 0) {
 
@@ -85,7 +85,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void addFile(String key, MultipartFile file, QnaBank qnaBank) {
+	public void addFile(String key, MultipartFile file, AdminQnaBank qnaBank) {
 
 		if (file == null || file.isEmpty()) {
 
