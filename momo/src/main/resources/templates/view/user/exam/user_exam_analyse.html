@@ -11,7 +11,7 @@
 <link rel="stylesheet"
 	th:href="@{/user/css/exam/userExamAnalyse/layout(1).css}">
 <link rel="stylesheet"
-	th:href="@{/user/css/exam/userExamAnalyse/smartmath.css}">
+	th:href="@{/user/css/exam/userExamAnalyse/customsmartmath.css}">
 </head>
 
 <th:block layout:fragment="customJsFile">
@@ -19,115 +19,118 @@
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
-	$(function() {	 
+	<script th:inline="javascript">
+	// session에 저장된 userCode가져오기(위에 th:inline="javascript필수")
+    var userCode = /*[[${session.loggedInUser.userCode}]]*/[];
+    
+        $(function() {     
+            // 영역 label 클릭 시 처리
+            $('#mDomCdDiv').on('click', 'label', function() {
+                // 모든 영역 label에서 'on' 클래스 제거
+                $('#mDomCdDiv label').removeClass('on').css('font-weight', 'normal');
 
-	 // 영역 label 클릭 시 처리
-	    $('#mDomCdDiv').on('click', 'label', function() {
-	        // 모든 영역 label에서 'on' 클래스 제거 라벨 on/off에 따라 글씨 굵기 변경
-	        $('#mDomCdDiv label').removeClass('on').css('font-weight','normal');
+                // 클릭한 영역 label에 'on' 클래스 추가
+                $(this).addClass('on').css('font-weight', 'bold');
 
-	        // 클릭한 영역 label에 'on' 클래스 추가
-	        $(this).addClass('on').css('font-weight','bold');
+                // 선택된 과목에 대한 작업 수행
+                const subjectName = $(this).text();
+                fncSetDom(subjectName); // 과목에 따른 데이터 불러오기
+            });
+        });
 
-	        // 선택된 과목에 대한 작업 수행
-	        const subjectName = $(this).text();
-	        fncSetDom(subjectName);
-	    });
+       function fncSetDom(subjectName) {
+            // AJAX 요청을 통해 선택된 과목의 데이터 가져옴.
+            const majorCodeMap = {
+                '국어': 'smjrcc1',
+                '수학': 'smjrcc2',
+                '영어': 'smjrcc3',
+                '한국사': 'smjrcc4',
+                '과학탐구': 'smjrcc6',
+                '사회탐구': 'smjrcc5',
+                '직업탐구': 'smjrcc7',
+                '제2외국어': 'smjrcc8'
+            };
+            const maxScoreMap = {
+                    '국어': 100,
+                    '수학': 100,
+                    '영어': 100,
+                    '한국사': 50,
+                    '과학탐구': 50,
+                    '사회탐구': 50,
+                    '직업탐구': 50,
+                    '제2외국어': 50
+                };
+          
+            const majorCode = majorCodeMap[subjectName];
+			const maxScore=maxScoreMap[subjectName] ||100;
+           const request= $.ajax({
+                url: '/exam/userExamData', 
+                method: 'GET',
+                data: {
+                	'majorCode': majorCode,
+                	'userCode':userCode,                	
+                	
+                },
+                dataType: 'JSON'
+            })
+            request.done(function(data){
+            	 console.log(data);
+            
+            	 // x축 데이터 (응시시험코드)
+            	 const categories = data.map(entry => entry.scoreRegTime); 
+            	 // y축 데이터 (과목원점수)
+            	 const scores = data.map(entry => entry.subjectScoreOrigin); // 과목원점수
+            	 //y축 단위 설정
+            	 const tickInterval = maxScore===100?20:10;
+            	// Highcharts 차트 생성
+                 Highcharts.chart('memRateArea2', {
+                     chart: {
+                         type: 'line'
+                     },
+                     title: {
+                         text: '성적변화'
+                     },
+                     xAxis: {
+                         categories: categories,                       
+                        
+                     },
+                     yAxis: {
+                         max:maxScore,
+                         min: 0,
+                         title: {
+                             text: '점수',
+                             
+                         },
+                         labels: {
+                             format: '{value}점'
+                         },
+                         tickInterval: tickInterval
+                     },
+                     series: [{
+                         data: scores, // 과목원점수
+                         name: '나의점수',
+                         color: '#2E78B2'
+                     }]
+                 }); 
+            	// console.log(scores);
+             })
+             request.fail(function (jqXHR, textStatus, error) {
+ 				console.log(error);
+ 			});
+           
+             
+        };
 
-	   
-	});
+       /*  $(document).ready(function() {
+            const $title = document.querySelector('title');
+            $title.textContent = '모의고사 결과분석'; // 제목 설정
 
-	const $title = document.querySelector('title');
-	$title.textContent = '모의고사 결과분석';
-	Highcharts.chart('memRateArea2', {
-	    "chart": {
-	        "type": "line"
-	      },
-	      "title": {text:'기간별 성적변화'},
-	      "xAxis": {
-	        "categories": [
-	          "24-10-01 21:10:22",
-	          "24-10-02 21:10:22",
-	          "24-10-03 21:10:22",
-	          "24-10-04 21:10:22",
-	          "24-10-05 21:10:22",
-	          "24-10-06 21:10:22",
-	          "24-10-07 21:10:22",
-	          "24-10-08 21:10:22",
-	          "24-10-09 21:10:22",
-	          "24-10-10 21:10:22",
-	          "24-10-11 21:10:22",
-	          "24-10-12 21:10:22",
-	          "24-10-13 21:10:22",
-	          "24-10-14 21:10:22",
-	          "24-10-15 21:10:22",
-	          "24-10-16 21:10:22",
-	          "24-10-17 21:10:22",
-	          "24-10-18 21:10:22",
-	          "24-10-19 21:10:22",
-	          "24-10-20 21:10:22",
-	          "24-10-21 21:10:22",
-	          "24-10-22 21:10:22",
-	          "24-10-23 21:10:22",
-	          "24-10-24 21:10:22",
-	          "24-10-25 21:10:22",
-	          "24-10-26 21:10:22",
-	          "24-10-27 21:10:22",
-	          "24-10-28 21:10:22",
-	          "24-10-29 21:10:22",
-	          "24-10-30 21:10:22"
-	        ]
-	      },
-	      "yAxis": {
-	        "max": 150,
-	        "min": 0,
-	        "title": {
-	          "text": "점수"
-	        },
-	        "labels": {
-	          "format": "{value}점"
-	        }
-	      },
-	      "series": [{
-	        "data": [
-	          98,
-	          123,
-	          73,
-	          89,
-	          108,
-	          76,
-	          133,
-	          117,
-	          84,
-	          112,
-	          94,
-	          126,
-	          71,
-	          123,
-	          56,
-	          92,
-	          125,
-	          89,
-	          109,
-	          101,
-	          95,
-	          119,
-	          87,
-	          118,
-	          125,
-	          80,
-	          81,
-	          80,
-	          56,
-	          116
-	        ],
-	        "name": "나의점수",
-	        "color": "#2E78B2"	
-	      }]
-	    });
-	</script>
+            // 초기 데이터 로드 (기본 과목 데이터)
+            fncSetDom('국어'); // 기본 과목 설정
+        }); */
+    </script>
 </th:block>
+
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain"
 	style="max-width: 1270px; margin: 0 auto">
@@ -138,9 +141,7 @@
 		<!-- sub_container -->
 		<div class="sub_container" style="width: 100% !important;">
 			<!-- content -->
-
 			<div class="column_main" style="width: 100%">
-
 				<div class="column_right analysis">
 					<h3 class="areaLogo">성적 분석</h3>
 
@@ -152,7 +153,6 @@
 					</div>
 
 					<div id="searchCndArea">
-
 						<table class="mid_tbl--type mid_tbl--type02">
 							<colgroup>
 								<col width="110">
@@ -162,63 +162,49 @@
 								<tr>
 									<th>영역</th>
 									<td>
-										<div class="tbl_in--atc" id="mDomCdDiv" >
-											<label id="mDomCdKO">국어</label> 
-											<label id="mDomCdMA">수학</label>
-											<label id="mDomCdENG">영어</label> 
-											<label id="mDomCdHI" >한국사</label> 
-											<label id="mDomCdSC">과학탐구</label> 
-											<label id="mDomCdSO">사회탐구</label> 
-											<label id="mDomCdJO">직업탐구</label>
-											<label id="mDomCdFOR">제2외국어</label>
+										<div class="tbl_in--atc" id="mDomCdDiv">
+											<label id="mDomCdKO">국어</label> <label id="mDomCdMA">수학</label>
+											<label id="mDomCdENG">영어</label> <label id="mDomCdHI">한국사</label>
+											<label id="mDomCdSC">과학탐구</label> <label id="mDomCdSO">사회탐구</label>
+											<label id="mDomCdJO">직업탐구</label> <label id="mDomCdFOR">제2외국어</label>
 										</div>
 									</td>
 								</tr>
-
 							</tbody>
 						</table>
-
 					</div>
-					<div class="searchSection--menu ty2" id="schTabMenu">
-						<a href="JavaScript:;" onclick="fncTabSet(1)" class="on"><strong>분석1</strong>성적 변화</a> 
-						<a href="/exam/ccr" onclick="fncTabSet(2)"><strong>분석2</strong>단원별 정답률</a> 
-						<a href="/exam/weak" onclick="fncTabSet(3)"><strong>분석3</strong>취약 	유형</a> 
-						<a href="/exam/chap" onclick="fncTabSet(4)"><strong>분석4</strong>단원/배점/문항별 분석</a>
 
+					<div class="searchSection--menu ty2" id="schTabMenu">
+						<a href="JavaScript:;" onclick="fncTabSet(1)" class="on"><strong>분석1</strong>성적
+							변화</a> <a href="/exam/ccr" onclick="fncTabSet(2)"><strong>분석2</strong>단원별
+							정답률</a> <a href="/exam/weak" onclick="fncTabSet(3)"><strong>분석3</strong>취약
+							유형</a> <a href="/exam/chap" onclick="fncTabSet(4)"><strong>분석4</strong>단원/배점/문항별
+							분석</a>
 					</div>
 
 					<div id="ContArea">
-
 						<!--[D] 분석 1 -->
 						<div class="bx_analysis">
-							
 							<div class="section_analysis">
-								<div class="tit_analysis on" id="tit_main2">기간별 성적 변화</div>
+								<div class="tit_analysis on" id="tit_main2">성적 변화</div>
 								<div class="cont_analysis" id="dtlCont2"
 									style="margin-bottom: 15px;">
-									<div class="top_legend" style="margin-right: 20px">
-										<!-- <span class="g_legen"><span class="ic_qc1"></span>평균 	정답률</span> <span class="g_legen"> -->
-										<!-- <span class="ic_qc2"></span>나의 정답률</span> -->
-
-									</div>
+									<div class="top_legend" style="margin-right: 20px"></div>
 									<div
 										style="display: flex; flex-direction: column; align-items: flex-start;">
 										<div
 											style="width: 100%; display: flex; justify-content: flex-end; padding-right: 20px !important; align-items: center;">
-											<span class="g_legen"
-												style="margin-right: 10px; font-size: 1.5rem; font-weight: bolder; color: black;">Period:
-											</span>
-											<!-- 부모 div에 width: 100% 추가 -->
+											<!-- <span class="g_legen"
+												style="margin-right: 10px; font-size: 1.5rem; font-weight: bolder; color: black;">Period:</span>
 											<select name="dateVal" id="dateVal"
 												onchange="fncSetDate(this.value)"
 												style="min-width: 80px; max-width: 200px; width: auto;">
-												<option value="W">주</option>
+												<option value="W">일</option>
 												<option value="M">월</option>
 												<option value="Y">년</option>
-											</select>
+											</select> -->
 										</div>
 										<div id="graphArea" style="margin: 10px auto;">
-											<!-- 위쪽 여백 추가 -->
 											<div id="memRateArea2" style="width: 740px; height: 400px;"></div>
 										</div>
 									</div>
@@ -230,7 +216,6 @@
 			</div>
 		</div>
 		<!-- //content -->
-
 		<!-- //sub_container -->
 	</section>
 	<!-- container //-->
