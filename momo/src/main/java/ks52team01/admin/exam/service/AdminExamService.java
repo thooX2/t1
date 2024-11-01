@@ -39,4 +39,9 @@ public interface AdminExamService {
 
 	void modifyExamInfo(AdminExamInfo examInfo);
 
+	List<AdminExamInfo> searchExamList(AdminExamInfo examInfo, String searchType, String searchKeyword,
+			String startDate, String endDate);
+
+	List<AdminQnaBank> getQuestionListBySmjrcc(String smjrcc);
+
 }

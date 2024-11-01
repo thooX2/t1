@@ -43,4 +43,8 @@ public interface AdminExamMapper {
 
 	int modifyExamInfo(AdminExamInfo examInfo);
 
+	List<AdminExamInfo> searchExamList(Map<String, Object> paramMap);
+
+	List<AdminQnaBank> getQuestionListBySmjrcc(String smjrcc);
+
 }

@@ -36,6 +36,89 @@ public class AdminExamController {
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
 
+	@GetMapping("/inputQuestion")
+	public String inputQuestionToExam(Model model) {
+		List<AdminExamInfo> examInfoList = adminExamService.getExamInfoList();
+		List<User> userList = adminExamService.getUserListByGrade("ugc1");
+
+		List<AdminSubMirCate> categoryList = adminExamService.getAdminExamCategoryList();
+
+		List<AdminSubMirCate> categoryList1 = new ArrayList<AdminSubMirCate>();
+		List<AdminSubMirCate> categoryList2 = new ArrayList<AdminSubMirCate>();
+		List<AdminSubMirCate> categoryList3 = new ArrayList<AdminSubMirCate>();
+		List<AdminSubMirCate> categoryList4 = new ArrayList<AdminSubMirCate>();
+		List<AdminSubMirCate> categoryList567 = new ArrayList<AdminSubMirCate>();
+		List<AdminSubMirCate> categoryList8 = new ArrayList<AdminSubMirCate>();
+
+		for (AdminSubMirCate category : categoryList) {
+			if ("smjrcc1".equals(category.getSubMjrCatCode())) {
+				categoryList1.add(category);
+			}
+			if ("smjrcc2".equals(category.getSubMjrCatCode())) {
+				categoryList2.add(category);
+			}
+			if ("smjrcc3".equals(category.getSubMjrCatCode())) {
+				categoryList3.add(category);
+			}
+			if ("smjrcc4".equals(category.getSubMjrCatCode())) {
+				categoryList4.add(category);
+			}
+			if ("smjrcc5".equals(category.getSubMjrCatCode())) {
+				categoryList567.add(category);
+			}
+			if ("smjrcc6".equals(category.getSubMjrCatCode())) {
+				categoryList567.add(category);
+			}
+			if ("smjrcc7".equals(category.getSubMjrCatCode())) {
+				categoryList567.add(category);
+			}
+			if ("smjrcc8".equals(category.getSubMjrCatCode())) {
+				categoryList8.add(category);
+			}
+		}
+
+		List<AdminQnaBank> questionListKor = adminExamService.getQuestionListBySmjrcc("1");
+		List<AdminQnaBank> questionListMath = adminExamService.getQuestionListBySmjrcc("2");
+		List<AdminQnaBank> questionListEng = adminExamService.getQuestionListBySmjrcc("3");
+		List<AdminQnaBank> questionListKH = adminExamService.getQuestionListBySmjrcc("4");
+		List<AdminQnaBank> questionListInq = new ArrayList<AdminQnaBank>();
+		questionListInq = adminExamService.getQuestionListBySmjrcc("5");
+		questionListInq.addAll((adminExamService.getQuestionListBySmjrcc("6")));
+		questionListInq.addAll(adminExamService.getQuestionListBySmjrcc("7"));
+		List<AdminQnaBank> questionListLang = adminExamService.getQuestionListBySmjrcc("8");
+
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("questionListKor", questionListKor);
+		model.addAttribute("questionListMath", questionListMath);
+		model.addAttribute("questionListEng", questionListEng);
+		model.addAttribute("questionListKH", questionListKH);
+		model.addAttribute("questionListInq", questionListInq);
+		model.addAttribute("questionListLang", questionListLang);
+		model.addAttribute("examInfoList", examInfoList);
+		model.addAttribute("userList", userList);
+		model.addAttribute("categoryList1", categoryList1);
+		model.addAttribute("categoryList2", categoryList2);
+		model.addAttribute("categoryList3", categoryList3);
+		model.addAttribute("categoryList4", categoryList4);
+		model.addAttribute("categoryList567", categoryList567);
+		model.addAttribute("categoryList8", categoryList8);
+
+		return "view/admin/exam/admin_exam_question_input";
+	}
+
+	@GetMapping("/searchExamList")
+	@ResponseBody
+	public List<AdminExamInfo> searchExamList(AdminExamInfo examInfo,
+			@RequestParam(name = "searchType") String searchType,
+			@RequestParam(name = "searchKeyword") String searchKeyword,
+			@RequestParam(name = "startDate") String startDate, @RequestParam(name = "endDate") String endDate) {
+
+		List<AdminExamInfo> examInfoList = adminExamService.searchExamList(examInfo, searchType, searchKeyword,
+				startDate, endDate);
+
+		return examInfoList;
+	}
+
 	@PostMapping("/modifyExam")
 	public String modifyExamINfo(AdminExamInfo examInfo) {
 		adminExamService.modifyExamInfo(examInfo);
@@ -281,8 +364,10 @@ public class AdminExamController {
 	public String managementList(Model model) {
 
 		List<AdminExamInfo> examInfoList = adminExamService.getExamInfoList();
+		List<User> userList = adminExamService.getUserListByGrade("ugc1");
 
 		model.addAttribute("examInfoList", examInfoList);
+		model.addAttribute("userList", userList);
 
 		return "view/admin/exam/admin_exam_management_list";
 	}
