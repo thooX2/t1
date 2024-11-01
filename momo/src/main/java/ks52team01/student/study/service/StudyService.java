@@ -3,6 +3,7 @@ package ks52team01.student.study.service;
 import java.util.List;
 
 import ks52team01.student.study.dto.DetailedSchedule;
+import ks52team01.student.study.dto.LearningScheduleDto;
 import ks52team01.student.study.dto.ProblemScrape;
 import ks52team01.student.study.dto.ProblemSolving;
 import ks52team01.student.study.dto.StudySchedule;
@@ -82,4 +83,6 @@ public interface StudyService {
 	List<ProblemScrape> getProblemScrape();
 	
 	List<ProblemSolving> getProblemSolving();
+	
+	 List<LearningScheduleDto> getLearningSchedules();
 }

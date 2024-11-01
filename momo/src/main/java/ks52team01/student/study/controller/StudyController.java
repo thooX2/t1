@@ -1,15 +1,22 @@
 package ks52team01.student.study.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import ks52team01.student.study.dto.DetailedSchedule;
+import ks52team01.student.study.dto.LearningScheduleDto;
 import ks52team01.student.study.dto.ProblemScrape;
 import ks52team01.student.study.dto.ProblemSolving;
 import ks52team01.student.study.dto.StudySchedule;
@@ -25,6 +32,7 @@ import ks52team01.student.user.dto.User;
 @RequestMapping("/study")
 public class StudyController {
 	
+	@Autowired
 	private final StudyService studyService;
 	
 	
@@ -252,21 +260,39 @@ public class StudyController {
 		model.addAttribute("LearningScheduleList", studyService.getStudySchedule(id));
 		return "view/user/study/learning_schedule_list";
 	}
+	
 	@PostMapping("/addLearningSchedule")
-	public String addLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model model) {
+    public ResponseEntity<String> saveLearning(@RequestBody StudySchedule studyschedule) {
 		studyService.addLearningSchedule(studyschedule);
-		return "redirect:/study/getLearningScheduleList";
-	}
+        return ResponseEntity.ok("Learning event saved successfully.");
+    }
+	
+	/*
+	 * @PostMapping("/modifyLearningSchedule") public String
+	 * modifyLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model
+	 * model) { studyService.modifyLearningSchedule(studyschedule); return
+	 * "redirect:/study/getLearningScheduleList"; }
+	 * 
+	 * @PostMapping("/removeLearningSchedule") public String
+	 * removeLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model
+	 * model) { studyService.removeLearningSchedule(studyschedule); return
+	 * "redirect:/study/getLearningScheduleList"; }
+	 */
+	
+	//실험용	
 	@PostMapping("/modifyLearningSchedule")
-	public String modifyLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model model) {
+    public ResponseEntity<String> modifyLearning(@RequestBody StudySchedule studyschedule) {
 		studyService.modifyLearningSchedule(studyschedule);
-		return "redirect:/study/getLearningScheduleList";
-	}
+        return ResponseEntity.ok("Learning event saved successfully.");
+    }
+	
 	@PostMapping("/removeLearningSchedule")
-	public String removeLearningSchedule(@ModelAttribute StudySchedule studyschedule, Model model) {
+    public ResponseEntity<String> removeLearning(@RequestBody StudySchedule studyschedule) {
 		studyService.removeLearningSchedule(studyschedule);
-		return "redirect:/study/getLearningScheduleList";
-	}
+        return ResponseEntity.ok("Learning event saved successfully.");
+    }
+
+   
 	
 	
 	
@@ -302,10 +328,6 @@ public class StudyController {
 		return "view/user/study/detailed_schedule_delete";	
 	}
 	
-	
-	
-	
-	
 	@GetMapping("/getDetailedScheduleList")
 	public String getDetailedScheduleList(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("loggedInUser");
@@ -315,19 +337,22 @@ public class StudyController {
 		return "view/user/study/detailed_schedule_list";
 	}
 	@PostMapping("/addDetailedSchedule")
-	public String addDetailedSchedule(@ModelAttribute DetailedSchedule detailedschedule , Model model) {
+	   public ResponseEntity<String> saveDetail(@RequestBody DetailedSchedule detailedschedule) {
 		studyService.addDetailedSchedule(detailedschedule);
-		return "redirect:/study/getDetailedScheduleList";
+	    return ResponseEntity.ok("Detail event saved successfully.");
 	}
+	
 	@PostMapping("/modifyDetailedSchedule")
-	public String modifyDetailedSchedule(@ModelAttribute DetailedSchedule detailedschedule , Model model) {
+	   public ResponseEntity<String> modifyDetail(@RequestBody DetailedSchedule detailedschedule) {
+		System.out.println("case2 : 2차진행");
 		studyService.modifyDetailedSchedule(detailedschedule);
-		return "redirect:/study/getDetailedScheduleList";
+	    return ResponseEntity.ok("Detail event saved successfully.");
 	}
+	
 	@PostMapping("/removeDetailedSchedule")
-	public String removeDetailedSchedule(@ModelAttribute DetailedSchedule detailedschedule , Model model) {
+	   public ResponseEntity<String> removeDetail(@RequestBody DetailedSchedule detailedschedule) {
 		studyService.removeDetailedSchedule(detailedschedule);
-		return "redirect:/study/getDetailedScheduleList";
+	    return ResponseEntity.ok("Detail event saved successfully.");
 	}
 	
 	
@@ -444,4 +469,18 @@ public class StudyController {
 		studyService.removeProblemSolving(problemscrape);
 		return "view/user/study/problem_solving_delete";
 	}
+	
+	
+	
+	//현재 내가 따로 실험하기 위해서 추가한 코드
+	@GetMapping("/learning-schedules")
+    @ResponseBody
+    public List<LearningScheduleDto> getLearningSchedules() {
+		List<LearningScheduleDto> schedule = studyService.getLearningSchedules();
+		return schedule;
+    }
+	 
+	
+	
+	
 }
