@@ -36,7 +36,22 @@
 			<result column="exam_inst" 	  property="examInst"/>
 		</association>
 	</resultMap>
-	
+	<select id="selectUserExamData" resultType="ks52team01.student.exam.dto.ExamAnalyseDto">
+        SELECT
+            subject_score_code AS subjectScoreCode,
+            user_code AS userCode,
+            took_exam_info_code AS tookExamInfoCode,
+            sub_mjr_cat_code AS majorCode,
+            sub_mir_cat_code AS minorCode,
+            subject_score_origin AS subjectScoreOrigin,
+            subject_score_reg_time AS scoreRegTime
+        FROM
+            subject_score
+        WHERE
+            user_code = #{userCode}  AND sub_mjr_cat_code = #{majorCode}
+        ORDER BY
+            CAST(SUBSTRING(took_exam_info_code, 5) AS UNSIGNED)
+    </select>
 	<select id="getTookExamList" parameterType="String" resultMap="TookExamInfoMap">
 		SELECT
 			tei.took_exam_info_code,
