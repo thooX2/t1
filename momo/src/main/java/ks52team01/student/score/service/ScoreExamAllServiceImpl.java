@@ -1,6 +1,6 @@
 package ks52team01.student.score.service;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +30,7 @@ public class ScoreExamAllServiceImpl implements ScoreExamAllService {
 	public Map<String, Subject> getTookExamScore(String userCode, String areaCityCode, String examCode, String tookExamInfoCode) {
 		// TODO Auto-generated method stub
 		
-		Map<String, Subject> subjectMap = new HashMap<String, Subject>();
+		Map<String, Subject> subjectMap = new LinkedHashMap<String, Subject>();
 		
 		String provinceCode = areaCityCode.substring(0, 2);
 		String municipalityCode = areaCityCode.substring(2, 4);

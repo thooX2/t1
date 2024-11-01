@@ -220,11 +220,11 @@
 	<select id="getKoreanScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 국어 점수 전국 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
-			AVG(ks.kor_std_scr) 		 AS sub_std_scr_nat_avg,
-			AVG(ks.kor_pct) 			 AS sub_pct_nat_avg,
-			AVG(ks.kor_grd) 			 AS sub_grd_nat_avg,
-			AVG(ks.kor_ranking) 		 AS sub_rank_nat_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_nat_avg,
+			ROUND(AVG(ks.kor_std_scr), 1) 		   AS sub_std_scr_nat_avg,
+			ROUND(AVG(ks.kor_pct), 1) 			   AS sub_pct_nat_avg,
+			ROUND(AVG(ks.kor_grd), 1) 			   AS sub_grd_nat_avg,
+			ROUND(AVG(ks.kor_ranking), 1) 		   AS sub_rank_nat_avg
 		FROM
 			subject_score ss
 			INNER JOIN  kor_scr ks
@@ -238,11 +238,11 @@
 	<select id="getKoreanScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 국어 점수 도 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
-			AVG(ks.kor_std_scr) 		 AS sub_std_scr_pvc_avg,
-			AVG(ks.kor_pct) 			 AS sub_pct_pvc_avg,
-			AVG(ks.kor_grd) 			 AS sub_grd_pvc_avg,
-			AVG(ks.kor_ranking) 		 AS sub_rank_pvc_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_pvc_avg,
+			ROUND(AVG(ks.kor_std_scr), 1) 		   AS sub_std_scr_pvc_avg,
+			ROUND(AVG(ks.kor_pct), 1) 			   AS sub_pct_pvc_avg,
+			ROUND(AVG(ks.kor_grd), 1) 			   AS sub_grd_pvc_avg,
+			ROUND(AVG(ks.kor_ranking), 1) 		   AS sub_rank_pvc_avg
 		FROM
 			subject_score ss
 			INNER JOIN  kor_scr ks
@@ -256,11 +256,11 @@
 	<select id="getKoreanScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 국어 점수 시 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
-			AVG(ks.kor_std_scr) 		 AS sub_std_scr_mncp_avg,
-			AVG(ks.kor_pct) 			 AS sub_pct_mncp_avg,
-			AVG(ks.kor_grd) 			 AS sub_grd_mncp_avg,
-			AVG(ks.kor_ranking) 		 AS sub_rank_mncp_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_mncp_avg,
+			ROUND(AVG(ks.kor_std_scr), 1) 		   AS sub_std_scr_mncp_avg,
+			ROUND(AVG(ks.kor_pct), 1) 			   AS sub_pct_mncp_avg,
+			ROUND(AVG(ks.kor_grd), 1) 			   AS sub_grd_mncp_avg,
+			ROUND(AVG(ks.kor_ranking), 1) 		   AS sub_rank_mncp_avg
 		FROM
 			subject_score ss
 			INNER JOIN  kor_scr ks
@@ -299,11 +299,11 @@
 	<select id="getMathScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 수학 점수 전국 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
-			AVG(ms.math_std_scr) 		 AS sub_std_scr_nat_avg,
-			AVG(ms.math_pct) 			 AS sub_pct_nat_avg,
-			AVG(ms.math_grd) 			 AS sub_grd_nat_avg,
-			AVG(ms.math_ranking) 		 AS sub_rank_nat_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_nat_avg,
+			ROUND(AVG(ms.math_std_scr), 1) 		   AS sub_std_scr_nat_avg,
+			ROUND(AVG(ms.math_pct), 1) 			   AS sub_pct_nat_avg,
+			ROUND(AVG(ms.math_grd), 1) 			   AS sub_grd_nat_avg,
+			ROUND(AVG(ms.math_ranking), 1) 		   AS sub_rank_nat_avg
 		FROM
 			subject_score ss
 			INNER JOIN  math_scr ms
@@ -317,11 +317,11 @@
 	<select id="getMathScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 수학 점수 도 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
-			AVG(ms.math_std_scr) 		 AS sub_std_scr_pvc_avg,
-			AVG(ms.math_pct) 			 AS sub_pct_pvc_avg,
-			AVG(ms.math_grd) 			 AS sub_grd_pvc_avg,
-			AVG(ms.math_ranking) 		 AS sub_rank_pvc_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_pvc_avg,
+			ROUND(AVG(ms.math_std_scr), 1) 		   AS sub_std_scr_pvc_avg,
+			ROUND(AVG(ms.math_pct), 1) 			   AS sub_pct_pvc_avg,
+			ROUND(AVG(ms.math_grd), 1) 			   AS sub_grd_pvc_avg,
+			ROUND(AVG(ms.math_ranking), 1) 		   AS sub_rank_pvc_avg
 		FROM
 			subject_score ss
 			INNER JOIN  math_scr ms
@@ -335,11 +335,11 @@
 	<select id="getMathScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 수학 점수 시 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
-			AVG(ms.math_std_scr) 		 AS sub_std_scr_mncp_avg,
-			AVG(ms.math_pct) 			 AS sub_pct_mncp_avg,
-			AVG(ms.math_grd) 			 AS sub_grd_mncp_avg,
-			AVG(ms.math_ranking) 		 AS sub_rank_mncp_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_mncp_avg,
+			ROUND(AVG(ms.math_std_scr), 1) 		   AS sub_std_scr_mncp_avg,
+			ROUND(AVG(ms.math_pct), 1) 			   AS sub_pct_mncp_avg,
+			ROUND(AVG(ms.math_grd), 1) 			   AS sub_grd_mncp_avg,
+			ROUND(AVG(ms.math_ranking), 1) 		   AS sub_rank_mncp_avg
 		FROM
 			subject_score ss
 			INNER JOIN  math_scr ms
@@ -376,11 +376,11 @@
 	<select id="getEnglishScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 영어 점수 전국 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
-			AVG(es.eng_std_scr) 		 AS sub_std_scr_nat_avg,
-			AVG(es.eng_pct) 			 AS sub_pct_nat_avg,
-			AVG(es.eng_grd) 			 AS sub_grd_nat_avg,
-			AVG(es.eng_ranking) 		 AS sub_rank_nat_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_nat_avg,
+			ROUND(AVG(es.eng_std_scr), 1) 		   AS sub_std_scr_nat_avg,
+			ROUND(AVG(es.eng_pct), 1) 			   AS sub_pct_nat_avg,
+			ROUND(AVG(es.eng_grd), 1) 			   AS sub_grd_nat_avg,
+			ROUND(AVG(es.eng_ranking), 1) 		   AS sub_rank_nat_avg
 		FROM
 			subject_score ss
 			INNER JOIN  eng_scr es
@@ -394,11 +394,11 @@
 	<select id="getEnglishScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 영어 점수 도 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
-			AVG(es.eng_std_scr) 		 AS sub_std_scr_pvc_avg,
-			AVG(es.eng_pct) 			 AS sub_pct_pvc_avg,
-			AVG(es.eng_grd) 			 AS sub_grd_pvc_avg,
-			AVG(es.eng_ranking) 		 AS sub_rank_pvc_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_pvc_avg,
+			ROUND(AVG(es.eng_std_scr), 1) 		   AS sub_std_scr_pvc_avg,
+			ROUND(AVG(es.eng_pct), 1) 			   AS sub_pct_pvc_avg,
+			ROUND(AVG(es.eng_grd), 1) 			   AS sub_grd_pvc_avg,
+			ROUND(AVG(es.eng_ranking), 1) 		   AS sub_rank_pvc_avg
 		FROM
 			subject_score ss
 			INNER JOIN  eng_scr es
@@ -412,11 +412,11 @@
 	<select id="getEnglishScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 영어 점수 시 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
-			AVG(es.eng_std_scr) 		 AS sub_std_scr_mncp_avg,
-			AVG(es.eng_pct) 			 AS sub_pct_mncp_avg,
-			AVG(es.eng_grd) 			 AS sub_grd_mncp_avg,
-			AVG(es.eng_ranking) 		 AS sub_rank_mncp_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_mncp_avg,
+			ROUND(AVG(es.eng_std_scr), 1) 		   AS sub_std_scr_mncp_avg,
+			ROUND(AVG(es.eng_pct), 1) 			   AS sub_pct_mncp_avg,
+			ROUND(AVG(es.eng_grd), 1) 			   AS sub_grd_mncp_avg,
+			ROUND(AVG(es.eng_ranking), 1) 		   AS sub_rank_mncp_avg
 		FROM
 			subject_score ss
 			INNER JOIN  eng_scr es
@@ -453,11 +453,11 @@
 	<select id="getKoreanHistoryScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 한국사 점수 전국 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
-			AVG(khs.kor_his_std_scr) 	 AS sub_std_scr_nat_avg,
-			AVG(khs.kor_his_pct) 		 AS sub_pct_nat_avg,
-			AVG(khs.kor_his_grd) 		 AS sub_grd_nat_avg,
-			AVG(khs.kor_his_ranking)	 AS sub_rank_nat_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_nat_avg,
+			ROUND(AVG(khs.kor_his_std_scr), 1) 	   AS sub_std_scr_nat_avg,
+			ROUND(AVG(khs.kor_his_pct), 1) 		   AS sub_pct_nat_avg,
+			ROUND(AVG(khs.kor_his_grd), 1) 		   AS sub_grd_nat_avg,
+			ROUND(AVG(khs.kor_his_ranking), 1)	   AS sub_rank_nat_avg
 		FROM
 			subject_score ss
 			INNER JOIN  kor_his_scr khs
@@ -471,11 +471,11 @@
 	<select id="getKoreanHistoryScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 한국사 점수 도 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
-			AVG(khs.kor_his_std_scr) 	 AS sub_std_scr_pvc_avg,
-			AVG(khs.kor_his_pct) 		 AS sub_pct_pvc_avg,
-			AVG(khs.kor_his_grd) 		 AS sub_grd_pvc_avg,
-			AVG(khs.kor_his_ranking) 	 AS sub_rank_pvc_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_pvc_avg,
+			ROUND(AVG(khs.kor_his_std_scr), 1) 	   AS sub_std_scr_pvc_avg,
+			ROUND(AVG(khs.kor_his_pct), 1) 		   AS sub_pct_pvc_avg,
+			ROUND(AVG(khs.kor_his_grd), 1) 		   AS sub_grd_pvc_avg,
+			ROUND(AVG(khs.kor_his_ranking), 1) 	   AS sub_rank_pvc_avg
 		FROM
 			subject_score ss
 			INNER JOIN  kor_his_scr khs
@@ -489,11 +489,11 @@
 	<select id="getKoreanHistoryScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 한국사 점수 시 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
-			AVG(khs.kor_his_std_scr) 	 AS sub_std_scr_mncp_avg,
-			AVG(khs.kor_his_pct) 		 AS sub_pct_mncp_avg,
-			AVG(khs.kor_his_grd) 		 AS sub_grd_mncp_avg,
-			AVG(khs.kor_his_ranking) 	 AS sub_rank_mncp_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_mncp_avg,
+			ROUND(AVG(khs.kor_his_std_scr), 1) 	   AS sub_std_scr_mncp_avg,
+			ROUND(AVG(khs.kor_his_pct), 1) 		   AS sub_pct_mncp_avg,
+			ROUND(AVG(khs.kor_his_grd), 1) 		   AS sub_grd_mncp_avg,
+			ROUND(AVG(khs.kor_his_ranking), 1) 	   AS sub_rank_mncp_avg
 		FROM
 			subject_score ss
 			INNER JOIN  kor_his_scr khs
@@ -532,11 +532,11 @@
 	<select id="getInquiry1ScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 탐구1 점수 전국 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
-			AVG(i1s.inq1_std_scr) 	 AS sub_std_scr_nat_avg,
-			AVG(i1s.inq1_pct) 		 AS sub_pct_nat_avg,
-			AVG(i1s.inq1_grd) 		 AS sub_grd_nat_avg,
-			AVG(i1s.inq1_ranking)	 AS sub_rank_nat_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_nat_avg,
+			ROUND(AVG(i1s.inq1_std_scr), 1) 	   AS sub_std_scr_nat_avg,
+			ROUND(AVG(i1s.inq1_pct), 1) 		   AS sub_pct_nat_avg,
+			ROUND(AVG(i1s.inq1_grd), 1) 		   AS sub_grd_nat_avg,
+			ROUND(AVG(i1s.inq1_ranking), 1)	       AS sub_rank_nat_avg
 		FROM
 			subject_score ss
 			INNER JOIN  inq1_scr i1s
@@ -550,11 +550,11 @@
 	<select id="getInquiry1ScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 탐구1 점수 도 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
-			AVG(i1s.inq1_std_scr) 	 AS sub_std_scr_pvc_avg,
-			AVG(i1s.inq1_pct) 		 AS sub_pct_pvc_avg,
-			AVG(i1s.inq1_grd) 		 AS sub_grd_pvc_avg,
-			AVG(i1s.inq1_ranking) 	 AS sub_rank_pvc_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_pvc_avg,
+			ROUND(AVG(i1s.inq1_std_scr), 1) 	   AS sub_std_scr_pvc_avg,
+			ROUND(AVG(i1s.inq1_pct), 1) 		   AS sub_pct_pvc_avg,
+			ROUND(AVG(i1s.inq1_grd), 1) 		   AS sub_grd_pvc_avg,
+			ROUND(AVG(i1s.inq1_ranking), 1) 	   AS sub_rank_pvc_avg
 		FROM
 			subject_score ss
 			INNER JOIN  inq1_scr i1s
@@ -568,11 +568,11 @@
 	<select id="getInquiry1ScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 탐구1 점수 시 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
-			AVG(i1s.inq1_std_scr) 	 	 AS sub_std_scr_mncp_avg,
-			AVG(i1s.inq1_pct) 		 	 AS sub_pct_mncp_avg,
-			AVG(i1s.inq1_grd) 		 	 AS sub_grd_mncp_avg,
-			AVG(i1s.inq1_ranking) 	 	 AS sub_rank_mncp_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_mncp_avg,
+			ROUND(AVG(i1s.inq1_std_scr), 1) 	   AS sub_std_scr_mncp_avg,
+			ROUND(AVG(i1s.inq1_pct), 1) 		   AS sub_pct_mncp_avg,
+			ROUND(AVG(i1s.inq1_grd), 1) 		   AS sub_grd_mncp_avg,
+			ROUND(AVG(i1s.inq1_ranking), 1) 	   AS sub_rank_mncp_avg
 		FROM
 			subject_score ss
 			INNER JOIN inq1_scr i1s
@@ -611,11 +611,11 @@
 	<select id="getInquiry2ScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 탐구2 점수 전국 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
-			AVG(i2s.inq2_std_scr) 	 AS sub_std_scr_nat_avg,
-			AVG(i2s.inq2_pct) 		 AS sub_pct_nat_avg,
-			AVG(i2s.inq2_grd) 		 AS sub_grd_nat_avg,
-			AVG(i2s.inq2_ranking)	 AS sub_rank_nat_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_nat_avg,
+			ROUND(AVG(i2s.inq2_std_scr), 1) 	   AS sub_std_scr_nat_avg,
+			ROUND(AVG(i2s.inq2_pct), 1) 		   AS sub_pct_nat_avg,
+			ROUND(AVG(i2s.inq2_grd), 1) 		   AS sub_grd_nat_avg,
+			ROUND(AVG(i2s.inq2_ranking), 1)	       AS sub_rank_nat_avg
 		FROM
 			subject_score ss
 			INNER JOIN  inq2_scr i2s
@@ -629,11 +629,11 @@
 	<select id="getInquiry2ScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 탐구2 점수 도 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
-			AVG(i2s.inq2_std_scr) 	 AS sub_std_scr_pvc_avg,
-			AVG(i2s.inq2_pct) 		 AS sub_pct_pvc_avg,
-			AVG(i2s.inq2_grd) 		 AS sub_grd_pvc_avg,
-			AVG(i2s.inq2_ranking) 	 AS sub_rank_pvc_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_pvc_avg,
+			ROUND(AVG(i2s.inq2_std_scr), 1) 	   AS sub_std_scr_pvc_avg,
+			ROUND(AVG(i2s.inq2_pct), 1) 		   AS sub_pct_pvc_avg,
+			ROUND(AVG(i2s.inq2_grd), 1) 		   AS sub_grd_pvc_avg,
+			ROUND(AVG(i2s.inq2_ranking), 1) 	   AS sub_rank_pvc_avg
 		FROM
 			subject_score ss
 			INNER JOIN  inq2_scr i2s
@@ -647,11 +647,11 @@
 	<select id="getInquiry2ScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
 		/* 탐구2 점수 시 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
-			AVG(i2s.inq2_std_scr) 	 	 AS sub_std_scr_mncp_avg,
-			AVG(i2s.inq2_pct) 		 	 AS sub_pct_mncp_avg,
-			AVG(i2s.inq2_grd) 		 	 AS sub_grd_mncp_avg,
-			AVG(i2s.inq2_ranking) 	 	 AS sub_rank_mncp_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_mncp_avg,
+			ROUND(AVG(i2s.inq2_std_scr), 1) 	   AS sub_std_scr_mncp_avg,
+			ROUND(AVG(i2s.inq2_pct), 1) 		   AS sub_pct_mncp_avg,
+			ROUND(AVG(i2s.inq2_grd), 1) 		   AS sub_grd_mncp_avg,
+			ROUND(AVG(i2s.inq2_ranking), 1) 	   AS sub_rank_mncp_avg
 		FROM
 			subject_score ss
 			INNER JOIN inq2_scr i2s
@@ -688,13 +688,13 @@
 	</select>
 	
 	<select id="getSecondLanguageAndChineseCharactersScoreNationAvg" parameterType="String" resultMap="SubjectAvgMap">
-		/* 탐구2 점수 전국 평균 조회 */
+		/* 제2외국어 및 한문 점수 전국 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_nat_avg,
-			AVG(fs.frn_std_scr) 		 AS sub_std_scr_nat_avg,
-			AVG(fs.frn_pct) 			 AS sub_pct_nat_avg,
-			AVG(fs.frn_grd) 			 AS sub_grd_nat_avg,
-			AVG(fs.frn_ranking)			 AS sub_rank_nat_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_nat_avg,
+			ROUND(AVG(fs.frn_std_scr), 1) 		   AS sub_std_scr_nat_avg,
+			ROUND(AVG(fs.frn_pct), 1) 			   AS sub_pct_nat_avg,
+			ROUND(AVG(fs.frn_grd), 1) 			   AS sub_grd_nat_avg,
+			ROUND(AVG(fs.frn_ranking), 1)		   AS sub_rank_nat_avg
 		FROM
 			subject_score ss
 			INNER JOIN  frn_scr fs
@@ -706,13 +706,13 @@
 	</select>
 	
 	<select id="getSecondLanguageAndChineseCharactersScoreProvinceAvg" parameterType="String" resultMap="SubjectAvgMap">
-		/* 탐구2 점수 도 평균 조회 */
+		/* 제2외국어 및 한문 점수 도 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_pvc_avg,
-			AVG(fs.frn_std_scr) 	 AS sub_std_scr_pvc_avg,
-			AVG(fs.frn_pct) 		 AS sub_pct_pvc_avg,
-			AVG(fs.frn_grd) 		 AS sub_grd_pvc_avg,
-			AVG(fs.frn_ranking) 	 AS sub_rank_pvc_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_pvc_avg,
+			ROUND(AVG(fs.frn_std_scr), 1) 	       AS sub_std_scr_pvc_avg,
+			ROUND(AVG(fs.frn_pct), 1) 		       AS sub_pct_pvc_avg,
+			ROUND(AVG(fs.frn_grd), 1) 		       AS sub_grd_pvc_avg,
+			ROUND(AVG(fs.frn_ranking), 1) 	       AS sub_rank_pvc_avg
 		FROM
 			subject_score ss
 			INNER JOIN  frn_scr fs
@@ -724,13 +724,13 @@
 	</select>
 	
 	<select id="getSecondLanguageAndChineseCharactersScoreMunicipalityAvg" parameterType="String" resultMap="SubjectAvgMap">
-		/* 탐구2 점수 시 평균 조회 */
+		/* 제2외국어 및 한문 점수 시 평균 조회 */
 		SELECT
-			AVG(ss.subject_score_origin) AS sub_og_scr_mncp_avg,
-			AVG(fs.frn_std_scr) 	 	 AS sub_std_scr_mncp_avg,
-			AVG(fs.frn_pct) 		 	 AS sub_pct_mncp_avg,
-			AVG(fs.frn_grd) 		 	 AS sub_grd_mncp_avg,
-			AVG(fs.frn_ranking) 	 	 AS sub_rank_mncp_avg
+			ROUND(AVG(ss.subject_score_origin), 1) AS sub_og_scr_mncp_avg,
+			ROUND(AVG(fs.frn_std_scr), 1) 	 	   AS sub_std_scr_mncp_avg,
+			ROUND(AVG(fs.frn_pct), 1) 		 	   AS sub_pct_mncp_avg,
+			ROUND(AVG(fs.frn_grd), 1) 		 	   AS sub_grd_mncp_avg,
+			ROUND(AVG(fs.frn_ranking), 1) 	 	   AS sub_rank_mncp_avg
 		FROM
 			subject_score ss
 			INNER JOIN frn_scr fs

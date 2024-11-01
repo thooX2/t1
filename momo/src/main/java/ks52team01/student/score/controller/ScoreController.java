@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -58,8 +59,19 @@ public class ScoreController {
 	
 	@PostMapping("/searchTookExamScore")
 	@ResponseBody
-	public Object getScoreMain(String tookExamInfoCode, HttpSession session) {
-		return null;
+	public Map<String, Subject> getScoreMain(@RequestBody TookExamInfo tookExamInfo, HttpSession session) {
+		// 세션에 저장된 회원 정보
+		User user = (User) session.getAttribute("loggedInUser");
+		String userCode = user.getUserCode();
+		
+		log.info("+++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++");
+		log.info("tookExamInfo : {}", tookExamInfo);
+		log.info("+++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++");
+		
+		String areaCityCode = tookExamInfo.getAreaCityCode();
+		String examCode = tookExamInfo.getExamCode();
+		String tookExamInfoCode = tookExamInfo.getTookExamInfoCode();
+		return scoreExamAllService.getTookExamScore(userCode, areaCityCode, examCode, tookExamInfoCode);
 	}
 
 	@GetMapping("/examAllScoreSummary")
