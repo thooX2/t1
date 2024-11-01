@@ -19,5 +19,6 @@ public class KoreanHistoryScore {
 	private Date   korHisScrUpdateTime;
 	
 	private SubjectScore subjectScore;
+	private SubjectMajorCategory subjectMajorCategory;
 	private SubjectMinorCategory subjectMinorCategory;
 }

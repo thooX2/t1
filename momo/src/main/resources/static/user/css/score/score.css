@@ -98,3 +98,6 @@ tr {
     border-right-color: rgba(0, 90, 167, 1) !important;
     font-weight: 750;
 }
+#score-cat-button-div > button.score-btn.active{
+	background-color: yellow !important;
+}
