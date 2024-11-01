@@ -29,6 +29,12 @@ public class AdminExamServiceImpl implements AdminExamService {
 	private final CommonMapper commonMapper;
 
 	@Override
+	public List<AdminQnaBank> getQuestionListBySmjrcc(String smjrcc) {
+
+		return adminExamMapper.getQuestionListBySmjrcc(smjrcc);
+	}
+
+	@Override
 	public List<AdminExamInfo> searchExamList(AdminExamInfo examInfo, String searchType, String searchKeyword,
 			String startDate, String endDate) {
 

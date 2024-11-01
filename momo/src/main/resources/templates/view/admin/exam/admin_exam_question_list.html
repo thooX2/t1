@@ -219,7 +219,7 @@
 				<i class="fa fa-minus" style="font-size: 12px;"></i>
 			</button>
 			<div id="sys-page-title">
-				<span id="sys-page-title-nm">문제은행</span>
+				<span id="sys-page-title-nm">문제등록</span>
 				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
 				<button type="button" class="btn_simp yellow">
 					<i class="fa fa-star"></i> 퀵메뉴추가
@@ -256,7 +256,7 @@
 										<option value=""> - 전체 - </option>
 										<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
 											th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm : cl.subMjrName + ' > ' + cl.subMirCatNm}"
-											th:value="${(cl.subMirCatCode==null)?'korHis':cl.subMirCatCode}">
+											th:value="${cl.subMirCatCode}">
 										</option>
 									</select>
 								</td>

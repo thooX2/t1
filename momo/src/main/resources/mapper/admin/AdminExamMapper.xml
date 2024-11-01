@@ -82,6 +82,44 @@
 		<result column="user_id" 	  property="userId"/>
 	</resultMap>
 	
+	<select id="getQuestionListBySmjrcc" parameterType="String" resultMap="qnaBankResultMap">
+		SELECT
+			qb.qna_code,
+			qb.user_code,
+			u.user_id,
+			u.user_name,
+			qb.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mir_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.qna_type, qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
+		FROM
+			qna_bank qb LEFT JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			LEFT JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			LEFT JOIN user u
+			ON qb.user_code = u.user_code
+		WHERE
+			qb.qna_cur_exam_state='Y' AND
+			qb.sub_mjr_cat_code= CONCAT('smjrcc',#{smjrcc})   
+		ORDER BY
+			CAST(SUBSTRING(qb.qna_code,3) AS UNSIGNED) DESC;
+	</select>
+	
+	
 	<select id="searchExamList" parameterType="map" resultMap="AdminExamInfoMap">
 	    SELECT 
 	        exam_code, 
