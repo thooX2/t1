@@ -30,6 +30,7 @@ public class ScoreController {
 
 	@GetMapping("/scoreMain")
 	public String getScoreMain(Model model, HttpSession session) {
+		// 세션에 저장된 회원 정보
 		User user = (User) session.getAttribute("loggedInUser");
 		
 		// 최초로 응시한 모의고사 목록 조회
