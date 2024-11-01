@@ -432,7 +432,11 @@
 		<result column="user_code" property="userCode" />
 		<result column="learning_schedule" property="learningSchedule" />
 		<result column="detailed_schedule_memo"
-			property="detailedScheduleMemo" />
+			property="detailedScheduleMemo" />	
+		<result column="smjrcc"
+			property="smjrcc" />	
+		<result column="smircc"
+			property="smircc" />	
 		<result column="detailed_schedule_date"
 			property="detailedScheduleDate" />
 		<result column="detailed_schedule_starttime"
@@ -474,7 +478,7 @@
 			WHEN COUNT(*) = 0 THEN
 			CONCAT('dsc', 1)
 			ELSE
-			CONCAT('dsc1',
+			CONCAT('dsc',
 			MAX(CAST(SUBSTRING_INDEX(detailed_schedule_code, 'dsc', -1) AS
 			UNSIGNED))+1)
 			END AS detailedSchedule
@@ -486,11 +490,13 @@
 		#{detailedSchedule},
 		#{userCode},
 		#{learningSchedule},
+		#{smjrcc},
+		#{smircc},
 		#{detailedScheduleMemo},
 		#{detailedScheduleDate},
 		#{detailedScheduleStartTime},
 		#{detailedScheduleEndTime},
-		#{detailedScheduleStudyTime},
+		TIME_FORMAT(TIMEDIFF(#{detailedScheduleEndTime}, #{detailedScheduleStartTime}), '%H:%i'),
 		#{detailedScheduleResult}
 		);
 	</insert>
@@ -704,5 +710,29 @@
 	</delete>
 
 
-
+	<select id="getLearningSchedules" resultType="ks52team01.student.study.dto.LearningScheduleDto">
+       SELECT 
+            ls.learning_schedule AS FullSchedule,
+            ds.detailed_schedule_code AS detailed,
+            ls.user_code AS usercode,
+            ls.sub_mjr_cat_code AS submjr,
+            ls.sub_mir_cat_code AS submir,
+            ls.learning_schedule_memo AS lesMemo,
+            ls.learning_schedule_days AS days,
+            ls.learning_schedule_start AS startDay,
+            ls.learning_schedule_end AS endDay,
+            ls.learning_schedule_compleate AS compleateMemo,
+            ds.detailed_schedule_memo AS detailMemo,
+            ds.detailed_schedule_date AS detailDate,
+            ds.detailed_schedule_starttime AS startTime,
+            ds.detailed_schedule_endtime AS endTime,
+            ds.detailed_schedule_studytime AS studyTime,
+            ds.detailed_schedule_result AS result
+        FROM 
+            learning_schedule ls 
+        left JOIN 
+            detailed_schedule ds
+        ON 
+            ls.learning_schedule = ds.learning_schedule
+    </select>
 </mapper>

@@ -7,6 +7,8 @@ public class DetailedSchedule {
 	private String detailedSchedule;
 	private String userCode;
 	private String learningSchedule;
+	private String smjrcc;
+	private String smircc;
 	private String detailedScheduleMemo;
 	private String detailedScheduleDate;
 	private String detailedScheduleStartTime;

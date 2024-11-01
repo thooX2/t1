@@ -1,87 +1,173 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 
 <head>
-	<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
+<!-- <link rel="stylesheet" th:href="@{/user/css/study/common(1).css}"> -->
+<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/bootstrap.min.css}">
+
+<style>
+#examMain .modal {
+	position: fixed;
+	display: none;
+	background-color: transparent;
+	opacity: 1;
+	padding: 0px;
+	left: 0px;
+}
+
+element.style {
+	display: none;
+}
+
+ul {
+	list-style-type: none;
+}
+</style>
+
+
 </head>
 <th:block layout:fragment="customJsFile">
+	<script th:src="@{/user/js/study/index.global.js}"></script>
 	<script th:src="@{/user/js/study/jquery-3.5.1.min.js}"></script>
+	<script th:src="@{/user/js/study/bootstrap.min.js}"></script>
+	<!-- <script th:src="@{/user/js/study/fullcalenderTest3.js}"></script> -->
+	<script th:src="@{/user/js/study/test.js}"></script>
+	<script th:src="@{/user/js/study/calenderRead.js}"></script>
 </th:block>
 <th:block layout:fragment="customJs">
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
-		<!-- container -->
-		<section class="container">
-			<!-- sub_container -->
-			<div class="sub_container">
+	<!-- container -->
+	<section class="container">
+		<!-- sub_container -->
+		<div class="sub_container">
 
-				<!-- Include the sidebar fragment here -->
-				<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
-
-
-
-				<!-- content -->
-				<div class="content">
-					<div id="wrap_2014">
-						<div class="column_top">
-							<!-- 상단 메뉴 시작 -->
-							<div class="column_right cust_test" id="contents">
-								<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
-									학습계획리스트
-								</p>
-								<div id="tabContent">
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
 
 
-									<div class="myWorkbook">
-										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											<a th:href = "@{/study/addLearningSchedule}">학습계획 생성</a>
-										</div>
+			<!-- content -->
+			<div class="content">
+				<div id="wrap_2014">
+					<div class="column_top">
+						<!-- 상단 메뉴 시작 -->
+						<h1>실험1</h1>
+						<div class="column_right cust_test" id="contents">
+							<p
+								style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
+								학습계획리스트</p>
+							<div id="tabContent">
 
-										<div id="MyTestArea">
-											<table class="bot_tbl--type">
-												<colgroup>
-													<col width="50">
-													<col width="90">
-													<col width="90">
-													<col width="90">
-													<col width="90">
-													<col width="70">
-													<col width="70">
-													<col width="70">
-												</colgroup>
-												<thead>
-													<tr>
-														<th>학습 목표 과목</th>
-														<th>학습 목표 메모</th>
-														<th>학습 목표 기간</th>
-														<th>학습 목표 시작일</th>
-														<th>학습 목표 종료일</th>
-														<th>학습 목표 달성 여부</th>
-														<th>세부 일정 조회</th>
-														<th>학습 목표 수정</th>
-														<th>학습 목표 삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="list : ${LearningScheduleList}">
-														<td th:text="${list.smicc}"></td>
-														<td th:text="${list.learningScheduleMemo}"></td>
-														<td th:text="${list.learningScheduleDay}"></td>
-														<td th:text="${list.learningScheduleStart}"></td>
-														<td th:text="${list.learningScheduleEnd}"></td>
-														<td th:text="${list.learningScheduleCompleate}"></td>
-														<td><a href="/study/getDetailedScheduleList">세부 일정 이동</a></td>
-														<td><a th:href="@{/study/modifyLearningSchedule(list.learningSchedule =*{list.learningSchedule})}">수정</a></td>
-														<td><a th:href="@{/study/removeLearningSchedule(list.learningSchedule =*{list.learningSchedule})}">삭제</a></td>
-													</tr>
-											</table>
+
+								<div class="myWorkbook">
+									<div class="sort_select"
+										style="width: 150px; margin-bottom: 20px;">
+										<a th:href="@{/study/addLearningSchedule}">학습계획 생성</a>
+									</div>
+
+
+									<div id="calendar"></div>
+									<br /> <br />				
+									
+									<!-- 이벤트 추가/수정 모달 -->
+									<div class="modal fade" id="eventModal" tabindex="-1"
+										aria-labelledby="eventModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="eventModalLabel">이벤트 추가/수정</h5>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<form id="eventForm" th:action="@{/study/addCastSubject}"
+														method="post">
+														<div class="form-group">
+															<label for="title">제목</label> <input type="text"
+																class="form-control" id="title" required>
+														</div>
+														<input type="hidden" id="mainKey" name="mainKey">
+															<input type="hidden" id="subKey" name="subKey">
+														<input type="hidden" id="userId" name="usercode"
+															th:value="${session.loggedInUser.userCode}" />
+														<div class="form-group">
+															<label for="title">공부할 과목을 선택해 주세요.</label> <select
+																class="form-control" id="smjrcc" required>
+																<option value="smjrcc0">과목을 선택해 주시기 바랍니다.</option>
+																<option value="smjrcc1">국어</option>
+																<option value="smjrcc2">수학</option>
+																<option value="smjrcc3">영어</option>
+																<option value="smjrcc4">한국사</option>
+																<option value="smjrcc5">사회탐구</option>
+																<option value="smjrcc6">과학탐구</option>
+																<option value="smjrcc7">직업탐구</option>
+																<option value="smjrcc8">제2외국어 및 한문</option>
+															</select>
+														</div>
+														<div class="form-group">
+															<label for="smircc">세부과목리스트</label> <select
+																class="form-control" id="smircc" required>
+																<option value="">선택된 과목에 따라 변경됩니다.</option>
+															</select>
+														</div>
+														<div class="form-group">
+															<label for="title">현재 학습계획중에 추가하고자 하는 부분이 있습니까?</label>
+															<select class="form-control" id="learning" required>
+																<option value="">계획을 선택해 주세요.</option>
+																<th:block th:each="list : ${LearningScheduleList}">
+																	<option th:value="${list.learningSchedule}"
+																		th:text="${list.learningScheduleMemo}"></option>
+																</th:block>
+															</select>
+														</div>
+
+														<div class="form-group">
+															<label for="startDate">시작일자</label> <input type="date"
+																class="form-control" id="startDate" required>
+														</div>
+														<div class="form-group">
+															<label for="endDate">종료일자</label> <input type="date"
+																class="form-control" id="endDate" required>
+														</div>
+														<div class="form-group">
+															<label for="startTime">시작시간</label> <input type="time"
+																class="form-control" id="startTime" required>
+														</div>
+														<div class="form-group">
+															<label for="endTime">종료시간</label> <input type="time"
+																class="form-control" id="endTime" required>
+														</div>
+														<div class="form-group">
+															<label for="endTime">일정기간</label> <input type="number"
+																class="form-control" id="days" required readonly
+																style="background-color: white;">
+														</div>
+														<!-- <div class="form-group">
+															<label for="memo">메모</label>
+															<textarea class="form-control" id="memo"></textarea>
+														</div> -->
+														<div class="form-group">
+															<label for="memo">결과</label>
+															<textarea class="form-control" id="result" style="background-color: white;" readonly>미달성</textarea>
+														</div>
+														<button id="save" type="submit" class="btn btn-primary">저장</button>
+														<button type="button" class="btn btn-primary"
+															id="editButton">수정</button>
+														<button type="button" class="btn btn-danger"
+															id="deleteButton">삭제</button>
+													</form>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -90,9 +176,8 @@
 					</div>
 				</div>
 			</div>
-		</section>
-
-	</div>
+		</div>
+	</section>
 </div>
 
 </html>
