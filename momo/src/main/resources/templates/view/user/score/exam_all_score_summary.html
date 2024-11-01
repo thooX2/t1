@@ -85,6 +85,78 @@
 				$('#inquiry2SelectSubject').text(inquiry2Score?.subjectMinorCategoryName??'');
 				$('#secondLanguageAndChineseCharactersSelectSubject').text(secondLanguageAndChineseCharactersScore?.subjectMinorCategoryName??'');
 				
+				const $koreanHistoryTookStatusTd = $('#koreanHistoryTookStatus');
+				$koreanHistoryTookStatusTd.empty();
+				if(koreanHistoryScore == null) {
+					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
+					$koreanHistoryTookStatusTd.append($a);
+					
+				} else {
+					const $span = $('<span></span>').text('응시');
+					$koreanHistoryTookStatusTd.append($span);
+				}
+				
+				const $koreanTookStatusTd = $('#koreanTookStatus');
+				$koreanTookStatusTd.empty();
+				if(koreanScore == null) {
+					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
+					$koreanTookStatusTd.append($a);
+				} else {
+					const $span = $('<span></span>').text('응시');
+					$koreanTookStatusTd.append($span);
+				}
+				
+				const $mathTookStatusTd = $('#mathTookStatus');
+				$mathTookStatusTd.empty();
+				if(mathScore == null) {
+					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
+					$mathTookStatusTd.append($a);
+				} else {
+					const $span = $('<span></span>').text('응시');
+					$mathTookStatusTd.append($span);
+				}
+				
+				const $englishTookStatusTd = $('#englishTookStatus');
+				$englishTookStatusTd.empty();
+				if(mathScore == null) {
+					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
+					$englishTookStatusTd.append($a);
+				} else {
+					const $span = $('<span></span>').text('응시');
+					$englishTookStatusTd.append($span);
+				}
+				
+				const $inquiry1TookStatusTd = $('#inquiry1TookStatus');
+				$inquiry1TookStatusTd.empty();
+				if(mathScore == null) {
+					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
+					$inquiry1TookStatusTd.append($a);
+				} else {
+					const $span = $('<span></span>').text('응시');
+					$inquiry1TookStatusTd.append($span);
+				}
+				
+				const $inquiry2TookStatusTd = $('#inquiry2TookStatus');
+				$inquiry2TookStatusTd.empty();
+				if(mathScore == null) {
+					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
+					$inquiry2TookStatusTd.append($a);
+				} else {
+					const $span = $('<span></span>').text('응시');
+					$inquiry2TookStatusTd.append($span);
+				}
+				
+				const $secondLanguageAndChineseCharactersTookStatusTd = $('#secondLanguageAndChineseCharactersTookStatus');
+				$secondLanguageAndChineseCharactersTookStatusTd.empty();
+				if(secondLanguageAndChineseCharactersScore == null) {
+					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
+					
+					$secondLanguageAndChineseCharactersTookStatusTd.append($a);
+				} else {
+					const $span = $('<span></span>').text('응시');
+					$secondLanguageAndChineseCharactersTookStatusTd.append($span);
+				}
+				
 				$('#koreanHistoryOriginalScore').text(koreanHistoryScore?.subjectOriginalScore??'');
 				$('#koreanOriginalScore').text(koreanScore?.subjectOriginalScore??'');
 				$('#mathOriginalScore').text(mathScore?.subjectOriginalScore??'');
@@ -322,14 +394,34 @@
 									</tr>
 									<tr class="report-card-subject-tr">
 										<td>응시여부</td>
-										<td>응시</td>
-										<td>응시</td>
-										<td>응시</td>
-										<td>응시</td>
-										<td>응시</td>
-										<td>응시</td>
-										<td th:if="*{['secondLanguageAndChineseCharactersScore']} == null"><a href="#">미응시</a></td>
-										<td th:unless="*{['secondLanguageAndChineseCharactersScore']} == null">응시</td>
+										<td id="koreanHistoryTookStatus">
+											<span th:if="*{['koreanHistoryScore'] != null}">응시</span>
+											<a th:unless="*{['koreanHistoryScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+										</td>
+										<td id="koreanTookStatus">
+											<span th:if="*{['koreanScore'] != null}">응시</span>
+											<a th:unless="*{['koreanScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+										</td>
+										<td id="mathTookStatus">
+											<span th:if="*{['mathScore'] != null}">응시</span>
+											<a th:unless="*{['mathScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+										</td>
+										<td id="englishTookStatus">
+											<span th:if="*{['englishScore'] != null}">응시</span>
+											<a th:unless="*{['englishScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+										</td>
+										<td id="inquiry1TookStatus">
+											<span th:if="*{['inquiry1Score'] != null}">응시</span>
+											<a th:unless="*{['inquiry1Score'] != null}" th:href="@{/exam/examList}">미응시</a>
+										</td>
+										<td id="inquiry2TookStatus">
+											<span th:if="*{['inquiry2Score'] != null}">응시</span>
+											<a th:unless="*{['inquiry2Score'] != null}" th:href="@{/exam/examList}">미응시</a>
+										</td>
+										<td id="secondLanguageAndChineseCharactersTookStatus">
+											<span th:if="*{['secondLanguageAndChineseCharactersScore'] != null}">응시</span>
+											<a th:unless="*{['secondLanguageAndChineseCharactersScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+										</td>
 									</tr>									
 									<tr class="report-card-subject-tr">
 										<td>선택과목</td>
