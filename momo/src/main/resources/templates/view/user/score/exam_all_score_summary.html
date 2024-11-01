@@ -118,7 +118,7 @@
 				
 				const $englishTookStatusTd = $('#englishTookStatus');
 				$englishTookStatusTd.empty();
-				if(mathScore == null) {
+				if(englishScore == null) {
 					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
 					$englishTookStatusTd.append($a);
 				} else {
@@ -128,7 +128,7 @@
 				
 				const $inquiry1TookStatusTd = $('#inquiry1TookStatus');
 				$inquiry1TookStatusTd.empty();
-				if(mathScore == null) {
+				if(inquiry1Score == null) {
 					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
 					$inquiry1TookStatusTd.append($a);
 				} else {
@@ -138,7 +138,7 @@
 				
 				const $inquiry2TookStatusTd = $('#inquiry2TookStatus');
 				$inquiry2TookStatusTd.empty();
-				if(mathScore == null) {
+				if(inquiry2Score == null) {
 					const $a = $('<a></a>', {'href':`/exam/examList`}).text('미응시');
 					$inquiry2TookStatusTd.append($a);
 				} else {
