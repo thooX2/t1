@@ -197,6 +197,56 @@
 			});
 		});
 		
+		$('#standardScoreBtn').click(function(e) {
+			console.log(e.target);
+			$(this).toggleClass('active');
+
+			console.log(scoreChart);
+			console.log(scoreChart.config._config.options);
+			scoreChart.config._config.options.scales.y.max = 150;
+			scoreChart.config._config.options.scales.y.ticks.stepSize = 10;
+			scoreChart.config._config.options.scales.y.ticks.reverse = true;
+			console.log(scoreChart);
+			const chartData = scoreChart.config.data.datasets;
+			const dataArr = [
+				 			 /* 전국평균 */
+							 [koreanScore?.subjectStandardScoreNationAvg??0.0,
+							  mathScore?.subjectStandardScoreNationAvg??0.0,
+							  englishScore?.subjectStandardScoreNationAvg??0.0,
+							  koreanHistoryScore?.subjectStandardScoreNationAvg??0.0,
+							  inquiry1Score?.subjectStandardScoreNationAvg??0.0,
+							  inquiry2Score?.subjectStandardScoreNationAvg??0.0,
+							  secondLanguageAndChineseCharactersScore?.subjectStandardScoreNationAvg??0.0],
+							 /* 도평균 */
+							 [koreanScore?.subjectStandardScoreProvinceAvg??0.0,
+							  mathScore?.subjectStandardScoreProvinceAvg??0.0,
+							  englishScore?.subjectStandardScoreProvinceAvg??0.0,
+							  koreanHistoryScore?.subjectStandardScoreProvinceAvg??0.0,
+							  inquiry1Score?.subjectStandardScoreProvinceAvg??0.0,
+							  inquiry2Score?.subjectStandardScoreProvinceAvg??0.0,
+							  secondLanguageAndChineseCharactersScore?.subjectStandardScoreProvinceAvg??0.0],
+							 /* 시평균 */
+							 [koreanScore?.subjectStandardScoreMunicipalityAvg??0.0,
+							  mathScore?.subjectStandardScoreMunicipalityAvg??0.0,
+							  englishScore?.subjectStandardScoreMunicipalityAvg??0.0,
+							  koreanHistoryScore?.subjectStandardScoreMunicipalityAvg??0.0,
+							  inquiry1Score?.subjectStandardScoreMunicipalityAvg??0.0,
+							  inquiry2Score?.subjectStandardScoreMunicipalityAvg??0.0,
+							  secondLanguageAndChineseCharactersScore?.subjectStandardScoreMunicipalityAvg??0.0],
+							 /* 점수 */
+							 [koreanScore?.subjectStandardScore??0.0,
+							  mathScore?.subjectStandardScore??0.0,
+							  englishScore?.subjectStandardScore??0.0,
+							  koreanHistoryScore?.subjectStandardScore??0.0,
+							  inquiry1Score?.subjectStandardScore??0.0,
+							  inquiry2Score?.subjectStandardScore??0.0,
+							  secondLanguageAndChineseCharactersScore?.subjectStandardScore??0.0]];
+			// 차트 값 변경
+			$(chartData).each((idx, ele) => ele.data = [...dataArr[idx]]);
+			scoreChart.update();
+			
+		});
+		
 		const ctx = document.getElementById('scoreChart').getContext('2d');
 		const data = {
 			labels : [ '국어', '수학', '영어', '한국사', '탐구1', '탐구2', '제2외국어 및 한문' ],
@@ -213,7 +263,7 @@
 						 
 				backgroundColor: 'rgba(198, 93, 143, 1)',
 				borderColor: 'rgba(198, 93, 143, 1)',
-				borderWidth: 2,
+				borderWidth: 1.5,
 				tension: 0.25,
 				fill: false,
 				type: 'line'
@@ -230,7 +280,7 @@
 						 
 				backgroundColor: 'rgba(84, 127, 214, 1)',
 				borderColor: 'rgba(84, 127, 214, 1)',
-				borderWidth: 2,
+				borderWidth: 1.5,
 				tension: 0.25,
 				fill: false,
 				type: 'line'
@@ -247,7 +297,7 @@
 						 
 				backgroundColor: 'rgba(70, 134, 184, 1)',
 				borderColor: 'rgba(70, 134, 184, 1)',
-				borderWidth: 2,
+				borderWidth: 1.5,
 				tension: 0.25,
 				fill: false,
 				type: 'line'
@@ -342,27 +392,57 @@
 							<strong>의 점수입니다.</strong>
 						</div>
 						<div id="score-analysis-div">
-							<ul class="nav nav-tabs" id="score-cat-button-div">
+							<ul id="scoreCatBtnDiv" class="nav nav-tabs">
 							  <li class="nav-item">
-							    <button id="originalScoreBtn" class="nav-link active">원점수</button>
+							    <button id="originalScoreBtn" class="nav-link active score-btn">원점수</button>
 							  </li>
 							  <li class="nav-item">
-							    <button id="standardScoreBtn" class="nav-link">표준점수</button>
+							    <button id="standardScoreBtn" class="nav-link score-btn">표준점수</button>
 							  </li>
 							  <li class="nav-item">
-							    <button id="percentBtn" class="nav-link">백분위</button>
+							    <button id="percentBtn" class="nav-link score-btn">백분위</button>
 							  </li>
 							  <li class="nav-item">
-							    <button id="gradeBtn" class="nav-link">등급</button>
+							    <button id="gradeBtn" class="nav-link score-btn">등급</button>
 							  </li>
 							  <li class="nav-item">
-							    <button id="rankBtn" class="nav-link">석차</button>
+							    <button id="rankBtn" class="nav-link score-btn">석차</button>
 							  </li>
 							</ul>
 							<div id="score-cat-chart-div">
 								<canvas id="scoreChart" width="800" height="400px"	max-height="400px"></canvas>
 							</div>
 						</div>
+						<!-- 
+						<div id="score-analysis-div">
+							<ul class="nav nav-tabs" id="score-cat-button-div">
+							  <li class="nav-item">
+							    <button id="koreanScoreBtn" class="nav-link active score-btn">국어</button>
+							  </li>
+							  <li class="nav-item">
+							    <button id="mathScoreBtn" class="nav-link score-btn">수학</button>
+							  </li>
+							  <li class="nav-item">
+							    <button id="englishScoreBtn" class="nav-link score-btn">영어</button>
+							  </li>
+							  <li class="nav-item">
+							    <button id="koreanHistoryScoreBtn" class="nav-link score-btn">한국사</button>
+							  </li>
+							  <li class="nav-item">
+							    <button id="inquiry1ScoreBtn" class="nav-link score-btn">탐구1</button>
+							  </li>
+							  <li class="nav-item">
+							    <button id="inquiry2ScoreBtn" class="nav-link score-btn">탐구2</button>
+							  </li>
+							  <li class="nav-item">
+							    <button id="secondLanguageAndChineseCharactersScoreBtn" class="nav-link score-btn">제2외국어 및 한문</button>
+							  </li>
+							</ul>
+							<div id="score-cat-chart-div">
+								<canvas id="scoreChart" width="800" height="400px"	max-height="400px"></canvas>
+							</div>
+						</div>
+						-->
 						<div id="score-card-div">
 							<table th:object="${subjectScoreMap}">
 								<thead>

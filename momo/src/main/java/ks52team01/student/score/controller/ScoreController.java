@@ -48,8 +48,6 @@ public class ScoreController {
 		Date userBirthDate = user.getUserBirthDate();
 		String formattedUserBirthDate = new SimpleDateFormat("yy.MM.dd").format(userBirthDate);
 		
-		log.info("subjectScoreMap : {}", subjectScoreMap);
-		
 		model.addAttribute("user", user);
 		model.addAttribute("tookExamList", firstTookExamList);
 		model.addAttribute("subjectScoreMap", subjectScoreMap);
@@ -63,11 +61,8 @@ public class ScoreController {
 		// 세션에 저장된 회원 정보
 		User user = (User) session.getAttribute("loggedInUser");
 		String userCode = user.getUserCode();
-		
-		log.info("+++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++");
-		log.info("tookExamInfo : {}", tookExamInfo);
-		log.info("+++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++ +++++");
-		
+
+		// 현재 모의고사 점수 조회
 		String areaCityCode = tookExamInfo.getAreaCityCode();
 		String examCode = tookExamInfo.getExamCode();
 		String tookExamInfoCode = tookExamInfo.getTookExamInfoCode();

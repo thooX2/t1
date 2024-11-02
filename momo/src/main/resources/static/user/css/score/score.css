@@ -48,7 +48,7 @@ tr {
     margin-bottom: 5px;
 }
 
-#score-cat-button-div {
+#scoreCatBtnDiv {
 	display: flex;
 	justify-content: cetner;
 	align-items: center;
@@ -81,7 +81,7 @@ tr {
 }
 
 .score-btn {
-	width: 20% !important;
+	width: 100% !important;
 	height: 50px !important;
     font-size: 20px !important;
     border-top-left-radius: 10px !important;
