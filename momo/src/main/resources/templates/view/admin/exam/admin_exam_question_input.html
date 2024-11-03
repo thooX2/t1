@@ -76,7 +76,7 @@
 		}
 
 		.register-page-wrap .wizard-content .wizard>.steps>ul>li {
-			width: 11.11% !important;
+			width: 12.5% !important;
 		}
 
 		p {
@@ -84,7 +84,7 @@
 		}
 
 		/* 태그 컨테이너 스타일 */
-		#tag-container {
+		.tag-container {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 5px;
@@ -122,14 +122,6 @@
 		.tag .remove-tag:hover {
 			color: #555;
 		}
-
-		/* 입력 필드 스타일 */
-		input[type="text"] {
-			padding: 8px;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-			margin-top: 10px;
-		}
 	</style>
 </head>
 <th:block layout:fragment="customJsFile">
@@ -154,6 +146,21 @@
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
 
+		var examInfoList = /*[[${examInfoList}]]*/[];
+		var questionListKor = /*[[${questionListKor}]]*/[];
+		var questionListMath = /*[[${questionListMath}]]*/[];
+		var questionListEng = /*[[${questionListEng}]]*/[];
+		var questionListKH = /*[[${questionListKH}]]*/[];
+		var questionListInq = /*[[${questionListInq}]]*/[];
+		var questionListLang = /*[[${questionListLang}]]*/[];
+		let questionAllList = {
+			'국어': [],
+			'수학': [],
+			'영어': [],
+			'한국사': [],
+			'탐구': [],
+			'제 2외국어/한문': [],
+		};
 		$(".tab-wizard2").steps({
 			headerTag: "h5",
 			bodyTag: "section",
@@ -165,21 +172,145 @@
 				previous: "이전",
 			},
 			onStepChanging: function (event, currentIndex, newIndex) {
+				// --------------------------------------------------------
 				// 현재 스텝에서 다음 스텝으로 이동할 때 (newIndex > currentIndex)
 				if (newIndex > currentIndex) {
+					if (currentIndex == 6) {
+						// 시험목록 작성
+						const selectedExamCode = $('input[name = "selectExam"]:checked').prop('value');
+						if (selectedExamCode)
+							$('#selectedExam').empty();
+						examInfoList.forEach((element) => {
+							if (element['examCode'] == selectedExamCode) {
+								const newExamInfo = `
+							                <tr class="l_tr_even" align="center">
+							                    <td class="l_td01">${element.examCode}</td>
+							                    <td class="l_td01" title="종합시험" align="left">${element.examNm}</td>
+							                    <td class="l_td01">${element.examTarGrd + '학년'}</td>
+							                    <td class="l_td01">${element.examType}</td>
+							                    <td class="l_td01">${element.examInst}</td>
+							                    <td class="l_td01">${element.examOeType}</td>
+							                    <td class="l_td01" align="center">
+							                        <span class="label blue">${element.userId}</span>
+							                        <span>${element.userNm}</span>
+							                    </td>
+							                    <td class="l_td01">${element.examDate}</td>
+							                </tr>
+							            `;
+								$('#selectedExam').append(newExamInfo);
+							}
+						});
+						// 국어목록 등록
+						createNewTable('국어')
+						// 수학목록 등록
+						createNewTable('수학')
+						// 영어목록 등록
+						createNewTable('영어')
+						// 한국사목록 등록
+						createNewTable('한국사')
+						// 탐구목록 등록
+						createNewTable('탐구')
+						// 제 2외국어/한문목록 등록
+						createNewTable('제 2외국어/한문')
 
+					}
+
+					// --------------------------------------------------------
 				}
 				return true; // 유효성 검사 통과 시 스텝 이동 허용
 			},
 			onStepChanged: function (event, currentIndex, priorIndex) {
-				$('.steps .current').prevAll().addClass('disabled');
+				$('.steps .current').nextAll().last().addClass('disabled');
 			},
 			onFinished: function (event, currentIndex) {
-				$('#success-modal-btn').trigger('click');
+				const isRegister = confirm('위 시험문제를 시험에 등록하시겠습니까?')
+				
+				if (isRegister)
+					location.href = "/admin/exam/managementList";
 			}
 		});
 
 
+		function createNewTable(subjectName) {
+			let subjectList = [];
+			subjectTable = '';
+			switch (subjectName) {
+				case '국어':
+					subjectList = questionListKor;
+					subjectTable = '#questionListKor'
+					break;
+				case '수학':
+					subjectList = questionListMath
+					subjectTable = '#questionListMath'
+					break;
+				case '영어':
+					subjectList = questionListEng
+					subjectTable = '#questionListEng'
+					break;
+				case '한국사':
+					subjectList = questionListKH
+					subjectTable = '#questionListKH'
+					break;
+				case '탐구':
+					subjectList = questionListInq
+					subjectTable = '#questionListInq'
+					break;
+				case '제 2외국어/한문':
+					subjectList = questionListLang
+					subjectTable = '#questionListLang'
+					break;
+			}
+			$(subjectTable).empty();
+
+			subjectList.forEach((element) => {
+				questionAllList[subjectName].forEach((elem, idx) => {
+					if (element['qnaCode'] == elem) {
+
+						// 날짜 포맷 적용
+						const formattedCreateTime = formatDate(element.qnaCreateTime);
+						const formattedUpdateTime = formatDate(element.qnaUpdateTime);
+
+						const newQuestionList = `
+						<tr class="l_tr_even" align="center">
+						    <td class="l_td01">${idx + 1}</td>
+						    <td class="l_td01">${element.qnaCode}</td>
+						    <td class="l_td01" align="left">
+						        <p class="cate01">[ ${element.subMjrCatNm} - ${element.subMirCatNm} ]</p>
+						        <div style="float: left; margin-top: 4px;">${element.qnaSubject}</div>
+						    </td>
+						    <td class="l_td01">
+						        <input type="button" id="${element.qnaCode}" class="btn_simp" value="미리보기" />
+						    </td>
+						    <td class="l_td01">${element.qnaScr}점</td>
+
+						    <td class="l_td01" align="center">
+						        <p class="label blue" style="display: inline-block; padding: 4px; font-weight: bolder;">${element.userId}</p>
+						        <br>
+						        <p>${element.userName}</p>
+						    </td>
+						    <td class="l_td01">
+						        <span class="label green">사용</span>
+						    </td>
+
+						    <td class="l_td01">${formattedCreateTime}</td>
+						    <td class="l_td01">${formattedUpdateTime}</td>
+						</tr>`;
+						$(subjectTable).append(newQuestionList);
+					}
+				})
+
+			})
+		}
+		// 날짜 형식을 변환하는 함수
+		function formatDate(dateString) {
+			const date = new Date(dateString);
+
+			const year = String(date.getFullYear()).slice(-2); // 연도를 두 자리로 표현
+			const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+			const day = String(date.getDate()).padStart(2, '0');
+
+			return `${year}.${month}.${day}`;
+		}
 
 		$(function () {
 			var picker = flatpickr(".flatpicker", {locale: "ko"});
@@ -187,7 +318,7 @@
 		$('#addExamBtn').click(function () {
 			location.href = "/admin/exam/management";
 		})
-		var examInfoList = /*[[${examInfoList}]]*/[];
+
 		$('#examCount').text(examInfoList.length);
 
 		$('#searchBtn').click(function () {
@@ -230,7 +361,7 @@
 					$(searchList).each(function (idx, item) {
 						const newRow = `<tr class="l_tr_even" align="center">
 										  <td class="l_td01"><input type="radio" name="selectExam"
-													 th:value="${item.examCode}" /> </td>
+													 value="${item.examCode}" /> </td>
 						                  <td class="l_td01" >${item.examCode}</td>
 						                  <td class="l_td01" title="종합시험" align="left">
 						                      <a href="/admin/exam/modifyExam?examCode=${item.examCode}">${item.examNm}</a>
@@ -262,6 +393,39 @@
 			});
 		})
 
+		// 시험을 선택하면 바로 마지막페이지에 시험테이블을 그림
+
+
+		$(document).on('click', 'input[name="selectExam"]', function () {
+
+			/*	const selectedExamCode = $('input[name = "selectExam"]').prop('value');
+	
+				$('#selectedExam').empty(); // Clear previous selections
+				examInfoList.forEach((element) => {
+					if (element['examCode'] == selectedExamCode) {
+						const newExamInfo = `
+							<tr class="l_tr_even" align="center">
+								<td class="l_td01">${element.examCode}</td>
+								<td class="l_td01" title="종합시험" align="left">${element.examNm}</td>
+								<td class="l_td01">${element.examTarGrd + '학년'}</td>
+								<td class="l_td01">${element.examType}</td>
+								<td class="l_td01">${element.examInst}</td>
+								<td class="l_td01">${element.examOeType}</td>
+								<td class="l_td01" align="center">
+									<span class="label blue">${element.userId}</span>
+									<span>${element.userNm}</span>
+								</td>
+								<td class="l_td01">${element.examDate}</td>
+							</tr>
+						`;
+						$('#selectedExam').append(newExamInfo);
+					}
+				});*/
+		});
+
+
+
+
 		$('#searchReset').click(function () {
 			$('input[name="examTarGrd"]').val("");
 			$('input[name="endDate"]').val("");
@@ -292,36 +456,32 @@
 			window.open(`/admin/exam/questionPopup?qnaCode=${$qnaCode}`, '문제미리보기', 'width=600,height=830,scrollbars=yes');
 		});
 
-		$('#addQuestionBtn').click(function () {
-			location.href = "/admin/exam/addQuestion"
-		})
+		$('button[name="searchQuestionBtn"]').click(function () {
 
+			const currentBtn = $(this)
+			currentBtn.closest('table').next().next().find('tbody').empty();
 
-		$('#searchQuestionBtn').click(function () {
+			const subjectName = currentBtn.closest('table').prop('id');
+			const subMirCatCode = currentBtn.closest('table').find('select[name="subMirCatCode"]').val();
 
-			let subMirCatCode = $('#subMirCatCode').val();
-			const qnaScr = $('input[name="qnaScr"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
-			const userCode = $('#userCode').val();
-			const qnaCurExamState = $('input[name="qnaCurExamState"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
-			const searchType = $('#searchType').val();
-			const searchKeyword = $('#searchKeyword').val();
+			const qnaScr = currentBtn.closest('table').find('input[name="qnaScr"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
+			const searchType = currentBtn.closest('table').find('select[name="searchType"]').val();
+
+			const searchKeyword = currentBtn.closest('table').find('input[name="searchKeyword"]').val();
 
 			if (searchKeyword != '' && searchType == '') {
 				alert('검색타입을 선택해주세요');
 				return;
 			}
-
-
-
 			// Ajax 요청
 			const request = $.ajax({
 				url: '/admin/exam/searchQuestionList',
 				method: 'get',
 				data: {
+					'subjectName': subjectName,
+					'qnaCurExamState': 'Y',
 					'subMirCatCode': subMirCatCode,
 					'qnaScr': qnaScr,
-					'userCode': userCode,
-					'qnaCurExamState': qnaCurExamState,
 					'searchType': searchType,
 					'searchKeyword': searchKeyword,
 				},
@@ -330,8 +490,13 @@
 
 			request.done(function (data) {
 				const searchList = data;
-				$('#questionCount').text(data.length);
-				$('#questionListTable').empty();
+				const currentTbody = currentBtn.closest('table').next().next().find('tbody');
+
+				// 검색 결과를 비워야 합니다.
+				currentTbody.empty(); // <-- 이 줄을 추가하여 결과를 비웁니다.
+
+				currentBtn.closest('table').nextAll().eq(0).find('font[name="questionCount"]').text(data.length)
+
 				if (searchList.length > 0) {
 					$(searchList).each(function (idx, item) {
 						let questionState = '';
@@ -370,11 +535,11 @@
 					        <td class="l_td01">${new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
 					    </tr>
 					    `;
-						$('#questionListTable').append(newRow);  // 새로운 행을 테이블에 추가
+						currentTbody.append(newRow);  // 새로운 행을 테이블에 추가
 					});
 				} else {
 					const newRow = '<tr class="l_tr_even" align="center"><td class="l_td01" colspan="10" style="padding: 20px; font-weight: bold; color: #555;">검색결과에 해당하는 문제가 없습니다</td></tr>';
-					$('#questionListTable').append(newRow);
+					currentTbody.append(newRow);
 				}
 			});
 
@@ -384,47 +549,6 @@
 		});
 
 
-		$(document).on('change', 'select[name="a_status"]', function () {
-			let isState = true;
-			if ($('select[name="a_status"]').val() == '1') {
-				isState = true;
-			}
-
-			if ($('select[name="a_status"]').val() == '0') {
-				isState = false;
-			}
-			const stateArray = [];
-			$('input[name="idx"]:checked').each((idx, element) => {
-				//console.log(element.value);
-				//const $stateForm = $('<form action="/admin/exam/questionState" method="post"/>');
-				stateArray.push(element.value);
-			})
-
-			if (stateArray.length == 0) {
-				alert('문항을 체크한다음에 실행해주세요');
-				return;
-			}
-
-
-			console.log(stateArray);
-			const request = $.ajax({
-				url: '/admin/exam/questionState',
-				method: 'post',
-				data: {
-					'qnaCode': stateArray,
-					'isState': isState
-				},
-				dataType: 'json'
-			});
-
-			request.done(function (data) {
-				if (data) location.reload();
-				if (!data) alert('변경안됨');
-			})
-			request.fail(function (jqXHR, textStatus, error) {
-				console.log(error);
-			});
-		})
 		$(document).on('click', '#AllCheck', function () {
 			if ($('#AllCheck').is(':checked')) {
 				$('input[type="checkbox"]').not('#AllCheck').prop('checked', true);
@@ -444,59 +568,123 @@
 			}
 		})
 
-		$('#searchReset').click(function () {
+		$('button[name="searchReset"]').click(function () {
+			const currentBtn = $(this)
 
-			$('#searchType').val("");
-			$('#searchKeyword').val("");
+			// select2 초기화 및 선택 설정
+			currentBtn.closest('table').find('select[name="subMirCatCode"]').val('').trigger('change');
 
-			$('input[name="qnaScr"]:checked').prop('checked', false);
-			$('input[name="qnaCurExamState"]:checked').prop('checked', false);
+			// 모든 라디오 버튼의 체크 해제
+			currentBtn.closest('table').find('input[name="qnaScr"]').prop('checked', false);
 
-			$('input[name="qnaScr"]').first().prop('checked', true);
-			$('input[name="qnaCurExamState"]').first().prop('checked', true);
-
-			$('#subMirCatCode').val(null).trigger('change');
-			$('#userCode').val(null).trigger('change');
-
+			// 첫 번째 select 요소의 옵션 선택 (selectedIndex 또는 prop 사용)
+			currentBtn.closest('table').find('select[name="searchType"]').prop('selectedIndex', 0);
+			currentBtn.closest('table').find('input[name="searchKeyword"]').val("");
 
 		})
 
-		var questionList = /*[[${questionList}]]*/[];
-		$('#questionCount').text(questionList.length);
 
-		$(document).ready(function () {
-			const $tagContainer = $('#tag-container');
-			const $tagInput = $('#tag-input');
 
-			/*
-			// Enter 키를 눌렀을 때 검색어 추가(13이 엔터임)
-			$tagInput.on('keypress', function (e) {
-				if (e.which === 13 && $tagInput.val().trim() !== "") {
-					e.preventDefault(); // 폼 전송 방지
-					addTag($tagInput.val().trim());
-					$tagInput.val('');
-				}
-			});
-			*/
-			// 태그 추가 함수
-			function addTag(tagText) {
-				const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${tagText}</span>`);
 
+
+		/*
+		// Enter 키를 눌렀을 때 검색어 추가(13이 엔터임)
+		$tagInput.on('keypress', function (e) {
+			if (e.which === 13 && $tagInput.val().trim() !== "") {
+				e.preventDefault(); // 폼 전송 방지
+				addTag($tagInput.val().trim());
+				$tagInput.val('');
+			}
+		});
+		*/
+
+		// 모든 태그 지우기 버튼
+		$('button[name="clear-tags"]').on('click', function () {
+			$(this).parent().next().empty();
+			const sectionId = $(this).closest('section').find('table').eq(0).prop('id');
+
+			questionAllList[sectionId] = [];
+
+			$(this).prev().prev().text(questionAllList[sectionId].length);
+
+		});
+
+		$('.tag-container').each((idx, element) => {
+			const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
+
+			let questionId = questionAllList[sectionId];
+			$(element).prev().find('span').eq(1).text(questionId.length);
+
+			questionId.forEach((elem) => {
+
+				const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`);
 				// 개별 태그 삭제 기능
 				$tag.find('.remove-tag').on('click', function () {
+					$(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`).children().eq(1).text()
+					const textToRemove = $(this).parent().contents().last().text().trim(); // 태그 텍스트 가져오기
+
+					let newArray = questionAllList[sectionId].filter(item => item !== textToRemove);
+					questionAllList[sectionId] = newArray;
+
+
 					$(this).parent().remove();
+
+					// 길이 텍스트 업데이트 
+					const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
+
+					let questionId = questionAllList[sectionId];
+					$(element).prev().find('span').eq(1).text(questionId.length);
+
+
 				});
-
 				$tagContainer.append($tag);
-			}
-
-			// 모든 태그 지우기 버튼
-			$('#clear-tags').on('click', function () {
-				$tagContainer.empty();
 			});
+
+		});
+
+		$('button[name="addQuestion"]').click(function () {
+
+			const currentSection = $(this).closest('section')
+			const sectionId = currentSection.find('table').eq(0).prop('id');
+			const checkedQuestion = currentSection.find('table').eq(2).find('input[type="checkbox"]:checked').not('[name="AllCheck"]');
+
+			checkedQuestion.each((idx, element) => {
+				//console.log($(element).val())
+				const tagText = $(element).val()
+
+				if (!questionAllList[sectionId].includes(tagText)) {
+					questionAllList[sectionId].push(tagText);
+
+					// 길이 업데이트
+					currentSection.find('div').last().prev().find('span').eq(1).text(questionAllList[sectionId].length);
+
+					const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${tagText}</span>`);
+
+					// 개별 태그 삭제 기능
+					$tag.find('.remove-tag').on('click', function () {
+						const textToRemove = $(this).parent().contents().last().text().trim();
+
+						let newArray = questionAllList[sectionId].filter(item => item !== textToRemove);
+						questionAllList[sectionId] = newArray;
+
+						$(this).parent().remove();
+
+						// 길이 업데이트
+						currentSection.find('div').last().prev().find('span').eq(1).text(questionAllList[sectionId].length);
+					});
+					currentSection.find('.tag-container').append($tag);
+				}
+			})
+		})
+		$(document).on('click', 'input[value="미리보기"]', function () {
+			const $qnaCode = $(this).prop('id');
+			window.open(`/admin/exam/questionPopup?qnaCode=${$qnaCode}`, '문제미리보기', 'width=600,height=830,scrollbars=yes');
 		});
 
 	</script>
+
+</th:block>
+<th:block layout:fragment="customJs1">
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
@@ -540,220 +728,9 @@
 										<div class="wizard-content">
 											<form class="tab-wizard2 wizard-circle wizard">
 												<h5>모의고사 선택</h5>
-												<section>
-													<!-- =============================================== -->
-													<table class="t_tb01" cellpadding="0" cellspacing="0">
-														<colgroup>
-															<col class="col-width-120" />
-															<col />
-															<col class="col-width-120" />
-															<col />
-														</colgroup>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_choose_exam :: chooseExamSection">
 
-														<tbody>
-															<tr>
-																<td class="t_th01">시험 유형</td>
-																<td class="t_td01" colspan="3">
-																	<select name="examType"
-																		class="js-example-basic-single"
-																		aria-label="카테고리 선택" style="width: 100%;">
-																		<option value=""> - 전체 - </option>
-																		<option value="평가원">평가원</option>
-																		<option value="교육청">교육청</option>
-																		<option value="사설">사설</option>
-																	</select>
-																</td>
-															</tr>
-															<tr>
-																<td class="t_th01">대상 학년</td>
-																<td class="t_td01">
-																	<label for="examTarGrdAll"
-																		style="margin:0!important">
-																		<input type="radio" id="examTarGrdAll"
-																			name="examTarGrd" value="" class="ipt01"
-																			style="margin:0!important" />
-																		전체
-																	</label>
-
-																	<label for="examTarGrd1" style="margin:0!important">
-																		<input type="radio" id="examTarGrd1"
-																			name="examTarGrd" value="1" class="ipt01"
-																			style="margin:0!important" />
-																		1학년
-																	</label>
-
-																	<label for="examTarGrd2" style="margin:0!important">
-																		<input type="radio" id="examTarGrd2"
-																			name="examTarGrd" value="2" class="ipt01"
-																			style="margin:0!important" />
-																		2학년
-																	</label>
-																	<label for="examTarGrd3" style="margin:0!important">
-																		<input type="radio" id="examTarGrd3"
-																			name="examTarGrd" value="3" class="ipt01"
-																			style="margin:0!important" />
-																		3학년
-																	</label>
-																</td>
-																<td class="t_th01">대상 분류</td>
-																<td class="t_td01">
-																	<label style="margin:0!important">
-																		<input type="radio" name="examOeType" value=""
-																			class="ipt01" checked=""
-																			style="margin:0!important" />
-																		전체
-																	</label>
-																	&nbsp;
-
-																	<label style="margin:0!important">
-																		<input type="radio" name="examOeType" value="홀수"
-																			class="ipt01" style="margin:0!important" />
-																		홀수
-																	</label>
-																	&nbsp;
-
-																	<label style="margin:0!important">
-																		<input type="radio" name="examOeType" value="짝수"
-																			class="ipt01" style="margin:0!important" />
-																		짝수
-																	</label>
-																	&nbsp;
-																</td>
-															</tr>
-															<tr>
-																<td class="t_th01">담당자</td>
-																<td class="t_td01">
-																	<select name="userCode"
-																		class="js-example-basic-single"
-																		aria-label="카테고리 선택" style="width: 100%;">
-																		<option value=""> - 전체 - </option>
-																		<option th:if="${userList !=null}"
-																			th:each="ul: ${userList}"
-																			th:text="'['+${ul.userId}+'] '+ ${ul.userName}"
-																			th:value="${ul.userCode}">
-																		</option>
-																	</select>
-																</td>
-																<td class="t_th01">시험 날짜</td>
-																<td class="t_td01">
-
-																	<input type="date" name="startDate" size="10"
-																		class="cal01 flatpicker" id="dp1729133177442"
-																		placeholder="시작날짜"
-																		style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;margin:0" />
-
-																	<img class="ui-datepicker-trigger"
-																		src="/admin/img/exam/adminExamManagement/calendar.gif"
-																		alt="..." title="..." />
-																	-
-																	<input type="date" name="endDate" size="10"
-																		class="cal01 flatpicker" readonly=""
-																		id="dp1729133177443" placeholder="끝날짜"
-																		style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;margin:0" />
-																	<img class="ui-datepicker-trigger"
-																		src="/admin/img/exam/adminExamManagement/calendar.gif"
-																		alt="..." title="..." />
-																</td>
-
-															</tr>
-															<tr>
-																<td class="t_th01">검색</td>
-																<td class="t_td01" colspan="3">
-																	<select name="searchType">
-																		<option value="">검색타입선택</option>
-																		<option value="exam_nm">시험 이름</option>
-																		<option value="a.exam_nm">출제 기관</option>
-
-																	</select>
-																	<input type="text" name="searchKeyword" size="30"
-																		placeholder="검색어를 입력해주세요" style="margin:0" />
-																	<button type="button" class="bttn2"
-																		id="searchBtn">검색</button>
-																	<button type="button" class="bttn2"
-																		id="searchReset">초기화</button>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-
-													<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
-														<tbody>
-															<tr>
-																<td class="a_th01"><span
-																		style="font-family:arial, dotum;font-weight:normal;">Total
-																		:
-																		<font color="blue" id="examCount"></font> 건
-																	</span></td>
-																<td class="a_td01">
-
-																</td>
-															</tr>
-														</tbody>
-													</table>
-													<table class="l_tb01" cellpadding="0" cellspacing="0">
-														<colgroup>
-															<col width="60" />
-															<col width="80" />
-															<col />
-															<col width="100" />
-															<col width="100" />
-															<col width="180" />
-															<col width="100" />
-															<col width="140" />
-															<col width="100" />
-
-														</colgroup>
-														<thead>
-															<tr align="center">
-																<td class="l_th01">선택</td>
-																<td class="l_th01">시험 코드</td>
-																<td class="l_th01"><span class="l_sort01">시험 이름</span>
-																</td>
-																<td class="l_th01"><span class="l_sort01">대상 학년</span>
-																</td>
-																<td class="l_th01"><span class="l_sort01">시험 유형</span>
-																</td>
-																<td class="l_th01"><span class="l_sort01">출제 기관</span>
-																</td>
-																<td class="l_th01"><span class="l_sort01">대상 분류</span>
-																</td>
-																<td class="l_th01"><span class="l_sort01">담당자</span>
-																</td>
-																<td class="l_th01"><span class="l_sort01">시험 날짜</span>
-																</td>
-															</tr>
-														</thead>
-														<tbody id="examListTbody">
-															<tr class="l_tr_even" align="center"
-																th:if="${examInfoList !=null}"
-																th:each="eil,status: ${examInfoList}">
-																<td class="l_td01"><input type="radio" name="selectExam"
-																		th:value="eil.examCode" /> </td>
-																<td class="l_td01" th:text="${eil.examCode}"></td>
-																<td class="l_td01" title="종합시험" align="left">
-																	<a th:href="@{/admin/exam/modifyExam(examCode=${eil.examCode})}"
-																		th:text="${eil.examNm}"></a>
-																</td>
-																<td class="l_td01" th:text="${eil.examTarGrd+'학년'}">
-																</td>
-																<td class="l_td01" th:text="${eil.examType}"></td>
-																<td class="l_td01" th:text="${eil.examInst}"></td>
-																<td class="l_td01" th:text="${eil.examOeType}"></td>
-
-																<td class="l_td01" align="center">
-																	<span class="label blue"
-																		th:text="${eil.userId}"></span><span
-																		th:text="${eil.userNm}"></span>
-																</td>
-																<td class="l_td01" th:text="${eil.examDate}"></td>
-															</tr>
-															<tr class="l_tr_even" align="center"
-																th:unless="${examInfoList !=null}">
-																<td class="l_td01" colspan="9">시험정보가 없습니다</td>
-															</tr>
-														</tbody>
-													</table>
-													<!-- =============================================== -->
 												</section>
 												<!-- Step 2 -->
 												<h5>
@@ -788,21 +765,14 @@
 												</section>
 												<!-- Step 6 -->
 												<h5>
-													탐구 영역Ⅰ<br>문제 선택
+													탐구 영역<br>문제 선택
 												</h5>
 												<section
-													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'탐구1'},,maxQuestion=${'20'},questionList=${questionListInq},categoryList=${categoryList567})">
-
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'탐구'},,maxQuestion=${'00'},questionList=${questionListInq},categoryList=${categoryList567})">
 												</section>
+												<!-- Step 6 -->
+												<!-- 탐구영역2는 앞에서 한번에 문제를 다 등록하게 수정-->
 												<!-- Step 7 -->
-												<h5>
-													탐구 영역Ⅱ<br>문제 선택
-												</h5>
-												<section
-													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'탐구2'},,maxQuestion=${'20'},questionList=${questionListInq},categoryList=${categoryList567})">
-
-												</section>
-												<!-- Step 8 -->
 												<h5>
 													제 2외국어/한문 영역<br>문제 선택
 												</h5>
@@ -810,12 +780,12 @@
 													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'제 2외국어/한문'},,maxQuestion=${'30'},questionList=${questionListLang},categoryList=${categoryList8})">
 
 												</section>
-												<!-- Step 4 -->
+												<!-- Step 8 -->
 												<h5>
 													모의고사<br>문제 확인
 												</h5>
-												<section>
-
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_check_questionList :: checkQuestionListSection">
 												</section>
 											</form>
 										</div>
@@ -824,39 +794,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- success Popup html Start -->
-					<button type="button" id="success-modal-btn" hidden data-toggle="modal" data-target="#success-modal"
-						data-backdrop="static">Launch modal</button>
-					<div class="modal fade" id="success-modal" tabindex="-1" role="dialog"
-						aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered max-width-400" role="document">
-							<div class="modal-content">
-								<div class="modal-body text-center font-18">
-									<h3 class="mb-20">회원가입 완료!</h3>
-									<div class="mb-30 text-center">
-										<img src="vendors/images/success.png">
-									</div>
-									<div
-										style="background-color: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
-										<h2
-											style="color: #007bff; font-family: 'Arial', sans-serif; margin-bottom: 10px;">
-											<span
-												style="font-size: 50px; display: inline-block; transform: scaleX(-1);">🎉</span>
-											환영합니다!<span style="font-size: 50px;">🎉</span>
-										</h2>
-										<p style="font-size: 18px; line-height: 1.5; color: #333;">
-											더 풍성한 경험과 <strong style="color: #28a745;">특별한 혜택</strong>을<br> 누리시려면 <span
-												style="color: #007bff; font-weight: bold;">지금 바로 로그인하세요!</span>
-										</p>
-									</div>
-								</div>
-								<div class="modal-footer justify-content-center">
-									<a href="login.html" class="btn btn-primary">로그인하러가기</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- --------------------------------------------------- -->
+
 				</div>
 			</div>
 		</div>

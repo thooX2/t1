@@ -108,7 +108,34 @@ public class AdminExamServiceImpl implements AdminExamService {
 	}
 
 	@Override
-	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank) {
+	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank, String subjectName) {
+
+		if (subjectName != null) {
+			String SubMjrCatCode = "";
+			switch (subjectName) {
+			case "국어":
+				SubMjrCatCode = "smjrcc1";
+				break;
+			case "수학":
+				SubMjrCatCode = "smjrcc2";
+				break;
+			case "영어":
+				SubMjrCatCode = "smjrcc3";
+				break;
+			case "한국사":
+				SubMjrCatCode = "smjrcc4";
+				break;
+			case "탐구":
+				SubMjrCatCode = "smjrcc5,smjrcc6,smjrcc7";
+				break;
+			case "제 2외국어/한문":
+				SubMjrCatCode = "smjrcc8";
+				break;
+			}
+			qnaBank.setSubMjrCatCode(SubMjrCatCode);
+		}
+
+		log.error(qnaBank.getSubMirCatCode());
 
 		return adminExamMapper.searchQuestionList(qnaBank);
 	}

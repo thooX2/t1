@@ -23,7 +23,7 @@ public interface AdminExamService {
 
 	List<AdminQnaBank> getQuestionListAll();
 
-	List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank);
+	List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank, String subjectName);
 
 	AdminQnaBank getQuestionInfo(String qnaCode);
 

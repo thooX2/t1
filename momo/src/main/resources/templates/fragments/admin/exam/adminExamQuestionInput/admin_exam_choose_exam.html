@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
+<section th:fragment="chooseExamSection">
+	<!-- =============================================== -->
+	<table class="t_tb01" cellpadding="0" cellspacing="0">
+		<colgroup>
+			<col class="col-width-120" />
+			<col />
+			<col class="col-width-120" />
+			<col />
+		</colgroup>
+
+		<tbody>
+			<tr>
+				<td class="t_th01">시험 유형</td>
+				<td class="t_td01" colspan="3">
+					<select name="examType" class="js-example-basic-single" aria-label="카테고리 선택" style="width: 100%;">
+						<option value=""> - 전체 - </option>
+						<option value="평가원">평가원</option>
+						<option value="교육청">교육청</option>
+						<option value="사설">사설</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="t_th01">대상 학년</td>
+				<td class="t_td01">
+					<label for="examTarGrdAll" style="margin:0!important">
+						<input type="radio" id="examTarGrdAll" name="examTarGrd" value="" class="ipt01"
+							style="margin:0!important" checked="" />
+						전체
+					</label>
+
+					<label for="examTarGrd1" style="margin:0!important">
+						<input type="radio" id="examTarGrd1" name="examTarGrd" value="1" class="ipt01"
+							style="margin:0!important" />
+						1학년
+					</label>
+
+					<label for="examTarGrd2" style="margin:0!important">
+						<input type="radio" id="examTarGrd2" name="examTarGrd" value="2" class="ipt01"
+							style="margin:0!important" />
+						2학년
+					</label>
+					<label for="examTarGrd3" style="margin:0!important">
+						<input type="radio" id="examTarGrd3" name="examTarGrd" value="3" class="ipt01"
+							style="margin:0!important" />
+						3학년
+					</label>
+				</td>
+				<td class="t_th01">대상 분류</td>
+				<td class="t_td01">
+					<label style="margin:0!important">
+						<input type="radio" name="examOeType" value="" class="ipt01" checked=""
+							style="margin:0!important" />
+						전체
+					</label>
+					&nbsp;
+
+					<label style="margin:0!important">
+						<input type="radio" name="examOeType" value="홀수" class="ipt01" style="margin:0!important" />
+						홀수
+					</label>
+					&nbsp;
+
+					<label style="margin:0!important">
+						<input type="radio" name="examOeType" value="짝수" class="ipt01" style="margin:0!important" />
+						짝수
+					</label>
+					&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td class="t_th01">담당자</td>
+				<td class="t_td01">
+					<select name="userCode" class="js-example-basic-single" aria-label="카테고리 선택" style="width: 100%;">
+						<option value=""> - 전체 - </option>
+						<option th:if="${userList !=null}" th:each="ul: ${userList}"
+							th:text="'['+${ul.userId}+'] '+ ${ul.userName}" th:value="${ul.userCode}">
+						</option>
+					</select>
+				</td>
+				<td class="t_th01">시험 날짜</td>
+				<td class="t_td01">
+
+					<input type="date" name="startDate" size="10" class="cal01 flatpicker" id="dp1729133177442"
+						placeholder="시작날짜"
+						style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;margin:0" />
+
+					<img class="ui-datepicker-trigger" src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..."
+						title="..." />
+					-
+					<input type="date" name="endDate" size="10" class="cal01 flatpicker" readonly=""
+						id="dp1729133177443" placeholder="끝날짜"
+						style="background-color: rgb(244, 244, 244); border: 1px solid rgb(222, 222, 222); padding-left: 3px;margin:0" />
+					<img class="ui-datepicker-trigger" src="/admin/img/exam/adminExamManagement/calendar.gif" alt="..."
+						title="..." />
+				</td>
+
+			</tr>
+			<tr>
+				<td class="t_th01">검색</td>
+				<td class="t_td01" colspan="3">
+					<select name="searchType">
+						<option value="">검색타입선택</option>
+						<option value="exam_nm">시험 이름</option>
+						<option value="a.exam_nm">출제 기관</option>
+
+					</select>
+					<input type="text" name="searchKeyword" size="30" placeholder="검색어를 입력해주세요" style="margin:0" />
+					<button type="button" class="bttn2" id="searchBtn">검색</button>
+					<button type="button" class="bttn2" id="searchReset">초기화</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td class="a_th01"><span style="font-family:arial, dotum;font-weight:normal;">Total
+						:
+						<font color="blue" id="examCount"></font> 건
+					</span></td>
+				<td class="a_td01">
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 10px;">
+		<colgroup>
+			<col width="60" />
+			<col width="80" />
+			<col />
+			<col width="100" />
+			<col width="100" />
+			<col width="180" />
+			<col width="100" />
+			<col width="140" />
+			<col width="100" />
+
+		</colgroup>
+		<thead>
+			<tr align="center">
+				<td class="l_th01">선택</td>
+				<td class="l_th01">시험 코드</td>
+				<td class="l_th01"><span class="l_sort01">시험 이름</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">대상 학년</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">시험 유형</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">출제 기관</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">대상 분류</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">담당자</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">시험 날짜</span>
+				</td>
+			</tr>
+		</thead>
+		<tbody id="examListTbody">
+			<tr class="l_tr_even" align="center" th:if="${examInfoList !=null}" th:each="eil,status: ${examInfoList}">
+				<td class="l_td01"><input type="radio" name="selectExam" th:value="${eil.examCode}" /> </td>
+				<td class="l_td01" th:text="${eil.examCode}"></td>
+				<td class="l_td01" title="종합시험" align="left">
+					<a th:href="@{/admin/exam/modifyExam(examCode=${eil.examCode})}" th:text="${eil.examNm}"></a>
+				</td>
+				<td class="l_td01" th:text="${eil.examTarGrd+'학년'}">
+				</td>
+				<td class="l_td01" th:text="${eil.examType}"></td>
+				<td class="l_td01" th:text="${eil.examInst}"></td>
+				<td class="l_td01" th:text="${eil.examOeType}"></td>
+
+				<td class="l_td01" align="center">
+					<span class="label blue" th:text="${eil.userId}"></span><span th:text="${eil.userNm}"></span>
+				</td>
+				<td class="l_td01" th:text="${eil.examDate}"></td>
+			</tr>
+			<tr class="l_tr_even" align="center" th:unless="${examInfoList !=null}">
+				<td class="l_td01" colspan="9">시험정보가 없습니다</td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- =============================================== -->
+
+</section>
+
+</html>

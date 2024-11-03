@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-
 <!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
 <section th:fragment="examSection(subjectName,maxQuestion,questionList,categoryList)">
-	<table class="t_tb01" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+	<table class="t_tb01" cellpadding="0" cellspacing="0" style="table-layout: fixed;" th:id="${subjectName}">
 		<colgroup>
 			<col style="width: 120px;">
 			<!-- 첫 번째 열의 너비를 120px로 설정 -->
@@ -19,8 +18,7 @@
 			<tr>
 				<td class="t_th01">카테고리</td>
 				<td class="t_td01" colspan="3">
-					<select name="subMirCatCode" class="js-example-basic-single" id="subMirCatCode"
-						style="width: 100%;">
+					<select name="subMirCatCode" class="js-example-basic-single" style="width: 100%;">
 						<option value=""> - 전체 - </option>
 						<option th:if="${categoryList != null}" th:each="cl : ${categoryList}"
 							th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm : cl.subMjrName + ' > ' + cl.subMirCatNm}"
@@ -34,10 +32,11 @@
 
 				<td class="t_td01" colspan="3">
 					<label style="margin:0!important">
-						<input type="radio" name="qnaScr" value="0" class="ipt01" checked=""
-							style="margin:0!important" /> 전체
+						<input type="radio" name="qnaScr" value="0" class="ipt01" checked style="margin:0!important" />
+						전체
 					</label>
 					&nbsp;
+
 					<label style="margin:0!important">
 						<input type="radio" name="qnaScr" value="1" class="ipt01" style="margin:0!important" /> 1
 					</label>
@@ -56,22 +55,22 @@
 					&nbsp;
 				</td>
 			</tr>
-
 			<tr>
 				<td class="t_th01">검색</td>
 				<td class="t_td01" colspan="3">
-					<select name="searchType" id="searchType">
+					<select name="searchType">
 						<option value="">검색타입선택</option>
+						<option value="qna_code">문제 코드</option>
 						<option value="qna_subject">문제 제목</option>
 						<option value="qna_qst">문제 내용</option>
 						<option value="qna_chap">출제 단원</option>
 						<option value="qna_type">출제 유형</option>
 						<option value="qna_cmt">문제 해설</option>
 					</select>
-					<input type="text" name="searchKeyword" size="30" id="searchKeyword" placeholder="검색어를 입력해주세요"
+					<input type="text" name="searchKeyword" size="30" placeholder="검색어를 입력해주세요"
 						style="margin:0 !important" />
-					<button type="button" class="bttn2" id="searchQuestionBtn">검색</button>
-					<button type="button" class="bttn2" id="searchReset">초기화</button>
+					<button type="button" class="bttn2" name="searchQuestionBtn">검색</button>
+					<button type="button" class="bttn2" name="searchReset">초기화</button>
 				</td>
 			</tr>
 		</tbody>
@@ -82,8 +81,13 @@
 				<td class="a_th01">
 					<span style="font-family: arial, dotum; font-weight: normal;">Total
 						:
-						<font color="blue" id="questionCount" th:text="${questionList.size()}"></font> 건
+						<font color="blue" name="questionCount" th:text="${questionList.size()}"></font> 건
 					</span>
+				</td>
+				<td class="a_td01">
+
+					<button type="button" class="bttn2" name="addQuestion">등록</button>
+
 				</td>
 			</tr>
 		</tbody>
@@ -92,7 +96,7 @@
 		<thead>
 			<tr align="center">
 				<td class="l_th01" width="20">
-					<input type="checkbox" id="AllCheck" />
+					<input type="checkbox" name="AllCheck" />
 				</td>
 				<td class="l_th01" width="50">번호</td>
 				<td class="l_th01" width="80">문제코드</td>
@@ -109,7 +113,7 @@
 
 			</tr>
 		</thead>
-		<tbody id="questionListTable">
+		<tbody>
 			<tr class="l_tr_even" align="center" th:if="${questionList !=null}" th:each="ql,status:${questionList}">
 				<td class="l_td01">
 					<input type="checkbox" name="idx" th:value="${ql.qnaCode}" />
@@ -150,12 +154,13 @@
 		</tbody>
 	</table>
 	<div style="margin: 20px 0 10px;">
-		<span th:text="${subjectName}"></span><span> : ( 0 / <span th:text="${maxQuestion}">45</span> )</span>
-		<button id="clear-tags" class="btn_simp" style="margin-left:5px">
+		<span th:text="${subjectName}"></span> : ( <span>0</span> <span th:if="${maxQuestion !='00'}"
+			th:text="${' / '+maxQuestion}">45</span> )
+		<button type="button" name="clear-tags" class="btn_simp" style="margin-left:5px">
 			모든 문제 지우기
 		</button>
 	</div>
-	<div id="tag-container" style="margin-bottom:10px;">
+	<div th:id="${subjectName+'QuestionContainer'}" class="tag-container" style="margin-bottom:10px;">
 		<!-- 선택된 검색어들이 이곳에 태그처럼 추가됩니다. -->
 	</div>
 

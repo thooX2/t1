@@ -261,9 +261,10 @@ public class AdminExamController {
 
 	@GetMapping("/searchQuestionList")
 	@ResponseBody
-	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank) {
+	public List<AdminQnaBank> searchQuestionList(
+			@RequestParam(name = "subjectName", required = false) String subjectName, AdminQnaBank qnaBank) {
 		List<AdminQnaBank> searchList = new ArrayList<AdminQnaBank>();
-		searchList = adminExamService.searchQuestionList(qnaBank);
+		searchList = adminExamService.searchQuestionList(qnaBank,subjectName);
 		return searchList;
 	}
 
