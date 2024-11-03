@@ -224,9 +224,44 @@
 			},
 			onFinished: function (event, currentIndex) {
 				const isRegister = confirm('위 시험문제를 시험에 등록하시겠습니까?')
-				
-				if (isRegister)
-					location.href = "/admin/exam/managementList";
+				const selectedExamCode = $('input[name = "selectExam"]:checked').prop('value');
+				if (isRegister) {
+					if (!selectedExamCode) {
+						alert('시험을 선택해주세요!');
+						return;
+					}
+					const totalQuestionList = [
+						...questionAllList['국어'],
+						...questionAllList['수학'],
+						...questionAllList['영어'],
+						...questionAllList['한국사'],
+						...questionAllList['탐구'],
+						...questionAllList['제 2외국어/한문']
+					];
+
+					const request = $.ajax({
+						url: `/admin/exam/${selectedExamCode}/questions`,
+						method: 'post',
+						// JSON 형식으로 설정(배열은 json형식으로 보내야함, 기본은 form형식으로 보내기)
+						contentType: 'application/json',
+						// 배열 방식으로 데이터 전송(JSON.stringify필수,혹시 객체로 보내면 controller에서 map으로 받아야함)
+						data: JSON.stringify(totalQuestionList),
+						dataType: 'json'
+					});
+
+					request.done(function (data) {
+						const searchList = data;
+						if (data)
+							location.href = "/admin/exam/managementList";
+					});
+
+					request.fail(function (jqXHR, textStatus, error) {
+						console.log(error);
+					});
+				} else {
+					alert('문제등록을 취소하셨습니다.')
+				}
+
 			}
 		});
 
@@ -260,7 +295,10 @@
 					subjectTable = '#questionListLang'
 					break;
 			}
-			$(subjectTable).empty();
+
+			console.log(questionAllList[subjectName])
+			if (questionAllList[subjectName].length != 0)
+				$(subjectTable).empty();
 
 			subjectList.forEach((element) => {
 				questionAllList[subjectName].forEach((elem, idx) => {
@@ -296,6 +334,7 @@
 						    <td class="l_td01">${formattedUpdateTime}</td>
 						</tr>`;
 						$(subjectTable).append(newQuestionList);
+						$(subjectTable).closest('table').prev().find('font[name="questionCount"]').text(questionAllList[subjectName].length);
 					}
 				})
 
@@ -549,22 +588,26 @@
 		});
 
 
-		$(document).on('click', '#AllCheck', function () {
-			if ($('#AllCheck').is(':checked')) {
-				$('input[type="checkbox"]').not('#AllCheck').prop('checked', true);
+		$(document).on('click', 'input[name="AllCheck"]', function () {
+
+			if ($(this).is(':checked')) {
+
+				$(this).closest('table').find('input[name="idx"]').prop('checked', true);
 			} else {
-				$('input[type="checkbox"]').not('#AllCheck').prop('checked', false);
+				$(this).closest('table').find('input[name="idx"]').prop('checked', false);
 			}
 		})
 
 		$(document).on('click', 'input[type="checkbox"]', function () {
-			const checkbox = $('input[type="checkbox"]').not('#AllCheck').length;
-			const checked = $('input[type="checkbox"]:checked').not('#AllCheck').length;
+
+			const checkbox = $(this).closest('tbody').find('input[type="checkbox"]').length
+			const checked = $(this).closest('tbody').find('input[type="checkbox"]:checked').length
+
 
 			if (checkbox == checked) {
-				$('#AllCheck').attr('checked', true);
+				$(this).closest('table').find('input[name="AllCheck"]').attr('checked', true);
 			} else {
-				$('#AllCheck').attr('checked', false);
+				$(this).closest('table').find('input[name="AllCheck"]').attr('checked', false);
 			}
 		})
 
@@ -777,7 +820,7 @@
 													제 2외국어/한문 영역<br>문제 선택
 												</h5>
 												<section
-													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'제 2외국어/한문'},,maxQuestion=${'30'},questionList=${questionListLang},categoryList=${categoryList8})">
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'제 2외국어/한문'},,maxQuestion=${'00'},questionList=${questionListLang},categoryList=${categoryList8})">
 
 												</section>
 												<!-- Step 8 -->

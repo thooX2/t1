@@ -132,34 +132,37 @@
 	</table>
 	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 10px;">
 		<colgroup>
+			<col width="50" />
 			<col width="60" />
-			<col width="80" />
 			<col />
-			<col width="100" />
-			<col width="100" />
+			<col width="60" />
+			<col width="60" />
 			<col width="180" />
-			<col width="100" />
-			<col width="140" />
-			<col width="100" />
+			<col width="60" />
+			<col width="120" />
+			<col width="90" />
+			<col width="90" />
 
 		</colgroup>
 		<thead>
 			<tr align="center">
 				<td class="l_th01">선택</td>
-				<td class="l_th01">시험 코드</td>
+				<td class="l_th01">시험<br>코드</td>
 				<td class="l_th01"><span class="l_sort01">시험 이름</span>
 				</td>
-				<td class="l_th01"><span class="l_sort01">대상 학년</span>
+				<td class="l_th01"><span class="l_sort01">대상<br>학년</span>
 				</td>
-				<td class="l_th01"><span class="l_sort01">시험 유형</span>
+				<td class="l_th01"><span class="l_sort01">시험<br>유형</span>
 				</td>
 				<td class="l_th01"><span class="l_sort01">출제 기관</span>
 				</td>
-				<td class="l_th01"><span class="l_sort01">대상 분류</span>
+				<td class="l_th01"><span class="l_sort01">대상<br>분류</span>
 				</td>
 				<td class="l_th01"><span class="l_sort01">담당자</span>
 				</td>
 				<td class="l_th01"><span class="l_sort01">시험 날짜</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">시험 문제<br> 등록/수정</span>
 				</td>
 			</tr>
 		</thead>
@@ -180,9 +183,10 @@
 					<span class="label blue" th:text="${eil.userId}"></span><span th:text="${eil.userNm}"></span>
 				</td>
 				<td class="l_td01" th:text="${eil.examDate}"></td>
+				<td class="l_td01"></td>
 			</tr>
 			<tr class="l_tr_even" align="center" th:unless="${examInfoList !=null}">
-				<td class="l_td01" colspan="9">시험정보가 없습니다</td>
+				<td class="l_td01" colspan="11">시험정보가 없습니다</td>
 			</tr>
 		</tbody>
 	</table>

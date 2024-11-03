@@ -135,8 +135,6 @@ public class AdminExamServiceImpl implements AdminExamService {
 			qnaBank.setSubMjrCatCode(SubMjrCatCode);
 		}
 
-		log.error(qnaBank.getSubMirCatCode());
-
 		return adminExamMapper.searchQuestionList(qnaBank);
 	}
 

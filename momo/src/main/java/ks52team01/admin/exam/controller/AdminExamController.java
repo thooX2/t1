@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -35,6 +37,26 @@ public class AdminExamController {
 	private final AdminExamService adminExamService;
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
+
+	
+	/**
+	 * 
+	 * @param selectedExamCode : 시험문제 코드를 받아와서 문제를 관리
+	 * @param totalQuestionList : 배열로 받아오기 때문에 @RequestBody와 List를 사용
+	 * 							  혹시 객체{key:value}형태면 Map을 사용해야함
+	 * 							  form형식같이 dto,string형태의 데이터를 받으려면 @RequestParam을 사용하면 됨
+	 * @return
+	 */
+	@PostMapping("/{selectedExamCode}/questions")
+	@ResponseBody
+	public boolean registerQuestionToExam(@PathVariable(name = "selectedExamCode") String selectedExamCode,
+			@RequestBody List<String> totalQuestionList) {
+		
+		log.error(selectedExamCode);
+		log.error("test1234:{}", totalQuestionList);
+
+		return true;
+	}
 
 	@GetMapping("/inputQuestion")
 	public String inputQuestionToExam(Model model) {
@@ -264,7 +286,7 @@ public class AdminExamController {
 	public List<AdminQnaBank> searchQuestionList(
 			@RequestParam(name = "subjectName", required = false) String subjectName, AdminQnaBank qnaBank) {
 		List<AdminQnaBank> searchList = new ArrayList<AdminQnaBank>();
-		searchList = adminExamService.searchQuestionList(qnaBank,subjectName);
+		searchList = adminExamService.searchQuestionList(qnaBank, subjectName);
 		return searchList;
 	}
 
