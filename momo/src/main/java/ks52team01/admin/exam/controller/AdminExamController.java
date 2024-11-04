@@ -6,18 +6,22 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import ks52team01.admin.exam.dto.AdminExamInfo;
 import ks52team01.admin.exam.dto.AdminExamQnaChap;
 import ks52team01.admin.exam.dto.AdminExamQnaType;
 import ks52team01.admin.exam.dto.AdminQnaBank;
 import ks52team01.admin.exam.dto.AdminSubMirCate;
+import ks52team01.admin.exam.dto.AdminExamMappingQuestion;
 import ks52team01.admin.exam.service.AdminExamService;
 import ks52team01.common.files.dto.QnaImg;
 import ks52team01.common.files.service.FileService;
@@ -35,6 +39,45 @@ public class AdminExamController {
 	private final AdminExamService adminExamService;
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
+
+	@GetMapping("/{examCode}/questions")
+	@ResponseBody
+	public List<AdminQnaBank> getQuestionListByExamCode(@PathVariable(name = "examCode") String examCode) {
+		List<AdminQnaBank> questionList = adminExamService.getQuestionListByExamCode(examCode);
+		return questionList;
+	}
+
+	/**
+	 * 
+	 * @param selectedExamCode  : 시험문제 코드를 받아와서 문제를 관리
+	 * @param totalQuestionList : 배열로 받아오기 때문에 @RequestBody와 List를 사용 혹시
+	 *                          객체{key:value}형태면 Map을 사용해야함 form형식같이 dto,string형태의
+	 *                          데이터를 받으려면 @RequestParam을 사용하면 됨
+	 * @return
+	 */
+	@PostMapping("/{selectedExamCode}/questions")
+	@ResponseBody
+	public boolean registerQuestionToExam(@PathVariable(name = "selectedExamCode") String selectedExamCode,
+			@RequestBody List<String> totalQuestionList, HttpSession session) {
+		boolean isRegistered = false;
+		int done = 0;
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+		AdminExamMappingQuestion examMappingQuestion = new AdminExamMappingQuestion();
+		examMappingQuestion.setUserCode(loggedInUser.getUserCode());
+		examMappingQuestion.setSelectedExamCode(selectedExamCode);
+		examMappingQuestion.setTotalQuestionList(totalQuestionList);
+
+		// 해당테이블에서 내용을 지우고 그다음에 등록하는걸로 데이터 등록
+		int isDeleted = adminExamService.deleteQuestionFromExam(selectedExamCode);
+		log.error("TEST:{}", totalQuestionList);
+		if (!totalQuestionList.isEmpty() && totalQuestionList != null) {
+			done = adminExamService.registerQuestionToExam(examMappingQuestion);
+		}
+		if (done > 0 || isDeleted > 0)
+			isRegistered = true;
+		return isRegistered;
+	}
 
 	@GetMapping("/inputQuestion")
 	public String inputQuestionToExam(Model model) {
@@ -261,9 +304,10 @@ public class AdminExamController {
 
 	@GetMapping("/searchQuestionList")
 	@ResponseBody
-	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank) {
+	public List<AdminQnaBank> searchQuestionList(
+			@RequestParam(name = "subjectName", required = false) String subjectName, AdminQnaBank qnaBank) {
 		List<AdminQnaBank> searchList = new ArrayList<AdminQnaBank>();
-		searchList = adminExamService.searchQuestionList(qnaBank);
+		searchList = adminExamService.searchQuestionList(qnaBank, subjectName);
 		return searchList;
 	}
 

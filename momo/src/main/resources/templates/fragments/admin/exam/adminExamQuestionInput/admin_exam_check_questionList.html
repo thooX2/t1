@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
+<section th:fragment="checkQuestionListSection">
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 10px;">
+		<tbody>
+			<tr>
+				<td style="padding-left:5px;border:0">
+					<div id="_ttl_">
+						<div class="blt"><!----></div>
+						<div><strong style="font-size:17px;">선택한 시험정보</strong></div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 50px;">
+		<colgroup>
+			<col width="80" />
+			<col />
+			<col width="100" />
+			<col width="100" />
+			<col width="180" />
+			<col width="100" />
+			<col width="140" />
+			<col width="100" />
+
+		</colgroup>
+		<thead>
+			<tr align="center">
+				<td class="l_th01">시험 코드</td>
+				<td class="l_th01"><span class="l_sort01">시험 이름</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">대상 학년</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">시험 유형</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">출제 기관</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">대상 분류</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">담당자</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">시험 날짜</span>
+				</td>
+			</tr>
+		</thead>
+		<tbody id="selectedExam">
+			<tr class="l_tr_even" align="center">
+				<td class="l_td01" colspan="8">
+					<span>시험을 선택하지 않았습니다</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td style="padding-left:5px;border:0">
+					<div id="_ttl_">
+						<div class="blt"><!----></div>
+						<div><strong style="font-size:17px;">국어 문제목록</strong></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="a_th01">
+					<span style=" font-family: arial, dotum; font-weight: normal;margin-left: 10px;">Total
+						:
+						<font color="blue" name="questionCount">0</font> 건
+					</span>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 50px;">
+		<thead>
+			<tr align="center">
+				<td class="l_th01" width="50">번호</td>
+				<td class="l_th01" width="80">문제코드</td>
+				<td class="l_th01"><span class="l_sort01">문제</span></td>
+				<td class="l_th01" width="80">미리보기</td>
+				<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
+				</td>
+
+				<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
+				</td>
+				<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">생성날짜</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">수정날짜</span></td>
+
+			</tr>
+		</thead>
+		<tbody id="questionListKor">
+			<tr class="l_tr_even" align="center">
+				<td class="l_td01" colspan="9">
+					<span>아직 시험에 문제가 등록되지 않았습니다.</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td style="padding-left:5px;border:0">
+					<div id="_ttl_">
+						<div class="blt"><!----></div>
+						<div><strong style="font-size:17px;">수학 문제목록</strong></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="a_th01">
+					<span style=" font-family: arial, dotum; font-weight: normal;margin-left: 10px;">Total
+						:
+						<font color="blue" name="questionCount">0</font> 건
+					</span>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 50px;">
+		<thead>
+			<tr align="center">
+				<td class="l_th01" width="50">번호</td>
+				<td class="l_th01" width="80">문제코드</td>
+				<td class="l_th01"><span class="l_sort01">문제</span></td>
+				<td class="l_th01" width="80">미리보기</td>
+				<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
+				</td>
+
+				<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
+				</td>
+				<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">생성날짜</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">수정날짜</span></td>
+
+			</tr>
+		</thead>
+		<tbody id="questionListMath">
+			<tr class="l_tr_even" align="center">
+				<td class="l_td01" colspan="9">
+					<span>아직 시험에 문제가 등록되지 않았습니다.</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td style="padding-left:5px;border:0">
+					<div id="_ttl_">
+						<div class="blt"><!----></div>
+						<div><strong style="font-size:17px;">영어 문제목록</strong></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="a_th01">
+					<span style=" font-family: arial, dotum; font-weight: normal;margin-left: 10px;">Total
+						:
+						<font color="blue" name="questionCount">0</font> 건
+					</span>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 50px;">
+		<thead>
+			<tr align="center">
+				<td class="l_th01" width="50">번호</td>
+				<td class="l_th01" width="80">문제코드</td>
+				<td class="l_th01"><span class="l_sort01">문제</span></td>
+				<td class="l_th01" width="80">미리보기</td>
+				<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
+				</td>
+
+				<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
+				</td>
+				<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">생성날짜</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">수정날짜</span></td>
+
+			</tr>
+		</thead>
+		<tbody id="questionListEng">
+			<tr class="l_tr_even" align="center">
+				<td class="l_td01" colspan="9">
+					<span>아직 시험에 문제가 등록되지 않았습니다.</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td style="padding-left:5px;border:0">
+					<div id="_ttl_">
+						<div class="blt"><!----></div>
+						<div><strong style="font-size:17px;">한국사 문제목록</strong></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="a_th01">
+					<span style=" font-family: arial, dotum; font-weight: normal;margin-left: 10px;">Total
+						:
+						<font color="blue" name="questionCount">0</font> 건
+					</span>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 50px;">
+		<thead>
+			<tr align="center">
+				<td class="l_th01" width="50">번호</td>
+				<td class="l_th01" width="80">문제코드</td>
+				<td class="l_th01"><span class="l_sort01">문제</span></td>
+				<td class="l_th01" width="80">미리보기</td>
+				<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
+				</td>
+
+				<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
+				</td>
+				<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">생성날짜</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">수정날짜</span></td>
+
+			</tr>
+		</thead>
+		<tbody id="questionListKH">
+			<tr class="l_tr_even" align="center">
+				<td class="l_td01" colspan="9">
+					<span>아직 시험에 문제가 등록되지 않았습니다.</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td style="padding-left:5px;border:0">
+					<div id="_ttl_">
+						<div class="blt"><!----></div>
+						<div><strong style="font-size:17px;">탐구 문제목록</strong></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="a_th01">
+					<span style=" font-family: arial, dotum; font-weight: normal;margin-left: 10px;">Total
+						:
+						<font color="blue" name="questionCount">0</font> 건
+					</span>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 50px;">
+		<thead>
+			<tr align="center">
+				<td class="l_th01" width="50">번호</td>
+				<td class="l_th01" width="80">문제코드</td>
+				<td class="l_th01"><span class="l_sort01">문제</span></td>
+				<td class="l_th01" width="80">미리보기</td>
+				<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
+				</td>
+
+				<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
+				</td>
+				<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">생성날짜</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">수정날짜</span></td>
+
+			</tr>
+		</thead>
+		<tbody id="questionListInq">
+			<tr class="l_tr_even" align="center">
+				<td class="l_td01" colspan="9">
+					<span>아직 시험에 문제가 등록되지 않았습니다.</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="a_tb01" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td style="padding-left:5px;border:0">
+					<div id="_ttl_">
+						<div class="blt"><!----></div>
+						<div><strong style="font-size:17px;">제 2외국어/한문 문제목록</strong></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="a_th01">
+					<span style=" font-family: arial, dotum; font-weight: normal;margin-left: 10px;">Total
+						:
+						<font color="blue" name="questionCount">0</font> 건
+					</span>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+	<table class="l_tb01" cellpadding="0" cellspacing="0" style="margin-bottom: 50px;">
+		<thead>
+			<tr align="center">
+				<td class="l_th01" width="50">번호</td>
+				<td class="l_th01" width="80">문제코드</td>
+				<td class="l_th01"><span class="l_sort01">문제</span></td>
+				<td class="l_th01" width="80">미리보기</td>
+				<td class="l_th01" width="80"><span class="l_sort01">문항배점</span>
+				</td>
+
+				<td class="l_th01" width="100"><span class="l_sort01">출제자</span>
+				</td>
+				<td class="l_th01" width="80"><span class="l_sort01">상태</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">생성날짜</span></td>
+				<td class="l_th01" width="80"><span class="l_sort01" id="CL_a.question_type">수정날짜</span></td>
+
+			</tr>
+		</thead>
+		<tbody id="questionListLang">
+			<tr class="l_tr_even" align="center">
+				<td class="l_td01" colspan="9">
+					<span>아직 시험에 문제가 등록되지 않았습니다.</span>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+</section>
+
+</html>
