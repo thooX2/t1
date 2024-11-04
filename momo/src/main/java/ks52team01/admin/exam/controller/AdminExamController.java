@@ -25,6 +25,7 @@ import ks52team01.admin.exam.dto.AdminExamMappingQuestion;
 import ks52team01.admin.exam.service.AdminExamService;
 import ks52team01.common.files.dto.QnaImg;
 import ks52team01.common.files.service.FileService;
+import ks52team01.common.files.util.FilesUtils;
 import ks52team01.common.mapper.CommonMapper;
 import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,26 @@ public class AdminExamController {
 	private final AdminExamService adminExamService;
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
+	private final FilesUtils filesUtils;
+
+	// 이미지 업로드
+	@PostMapping("/upload/image")
+	@ResponseBody
+	public String uploadImage(@RequestParam("file") MultipartFile file) {
+		QnaImg uploadedFile = filesUtils.uploadFile(file);
+		if (uploadedFile != null) {
+			return uploadedFile.getQnaImgPath(); // 저장된 이미지의 경로 반환
+		}
+		return null; // 업로드 실패 시 null 반환
+	}
+
+	// 이미지 삭제
+	@PostMapping("/delete/summerNoteImage")
+	@ResponseBody
+	public String deleteImage(@RequestParam("filePath") String filePath) {
+		boolean isDeleted = filesUtils.deleteFileByPath("/home/teamproject"+filePath);
+		return isDeleted ? "삭제 성공" : "삭제 실패";
+	}
 
 	@GetMapping("/{examCode}/questions")
 	@ResponseBody
