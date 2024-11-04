@@ -141,6 +141,7 @@
 			<col width="60" />
 			<col width="120" />
 			<col width="90" />
+			<col width="50" />
 			<col width="90" />
 
 		</colgroup>
@@ -162,7 +163,9 @@
 				</td>
 				<td class="l_th01"><span class="l_sort01">시험 날짜</span>
 				</td>
-				<td class="l_th01"><span class="l_sort01">시험 문제<br> 등록/수정</span>
+				<td class="l_th01"><span class="l_sort01">문제<br>등록</span>
+				</td>
+				<td class="l_th01"><span class="l_sort01">시험 문제<br>등록 시간</span>
 				</td>
 			</tr>
 		</thead>
@@ -183,7 +186,8 @@
 					<span class="label blue" th:text="${eil.userId}"></span><span th:text="${eil.userNm}"></span>
 				</td>
 				<td class="l_td01" th:text="${eil.examDate}"></td>
-				<td class="l_td01"></td>
+				<td class="l_td01" th:text="${(eil.examMappingQuestionRegTime !=null)?'O':'X'}"></td>
+				<td class="l_td01" th:text="${#dates.format(eil.examMappingQuestionRegTime, 'yy.MM.dd')}"></td>
 			</tr>
 			<tr class="l_tr_even" align="center" th:unless="${examInfoList !=null}">
 				<td class="l_td01" colspan="11">시험정보가 없습니다</td>

@@ -88,64 +88,107 @@
 		<result column="exam_inst" property="examInst" />
 		<result column="user_name" property="userNm" />
 		<result column="user_id" property="userId" />
+		<result column="exam_mapping_question_reg_time" property="examMappingQuestionRegTime" />
 	</resultMap>
+	
+	<delete id="deleteQuestionFromExam" parameterType="String">
+		DELETE FROM
+			exam_mapping_question
+		WHERE
+			exam_code=#{selectedExamCode}
+	</delete>
+
+	<select id="getQuestionListByExamCode" parameterType="String" resultMap="qnaBankResultMap">
+		SELECT
+			qb.sub_mjr_cat_code,
+			qb.sub_mir_cat_code,
+			emq.exam_qna_code as qna_code
+		FROM
+			exam_mapping_question emq INNER JOIN qna_bank qb ON emq.exam_qna_code = qb.qna_code
+		WHERE
+			emq.exam_code = #{examCode}
+	</select>
+
+	<insert id="registerQuestionToExam" parameterType="AdminExamMappingQuestion">
+		<selectKey keyProperty="examMappingQuestionNumber" resultType="Int" order="BEFORE">
+			/* 해당테이블에서 pk에서 가장큰 숫자를 알아오는 코드 */
+			SELECT
+				CASE
+				WHEN COUNT(*) = 0 THEN 1
+				ELSE
+					MAX(CAST(SUBSTRING_INDEX(exam_mapping_question_code, 'emqc', -1) AS UNSIGNED))+1
+				END AS examMappingQuestionNumber
+			FROM
+				exam_mapping_question;
+		</selectKey>
+			INSERT INTO exam_mapping_question
+				(exam_mapping_question_code,
+				 user_code, exam_code, exam_qna_code,
+				 exam_mapping_question_reg_time)
+			VALUES
+			<foreach collection="totalQuestionList" item="list" index="idx" separator=",">
+				(CONCAT('emqc',(#{idx}+#{examMappingQuestionNumber})), #{userCode}, #{selectedExamCode}, #{list}, NOW())
+			</foreach>
+	</insert>
 
 	<select id="getQuestionListBySmjrcc" parameterType="String"
 		resultMap="qnaBankResultMap">
 		SELECT
-		qb.qna_code,
-		qb.user_code,
-		u.user_id,
-		u.user_name,
-		qb.sub_mjr_cat_code,
-		smjc.sub_mjr_cat_nm,
-		qb.sub_mir_cat_code,
-		smic.sub_mir_cat_nm,
-		qb.qna_type, qna_chap,
-		qb.qna_subject, qna_qst,
-		qb.qna_slt1,
-		qb.qna_slt2,
-		qb.qna_slt3,
-		qb.qna_slt4,
-		qb.qna_slt5,
-		qb.qna_ans,
-		qb.qna_scr,
-		qb.qna_cmt,
-		qb.qna_cur_exam_state,
-		qb.qna_create_time,
-		qb.qna_update_time
+			qb.qna_code,
+			qb.user_code,
+			u.user_id,
+			u.user_name,
+			qb.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mir_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.qna_type, qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
 		FROM
-		qna_bank qb LEFT JOIN sub_mjr_cat smjc
-		ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
-		LEFT JOIN sub_mir_cat smic
-		ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
-		LEFT JOIN user u
-		ON qb.user_code = u.user_code
+			qna_bank qb LEFT JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			LEFT JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			LEFT JOIN user u
+			ON qb.user_code = u.user_code
 		WHERE
-		qb.qna_cur_exam_state='Y' AND
-		qb.sub_mjr_cat_code= CONCAT('smjrcc',#{smjrcc})
+			qb.qna_cur_exam_state='Y' AND
+			qb.sub_mjr_cat_code= CONCAT('smjrcc',#{smjrcc})
 		ORDER BY
-		CAST(SUBSTRING(qb.qna_code,3) AS UNSIGNED) DESC;
+			CAST(SUBSTRING(qb.qna_code,3) AS UNSIGNED) DESC;
 	</select>
 
 
 	<select id="searchExamList" parameterType="map"
 		resultMap="AdminExamInfoMap">
 		SELECT
-		exam_code,
-		ei.user_code,
-		u.user_name,
-		u.user_id,
-		exam_nm,
-		exam_type,
-		exam_oe_type,
-		exam_tar_grd,
-		exam_description,
-		exam_date,
-		exam_inst
+			DISTINCT
+			ei.exam_code,
+			ei.user_code,
+			u.user_name,
+			u.user_id,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			ei.exam_inst,
+		   emq.exam_mapping_question_reg_time
 		FROM
-		exam_info ei INNER JOIN `user` u
-		ON ei.user_code=u.user_code
+			exam_info ei INNER JOIN `user` u ON ei.user_code=u.user_code
+			LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
 		<where>
 			u.grade_code ='ugc1'
 			<!-- examInfo 객체 필드 조건 -->
@@ -184,6 +227,8 @@
 				AND ${searchType} LIKE CONCAT('%',#{searchKeyword},'%')
 			</if>
 		</where>
+		ORDER BY
+			CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
 	</select>
 
 	<update id="modifyExamInfo"
@@ -226,64 +271,66 @@
 	<select id="getExamInfoByExamCode" parameterType="String"
 		resultMap="AdminExamInfoMap">
 		SELECT
-		ei.exam_code,
-		ei.user_code,
-		u.user_name,
-		u.user_id,
-		ei.exam_nm,
-		ei.exam_type,
-		ei.exam_oe_type,
-		ei.exam_tar_grd,
-		ei.exam_description,
-		ei.exam_date,
-		exam_inst
+			ei.exam_code,
+			ei.user_code,
+			u.user_name,
+			u.user_id,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			exam_inst
 		FROM
-		exam_info ei INNER JOIN `user` u
-		ON ei.user_code = u.user_code
+			exam_info ei INNER JOIN `user` u
+			ON ei.user_code = u.user_code
 		WHERE
-		u.grade_code ='ugc1' AND
-		ei.exam_code = #{examCode}
+			u.grade_code ='ugc1' AND
+			ei.exam_code = #{examCode}
 		Order by
-		CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
+			CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
 	</select>
 
 	<select id="getExamInfoList" resultMap="AdminExamInfoMap">
 		SELECT
-		ei.exam_code,
-		ei.user_code,
-		u.user_name,
-		u.user_id,
-		ei.exam_nm,
-		ei.exam_type,
-		ei.exam_oe_type,
-		ei.exam_tar_grd,
-		ei.exam_description,
-		ei.exam_date,
-		exam_inst
+			DISTINCT
+			ei.exam_code,
+			ei.user_code,
+			u.user_name,
+			u.user_id,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			exam_inst,
+			emq.exam_mapping_question_reg_time
 		FROM
-		exam_info ei INNER JOIN `user` u
-		ON ei.user_code = u.user_code
+			exam_info ei INNER JOIN `user` u ON ei.user_code = u.user_code
+			LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
 		WHERE
-		u.grade_code ='ugc1'
-		Order by
-		CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
+			u.grade_code ='ugc1'
+		ORDER BY
+			CAST(SUBSTRING(ei.exam_code,3) AS UNSIGNED) DESC;
 	</select>
 
 	<insert id="addExamInfo" parameterType="AdminExamInfo">
 		INSERT INTO exam_info
-		(exam_code, user_code, exam_nm, exam_type, exam_oe_type, exam_tar_grd,
-		exam_description, exam_date, exam_inst)
+			(exam_code, user_code, exam_nm, exam_type, exam_oe_type, exam_tar_grd,
+			exam_description, exam_date, exam_inst)
 		VALUES
-		(#{examCode}, #{userCode}, #{examNm}, #{examType}, #{examOeType}, #{examTarGrd},
-		#{examDescription}, #{examDate}, #{examInst});
+			(#{examCode}, #{userCode}, #{examNm}, #{examType}, #{examOeType}, #{examTarGrd},
+			#{examDescription}, #{examDate}, #{examInst});
 	</insert>
 
 	<update id="modifyQustionState" parameterType="Map">
 		UPDATE qna_bank
 		SET
-		qna_cur_exam_state=#{qnaState}
+			qna_cur_exam_state=#{qnaState}
 		WHERE
-		qna_code IN
+			qna_code IN
 		<foreach collection="qnaCode" item="code" open="("
 			separator="," close=")">
 			#{code}
@@ -293,98 +340,98 @@
 	<update id="modifyQuestionProc" parameterType="AdminQnaBank">
 		UPDATE qna_bank
 		SET
-		user_code = #{userCode},
-		sub_mjr_cat_code = #{subMjrCatCode},
-		sub_mir_cat_code = #{subMirCatCode},
-		qna_type = #{qnaType},
-		qna_chap = #{qnaChap},
-		qna_subject = #{qnaSubject},
-		qna_qst = #{qnaQst},
-		qna_slt1 = #{qnaSlt1},
-		qna_slt2 = #{qnaSlt2},
-		qna_slt3 = #{qnaSlt3},
-		qna_slt4 = #{qnaSlt4},
-		qna_slt5 = #{qnaSlt5},
-		qna_ans = #{qnaAns},
-		qna_scr = #{qnaScr},
-		qna_cmt = #{qnaCmt},
-		qna_cur_exam_state = #{qnaCurExamState},
-		qna_create_time = #{qnaCreateTime},
-		qna_update_time = NOW()
+			user_code = #{userCode},
+			sub_mjr_cat_code = #{subMjrCatCode},
+			sub_mir_cat_code = #{subMirCatCode},
+			qna_type = #{qnaType},
+			qna_chap = #{qnaChap},
+			qna_subject = #{qnaSubject},
+			qna_qst = #{qnaQst},
+			qna_slt1 = #{qnaSlt1},
+			qna_slt2 = #{qnaSlt2},
+			qna_slt3 = #{qnaSlt3},
+			qna_slt4 = #{qnaSlt4},
+			qna_slt5 = #{qnaSlt5},
+			qna_ans = #{qnaAns},
+			qna_scr = #{qnaScr},
+			qna_cmt = #{qnaCmt},
+			qna_cur_exam_state = #{qnaCurExamState},
+			qna_create_time = #{qnaCreateTime},
+			qna_update_time = NOW()
 		WHERE qna_code = #{qnaCode}
 	</update>
 
 	<select id="getQuestionInfo" parameterType="String"
 		resultMap="qnaBankResultMap">
 		SELECT
-		qb.qna_code,
-		qb.user_code,
-		smjc.sub_mjr_cat_nm,
-		qb.sub_mjr_cat_code,
-		smic.sub_mir_cat_nm,
-		qb.sub_mir_cat_code,
-		eqt.exam_qna_type_nm,
-		qb.qna_type,
-		eqc.exam_qna_chap_nm,
-		qb.qna_chap,
-		qb.qna_subject, qna_qst,
-		qb.qna_slt1,
-		qb.qna_slt2,
-		qb.qna_slt3,
-		qb.qna_slt4,
-		qb.qna_slt5,
-		qb.qna_ans,
-		qb.qna_scr,
-		qb.qna_cmt,
-		qb.qna_cur_exam_state,
-		qb.qna_create_time,
-		qb.qna_update_time
+			qb.qna_code,
+			qb.user_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mjr_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.sub_mir_cat_code,
+			eqt.exam_qna_type_nm,
+			qb.qna_type,
+			eqc.exam_qna_chap_nm,
+			qb.qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
 		FROM
-		qna_bank qb INNER JOIN sub_mjr_cat smjc
-		ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
-		INNER JOIN sub_mir_cat smic
-		ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
-		INNER JOIN exam_qna_chap eqc
-		ON qb.qna_chap = eqc.exam_qna_chap_code
-		INNER JOIN exam_qna_type eqt
-		ON qb.qna_type = eqt.exam_qna_type_code
+			qna_bank qb INNER JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			INNER JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			INNER JOIN exam_qna_chap eqc
+			ON qb.qna_chap = eqc.exam_qna_chap_code
+			INNER JOIN exam_qna_type eqt
+			ON qb.qna_type = eqt.exam_qna_type_code
 		WHERE
-		qna_code=#{qnaCode}
+			qna_code=#{qnaCode}
 	</select>
 
 
 	<select id="searchQuestionList" parameterType="AdminQnaBank"
 		resultMap="qnaBankResultMap">
 		SELECT
-		qb.qna_code,
-		qb.user_code,
-		u.user_id,
-		u.user_name,
-		qb.sub_mjr_cat_code,
-		smjc.sub_mjr_cat_nm,
-		qb.sub_mir_cat_code,
-		smic.sub_mir_cat_nm,
-		qb.qna_type,
-		qna_chap,
-		qb.qna_subject,
-		qb.qna_qst,
-		qb.qna_slt1,
-		qb.qna_slt2,
-		qb.qna_slt3,
-		qb.qna_slt4,
-		qb.qna_slt5,
-		qb.qna_ans,
-		qb.qna_scr,
-		qb.qna_cmt,
-		qb.qna_cur_exam_state,
-		qb.qna_create_time,
-		qb.qna_update_time
+			qb.qna_code,
+			qb.user_code,
+			u.user_id,
+			u.user_name,
+			qb.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mir_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.qna_type,
+			qna_chap,
+			qb.qna_subject,
+			qb.qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
 		FROM
-		qna_bank qb
-		LEFT JOIN sub_mjr_cat smjc ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
-		LEFT JOIN sub_mir_cat smic ON qb.sub_mir_cat_code =
-		smic.sub_mir_cat_code
-		LEFT JOIN user u ON qb.user_code = u.user_code
+			qna_bank qb
+			LEFT JOIN sub_mjr_cat smjc ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			LEFT JOIN sub_mir_cat smic ON qb.sub_mir_cat_code =
+			smic.sub_mir_cat_code
+			LEFT JOIN user u ON qb.user_code = u.user_code
 		<where>
 			<!-- searchType이 있고 searchKeyword가 있을 경우 -->
 			<if
@@ -430,123 +477,123 @@
 
 	<select id="getQuestionListAll" resultMap="qnaBankResultMap">
 		SELECT
-		qb.qna_code,
-		qb.user_code,
-		u.user_id,
-		u.user_name,
-		qb.sub_mjr_cat_code,
-		smjc.sub_mjr_cat_nm,
-		qb.sub_mir_cat_code,
-		smic.sub_mir_cat_nm,
-		qb.qna_type, qna_chap,
-		qb.qna_subject, qna_qst,
-		qb.qna_slt1,
-		qb.qna_slt2,
-		qb.qna_slt3,
-		qb.qna_slt4,
-		qb.qna_slt5,
-		qb.qna_ans,
-		qb.qna_scr,
-		qb.qna_cmt,
-		qb.qna_cur_exam_state,
-		qb.qna_create_time,
-		qb.qna_update_time
-		FROM
-		qna_bank qb LEFT JOIN sub_mjr_cat smjc
-		ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
-		LEFT JOIN sub_mir_cat smic
-		ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
-		LEFT JOIN user u
-		ON qb.user_code = u.user_code
+			qb.qna_code,
+			qb.user_code,
+			u.user_id,
+			u.user_name,
+			qb.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			qb.sub_mir_cat_code,
+			smic.sub_mir_cat_nm,
+			qb.qna_type, qna_chap,
+			qb.qna_subject, qna_qst,
+			qb.qna_slt1,
+			qb.qna_slt2,
+			qb.qna_slt3,
+			qb.qna_slt4,
+			qb.qna_slt5,
+			qb.qna_ans,
+			qb.qna_scr,
+			qb.qna_cmt,
+			qb.qna_cur_exam_state,
+			qb.qna_create_time,
+			qb.qna_update_time
+			FROM
+			qna_bank qb LEFT JOIN sub_mjr_cat smjc
+			ON qb.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			LEFT JOIN sub_mir_cat smic
+			ON qb.sub_mir_cat_code = smic.sub_mir_cat_code
+			LEFT JOIN user u
+			ON qb.user_code = u.user_code
 		ORDER BY
-		CAST(SUBSTRING(qb.qna_code,3) AS
-		UNSIGNED) DESC;
+			CAST(SUBSTRING(qb.qna_code,3) AS
+			UNSIGNED) DESC;
 	</select>
 
 
 
 	<select id="addExamQuestion" parameterType="AdminQnaBank">
 		INSERT INTO qna_bank
-		(qna_code, user_code, sub_mjr_cat_code, sub_mir_cat_code, qna_type,
-		qna_chap, qna_subject, qna_qst,
-		qna_slt1, qna_slt2, qna_slt3, qna_slt4, qna_slt5, qna_ans, qna_scr, qna_cmt,
-		qna_cur_exam_state, qna_create_time, qna_update_time)
+			(qna_code, user_code, sub_mjr_cat_code, sub_mir_cat_code, qna_type,
+			qna_chap, qna_subject, qna_qst,
+			qna_slt1, qna_slt2, qna_slt3, qna_slt4, qna_slt5, qna_ans, qna_scr, qna_cmt,
+			qna_cur_exam_state, qna_create_time, qna_update_time)
 		VALUES
-		(#{qnaCode}, #{userCode}, #{subMjrCatCode}, #{subMirCatCode},
-		#{qnaType}, #{qnaChap}, #{qnaSubject}, #{qnaQst},
-		#{qnaSlt1}, #{qnaSlt2}, #{qnaSlt3}, #{qnaSlt4}, #{qnaSlt5}, #{qnaAns}, #{qnaScr},
-		#{qnaCmt}, 'Y', NOW(), NULL);
+			(#{qnaCode}, #{userCode}, #{subMjrCatCode}, #{subMirCatCode},
+			#{qnaType}, #{qnaChap}, #{qnaSubject}, #{qnaQst},
+			#{qnaSlt1}, #{qnaSlt2}, #{qnaSlt3}, #{qnaSlt4}, #{qnaSlt5}, #{qnaAns}, #{qnaScr},
+			#{qnaCmt}, 'Y', NOW(), NULL);
 	</select>
 
 
 	<select id="getQnaChapList" resultType="AdminExamQnaChap">
 		SELECT
-		eqc.exam_qna_chap_code as examQnaChapCode,
-		eqc.user_code as userCode,
-		eqc.sub_mjr_cat_code as subMjrCatCode,
-		smjc.sub_mjr_cat_nm AS subMjrCatNm,
-		eqc.sub_mir_cat_code as subMirCatCode,
-		smic.sub_mir_cat_nm AS subMirCatNm,
-		eqc.exam_qna_chap_nm as examQnaChapNm
+			eqc.exam_qna_chap_code as examQnaChapCode,
+			eqc.user_code as userCode,
+			eqc.sub_mjr_cat_code as subMjrCatCode,
+			smjc.sub_mjr_cat_nm AS subMjrCatNm,
+			eqc.sub_mir_cat_code as subMirCatCode,
+			smic.sub_mir_cat_nm AS subMirCatNm,
+			eqc.exam_qna_chap_nm as examQnaChapNm
 		FROM
-		exam_qna_chap eqc INNER JOIN sub_mir_cat smic
-		ON eqc.sub_mir_cat_code= smic.sub_mir_cat_code
-		INNER JOIN sub_mjr_cat smjc
-		ON eqc.sub_mjr_cat_code= smjc.sub_mjr_cat_code
+			exam_qna_chap eqc INNER JOIN sub_mir_cat smic
+			ON eqc.sub_mir_cat_code= smic.sub_mir_cat_code
+			INNER JOIN sub_mjr_cat smjc
+			ON eqc.sub_mjr_cat_code= smjc.sub_mjr_cat_code
 		ORDER BY
-		CAST(SUBSTRING(exam_qna_chap_code,5) AS UNSIGNED);
+			CAST(SUBSTRING(exam_qna_chap_code,5) AS UNSIGNED);
 	</select>
 
 
 	<select id="getQnaTypeList" resultType="AdminExamQnaType">
 		SELECT
-		exam_qna_type_code as examQnaTypeCode,
-		sub_mjr_cat_code as subMjrCatCode,
-		sub_mir_cat_code as subMirCatCode,
-		user_code as userCode,
-		exam_qna_type_nm as examQnaTypeNm,
-		exam_qna_type_create_date as examQnaTypeCreateDate
+			exam_qna_type_code as examQnaTypeCode,
+			sub_mjr_cat_code as subMjrCatCode,
+			sub_mir_cat_code as subMirCatCode,
+			user_code as userCode,
+			exam_qna_type_nm as examQnaTypeNm,
+			exam_qna_type_create_date as examQnaTypeCreateDate
 		FROM
-		exam_qna_type
+			exam_qna_type
 		ORDER BY
-		CAST(SUBSTRING(exam_qna_type_code,5) AS UNSIGNED)
+			CAST(SUBSTRING(exam_qna_type_code,5) AS UNSIGNED)
 	</select>
 
 	<select id="getAdminExamCategoryList" resultMap="SubMirCateMap">
 		SELECT
-		smic.sub_mir_cat_code,
-		smjc.sub_mjr_cat_code,
-		smjc.sub_mjr_cat_nm,
-		smic.sub_mir_cat_nm,
-		smic.comm_slt,
-		smjc.cur_exam_user_state,
-		smic.cur_exam_user_state as subMirState
+			smic.sub_mir_cat_code,
+			smjc.sub_mjr_cat_code,
+			smjc.sub_mjr_cat_nm,
+			smic.sub_mir_cat_nm,
+			smic.comm_slt,
+			smjc.cur_exam_user_state,
+			smic.cur_exam_user_state as subMirState
 		FROM
-		sub_mir_cat smic RIGHT JOIN sub_mjr_cat smjc
-		ON smic.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+			sub_mir_cat smic RIGHT JOIN sub_mjr_cat smjc
+			ON smic.sub_mjr_cat_code = smjc.sub_mjr_cat_code
 		ORDER BY
-		CAST(SUBSTRING(smjc.sub_mjr_cat_code,7) AS UNSIGNED);
+			CAST(SUBSTRING(smjc.sub_mjr_cat_code,7) AS UNSIGNED);
 	</select>
 	<select id="getUserListByGrade" parameterType="String"
 		resultMap="userResultMap">
 		SELECT
-		user_code,
-		user_id,
-		grade_code,
-		area_city_code,
-		user_pw,
-		user_email,
-		user_address,
-		user_detail_address,
-		user_phone,
-		user_name,
-		user_birth_date,
-		user_gender,
-		user_sign_date,
-		user_update_date,
-		user_delete_date,
-		user_dormant_status,
-		user_delete_status
+			user_code,
+			user_id,
+			grade_code,
+			area_city_code,
+			user_pw,
+			user_email,
+			user_address,
+			user_detail_address,
+			user_phone,
+			user_name,
+			user_birth_date,
+			user_gender,
+			user_sign_date,
+			user_update_date,
+			user_delete_date,
+			user_dormant_status,
+			user_delete_status
 		FROM
 		`user`
 		<where>
@@ -555,8 +602,4 @@
 			</if>
 		</where>
 	</select>
-
-
-
-
 </mapper>

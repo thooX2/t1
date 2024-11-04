@@ -251,8 +251,14 @@
 
 					request.done(function (data) {
 						const searchList = data;
-						if (data)
+						if (data) {
+							const selectedExamName = $('input[name = "selectExam"]:checked').parent().next().next().find('a').text()
+
+							alert(`< ${selectedExamName} >에 문제가 등록되었습니다`)
 							location.href = "/admin/exam/managementList";
+						} else {
+							alert('문제가 등록되지 않았습니다')
+						}
 					});
 
 					request.fail(function (jqXHR, textStatus, error) {
@@ -398,6 +404,12 @@
 				$('#examListTbody').empty();
 				if (searchList.length > 0) {
 					$(searchList).each(function (idx, item) {
+						// 날짜 포맷 적용
+
+						formattedCreateTime = formatDate(item.examMappingQuestionRegTime);
+
+						const checkRegisteredQuestion = (item.examMappingQuestionRegTime != null) ? 'O' : 'X';
+
 						const newRow = `<tr class="l_tr_even" align="center">
 										  <td class="l_td01"><input type="radio" name="selectExam"
 													 value="${item.examCode}" /> </td>
@@ -414,6 +426,8 @@
 						                      <span>${item.userNm}</span>
 						                  </td>
 						                  <td class="l_td01">${item.examDate}</td>
+						                  <td class="l_td01">${checkRegisteredQuestion}</td>
+						                  <td class="l_td01">${formattedCreateTime}</td>
 						              </tr>`;
 						$('#examListTbody').append(newRow);
 					});
@@ -432,38 +446,90 @@
 			});
 		})
 
-		// 시험을 선택하면 바로 마지막페이지에 시험테이블을 그림
-
-
+		// 시험선택에서 radiobutton을 누르면 해당 시험에 등록되어있는 문제를 미리 선택지에 넣어놓는 부분
 		$(document).on('click', 'input[name="selectExam"]', function () {
+			// 내용을 추가하기전 초기화작업
+			questionAllList['국어'] = [];
+			questionAllList['수학'] = [];
+			questionAllList['영어'] = [];
+			questionAllList['한국사'] = [];
+			questionAllList['탐구'] = [];
+			questionAllList['제 2외국어/한문'] = [];
+			$('.tag-container').empty()
 
-			/*	const selectedExamCode = $('input[name = "selectExam"]').prop('value');
-	
-				$('#selectedExam').empty(); // Clear previous selections
-				examInfoList.forEach((element) => {
-					if (element['examCode'] == selectedExamCode) {
-						const newExamInfo = `
-							<tr class="l_tr_even" align="center">
-								<td class="l_td01">${element.examCode}</td>
-								<td class="l_td01" title="종합시험" align="left">${element.examNm}</td>
-								<td class="l_td01">${element.examTarGrd + '학년'}</td>
-								<td class="l_td01">${element.examType}</td>
-								<td class="l_td01">${element.examInst}</td>
-								<td class="l_td01">${element.examOeType}</td>
-								<td class="l_td01" align="center">
-									<span class="label blue">${element.userId}</span>
-									<span>${element.userNm}</span>
-								</td>
-								<td class="l_td01">${element.examDate}</td>
-							</tr>
-						`;
-						$('#selectedExam').append(newExamInfo);
-					}
-				});*/
-		});
+			const examCode = $(this).val();
 
+			const request = $.ajax({
+				url: `/admin/exam/${examCode}/questions`,
+				method: 'get',
+				dataType: 'json'
+			});
+			request.done(function (data) {
+				console.log(data);
+				if (data) {
 
+					data.forEach(element => {
 
+						switch (element['subMjrCatCode']) {
+							case 'smjrcc1':
+								questionAllList['국어'].push(element['qnaCode'])
+								break;
+							case 'smjrcc2':
+								questionAllList['수학'].push(element['qnaCode'])
+								break;
+							case 'smjrcc3':
+								questionAllList['영어'].push(element['qnaCode'])
+								break;
+							case 'smjrcc4':
+								questionAllList['한국사'].push(element['qnaCode'])
+								break;
+							case 'smjrcc5':
+								questionAllList['탐구'].push(element['qnaCode'])
+								break;
+							case 'smjrcc6':
+								questionAllList['탐구'].push(element['qnaCode'])
+								break;
+							case 'smjrcc7':
+								questionAllList['탐구'].push(element['qnaCode'])
+								break;
+							case 'smjrcc8':
+								questionAllList['제 2외국어/한문'].push(element['qnaCode'])
+								break;
+						}
+					})
+					$('.tag-container').each((idx, element) => {
+						const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
+						console.log(sectionId);
+						let questionId = questionAllList[sectionId];
+						let backupQuestionId = questionAllList[sectionId];
+						$(element).prev().find('span').eq(1).text(questionId.length);
+
+						questionId.forEach((elem) => {
+							const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`);
+							// 개별 태그 삭제 기능
+							$tag.find('.remove-tag').on('click', function () {
+								$(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`).children().eq(1).text()
+								const textToRemove = $(this).parent().contents().last().text().trim(); // 태그 텍스트 가져오기
+
+								let newArray = questionId.filter(item => item !== textToRemove);
+								questionAllList[sectionId] = newArray;
+
+								$(this).parent().remove();
+
+								questionId = questionAllList[sectionId];
+								$(element).prev().find('span').eq(1).text(questionAllList[sectionId].length);
+							});
+							$(element).append($tag);
+						});
+
+					});
+
+				}
+			});
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
+		})
 
 		$('#searchReset').click(function () {
 			$('input[name="examTarGrd"]').val("");
@@ -571,7 +637,7 @@
 					        </td>
 					        <td class="l_td01">${questionState}</td>
 					        <td class="l_td01">${new Date(item.qnaCreateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
-					        <td class="l_td01">${new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
+					        <td class="l_td01">${item.qnaUpdateTime !== null ? new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'}) : ''}</td>
 					    </tr>
 					    `;
 						currentTbody.append(newRow);  // 새로운 행을 테이블에 추가
@@ -652,38 +718,48 @@
 
 		});
 
-		$('.tag-container').each((idx, element) => {
-			const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
+		$(function () {
+			$('.tag-container').each((idx, element) => {
+				const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
+				console.log(sectionId);
+				let questionId = questionAllList[sectionId];
+				let backupQuestionId = questionAllList[sectionId];
+				$(element).prev().find('span').eq(1).text(questionId.length);
 
-			let questionId = questionAllList[sectionId];
-			$(element).prev().find('span').eq(1).text(questionId.length);
+				questionId.forEach((elem) => {
 
-			questionId.forEach((elem) => {
+					const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`);
+					// 개별 태그 삭제 기능
+					$tag.find('.remove-tag').on('click', function () {
+						$(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`).children().eq(1).text()
+						const textToRemove = $(this).parent().contents().last().text().trim(); // 태그 텍스트 가져오기
 
-				const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`);
-				// 개별 태그 삭제 기능
-				$tag.find('.remove-tag').on('click', function () {
-					$(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`).children().eq(1).text()
-					const textToRemove = $(this).parent().contents().last().text().trim(); // 태그 텍스트 가져오기
+						let newArray = questionId.filter(item => item !== textToRemove);
+						questionAllList[sectionId] = newArray;
 
-					let newArray = questionAllList[sectionId].filter(item => item !== textToRemove);
-					questionAllList[sectionId] = newArray;
+						$(this).parent().remove();
 
-
-					$(this).parent().remove();
-
-					// 길이 텍스트 업데이트 
-					const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
-
-					let questionId = questionAllList[sectionId];
-					$(element).prev().find('span').eq(1).text(questionId.length);
+						questionId = questionAllList[sectionId];
+						$(element).prev().find('span').eq(1).text(questionAllList[sectionId].length);
 
 
+					});
+					$(element).append($tag);
 				});
-				$tagContainer.append($tag);
-			});
 
+			});
+		})
+
+		$(document).on('click', '.tag', function (event) {
+			// 클릭한 요소가 '.remove-tag'가 아니라면 효과를 적용
+			if (!$(event.target).closest('.remove-tag').length) {
+				// 여기에 특정 효과를 적용하는 코드를 작성
+				const lastChild = $(this)[0].lastChild.nodeValue
+				window.open(`/admin/exam/questionPopup?qnaCode=${lastChild}`, '문제미리보기', 'width=600,height=830,scrollbars=yes');
+			}
 		});
+
+
 
 		$('button[name="addQuestion"]').click(function () {
 
@@ -700,6 +776,17 @@
 
 					// 길이 업데이트
 					currentSection.find('div').last().prev().find('span').eq(1).text(questionAllList[sectionId].length);
+
+					const limitCount = currentSection.find('div').last().prev().find('span').eq(2).text().substring(3);
+
+					console.log(limitCount == "");
+					if (limitCount != null && limitCount != "") {
+						if (questionAllList[sectionId].length > limitCount) {
+							currentSection.find('div').last().prev().find('span').eq(1).css('color', 'red');
+						}
+					}
+
+
 
 					const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${tagText}</span>`);
 
@@ -837,7 +924,6 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

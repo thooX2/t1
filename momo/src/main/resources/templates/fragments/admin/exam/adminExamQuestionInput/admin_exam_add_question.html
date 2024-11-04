@@ -148,13 +148,13 @@
 
 				<td class="l_td01" th:text="${#dates.format(ql.qnaCreateTime, 'yy.MM.dd')}">
 				</td>
-				<td class="l_td01" th:text="${#dates.format(ql.qnaUpdateTime, 'yy.MM.dd')}">
+				<td class="l_td01" th:text="${(ql.qnaUpdateTime !=null)?#dates.format(ql.qnaUpdateTime, 'yy.MM.dd'):''}">
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<div style="margin: 20px 0 10px;">
-		<span th:text="${subjectName}"></span> : ( <span>0</span> <span th:if="${maxQuestion !='00'}"
+		<span th:text="${subjectName}"></span> : ( <span >0</span> <span th:if="${maxQuestion !='00'}"
 			th:text="${' / '+maxQuestion}">45</span> )
 		<button type="button" name="clear-tags" class="btn_simp" style="margin-left:5px">
 			모든 문제 지우기
@@ -163,7 +163,7 @@
 	<div th:id="${subjectName+'QuestionContainer'}" class="tag-container" style="margin-bottom:10px;">
 		<!-- 선택된 검색어들이 이곳에 태그처럼 추가됩니다. -->
 	</div>
-
+	<p class="cate01">※ 등록한 문제 미리보기를 위해서 문제코드를 클릭해보세요</p>
 
 </section>
 
