@@ -13,6 +13,7 @@ import ks52team01.admin.exam.dto.AdminExamQnaType;
 import ks52team01.admin.exam.dto.AdminQnaBank;
 import ks52team01.admin.exam.dto.AdminSubMirCate;
 import ks52team01.admin.exam.dto.AdminSubMjrCate;
+import ks52team01.admin.exam.dto.AdminExamMappingQuestion;
 import ks52team01.admin.exam.mapper.AdminExamMapper;
 import ks52team01.common.mapper.CommonMapper;
 import ks52team01.student.user.dto.User;
@@ -27,6 +28,24 @@ public class AdminExamServiceImpl implements AdminExamService {
 
 	private final AdminExamMapper adminExamMapper;
 	private final CommonMapper commonMapper;
+
+	@Override
+	public int deleteQuestionFromExam(String selectedExamCode) {
+
+		return adminExamMapper.deleteQuestionFromExam(selectedExamCode);
+	}
+
+	@Override
+	public List<AdminQnaBank> getQuestionListByExamCode(String examCode) {
+
+		return adminExamMapper.getQuestionListByExamCode(examCode);
+	}
+
+	@Override
+	public int registerQuestionToExam(AdminExamMappingQuestion examMappingQuestion) {
+
+		return adminExamMapper.registerQuestionToExam(examMappingQuestion);
+	}
 
 	@Override
 	public List<AdminQnaBank> getQuestionListBySmjrcc(String smjrcc) {
@@ -108,7 +127,32 @@ public class AdminExamServiceImpl implements AdminExamService {
 	}
 
 	@Override
-	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank) {
+	public List<AdminQnaBank> searchQuestionList(AdminQnaBank qnaBank, String subjectName) {
+
+		if (subjectName != null) {
+			String SubMjrCatCode = "";
+			switch (subjectName) {
+			case "국어":
+				SubMjrCatCode = "smjrcc1";
+				break;
+			case "수학":
+				SubMjrCatCode = "smjrcc2";
+				break;
+			case "영어":
+				SubMjrCatCode = "smjrcc3";
+				break;
+			case "한국사":
+				SubMjrCatCode = "smjrcc4";
+				break;
+			case "탐구":
+				SubMjrCatCode = "smjrcc5,smjrcc6,smjrcc7";
+				break;
+			case "제 2외국어/한문":
+				SubMjrCatCode = "smjrcc8";
+				break;
+			}
+			qnaBank.setSubMjrCatCode(SubMjrCatCode);
+		}
 
 		return adminExamMapper.searchQuestionList(qnaBank);
 	}

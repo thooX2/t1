@@ -10,6 +10,7 @@ import ks52team01.admin.exam.dto.AdminExamQnaChap;
 import ks52team01.admin.exam.dto.AdminExamQnaType;
 import ks52team01.admin.exam.dto.AdminQnaBank;
 import ks52team01.admin.exam.dto.AdminSubMirCate;
+import ks52team01.admin.exam.dto.AdminExamMappingQuestion;
 import ks52team01.student.user.dto.User;
 
 @Mapper
@@ -46,5 +47,11 @@ public interface AdminExamMapper {
 	List<AdminExamInfo> searchExamList(Map<String, Object> paramMap);
 
 	List<AdminQnaBank> getQuestionListBySmjrcc(String smjrcc);
+
+	int registerQuestionToExam(AdminExamMappingQuestion examMappingQuestion);
+
+	List<AdminQnaBank> getQuestionListByExamCode(String examCode);
+
+	int deleteQuestionFromExam(String selectedExamCode);
 
 }

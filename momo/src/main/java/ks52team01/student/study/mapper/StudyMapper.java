@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import ks52team01.student.study.dto.DetailedSchedule;
+import ks52team01.student.study.dto.LearningScheduleDto;
 import ks52team01.student.study.dto.ProblemScrape;
 import ks52team01.student.study.dto.ProblemSolving;
 import ks52team01.student.study.dto.StudySchedule;
@@ -84,4 +85,6 @@ public interface StudyMapper {
 	List<ProblemScrape> getProblemScrape();
 	
 	List<ProblemSolving> getProblemSolving();
+
+	List<LearningScheduleDto> getLearningSchedules();
 }

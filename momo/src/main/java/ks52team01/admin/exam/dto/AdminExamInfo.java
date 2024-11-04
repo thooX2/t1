@@ -19,5 +19,7 @@ public class AdminExamInfo {
 	private String examInst; // 모의고사출제기관
 	private String userNm; // 회원이름
 	private String userId; // 회원아이디
+	
+	private Timestamp examMappingQuestionRegTime; // 문제등록페이지에서 날짜확인용
 
 }
