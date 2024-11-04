@@ -2,9 +2,11 @@ package ks52team01.student.study.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ks52team01.student.study.dto.DetailedSchedule;
+import ks52team01.student.study.dto.LearningScheduleDto;
 import ks52team01.student.study.dto.ProblemScrape;
 import ks52team01.student.study.dto.ProblemSolving;
 import ks52team01.student.study.dto.StudySchedule;
@@ -16,6 +18,7 @@ import ks52team01.student.study.mapper.StudyMapper;
 @Service
 public class StudyServiceImpl implements StudyService {
 	
+	@Autowired
 	private final StudyMapper studyMapper;
 	
 	public StudyServiceImpl(StudyMapper studyMapper) {
@@ -56,6 +59,11 @@ public class StudyServiceImpl implements StudyService {
 	public List<ProblemSolving> getProblemSolving(){
 		return studyMapper.getProblemSolving();
 	}
+	
+	@Override
+    public List<LearningScheduleDto> getLearningSchedules() {
+        return studyMapper.getLearningSchedules();
+    }
 	
 
 	
