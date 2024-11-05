@@ -59,7 +59,7 @@
 				chartName.config.options.scales.y.ticks.beginAtZero = true;
 				chartName.config.options.scales.y.ticks.stepSize = 10;
 			} else if(chartType == '표준점수') {
-				chartName.config.data.datasets[3].label = '원점수';
+				chartName.config.data.datasets[3].label = '표준점수';
 				chartName.config.data.datasets[0].data = [koreanScore?.subjectStandardScoreNationAvg??0.0,
 														  mathScore?.subjectStandardScoreNationAvg??0.0,
 														  englishScore?.subjectStandardScoreNationAvg??0.0,
@@ -89,127 +89,124 @@
 														  inquiry2Score?.subjectStandardScore??0.0,
 														  secondLanguageAndChineseCharactersScore?.subjectStandardScore??0.0];
 				chartName.config.options.scales.y.min = 0;
-				chartName.config.options.scales.y.max = 100;
+				chartName.config.options.scales.y.max = 150;
 				chartName.config.options.scales.y.ticks.beginAtZero = true;
 				chartName.config.options.scales.y.ticks.stepSize = 10;
 			} else if(chartType == '백분위') {
-				config = {
-						data : {
-							dataset : [
-							 			 /* 전국평균 */
-										 [koreanScore?.subjectPercentNationAvg??0.0,
-										  mathScore?.subjectPercentNationAvg??0.0,
-										  englishScore?.subjectPercentNationAvg??0.0,
-										  koreanHistoryScore?.subjectPercentNationAvg??0.0,
-										  inquiry1Score?.subjectPercentNationAvg??0.0,
-										  inquiry2Score?.subjectPercentNationAvg??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectPercentNationAvg??0.0],
-										 /* 도평균 */
-										 [koreanScore?.subjectPercentProvinceAvg??0.0,
-										  mathScore?.subjectPercentProvinceAvg??0.0,
-										  englishScore?.subjectPercentProvinceAvg??0.0,
-										  koreanHistoryScore?.subjectPercentProvinceAvg??0.0,
-										  inquiry1Score?.subjectPercentProvinceAvg??0.0,
-										  inquiry2Score?.subjectPercentProvinceAvg??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectPercentProvinceAvg??0.0],
-										 /* 시평균 */
-										 [koreanScore?.subjectPercentMunicipalityAvg??0.0,
-										  mathScore?.subjectPercentMunicipalityAvg??0.0,
-										  englishScore?.subjectPercentMunicipalityAvg??0.0,
-										  koreanHistoryScore?.subjectPercentMunicipalityAvg??0.0,
-										  inquiry1Score?.subjectPercentMunicipalityAvg??0.0,
-										  inquiry2Score?.subjectPercentMunicipalityAvg??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectPercentMunicipalityAvg??0.0],
-										 /* 점수 */
-										 [koreanScore?.subjectPercent??0.0,
-										  mathScore?.subjectPercent??0.0,
-										  englishScore?.subjectPercent??0.0,
-										  koreanHistoryScore?.subjectPercent??0.0,
-										  inquiry1Score?.subjectPercent??0.0,
-										  inquiry2Score?.subjectPercent??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectPercent??0.0]]
-						},
-						options : {
-							scales : {
-								y : {
-									min : 0,
-									max : 100,
-									ticks : {
-										beginAtZero : true,
-										stepSize : 10
-									}
-								}
-							}
-						}
-					}
-				
+				chartName.config.data.datasets[3].label = '백분위';
+				chartName.config.data.datasets[0].data = [koreanScore?.subjectPercentNationAvg??0.0,
+														  mathScore?.subjectPercentNationAvg??0.0,
+														  englishScore?.subjectPercentNationAvg??0.0,
+														  koreanHistoryScore?.subjectPercentNationAvg??0.0,
+														  inquiry1Score?.subjectPercentNationAvg??0.0,
+														  inquiry2Score?.subjectPercentNationAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectPercentNationAvg??0.0];
+				chartName.config.data.datasets[1].data = [koreanScore?.subjectPercentProvinceAvg??0.0,
+														  mathScore?.subjectPercentProvinceAvg??0.0,
+														  englishScore?.subjectPercentProvinceAvg??0.0,
+														  koreanHistoryScore?.subjectPercentProvinceAvg??0.0,
+														  inquiry1Score?.subjectPercentProvinceAvg??0.0,
+														  inquiry2Score?.subjectPercentProvinceAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectPercentProvinceAvg??0.0];
+				chartName.config.data.datasets[2].data = [koreanScore?.subjectPercentMunicipalityAvg??0.0,
+														  mathScore?.subjectPercentMunicipalityAvg??0.0,
+														  englishScore?.subjectPercentMunicipalityAvg??0.0,
+														  koreanHistoryScore?.subjectPercentMunicipalityAvg??0.0,
+														  inquiry1Score?.subjectPercentMunicipalityAvg??0.0,
+														  inquiry2Score?.subjectPercentMunicipalityAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectPercentMunicipalityAvg??0.0];
+				chartName.config.data.datasets[3].data = [koreanScore?.subjectPercent??0.0,
+														  mathScore?.subjectPercent??0.0,
+														  englishScore?.subjectPercent??0.0,
+														  koreanHistoryScore?.subjectPercent??0.0,
+														  inquiry1Score?.subjectPercent??0.0,
+														  inquiry2Score?.subjectPercent??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectPercent??0.0];
+				chartName.config.options.scales.y.min = 0;
+				chartName.config.options.scales.y.max = 100;
+				chartName.config.options.scales.y.ticks.beginAtZero = true;
+				chartName.config.options.scales.y.ticks.stepSize = 10;
 			} else if(chartType == '등급') {
-				config = {
-						data : {
-							dataset : [
-							 			 /* 전국평균 */
-										 [koreanScore?.subjectGradeNationAvg??0.0,
-										  mathScore?.subjectGradeNationAvg??0.0,
-										  englishScore?.subjectGradeNationAvg??0.0,
-										  koreanHistoryScore?.subjectGradeNationAvg??0.0,
-										  inquiry1Score?.subjectGradeNationAvg??0.0,
-										  inquiry2Score?.subjectGradeNationAvg??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectGradeNationAvg??0.0],
-										 /* 도평균 */
-										 [koreanScore?.subjectGradeProvinceAvg??0.0,
-										  mathScore?.subjectGradeProvinceAvg??0.0,
-										  englishScore?.subjectGradeProvinceAvg??0.0,
-										  koreanHistoryScore?.subjectGradeProvinceAvg??0.0,
-										  inquiry1Score?.subjectGradeProvinceAvg??0.0,
-										  inquiry2Score?.subjectGradeProvinceAvg??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectGradeProvinceAvg??0.0],
-										 /* 시평균 */
-										 [koreanScore?.subjectGradeMunicipalityAvg??0.0,
-										  mathScore?.subjectGradeMunicipalityAvg??0.0,
-										  englishScore?.subjectGradeMunicipalityAvg??0.0,
-										  koreanHistoryScore?.subjectGradeMunicipalityAvg??0.0,
-										  inquiry1Score?.subjectGradeMunicipalityAvg??0.0,
-										  inquiry2Score?.subjectGradeMunicipalityAvg??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectGradeMunicipalityAvg??0.0],
-										 /* 점수 */
-										 [koreanScore?.subjectGrade??0.0,
-										  mathScore?.subjectGrade??0.0,
-										  englishScore?.subjectGrade??0.0,
-										  koreanHistoryScore?.subjectGrade??0.0,
-										  inquiry1Score?.subjectGrade??0.0,
-										  inquiry2Score?.subjectGrade??0.0,
-										  secondLanguageAndChineseCharactersScore?.subjectGrade??0.0]]
-						},
-						options : {
-							scales : {
-								y : {
-									min : 1,
-									max : 9,
-									ticks : {
-										beginAtZero : false,
-										stepSize : 1,
-										callback : value => (10-value)
-									}
-								}
-							},
-							plugins : {
-								tooltip : {
-									callbacks : {
-										label : function(ctx) {
-											let lbl = 10 - ctx.raw;
-											lbl = lbl ?? '응시안함'; 
-											return `${ctx.dataset.label}: ${lbl}`;
-										}
-									}
-								}
-							}
-						}
-					}
+				chartName.config.data.datasets[3].label = '등급';
+				chartName.config.data.datasets[0].data = [koreanScore?.subjectGradeNationAvg??0.0,
+														  mathScore?.subjectGradeNationAvg??0.0,
+														  englishScore?.subjectGradeNationAvg??0.0,
+														  koreanHistoryScore?.subjectGradeNationAvg??0.0,
+														  inquiry1Score?.subjectGradeNationAvg??0.0,
+														  inquiry2Score?.subjectGradeNationAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectGradeNationAvg??0.0];
+				chartName.config.data.datasets[1].data = [koreanScore?.subjectGradeProvinceAvg??0.0,
+														  mathScore?.subjectGradeProvinceAvg??0.0,
+														  englishScore?.subjectGradeProvinceAvg??0.0,
+														  koreanHistoryScore?.subjectGradeProvinceAvg??0.0,
+														  inquiry1Score?.subjectGradeProvinceAvg??0.0,
+														  inquiry2Score?.subjectGradeProvinceAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectGradeProvinceAvg??0.0];
+				chartName.config.data.datasets[2].data = [koreanScore?.subjectGradeMunicipalityAvg??0.0,
+														  mathScore?.subjectGradeMunicipalityAvg??0.0,
+														  englishScore?.subjectGradeMunicipalityAvg??0.0,
+														  koreanHistoryScore?.subjectGradeMunicipalityAvg??0.0,
+														  inquiry1Score?.subjectGradeMunicipalityAvg??0.0,
+														  inquiry2Score?.subjectGradeMunicipalityAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectGradeMunicipalityAvg??0.0];
+				chartName.config.data.datasets[3].data = [koreanScore?.subjectGrade??0.0,
+														  mathScore?.subjectGrade??0.0,
+														  englishScore?.subjectGrade??0.0,
+														  koreanHistoryScore?.subjectGrade??0.0,
+														  inquiry1Score?.subjectGrade??0.0,
+														  inquiry2Score?.subjectGrade??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectGrade??0.0];
+				chartName.config.options.scales.y.min = 1;
+				chartName.config.options.scales.y.max = 9;
+				chartName.config.options.scales.y.ticks.beginAtZero = false;
+				chartName.config.options.scales.y.ticks.stepSize = 1;
+				chartName.config.options.scales.y.ticks.callback = value => (10-value);
+				chartName.config.options.plugins.tooltip.callbacks.label = function(ctx) {
+					let lbl = 10 - ctx.raw;
+					lbl = lbl ?? '응시안함'; 
+					return `${ctx.dataset.label}: ${lbl}`;
+				}
 			} else if(chartType == '석차') {
-				
+				chartName.config.data.datasets[3].label = '석차';
+				chartName.config.data.datasets[0].data = [koreanScore?.subjectRankNationAvg??0.0,
+														  mathScore?.subjectRankNationAvg??0.0,
+														  englishScore?.subjectRankNationAvg??0.0,
+														  koreanHistoryScore?.subjectRankNationAvg??0.0,
+														  inquiry1Score?.subjectRankNationAvg??0.0,
+														  inquiry2Score?.subjectRankNationAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectRankNationAvg??0.0];
+				chartName.config.data.datasets[1].data = [koreanScore?.subjectRankProvinceAvg??0.0,
+														  mathScore?.subjectRankProvinceAvg??0.0,
+														  englishScore?.subjectRankProvinceAvg??0.0,
+														  koreanHistoryScore?.subjectRankProvinceAvg??0.0,
+														  inquiry1Score?.subjectRankProvinceAvg??0.0,
+														  inquiry2Score?.subjectRankProvinceAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectRankProvinceAvg??0.0];
+				chartName.config.data.datasets[2].data = [koreanScore?.subjectRankMunicipalityAvg??0.0,
+														  mathScore?.subjectRankMunicipalityAvg??0.0,
+														  englishScore?.subjectRankMunicipalityAvg??0.0,
+														  koreanHistoryScore?.subjectRankMunicipalityAvg??0.0,
+														  inquiry1Score?.subjectRankMunicipalityAvg??0.0,
+														  inquiry2Score?.subjectRankMunicipalityAvg??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectRankMunicipalityAvg??0.0];
+				chartName.config.data.datasets[3].data = [koreanScore?.subjectRank??0.0,
+														  mathScore?.subjectRank??0.0,
+														  englishScore?.subjectRank??0.0,
+														  koreanHistoryScore?.subjectRank??0.0,
+														  inquiry1Score?.subjectRank??0.0,
+														  inquiry2Score?.subjectRank??0.0,
+														  secondLanguageAndChineseCharactersScore?.subjectRank??0.0];
+				chartName.config.options.scales.y.min = 1;
+				chartName.config.options.scales.y.max = 200;
+				chartName.config.options.scales.y.ticks.beginAtZero = false;
+				chartName.config.options.scales.y.ticks.stepSize = 20;
+				chartName.config.options.scales.y.ticks.callback = value => (200-value);
+				chartName.config.options.plugins.tooltip.callbacks.label = function(ctx) {
+					let lbl = 200 - ctx.raw;
+					lbl = lbl ?? '응시안함';
+					return `${ctx.dataset.label}: ${lbl}`;
+				}
 			}
-			// chartName.config.data = config.data;
-			// chartName.config.options = config.options; */			
 			chartName.update();
 		};
 		
