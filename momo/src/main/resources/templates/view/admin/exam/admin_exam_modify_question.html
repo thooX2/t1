@@ -189,103 +189,70 @@
 </th:block>
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
-		$(function () {
-			const questionContent = /*[[${qnaBankInfo.qnaQst}]]*/ '';
+		$(document).ready(function () {
 			$('#summernote').summernote({
 				height: 300,  // 고정된 높이
 				minHeight: 300,  // 최소 높이 설정 (고정)
 				maxHeight: 300,  // 최대 높이 설정 (고정)
-				placeholder: '여기에 내용을 입력하세요...',  // 플레이스홀더
+				placeholder: '이미지 삽입후 삭제시 꼭 이미지 클릭후 삭제버튼을 눌러주세요',  // 플레이스홀더
 				focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
 				lang: "ko-KR",                // 한글 설정
 				callbacks: {
 					onImageUpload: function (files) {
-						// 파일 업로드 핸들러
-						var reader = new FileReader();
-						reader.onload = function (e) {
-							$('#summernote').summernote('insertImage', e.target.result);
-						};
-						reader.readAsDataURL(files[0]);
+						var data = new FormData();
+						data.append("file", files[0]); // 단일 파일만 업로드
+
+						$.ajax({
+							url: "/admin/exam/upload/image", // 이미지 업로드 API
+							type: "POST",
+							data: data,
+							contentType: false,
+							processData: false
+						}).done(function (response) {
+							// 업로드된 이미지 경로를 Summernote에 삽입
+							$('#summernote').summernote('insertImage', response);
+						}).fail(function (err) {
+							console.error("이미지 업로드 실패", err);
+						});
+					},
+					onMediaDelete: function ($target) {
+						var filePath = $target.attr('src'); // 삭제할 이미지 경로
+
+						$.ajax({
+							url: "/admin/exam/delete/summerNoteImage", // 이미지 삭제 API
+							type: "POST",
+							data: {filePath: filePath}
+						}).done(function (response) {
+							console.log(response); // 삭제 성공 메시지
+						}).fail(function (err) {
+							console.error("이미지 삭제 실패", err);
+						});
 					},
 					onChange: function (contents, $editable) {
-						console.log('Content changed:', contents);
+						// console.log('Content changed:', contents);
 					}
 				},
 				toolbar: [
 					['fontname', ['fontname']],
 					['fontsize', ['fontsize']],
 					['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-					['color', ['forecolor', 'backcolor']],  // 텍스트 색상 및 배경 색상 추가
+					['color', ['forecolor', 'backcolor']],
 					['table', ['table']],
 					['para', ['ul', 'ol', 'paragraph']],
 					['height', ['height']],
-					['insert', ['picture', 'link', 'hr']],  // 수평선 추가
-					['view', ['fullscreen', 'codeview', 'help']],  // 코드 보기 버튼 추가
-
+					['insert', ['picture', 'link', 'hr']],
+					['view', ['fullscreen', 'codeview', 'help']],
 				],
-				fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+				fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '돋움체', '바탕체'],
 				fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-				airMode: false,  // 공기 모드 활성화 여부
-				disableResize: false,  // 에디터 크기 조정 비활성화 (주석 처리)
-
+				airMode: false,
+				disableResize: false,
 			});
 
-			$('#summernote').summernote('code', questionContent); // Summernote에 초기 내용을 설정
+			var qnaQst = /*[[${qnaBankInfo.qnaQst}]]*/[];
+			$('#summernote').summernote('code', qnaQst); // Summernote에 코드 로드
 
 		});
-
-		// ====================================
-		const fileInput = document.getElementById('fileInput');
-		const fileName = document.getElementById('fileName');
-		const fileList = document.getElementById('fileList');
-
-		// 파일 선택 시
-		fileInput.addEventListener('change', function () {
-			// 선택된 파일들 가져오기
-			const files = Array.from(fileInput.files);
-
-			// 파일명을 표시
-			if (files.length > 0) {
-				fileName.textContent = files.length === 1 ? files[0].name : `${files.length}개의 파일 선택됨`;
-			} else {
-				fileName.textContent = '선택된 파일이 없습니다.';
-			}
-
-			// 기존 파일 리스트 초기화
-			fileList.innerHTML = '';
-
-			// 파일 리스트에 추가
-			files.forEach(file => {
-				const listItem = document.createElement('li');
-				const img = document.createElement('img');
-				img.src = URL.createObjectURL(file); // 이미지 미리보기
-				img.className = 'thumbnail';
-				listItem.appendChild(img);
-				listItem.appendChild(document.createTextNode(file.name));
-
-				// 제거 버튼 생성
-				const removeButton = document.createElement('button');
-				removeButton.textContent = '제거';
-				removeButton.className = 'remove-button';
-				removeButton.onclick = () => {
-					fileList.removeChild(listItem);
-					updateFileInput();
-				};
-
-				listItem.appendChild(removeButton);
-				fileList.appendChild(listItem);
-			});
-		});
-
-		function updateFileInput() {
-			const updatedFiles = Array.from(fileList.children).map(item => item.childNodes[1].textContent);
-			console.log(updatedFiles); // 선택된 파일 목록을 콘솔에 출력
-
-			// 파일 리스트가 비어 있으면 파일명 텍스트 초기화
-			if (fileList.children.length === 0) {
-				fileName.textContent = '선택된 파일이 없습니다.';
-			}
-		}
 
 		// Select2 초기화
 		$('.js-example-basic-single').select2({

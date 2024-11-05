@@ -175,6 +175,7 @@
 				// --------------------------------------------------------
 				// 현재 스텝에서 다음 스텝으로 이동할 때 (newIndex > currentIndex)
 				if (newIndex > currentIndex) {
+
 					if (currentIndex == 6) {
 						// 시험목록 작성
 						const selectedExamCode = $('input[name = "selectExam"]:checked').prop('value');
@@ -301,20 +302,20 @@
 					subjectTable = '#questionListLang'
 					break;
 			}
+			$(subjectTable).empty();
 
-			console.log(questionAllList[subjectName])
-			if (questionAllList[subjectName].length != 0)
-				$(subjectTable).empty();
+			if (questionAllList[subjectName].length != 0) {
 
-			subjectList.forEach((element) => {
-				questionAllList[subjectName].forEach((elem, idx) => {
-					if (element['qnaCode'] == elem) {
 
-						// 날짜 포맷 적용
-						const formattedCreateTime = formatDate(element.qnaCreateTime);
-						const formattedUpdateTime = formatDate(element.qnaUpdateTime);
+				subjectList.forEach((element) => {
+					questionAllList[subjectName].forEach((elem, idx) => {
+						if (element['qnaCode'] == elem) {
 
-						const newQuestionList = `
+							// 날짜 포맷 적용
+							const formattedCreateTime = formatDate(element.qnaCreateTime);
+							const formattedUpdateTime = formatDate(element.qnaUpdateTime);
+
+							const newQuestionList = `
 						<tr class="l_tr_even" align="center">
 						    <td class="l_td01">${idx + 1}</td>
 						    <td class="l_td01">${element.qnaCode}</td>
@@ -339,12 +340,24 @@
 						    <td class="l_td01">${formattedCreateTime}</td>
 						    <td class="l_td01">${formattedUpdateTime}</td>
 						</tr>`;
-						$(subjectTable).append(newQuestionList);
-						$(subjectTable).closest('table').prev().find('font[name="questionCount"]').text(questionAllList[subjectName].length);
-					}
+							$(subjectTable).append(newQuestionList);
+							$(subjectTable).closest('table').prev().find('font[name="questionCount"]').text(questionAllList[subjectName].length);
+						}
+					})
+
 				})
 
-			})
+			} else {
+				const newQuestionList = `
+									<tr class="l_tr_even" align="center">
+									    <td class="l_td01" colspan="9">아직시험에 문제가 등록되지 않았습니다</td>
+									</tr>`
+
+				$(subjectTable).append(newQuestionList)
+			}
+
+
+			// =====================================================
 		}
 		// 날짜 형식을 변환하는 함수
 		function formatDate(dateString) {
@@ -465,7 +478,6 @@
 				dataType: 'json'
 			});
 			request.done(function (data) {
-				console.log(data);
 				if (data) {
 
 					data.forEach(element => {
@@ -499,7 +511,6 @@
 					})
 					$('.tag-container').each((idx, element) => {
 						const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
-						console.log(sectionId);
 						let questionId = questionAllList[sectionId];
 						let backupQuestionId = questionAllList[sectionId];
 						$(element).prev().find('span').eq(1).text(questionId.length);
@@ -721,7 +732,7 @@
 		$(function () {
 			$('.tag-container').each((idx, element) => {
 				const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
-				console.log(sectionId);
+
 				let questionId = questionAllList[sectionId];
 				let backupQuestionId = questionAllList[sectionId];
 				$(element).prev().find('span').eq(1).text(questionId.length);
@@ -768,7 +779,7 @@
 			const checkedQuestion = currentSection.find('table').eq(2).find('input[type="checkbox"]:checked').not('[name="AllCheck"]');
 
 			checkedQuestion.each((idx, element) => {
-				//console.log($(element).val())
+
 				const tagText = $(element).val()
 
 				if (!questionAllList[sectionId].includes(tagText)) {
@@ -779,7 +790,7 @@
 
 					const limitCount = currentSection.find('div').last().prev().find('span').eq(2).text().substring(3);
 
-					console.log(limitCount == "");
+
 					if (limitCount != null && limitCount != "") {
 						if (questionAllList[sectionId].length > limitCount) {
 							currentSection.find('div').last().prev().find('span').eq(1).css('color', 'red');
