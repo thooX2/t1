@@ -8,13 +8,7 @@
 	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/layout(1).css}">
 	<link rel="stylesheet" th:href="@{/user/css/exam/userExamAnalyse/customsmartmath.css}">
 </head>
-<style>
-	.my{background:#2E78B2 !important}
-	
-	.percent.my{
-		color:#2E78B2 !important;
-	}
-</style>
+
 <th:block layout:fragment="customJsFile">
 	<!--	<script src="https://code.jquery.com/jquery-3.7.1.js"
 		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
@@ -23,10 +17,10 @@
 </th:block>
 <th:block layout:fragment="customJs">
 	<script>
+	// session에 저장된 userCode가져오기(위에 th:inline="javascript필수")
+    var userCode = /*[[${session.loggedInUser.userCode}]]*/[];
 	
 	$(function() {
-	   
-
 	 // 영역 label 클릭 시 처리
 	    $('#mDomCdDiv').on('click', 'label', function() {
 	        // 모든 영역 label에서 'on' 클래스 제거 라벨 on/off에 따라 글씨 굵기 변경
@@ -39,11 +33,47 @@
 	        const subjectName = $(this).text();
 	        fncSetDom(subjectName);
 	    });
+	    // 페이지 로드 시 국어 라벨을 클릭한 상태로 설정
+        const initialLabel = $('#mDomCdDiv label#mDomCdKO');
+        initialLabel.addClass('on').css('font-weight', 'bold');
+        fncSetDom(initialLabel.text()); // 국어 차트 데이터 로드 
+        
+        $(document).ready(function() {
+            const $title = document.querySelector('title');
+            $title.textContent = '모의고사 결과분석'; // 제목 설정
 
+            // 초기 데이터 로드 (기본 과목 데이터)
+            fncSetDom('국어'); // 기본 과목 설정
+       	  });
 	    });
 	
+	const request=$.ajax({
+		 url: '/exam/userChapData', 
+         method: 'GET',
+         data: {
+         	 chapName:'chapName',           	
+         	chapCorrectRate:'chapCorrectRate',
+         	chapTryAccount:'chapTryAccount'
+         },
+         dataType: 'JSON'		
+	})
+	request.done(function(data){
+		console.log(data);
+		
+		/* if(data=!null&&data.length !=0){
+			
+		}else{
+			
+		} */
+	})
+	request.fail(function (jqXHR, textStatus, error) {
+ 				console.log(error);
+ 			});
 	
-	const $title = document.querySelector('title');
+	
+	
+	
+	/* const $title = document.querySelector('title');
 	$title.textContent = '모의고사 결과분석';
 
 	function fncShowDtl(id) {
@@ -67,7 +97,7 @@
 	        classname.classList.remove("off");
 	        classname.classList.add("on");
 	    }
-	}
+	} */
 
 	</script>
 </th:block>
@@ -133,10 +163,9 @@
 						</div>
 						<div class="searchSection--menu ty2" id="schTabMenu">
 							<a href="/exam/userExamAnalyse" onclick="fncTabSet(1)" ><strong>분석1</strong>성적 변화</a>
-							<a href="JavaScript:;" onclick="fncTabSet(2)"  class="on"><strong>분석2</strong>단원별	정답률</a>
-							<a href="/exam/weak" onclick="fncTabSet(3)" ><strong>분석3</strong>취약 유형</a>
-							<a href="/exam/chap" onclick="fncTabSet(4)" ><strong>분석4</strong>단원/배점/문항별	분석</a>
-
+							<a href="JavaScript:;" onclick="fncTabSet(2)"  class="on"><strong>분석2</strong>단원별	분석</a>
+							<a href="/exam/weak" onclick="fncTabSet(3)" ><strong>분석3</strong>유형별 분석</a>
+							
 						</div>
 
 						<div id="ContArea">
@@ -144,744 +173,113 @@
 							<!--[D] 분석 2 -->
 							<div class="bx_analysis">
 								<div class="top_legend">
-									<span class="g_legen"><span class="ic_qc1"></span>평균 정답률</span>
+							
 									<span class="g_legen" ><span class="ic_qc2" ></span>나의 정답률</span>
 								</div>
 
-
 								<div class="section_analysis">
 									<a href="javascript:;" class="tit_analysis on" onclick="fncShowDtl('1')"
-										id="tit_main1">우리 역사의 형성과 고대 국가의 발전</a>
+										id="tit_main1" >단원별 분석</a>
 
 
 									<div class="cont_analysis" id="dtlCont1">
 
 
-										<div class="item_cont noneline">
+										<div class="item_cont ">
 											<p class="tit_grapth">선사 문화와 여러나라의 성장 </p>
 											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:64%"></div>
-													<span class="percent">64%</span>
-												</div>
-
+												
 												<div class="bg_grapth">
 													<div class="garpth_bar my" style="width:50%"></div>
-													<span class="percent my">50%</span>
+													<span class="percent my">%</span>
 												</div>
-											</div>
+											
 											<ul class="bx_question_total">
 												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
+													<p class="qtit">정답률</p>
+													<div class="qnum"></div>
 												</li>
 												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
+													<p class="qtit">풀이횟수</p>
+													<div class="qnum ty2"></div>
 												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
+												
 											</ul>
+											
+											</div>
 										</div>
 
 
-										<div class="item_cont noneline">
+										<div class="item_cont ">
 											<p class="tit_grapth">삼국과 가야의 발전 </p>
 											<div class="bx_bargrapth">
 
 												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:76%"></div>
-													<span class="percent">76%</span>
-												</div>
-
-												<div class="bg_grapth">
 													<div class="garpth_bar my" style="width:50%"></div>
-													<span class="percent my">50%</span>
+													<span class="percent my">%</span>
 												</div>
 											</div>
 											<ul class="bx_question_total">
 												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
+													<p class="qtit">정답률</p>
+													<div class="qnum"></div>
 												</li>
 												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
+													<p class="qtit">풀이횟수</p>
+													<div class="qnum ty2"></div>
 												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
+												
 											</ul>
 										</div>
 
 
-										<div class="item_cont noneline">
+										<div class="item_cont">
 											<p class="tit_grapth">통일 신라와 발해의 발전 </p>
 											<div class="bx_bargrapth">
 
 												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:70%"></div>
-													<span class="percent">70%</span>
-												</div>
-
-												<div class="bg_grapth">
 													<div class="garpth_bar my" style="width:50%"></div>
-													<span class="percent my">50%</span>
+													<span class="percent my">%</span>
 												</div>
 											</div>
 											<ul class="bx_question_total">
 												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
+													<p class="qtit">정답률</p>
+													<div class="qnum"></div>
 												</li>
 												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
+													<p class="qtit">풀이횟수</p>
+													<div class="qnum ty2"></div>
+												</li>												
 											</ul>
 										</div>
 
 
-										<div class="item_cont noneline">
+										<div class="item_cont ">
 											<p class="tit_grapth">대외 교류와 문화 발전 </p>
 											<div class="bx_bargrapth">
 
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:45%"></div>
-													<span class="percent">45%</span>
-												</div>
-
+												
 												<div class="bg_grapth">
 													<div class="garpth_bar my" style="width:100%"></div>
-													<span class="percent my">100%</span>
+													<span class="percent my">%</span>
 												</div>
 											</div>
 											<ul class="bx_question_total">
 												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
+													<p class="qtit">정답률</p>
+													<div class="qnum"></div>
 												</li>
 												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
+													<p class="qtit">풀이횟수</p>
+													<div class="qnum ty2"></div>
 												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">0</div>
-												</li>
+												
 											</ul>
 										</div>
 
 									</div>
 
-								</div>
-
-
-								<div class="section_analysis">
-									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('2')"
-										id="tit_main2">고려 귀족 사회의 형성과 변천</a>
-
-
-									<div class="cont_analysis" id="dtlCont2">
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">고려의 성립과 정치 발전 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:52%"></div>
-													<span class="percent">52%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:75%"></div>
-													<span class="percent my">75%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">4</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">3</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">신분구조와 사회생활 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:82%"></div>
-													<span class="percent">82%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:100%;" ></div>
-													<span class="percent my">100%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">0</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">다양한 사상과 문화, 대외교류 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:44%"></div>
-													<span class="percent">44%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:100%"></div>
-													<span class="percent my">100%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">0</div>
-												</li>
-											</ul>
-										</div>
-
-									</div>
-
-								</div>
-
-
-								<div class="section_analysis">
-									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('3')"
-										id="tit_main3">조선 유교 사회의 성립과 변화</a>
-
-
-									<div class="cont_analysis" id="dtlCont3">
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">조선의 건국과 통치 체제의 정비 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:82%"></div>
-													<span class="percent">82%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:100%; background-color:#2E78B2"></div>
-													<span class="percent my" style="color:#2E78B2">100%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">0</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">조선의 대외 관계와 양난의 극복 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:93%"></div>
-													<span class="percent">93%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:100%"></div>
-													<span class="percent my">100%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">2</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">0</div>
-												</li>
-											</ul>
-										</div>
-										<div class="item_cont noneline">
-											<p class="tit_grapth">조선 후기의 정치 변동과 제도 개편 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:53%"></div>
-													<span class="percent">53%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:33%"></div>
-													<span class="percent my" >33%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">3</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">2</div>
-												</li>
-											</ul>
-										</div>
-										<div class="item_cont noneline">
-											<p class="tit_grapth">조선 후기의 사회 변동과 문화의 새 경향 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:62%"></div>
-													<span class="percent">62%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:0%"></div>
-													<span class="percent my">0%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">0</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="section_analysis">
-									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('4')"
-										id="tit_main4">국제 질서의 변동과 근대 국가 수립 운동</a>
-
-
-									<div class="cont_analysis" id="dtlCont4">
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">문호개방과 근대적 개혁의 추진 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:64%"></div>
-													<span class="percent">64%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:0%"></div>
-													<span class="percent my">0%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">0</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">2</div>
-												</li>
-											</ul>
-										</div>
-										<div class="item_cont noneline">
-											<p class="tit_grapth">구국 운동과 근대 국가 수립 운동의 전개 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:65%"></div>
-													<span class="percent">65%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:100%"></div>
-													<span class="percent my">100%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">2</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">0</div>
-												</li>
-											</ul>
-										</div>
-										<div class="item_cont noneline">
-											<p class="tit_grapth">일제의 침략과 국권 수호 운동 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:56%"></div>
-													<span class="percent">56%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:66%"></div>
-													<span class="percent my">66%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">3</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">2</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-
-									</div>
-
-								</div>
-
-
-								<div class="section_analysis">
-									<a href="javascript:;" class="tit_analysis" onclick="fncShowDtl('5')"
-										id="tit_main5">일제의 강점과 민족 운동의 전개</a>
-
-
-									<div class="cont_analysis" id="dtlCont5">
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">일제의 식민 통치와 경제 수탈 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:50%"></div>
-													<span class="percent">50%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:0%"></div>
-													<span class="percent my">0%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">0</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">2</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">3.1 운동과 대한민국 임시 정부 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:50%"></div>
-													<span class="percent">50%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:0%"></div>
-													<span class="percent my">0%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">0</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">2</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">일제 강점기 국내외 민족 운동 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:39%"></div>
-													<span class="percent">39%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:50%"></div>
-													<span class="percent my">50%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">건국 준비 활동과 국제 사회의 움직임 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:56%"></div>
-													<span class="percent">56%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:0%"></div>
-													<span class="percent my">0%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">0</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-
-									</div>
-
-								</div>
-								<div class="section_analysis">
-									<a href="javascript:;" class="tit_analysis off" onclick="fncShowDtl('6')"
-										id="tit_main6">대한민국의 발전과 현대 세계의 변화</a>
-
-
-									<div class="cont_analysis" id="dtlCont6" style="display:none;">
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">대한민국 정부 수립과 6.25 전쟁 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:55%"></div>
-													<span class="percent">55%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:50%"></div>
-													<span class="percent my">50%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">자유 민주주의의 시련과 발전 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:52%"></div>
-													<span class="percent">52%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:50%"></div>
-													<span class="percent my">50%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">2</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-										<div class="item_cont noneline">
-											<p class="tit_grapth">경제 발전과 사회, 문화의 변화 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:84%"></div>
-													<span class="percent">84%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:0%"></div>
-													<span class="percent my">0%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">0</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">1</div>
-												</li>
-											</ul>
-										</div>
-
-
-										<div class="item_cont noneline">
-											<p class="tit_grapth">북한의 변화와 통일을 위한 노력 </p>
-											<div class="bx_bargrapth">
-
-												<div class="bg_grapth">
-													<div class="garpth_bar" style="width:85%"></div>
-													<span class="percent">85%</span>
-												</div>
-
-												<div class="bg_grapth">
-													<div class="garpth_bar my" style="width:100%"></div>
-													<span class="percent my">100%</span>
-												</div>
-											</div>
-											<ul class="bx_question_total">
-												<li>
-													<p class="qtit">문항수</p>
-													<div class="qnum">1</div>
-												</li>
-												<li>
-													<p class="qtit">정답</p>
-													<div class="qnum ty2">1</div>
-												</li>
-												<li>
-													<p class="qtit">오답</p>
-													<div class="qnum ty3">0</div>
-												</li>
-											</ul>
-										</div>
-									</div>
 								</div>
 
 							</div>
@@ -890,7 +288,7 @@
 				</div>
 
 			
-			<div id="criteo-tags-div" style="display: none;"></div>
+	
 			<!-- //content -->
 		</div>
 		<!-- //sub_container -->
