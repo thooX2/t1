@@ -173,6 +173,12 @@
 			paperOn();
 		})
 
+		$(document).on('click', '.btn_L_col2.has_down', function () {
+			const clickedExamCode = $(this).closest('li').find('img').prop('alt');
+			const clickedExamName = $(this).closest('li').find('.tit').text()
+			window.open(`/exam/${clickedExamCode}/details?examName=${clickedExamName}`, '시험정보보기', 'width=600,height=830,scrollbars=yes');
+
+		})
 
 	</script>
 </th:block>
@@ -374,9 +380,11 @@
 								<li th:if="${examList !=null}" th:each="el:${examList}">
 									<div class="img">
 										<img th:if="${el.examType=='교육청'}" src="/user/img/exam/educationCenter.png"
-											alt="">
-										<img th:if="${el.examType=='평가원'}" src="/user/img/exam/KICE.png" alt="">
-										<img th:if="${el.examType=='사설'}" src="/user/img/exam/privateExam.png" alt="">
+											th:alt="${el.examCode}">
+										<img th:if="${el.examType=='평가원'}" src="/user/img/exam/KICE.png"
+											th:alt="${el.examCode}">
+										<img th:if="${el.examType=='사설'}" src="/user/img/exam/privateExam.png"
+											th:alt="${el.examCode}">
 									</div>
 									<div class="txt_wrap">
 										<div class="txt_group">
