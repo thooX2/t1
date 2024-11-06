@@ -11,38 +11,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ks52team01.student.exam.dto.ExamAnalyse;
+import ks52team01.student.exam.dto.ExamInfo;
 import ks52team01.student.exam.service.ExamService;
 import ks52team01.student.exam.service.ExamServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/exam")
 public class ExamController {
 
 	private final ExamService examService;
 
-	public ExamController(ExamServiceImpl examServiceImpl) {
-		this.examService = examServiceImpl;
+	// AJAX 요청을 처리하는 메서드
+	@GetMapping("/userExamData")
+	@ResponseBody
+	public List<ExamAnalyse> getUserExamData(@RequestParam String userCode, @RequestParam String majorCode) {
+		log.info("사용자 {}의 {}에 대한 시험 데이터 요청", userCode, majorCode);
+
+		List<ExamAnalyse> scores = examService.getUserExamData(userCode, majorCode);
+		log.info("test:{}", scores);
+		return scores; // 데이터 반환
 	}
 
-	// AJAX 요청을 처리하는 메서드
-    @GetMapping("/userExamData")
-    @ResponseBody
-    public List<ExamAnalyse> getUserExamData(@RequestParam String userCode, @RequestParam String majorCode) {
-        log.info("사용자 {}의 {}에 대한 시험 데이터 요청", userCode, majorCode);
-        
-        List<ExamAnalyse> scores = examService.getUserExamData(userCode, majorCode);
-        log.info("test:{}",scores);
-        return scores; // 데이터 반환
-    }
-	
 	@GetMapping("/examList")
-	public String moveExamList() {
+	public String moveExamList(Model model) {
 		log.info("모의고사 메인으로 이동");
+		List<ExamInfo> examList = examService.getRegisteredQustionExamList();
+
+		model.addAttribute("examList", examList);
 		return "view/user/exam/user_exam_list";
 	}
-
 
 	@GetMapping("/examMain")
 	public String moveExamMain() {

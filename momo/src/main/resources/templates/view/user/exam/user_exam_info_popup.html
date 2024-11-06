@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminCustom.css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<style>
+		/* 기본적인 스타일 */
+		body {
+			font-family: Dotum, 돋움, Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f9f9f9;
+		}
+
+		.scbox {
+			height: 595px;
+			overflow-y: auto;
+			border: 1px solid #ccc;
+			background-color: #fff;
+			border-radius: 8px;
+			padding: 10px;
+			position: relative;
+		}
+
+		.bttn2 {
+			cursor: pointer;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+		}
+
+		.f_td01 input[type="text"] {
+			width: 100%;
+			border: 1px solid #d1d1d1;
+			padding: 5px;
+			border-radius: 4px;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			/* 셀 간격을 없애고 경계선을 결합 */
+			border: none;
+			/* border="0" 대신 사용 */
+		}
+
+		table th,
+		table td {
+			border: 1px solid #ccc;
+			/* 테이블 경계선 */
+			padding: 10px;
+			/* 테이블 내부 여백 (cellpadding 대체) */
+		}
+
+		/* th의 텍스트 스타일 */
+		table th {
+			background-color: #f1f1f1;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+
+	<table>
+		<tbody>
+			<tr>
+				<td style="border:0;">
+					<table id="p_title_pop">
+						<tbody>
+							<tr height="42">
+								<td style="padding-left:5px;border:0">
+									<div id="_ttl_">
+										<div class="blt"><!----></div>
+										<div><strong style="font-size:17px;">문제 미리보기</strong></div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table>
+						<tbody>
+							<tr>
+								<td style="padding:10px;border:0">
+
+									<div class="scbox">
+										<table class="c_tb01">
+											<tbody>
+												<tr>
+													<th colspan="2">문제 1</th>
+												</tr>
+											</tbody>
+										</table>
+										<table class="f_tb01">
+											<colgroup>
+												<col width="80">
+												<col>
+												<col width="80">
+												<col>
+											</colgroup>
+											<tbody>
+												<tr>
+													<th>생성시간</th>
+													<td>20.10.29. 17:30</td>
+													<th>수정시간</th>
+													<td></td>
+												</tr>
+												<tr>
+													<th>문제유형</th>
+													<td colspan="3">국어</td>
+												</tr>
+												<tr>
+													<th>문제단원</th>
+													<td colspan="3">수학</td>
+												</tr>
+												<tr>
+													<th>카테고리</th>
+													<td colspan="3">수학</td>
+												</tr>
+												<tr>
+													<th>문제배점</th>
+													<td>3점</td>
+													<th>문제정답</th>
+													<td>3번</td>
+												</tr>
+												<tr>
+													<th>문제지문</th>
+													<td colspan="3">
+														<p id="questionContent">
+
+														</p>
+													</td>
+												</tr>
+												<tr>
+													<th>문제<br>이미지1</th>
+													<td colspan="3">
+														<img src="image1_path" alt="image1" style="max-height: 100px;" />
+													</td>
+												</tr>
+
+												<tr>
+													<th>문항1</th>
+													<td colspan="3"></td>
+												</tr>
+												<tr>
+													<th>문항2</th>
+													<td colspan="3"></td>
+												</tr>
+												<tr>
+													<th>문항3</th>
+													<td colspan="3"></td>
+												</tr>
+												<tr>
+													<th>문항4</th>
+													<td colspan="3"></td>
+												</tr>
+												<tr>
+													<th>문항5</th>
+													<td colspan="3"></td>
+												</tr>
+												<tr>
+													<th>문제<br>해설</th>
+													<td colspan="3" style="white-space: pre-wrap;"></td>
+												</tr>
+
+											</tbody>
+										</table>
+
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div style="text-align: right;margin-right: 35px;">
+		<button type="button" class="bttn2" aria-label="닫기">닫기</button>
+	</div>
+
+	<script>
+		var qnaQst = [];
+		console.log(qnaQst);
+		$('#questionContent').append(qnaQst);
+		// 닫기 버튼 클릭 이벤트 추가
+		$('.bttn2').click(function () {
+			window.close(); // 팝업 창 닫기
+		});
+	</script>
+
+</body>
+
+</html>

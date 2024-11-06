@@ -36,6 +36,39 @@
 			<result column="exam_inst" 	  property="examInst"/>
 		</association>
 	</resultMap>
+	
+	<resultMap id="ExamInfoMap" type="ExamInfo">
+	    <id column="exam_code" property="examCode"/>
+	    <result column="user_code" property="userCode"/>
+	    <result column="exam_nm" property="examNm"/>
+	    <result column="exam_type" property="examType"/>
+	    <result column="exam_oe_type" property="examOEType"/>
+	    <result column="exam_tar_grd" property="examTarGrd"/>
+	    <result column="exam_date" property="examDate"/>
+	    <result column="exam_inst" property="examInst"/>
+	    <result column="registeredQuestionCount" property="registeredQuestionCount"/>
+	</resultMap>
+	
+	<select id="getRegisteredQustionExamList" resultMap="ExamInfoMap">
+		SELECT
+			ei.exam_code,
+			ei.user_code,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			ei.exam_inst,
+			COUNT(emq.exam_qna_code) AS registeredQuestionCount
+		FROM
+			exam_info ei LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
+		GROUP BY ei.exam_code
+		HAVING
+			registeredQuestionCount>0 AND
+			exam_type != '자체'
+	</select>
+
 	<select id="selectUserExamData" resultType="ks52team01.student.exam.dto.ExamAnalyse">
         SELECT
             subject_score_code AS subjectScoreCode,
