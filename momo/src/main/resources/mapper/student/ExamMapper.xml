@@ -36,7 +36,7 @@
 			<result column="exam_inst" 	  property="examInst"/>
 		</association>
 	</resultMap>
-	<select id="selectUserExamData" resultType="ks52team01.student.exam.dto.ExamAnalyseDto">
+	<select id="selectUserExamData" resultType="ks52team01.student.exam.dto.ExamAnalyse">
         SELECT
             subject_score_code AS subjectScoreCode,
             user_code AS userCode,
