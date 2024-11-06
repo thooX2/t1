@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ks52team01.student.exam.dto.ExamAnalyseDto;
+import ks52team01.student.exam.dto.ExamAnalyse;
 import ks52team01.student.exam.mapper.ExamMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class ExamServiceImpl implements ExamService {
     
 
    @Override
-    public List<ExamAnalyseDto> getUserExamData(String userCode, String majorCode) {
+    public List<ExamAnalyse> getUserExamData(String userCode, String majorCode) {
         return examMapper.selectUserExamData(userCode, majorCode);
     }
 }

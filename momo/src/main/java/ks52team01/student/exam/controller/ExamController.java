@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ks52team01.student.exam.dto.ExamAnalyseDto;
+import ks52team01.student.exam.dto.ExamAnalyse;
 import ks52team01.student.exam.service.ExamService;
 import ks52team01.student.exam.service.ExamServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +29,10 @@ public class ExamController {
 	// AJAX 요청을 처리하는 메서드
     @GetMapping("/userExamData")
     @ResponseBody
-    public List<ExamAnalyseDto> getUserExamData(@RequestParam String userCode, @RequestParam String majorCode) {
+    public List<ExamAnalyse> getUserExamData(@RequestParam String userCode, @RequestParam String majorCode) {
         log.info("사용자 {}의 {}에 대한 시험 데이터 요청", userCode, majorCode);
         
-        List<ExamAnalyseDto> scores = examService.getUserExamData(userCode, majorCode);
+        List<ExamAnalyse> scores = examService.getUserExamData(userCode, majorCode);
         log.info("test:{}",scores);
         return scores; // 데이터 반환
     }
