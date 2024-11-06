@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ExamInfo {
-	
+
 	private String examCode;
 	private String userCode;
 	private String examNm;
@@ -15,4 +15,6 @@ public class ExamInfo {
 	private String examTarGrd;
 	private Date examDate;
 	private String examInst;
+
+	private int registeredQuestionCount;
 }

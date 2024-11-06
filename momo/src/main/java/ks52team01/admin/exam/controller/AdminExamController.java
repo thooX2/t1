@@ -57,7 +57,7 @@ public class AdminExamController {
 	@PostMapping("/delete/summerNoteImage")
 	@ResponseBody
 	public String deleteImage(@RequestParam("filePath") String filePath) {
-		boolean isDeleted = filesUtils.deleteFileByPath("/home/teamproject"+filePath);
+		boolean isDeleted = filesUtils.deleteFileByPath("/home/teamproject" + filePath);
 		return isDeleted ? "삭제 성공" : "삭제 실패";
 	}
 
@@ -368,6 +368,10 @@ public class AdminExamController {
 		List<AdminExamQnaChap> qnaChapList = new ArrayList<AdminExamQnaChap>();
 		qnaChapList = adminExamService.getQnaChapList();
 
+		List<User> userList = new ArrayList<User>();
+		userList = adminExamService.getUserListByGrade("ugc1");
+
+		model.addAttribute("userList", userList);
 		model.addAttribute("qnaTypeList", qnaTypeList);
 		model.addAttribute("qnaChapList", qnaChapList);
 		model.addAttribute("categoryList", categoryList);
