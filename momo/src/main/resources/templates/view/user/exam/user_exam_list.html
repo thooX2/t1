@@ -347,10 +347,10 @@
 						<div class="board_head" style="margin-top: 3rem;">
 							<div class="count_area">
 								<p>
-									검색결과 <em class="tot">146개</em>
+									검색결과 <em class="tot" th:text="${#lists.size(examList)}"></em><em class="tot">개</em>
 								</p>
 							</div>
-							<div class="order_area">
+							<!--	<div class="order_area">
 								<div class="btn_wrap">
 									<button type="button" class="btn_order on">
 										<span>최근등록순</span>
@@ -364,25 +364,28 @@
 									<option value="30">30개씩 보기</option>
 									<option value="50">50개씩 보기</option>
 								</select>
-							</div>
+							</div>-->
 						</div>
 						<!-- //board_head -->
 
 						<!-- board_list -->
 						<div class="board_qusesion">
 							<ul>
-								<li>
+								<li th:if="${examList !=null}" th:each="el:${examList}">
 									<div class="img">
-										<img src="/user/img/exam/KICE.png" alt="">
+										<img th:if="${el.examType=='교육청'}" src="/user/img/exam/educationCenter.png"
+											alt="">
+										<img th:if="${el.examType=='평가원'}" src="/user/img/exam/KICE.png" alt="">
+										<img th:if="${el.examType=='사설'}" src="/user/img/exam/privateExam.png" alt="">
 									</div>
 									<div class="txt_wrap">
 										<div class="txt_group">
-											<p class="tit">2024년&nbsp;고3 9월 모평(평가원)&nbsp;언어와 매체
+											<p class="tit" th:text="${el.examNm}">2024년&nbsp;고3 9월 모평(평가원)&nbsp;언어와 매체
 												&nbsp;</p>
 											<ul class="txt_info">
-												<li>평가원</li>
-												<li>1학년</li>
-												<li>2024-11-01</li>
+												<li th:text="${el.examType}">평가원</li>
+												<li><span th:text="${el.examTarGrd}"></span>학년</li>
+												<li th:text="${el.examDate}">2024-11-01</li>
 											</ul>
 										</div>
 										<div class="survey_wrap" id="survey_wrap_24271023">
