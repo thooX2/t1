@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,14 @@ import lombok.extern.slf4j.Slf4j;
 public class ExamController {
 
 	private final ExamService examService;
+
+	@GetMapping("/{examCode}/details")
+	public String getExamDetails(@PathVariable(name = "examCode") String examCode,
+			@RequestParam(name = "examName") String examName, Model model) {
+
+		model.addAttribute("examName", examName);
+		return "view/user/exam/user_exam_info_popup";
+	}
 
 	// AJAX 요청을 처리하는 메서드
 	@GetMapping("/userExamData")
