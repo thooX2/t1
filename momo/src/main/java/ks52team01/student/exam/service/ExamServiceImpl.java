@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ks52team01.student.exam.dto.ExamAnalyse;
 import ks52team01.student.exam.dto.ExamInfo;
+import ks52team01.student.exam.dto.ExamMappingQuestion;
 import ks52team01.student.exam.mapper.ExamMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ExamServiceImpl implements ExamService {
 
 	private final ExamMapper examMapper;
+
+	@Override
+	public List<ExamMappingQuestion> getExamQuestionInfobyExamCode(String examCode) {
+
+		return examMapper.getExamQuestionInfobyExamCode(examCode);
+	}
 
 	@Override
 	public List<ExamInfo> getRegisteredQustionExamList() {
