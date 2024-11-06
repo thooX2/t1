@@ -338,7 +338,7 @@
 						    </td>
 
 						    <td class="l_td01">${formattedCreateTime}</td>
-						    <td class="l_td01">${formattedUpdateTime}</td>
+						    <td class="l_td01">${(element.qnaUpdateTime != null) ? formattedUpdateTime : ''}</td>
 						</tr>`;
 							$(subjectTable).append(newQuestionList);
 							$(subjectTable).closest('table').prev().find('font[name="questionCount"]').text(questionAllList[subjectName].length);
@@ -839,12 +839,8 @@
 				<i class="fa fa-minus" style="font-size: 12px;"></i>
 			</button>
 			<div id="sys-page-title">
-				<span id="sys-page-title-nm">문제은행</span>
+				<span id="sys-page-title-nm">시험문제구성 관리</span>
 				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
-				<button type="button" class="btn_simp yellow">
-					<i class="fa fa-star"></i> 퀵메뉴추가
-				</button>
-
 			</div>
 			<div id="sys-page-util">
 				<a id="sys-page-util-refresh">

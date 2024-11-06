@@ -1,42 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
-
-<head>
-
-</head>
-<th:block layout:fragment="customJs">
-
-</th:block>
 <div th:fragment="sidebar">
 	<div id="lnb_wrapper">
 		<div id="lnb_shortcut" style="line-height: 0px;">
-			<select id="favorite_select" onchange="goShortcut(this);">
+			<select id="favorite_select">
 				<option value="">======== 퀵메뉴 ========</option>
-				<option id="shortcut-common-1" value="common-1" data-target="#">→ 퀵메뉴관리</option>
 				<optgroup label="사이트링크">
-					<option id="shortcut-site-8" value="site-8" data-target="#">→ 네이버</option>
+					<option id="ksmart" value="ksmart" data-target="#">→ 한국스마트정보교육원</option>
 				</optgroup>
 				<optgroup label="개인링크">
-					<option id="shortcut-user-1" value="user-1" data-target="#">→ 회원관리</option>
-					<option id="shortcut-user-7" value="user-7" data-target="#">→ 동영상 관리</option>
-					<option id="shortcut-user-6" value="user-6" data-target="#">→ 과정개설</option>
-					<option id="shortcut-user-3" value="user-3" data-target="#">→ 강사관리</option>
-					<option id="shortcut-user-10" value="user-10" data-target="#">→ 설문지관리</option>
-					<option id="shortcut-user-11" value="user-11" data-target="#">→ 과정게시판관리</option>
-					<option id="shortcut-user-12" value="user-12" data-target="#">→ test</option>
-					<option id="shortcut-user-18" value="user-18" data-target="#">→ 운영현황</option>
-					<option id="shortcut-user-20" value="user-20" data-target="#">→ 메인화면관리</option>
-					<option id="shortcut-user-24" value="user-24" data-target="#">→ 주문목록</option>
-					<option id="shortcut-user-25" value="user-25" data-target="#">→ 과정카테고리</option>
-					<option id="shortcut-user-30" value="user-30" data-target="#">→ 교육일정관리</option>
-					<option id="shortcut-user-31" value="user-31" data-target="#">→ 강사관리</option>
-					<option id="shortcut-user-32" value="user-32" data-target="#">→ 방송관리</option>
-					<option id="shortcut-user-33" value="user-33" data-target="#">→ 운영현황</option>
-					<option id="shortcut-user-34" value="user-34" data-target="#">→ 운영현황</option>
-					<option id="shortcut-user-40" value="user-40" data-target="#">→ 과정개설</option>
-					<option id="shortcut-user-41" value="user-41" data-target="#">→ 주문목록</option>
-					<option id="shortcut-user-42" value="user-42" data-target="#">→ 동영상 관리</option>
+					<option id="momoAdminExamCate" value="momoAdminExamCate" >→ 문제카테고리</option>
+					<option id="momoAdminExamQnaBank" value="momoAdminExamQnaBank" >→ 문제은행</option>
+					<option id="momoAdminExamAddQuestion" value="momoAdminExamAddQuestion" >→ 문제은행 > 문제등록</option>
+					<option id="momoAdminExamManage" value="momoAdminExamManage" >→ 시험관리</option>
+					<option id="momoAdminExamAddExam" value="momoAdminExamAddExam" >→ 시험관리 > 시험등록</option>
+					<option id="momoAdminExamAddQuestionToExam" value="momoAdminExamAddQuestionToExam" >→ 시험문제구성 관리</option>
 				</optgroup>
 			</select>
 
@@ -59,7 +38,6 @@
 								<a th:href="@{/admin/exam/questionList}" target="_self"><i
 										class="fa fa-angle-right"></i>문제은행 </a>
 							</li>
-
 						</ul>
 					</li>
 					<li class="acc-title acc-node-78"><a href="#">
@@ -72,7 +50,7 @@
 								</a>
 							</li>
 							<li class="acc-node-73"><a th:href="@{/admin/exam/inputQuestion}" target="_self">
-									<i class="fa fa-angle-right"></i>문제등록
+									<i class="fa fa-angle-right"></i>문제구성 관리
 								</a></li>
 						</ul>
 					</li>
