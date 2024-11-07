@@ -58,6 +58,7 @@
 				chartName.config.options.scales.y.max = 100;
 				chartName.config.options.scales.y.ticks.beginAtZero = true;
 				chartName.config.options.scales.y.ticks.stepSize = 10;
+				chartName.config.options.scales.y.ticks.callback = value => value;
 			} else if(chartType == '표준점수') {
 				chartName.config.data.datasets[3].label = '표준점수';
 				chartName.config.data.datasets[0].data = [koreanScore?.subjectStandardScoreNationAvg??0.0,
@@ -128,43 +129,48 @@
 				chartName.config.options.scales.y.ticks.stepSize = 10;
 			} else if(chartType == '등급') {
 				chartName.config.data.datasets[3].label = '등급';
-				chartName.config.data.datasets[0].data = [koreanScore?.subjectGradeNationAvg??0.0,
-														  mathScore?.subjectGradeNationAvg??0.0,
-														  englishScore?.subjectGradeNationAvg??0.0,
-														  koreanHistoryScore?.subjectGradeNationAvg??0.0,
-														  inquiry1Score?.subjectGradeNationAvg??0.0,
-														  inquiry2Score?.subjectGradeNationAvg??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectGradeNationAvg??0.0];
-				chartName.config.data.datasets[1].data = [koreanScore?.subjectGradeProvinceAvg??0.0,
-														  mathScore?.subjectGradeProvinceAvg??0.0,
-														  englishScore?.subjectGradeProvinceAvg??0.0,
-														  koreanHistoryScore?.subjectGradeProvinceAvg??0.0,
-														  inquiry1Score?.subjectGradeProvinceAvg??0.0,
-														  inquiry2Score?.subjectGradeProvinceAvg??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectGradeProvinceAvg??0.0];
-				chartName.config.data.datasets[2].data = [koreanScore?.subjectGradeMunicipalityAvg??0.0,
-														  mathScore?.subjectGradeMunicipalityAvg??0.0,
-														  englishScore?.subjectGradeMunicipalityAvg??0.0,
-														  koreanHistoryScore?.subjectGradeMunicipalityAvg??0.0,
-														  inquiry1Score?.subjectGradeMunicipalityAvg??0.0,
-														  inquiry2Score?.subjectGradeMunicipalityAvg??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectGradeMunicipalityAvg??0.0];
-				chartName.config.data.datasets[3].data = [koreanScore?.subjectGrade??0.0,
-														  mathScore?.subjectGrade??0.0,
-														  englishScore?.subjectGrade??0.0,
-														  koreanHistoryScore?.subjectGrade??0.0,
-														  inquiry1Score?.subjectGrade??0.0,
-														  inquiry2Score?.subjectGrade??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectGrade??0.0];
+				chartName.config.data.datasets[0].data = [10 - (koreanScore?.subjectGradeNationAvg??9.0),
+														  10 - (mathScore?.subjectGradeNationAvg??9.0),
+														  10 - (englishScore?.subjectGradeNationAvg??9.0),
+														  10 - (koreanHistoryScore?.subjectGradeNationAvg??9.0),
+														  10 - (inquiry1Score?.subjectGradeNationAvg??9.0),
+														  10 - (inquiry2Score?.subjectGradeNationAvg??9.0),
+														  10 - (secondLanguageAndChineseCharactersScore?.subjectGradeNationAvg??9.0)];
+				chartName.config.data.datasets[1].data = [10 - (koreanScore?.subjectGradeProvinceAvg??9.0),
+														  10 - (mathScore?.subjectGradeProvinceAvg??9.0),
+														  10 - (englishScore?.subjectGradeProvinceAvg??9.0),
+														  10 - (koreanHistoryScore?.subjectGradeProvinceAvg??9.0),
+														  10 - (inquiry1Score?.subjectGradeProvinceAvg??9.0),
+														  10 - (inquiry2Score?.subjectGradeProvinceAvg??9.0),
+														  10 - (secondLanguageAndChineseCharactersScore?.subjectGradeProvinceAvg??9.0)];
+				chartName.config.data.datasets[2].data = [10 - (koreanScore?.subjectGradeMunicipalityAvg??9.0),
+														  10 - (mathScore?.subjectGradeMunicipalityAvg??9.0),
+														  10 - (englishScore?.subjectGradeMunicipalityAvg??9.0),
+														  10 - (koreanHistoryScore?.subjectGradeMunicipalityAvg??9.0),
+														  10 - (inquiry1Score?.subjectGradeMunicipalityAvg??9.0),
+														  10 - (inquiry2Score?.subjectGradeMunicipalityAvg??9.0),
+														  10 - (secondLanguageAndChineseCharactersScore?.subjectGradeMunicipalityAvg??9.0)];
+				chartName.config.data.datasets[3].data = [10 - (koreanScore?.subjectGrade??9.0),
+														  10 - (mathScore?.subjectGrade??9.0),
+														  10 - (englishScore?.subjectGrade??9.0),
+														  10 - (koreanHistoryScore?.subjectGrade??9.0),
+														  10 - (inquiry1Score?.subjectGrade??9.0),
+														  10 - (inquiry2Score?.subjectGrade??9.0),
+														  10 - (secondLanguageAndChineseCharactersScore?.subjectGrade??9.0)];
 				chartName.config.options.scales.y.min = 1;
 				chartName.config.options.scales.y.max = 9;
 				chartName.config.options.scales.y.ticks.beginAtZero = false;
 				chartName.config.options.scales.y.ticks.stepSize = 1;
 				chartName.config.options.scales.y.ticks.callback = value => (10-value);
-				chartName.config.options.plugins.tooltip.callbacks.label = function(ctx) {
-					let lbl = 10 - ctx.raw;
-					lbl = lbl ?? '응시안함'; 
-					return `${ctx.dataset.label}: ${lbl}`;
+				chartName.config.options.plugins.tooltip['callbacks'] = {
+					label : function(ctx) {
+						console.log(ctx);
+						//ctx.raw = 10 - ctx.raw;
+						let lbl = 10 - ctx.raw ?? '응시안함';
+						//ctx.parsed.y = ctx.raw;
+						//ctx.dataset.data[ctx.dataIndex] = 10 - ctx.dataset.data[ctx.dataIndex];
+						return `${ctx.dataset.label}: ${lbl}`;
+					}
 				}
 			} else if(chartType == '석차') {
 				chartName.config.data.datasets[3].label = '석차';
@@ -233,54 +239,7 @@
 				
 				// 버튼 그룹 초기화
 				$('#score-analysis-div button').each((idx, ele) => $(ele).attr('id') == 'originalScoreBtn' ? $(ele).toggleClass('active', true) : $(ele).toggleClass('active', false));
-				
-				/* const chartData = scoreChart.config.data.datasets; 
-				chartData[3].label='원점수';
-				const dataArr = [
-					 			 전국평균
-								 [koreanScore?.subjectOriginalScoreNationAvg??0.0,
-								  mathScore?.subjectOriginalScoreNationAvg??0.0,
-								  englishScore?.subjectOriginalScoreNationAvg??0.0,
-								  koreanHistoryScore?.subjectOriginalScoreNationAvg??0.0,
-								  inquiry1Score?.subjectOriginalScoreNationAvg??0.0,
-								  inquiry2Score?.subjectOriginalScoreNationAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScoreNationAvg??0.0],
-								 도평균
-								 [koreanScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  mathScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  englishScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  koreanHistoryScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  inquiry1Score?.subjectOriginalScoreProvinceAvg??0.0,
-								  inquiry2Score?.subjectOriginalScoreProvinceAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScoreProvinceAvg??0.0],
-								 시평균
-								 [koreanScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  mathScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  englishScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  koreanHistoryScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  inquiry1Score?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  inquiry2Score?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScoreMunicipalityAvg??0.0],
-								 점수
-								 [koreanScore?.subjectOriginalScore??0.0,
-								  mathScore?.subjectOriginalScore??0.0,
-								  englishScore?.subjectOriginalScore??0.0,
-								  koreanHistoryScore?.subjectOriginalScore??0.0,
-								  inquiry1Score?.subjectOriginalScore??0.0,
-								  inquiry2Score?.subjectOriginalScore??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScore??0.0]];
-				// 차트 값 변경
-				$(chartData).each((idx, ele) => ele.data = [...dataArr[idx]]);
-				
-				// 차트 설정 변경
-				scoreChart.config.options.scales.y.max = 100;
-				scoreChart.config.options.scales.y.ticks.stepSize = 10;
-				scoreChart.config.options.scales.y.ticks.beginAtZero = true;
-				
-				console.log(scoreChart);
-				
-				// 차트 repaint
-				scoreChart.update(); */
+
 				updateChart(scoreChart, '원점수');
 				
 				// 테이블 값 변경
@@ -405,283 +364,16 @@
 		$('.score-btn').click(function(e) {
 			$('.score-btn').each((idx, ele) => $(ele).toggleClass('active', ele == this));
 			if($(e.target).attr('id') == 'originalScoreBtn') {
-				scoreChart.reset();
-				console.log('og');
-				const ogChartData = scoreChart.config.data.datasets;
-				ogChartData[3].label='원점수';
-				const ogDataArr = [
-					 			 /* 전국평균 */
-								 [koreanScore?.subjectOriginalScoreNationAvg??0.0,
-								  mathScore?.subjectOriginalScoreNationAvg??0.0,
-								  englishScore?.subjectOriginalScoreNationAvg??0.0,
-								  koreanHistoryScore?.subjectOriginalScoreNationAvg??0.0,
-								  inquiry1Score?.subjectOriginalScoreNationAvg??0.0,
-								  inquiry2Score?.subjectOriginalScoreNationAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScoreNationAvg??0.0],
-								 /* 도평균 */
-								 [koreanScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  mathScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  englishScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  koreanHistoryScore?.subjectOriginalScoreProvinceAvg??0.0,
-								  inquiry1Score?.subjectOriginalScoreProvinceAvg??0.0,
-								  inquiry2Score?.subjectOriginalScoreProvinceAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScoreProvinceAvg??0.0],
-								 /* 시평균 */
-								 [koreanScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  mathScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  englishScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  koreanHistoryScore?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  inquiry1Score?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  inquiry2Score?.subjectOriginalScoreMunicipalityAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScoreMunicipalityAvg??0.0],
-								 /* 점수 */
-								 [koreanScore?.subjectOriginalScore??0.0,
-								  mathScore?.subjectOriginalScore??0.0,
-								  englishScore?.subjectOriginalScore??0.0,
-								  koreanHistoryScore?.subjectOriginalScore??0.0,
-								  inquiry1Score?.subjectOriginalScore??0.0,
-								  inquiry2Score?.subjectOriginalScore??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectOriginalScore??0.0]];
-				// 차트 값 변경
-				$(ogChartData).each((idx, ele) => ele.data = [...ogDataArr[idx]]);
-				
-				// 차트 설정 변경
-				/* scoreChart.config.options.scales.y.min = 0;
-				scoreChart.config.options.scales.y.max = 100;
-				scoreChart.config.options.scales.y.ticks.beginAtZero = true;
-				scoreChart.config.options.scales.y.ticks.stepSize = 10;
-				
-				const ticksObj = scoreChart.config.options.scales.y.ticks;
-				if('callback' in ticksObj) delete scoreChart.config.options.scales.y.ticks.callback; */
-				
-				// 차트 repaint
-				scoreChart.update();
-				
+				updateChart(scoreChart, '원점수');
 			} else if($(e.target).attr('id') == 'standardScoreBtn') {
-				console.log('std');
-				const stdChartData = scoreChart.config.data.datasets;
-				stdChartData[3].label='표준점수';
-				const stdDataArr = [
-					 			 /* 전국평균 */
-								 [koreanScore?.subjectStandardScoreNationAvg??0.0,
-								  mathScore?.subjectStandardScoreNationAvg??0.0,
-								  englishScore?.subjectStandardScoreNationAvg??0.0,
-								  koreanHistoryScore?.subjectStandardScoreNationAvg??0.0,
-								  inquiry1Score?.subjectStandardScoreNationAvg??0.0,
-								  inquiry2Score?.subjectStandardScoreNationAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectStandardScoreNationAvg??0.0],
-								 /* 도평균 */
-								 [koreanScore?.subjectStandardScoreProvinceAvg??0.0,
-								  mathScore?.subjectStandardScoreProvinceAvg??0.0,
-								  englishScore?.subjectStandardScoreProvinceAvg??0.0,
-								  koreanHistoryScore?.subjectStandardScoreProvinceAvg??0.0,
-								  inquiry1Score?.subjectStandardScoreProvinceAvg??0.0,
-								  inquiry2Score?.subjectStandardScoreProvinceAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectStandardScoreProvinceAvg??0.0],
-								 /* 시평균 */
-								 [koreanScore?.subjectStandardScoreMunicipalityAvg??0.0,
-								  mathScore?.subjectStandardScoreMunicipalityAvg??0.0,
-								  englishScore?.subjectStandardScoreMunicipalityAvg??0.0,
-								  koreanHistoryScore?.subjectStandardScoreMunicipalityAvg??0.0,
-								  inquiry1Score?.subjectStandardScoreMunicipalityAvg??0.0,
-								  inquiry2Score?.subjectStandardScoreMunicipalityAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectStandardScoreMunicipalityAvg??0.0],
-								 /* 점수 */
-								 [koreanScore?.subjectStandardScore??0.0,
-								  mathScore?.subjectStandardScore??0.0,
-								  englishScore?.subjectStandardScore??0.0,
-								  koreanHistoryScore?.subjectStandardScore??0.0,
-								  inquiry1Score?.subjectStandardScore??0.0,
-								  inquiry2Score?.subjectStandardScore??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectStandardScore??0.0]];
-				// 차트 값 변경
-				$(stdChartData).each((idx, ele) => ele.data = [...stdDataArr[idx]]);
-				
-				// 차트 설정 변경
-				scoreChart.config.options.scales.y.max = 150;
-				scoreChart.config.options.scales.y.ticks.stepSize = 10;
-				console.log(scoreChart.config.options.scales.y);
-				
-				// 차트 repaint
-				scoreChart.update();
-				
+				updateChart(scoreChart, '표준점수');
 			} else if($(e.target).attr('id') == 'percentBtn') {
-				console.log('pct');
-				const pctChartData = scoreChart.config.data.datasets;
-				pctChartData[3].label = '백분위';
-				const pctDataArr = [
-					 			 /* 전국평균 */
-								 [koreanScore?.subjectPercentNationAvg??0.0,
-								  mathScore?.subjectPercentNationAvg??0.0,
-								  englishScore?.subjectPercentNationAvg??0.0,
-								  koreanHistoryScore?.subjectPercentNationAvg??0.0,
-								  inquiry1Score?.subjectPercentNationAvg??0.0,
-								  inquiry2Score?.subjectPercentNationAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectPercentNationAvg??0.0],
-								 /* 도평균 */
-								 [koreanScore?.subjectPercentProvinceAvg??0.0,
-								  mathScore?.subjectPercentProvinceAvg??0.0,
-								  englishScore?.subjectPercentProvinceAvg??0.0,
-								  koreanHistoryScore?.subjectPercentProvinceAvg??0.0,
-								  inquiry1Score?.subjectPercentProvinceAvg??0.0,
-								  inquiry2Score?.subjectPercentProvinceAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectPercentProvinceAvg??0.0],
-								 /* 시평균 */
-								 [koreanScore?.subjectPercentMunicipalityAvg??0.0,
-								  mathScore?.subjectPercentMunicipalityAvg??0.0,
-								  englishScore?.subjectPercentMunicipalityAvg??0.0,
-								  koreanHistoryScore?.subjectPercentMunicipalityAvg??0.0,
-								  inquiry1Score?.subjectPercentMunicipalityAvg??0.0,
-								  inquiry2Score?.subjectPercentMunicipalityAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectPercentMunicipalityAvg??0.0],
-								 /* 점수 */
-								 [koreanScore?.subjectPercent??0.0,
-								  mathScore?.subjectPercent??0.0,
-								  englishScore?.subjectPercent??0.0,
-								  koreanHistoryScore?.subjectPercent??0.0,
-								  inquiry1Score?.subjectPercent??0.0,
-								  inquiry2Score?.subjectPercent??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectPercent??0.0]];
-				// 차트 값 변경
-				$(pctChartData).each((idx, ele) => ele.data = [...pctDataArr[idx]]);
-				
-				// 차트 설정 변경
-				scoreChart.config.options.scales.y.max = 100;
-				scoreChart.config.options.scales.y.ticks.stepSize = 10;
-				scoreChart.config.options.scales.y.ticks.beginAtZero = true;
-				console.log(scoreChart.config.options.scales.y);
-				
-				// 차트 repaint
-				scoreChart.update();
+				updateChart(scoreChart, '백분위');
 			} else if($(e.target).attr('id') == 'gradeBtn') {
-				console.log('grd');
-				const grdChartData = scoreChart.config.data.datasets;
-				grdChartData[3].label = '등급';
-				const grdDataArr = [
-					 			 /* 전국평균 */
-								 [koreanScore?.subjectGradeNationAvg??0.0,
-								  mathScore?.subjectGradeNationAvg??0.0,
-								  englishScore?.subjectGradeNationAvg??0.0,
-								  koreanHistoryScore?.subjectGradeNationAvg??0.0,
-								  inquiry1Score?.subjectGradeNationAvg??0.0,
-								  inquiry2Score?.subjectGradeNationAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectGradeNationAvg??0.0],
-								 /* 도평균 */
-								 [koreanScore?.subjectGradeProvinceAvg??0.0,
-								  mathScore?.subjectGradeProvinceAvg??0.0,
-								  englishScore?.subjectGradeProvinceAvg??0.0,
-								  koreanHistoryScore?.subjectGradeProvinceAvg??0.0,
-								  inquiry1Score?.subjectGradeProvinceAvg??0.0,
-								  inquiry2Score?.subjectGradeProvinceAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectGradeProvinceAvg??0.0],
-								 /* 시평균 */
-								 [koreanScore?.subjectGradeMunicipalityAvg??0.0,
-								  mathScore?.subjectGradeMunicipalityAvg??0.0,
-								  englishScore?.subjectGradeMunicipalityAvg??0.0,
-								  koreanHistoryScore?.subjectGradeMunicipalityAvg??0.0,
-								  inquiry1Score?.subjectGradeMunicipalityAvg??0.0,
-								  inquiry2Score?.subjectGradeMunicipalityAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectGradeMunicipalityAvg??0.0],
-								 /* 점수 */
-								 [koreanScore?.subjectGrade??0.0,
-								  mathScore?.subjectGrade??0.0,
-								  englishScore?.subjectGrade??0.0,
-								  koreanHistoryScore?.subjectGrade??0.0,
-								  inquiry1Score?.subjectGrade??0.0,
-								  inquiry2Score?.subjectGrade??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectGrade??0.0]];
-				
-				 $(grdDataArr).each(function(idx, ele) {
-					$(ele).each(function(inner_idx, item) {
-						console.log(item == 0);
-						item = ((item == 0) ? 1 : (10 - item));
-						grdDataArr[idx][inner_idx] = item;
-					});
-				});
-				
-				// 차트 값 변경
-				$(grdChartData).each((idx, ele) => ele.data = [...grdDataArr[idx]]);
-				
-				// 차트 설정 변경
-				scoreChart.config.options.scales.y.min = 1;
-				scoreChart.config.options.scales.y.max = 9;
-				scoreChart.config.options.scales.y.ticks.beginAtZero = false;
-				scoreChart.config.options.scales.y.ticks.stepSize = 1;
-				scoreChart.config.options.scales.y.ticks.callback = function(value) {
-					//console.log(value);
-					return 10-value;
-				}
-				//const ticksObj = scoreChart.config.options.scales.y.ticks;
-				//if('callback' in ticksObj) delete scoreChart.config.options.scales.y.ticks.callback;
-				//console.log(scoreChart.config.options.plugins.tooltip);
-				console.log(scoreChart.config);
-				scoreChart.config.options.plugins.tooltip.callbacks = {
-						label : function(ctx) {
-							console.log('++++++++++')
-							console.log(ctx)
-							console.log('++++++++++++')
-							let label = 10 - ctx.raw;
-							label = label ?? '응시안함'; 
-							return `${ctx.dataset.label}: ${label}`;
-						}
-				};
-				// tooltips.label.callback 찾아서 변경
-				// 차트 repaint
-				scoreChart.update();
+				updateChart(scoreChart, '등급');
 			} else if($(e.target).attr('id') == 'rankBtn') {
-				console.log('rank');
-				const rankChartData = scoreChart.config.data.datasets;
-				rankChartData[3].label = '석차';
-				const rankDataArr = [
-					 			 /* 전국평균 */
-								 [koreanScore?.subjectRankNationAvg??0.0,
-								  mathScore?.subjectRankNationAvg??0.0,
-								  englishScore?.subjectRankNationAvg??0.0,
-								  koreanHistoryScore?.subjectRankNationAvg??0.0,
-								  inquiry1Score?.subjectRankNationAvg??0.0,
-								  inquiry2Score?.subjectRankNationAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectRankNationAvg??0.0],
-								 /* 도평균 */
-								 [koreanScore?.subjectRankProvinceAvg??0.0,
-								  mathScore?.subjectRankProvinceAvg??0.0,
-								  englishScore?.subjectRankProvinceAvg??0.0,
-								  koreanHistoryScore?.subjectRankProvinceAvg??0.0,
-								  inquiry1Score?.subjectRankProvinceAvg??0.0,
-								  inquiry2Score?.subjectRankProvinceAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectRankProvinceAvg??0.0],
-								 /* 시평균 */
-								 [koreanScore?.subjectRankMunicipalityAvg??0.0,
-								  mathScore?.subjectRankMunicipalityAvg??0.0,
-								  englishScore?.subjectRankMunicipalityAvg??0.0,
-								  koreanHistoryScore?.subjectRankMunicipalityAvg??0.0,
-								  inquiry1Score?.subjectRankMunicipalityAvg??0.0,
-								  inquiry2Score?.subjectRankMunicipalityAvg??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectRankMunicipalityAvg??0.0],
-								 /* 점수 */
-								 [koreanScore?.subjectRank??0.0,
-								  mathScore?.subjectRank??0.0,
-								  englishScore?.subjectRank??0.0,
-								  koreanHistoryScore?.subjectRank??0.0,
-								  inquiry1Score?.subjectRank??0.0,
-								  inquiry2Score?.subjectRank??0.0,
-								  secondLanguageAndChineseCharactersScore?.subjectRank??0.0]];
-				// 차트 값 변경
-				$(rankChartData).each((idx, ele) => ele.data = [...rankDataArr[idx]]);
-				
-				// 차트 설정 변경
-				scoreChart.config.options.scales.y.min = 0;
-				scoreChart.config.options.scales.y.max = 20;
-				scoreChart.config.options.scales.y.ticks.stepSize = 2;
-				scoreChart.config.options.scales.y.ticks.beginAtZero = false;
-				
-				
-				// 차트 repaint
-				scoreChart.update();
+				updateChart(scoreChart, '석차');
 			}
-			// 값 매칭
-			// 값 변경
-			// 설정 변경
-			// repaint
 		});
 		
 		
@@ -795,66 +487,6 @@
 		};
 
 		const scoreChart = new Chart(ctx, config);
-		
-		const ctx2 = document.getElementById('subjectChart').getContext('2d');
-		const data2 = {
-			labels : [ '원점수', '전국 평균', '도 평균', '시 평균'],
-			datasets : [
-			{
-				label : '국어',
-				data : [koreanScore == null ? 0.0 : koreanScore.subjectOriginalScore,
-						mathScore == null ? 0.0 : mathScore.subjectOriginalScoreNationAvg,
-						englishScore == null ? 0.0 : englishScore.subjectOriginalScoreProvinceAvg,
-						koreanHistoryScore == null ? 0.0 : koreanHistoryScore.subjectOriginalScoreMunicipalityAvg],
-						 
-				backgroundColor: ['#ffadad',
-								  '#ffb2c6',
-								  '#ffb8e7',
-								  '#ffc3ff'],
-				borderColor: ['#ffadad',
-							  '#ffb2c6',
-							  '#ffb8e7',
-							  '#ffc3ff'],
-				borderWidth: 1.5,
-				tension: 0.25,
-				fill: false,
-				type: 'bar'
-			}]
-		};
-
-		const config2 = {
-			type : 'bar',
-			data : data2,
-			options : {
-				indexAxis : 'y',
-				scales : {
-					x: {
-						beginAtZero : true,
-						max : 100
-					},
-					y : {
-						beginAtZero : true,
-						max : 100
-					}
-				},
-				plugins : {
-					legend : {
-						position : 'top',
-					},
-					tooltip : {
-						mode : 'index',
-						intersect : false,
-					}
-				},
-				responsive : true,
-				maintainAspectRatio : false
-			}
-		};
-
-		const subjectChart = new Chart(ctx2, config2);
-		
-		/* updateChart(scoreChart, '원점수');
-		console.log(scoreChart); */
 	</script>
 </th:block>
 <div layout:fragment="content" id="momoDefault">
@@ -910,34 +542,6 @@
 							</ul>
 							<div id="score-cat-chart-div">
 								<canvas id="scoreChart" width="800" height="400px"	max-height="400px"></canvas>
-							</div>
-						</div>
-						<div id="score-analysis-div2">
-							<ul id="subjectBtnDiv" class="nav nav-tabs">
-							  <li class="nav-item subject-li">
-							    <button id="koreanScoreBtn" class="nav-link subject-btn active">국어</button>
-							  </li>
-							  <li class="nav-item subject-li">
-							    <button id="mathScoreBtn" class="nav-link subject-btn">수학</button>
-							  </li>
-							  <li class="nav-item subject-li">
-							    <button id="englishScoreBtn" class="nav-link subject-btn">영어</button>
-							  </li>
-							  <li class="nav-item subject-li">
-							    <button id="koreanHistoryScoreBtn" class="nav-link subject-btn">한국사</button>
-							  </li>
-							  <li class="nav-item subject-li">
-							    <button id="inquiry1ScoreBtn" class="nav-link subject-btn">탐구1</button>
-							  </li>
-							  <li class="nav-item subject-li">
-							    <button id="inquiry2ScoreBtn" class="nav-link subject-btn">탐구2</button>
-							  </li>
-							  <li class="nav-item subject-li">
-							    <button id="secondLanguageAndChineseCharactersScoreBtn" class="nav-link subject-btn">제2외국어</button>
-							  </li>
-							</ul>
-							<div id="subjectChartDiv">
-								<canvas id="subjectChart" width="800" height="400px" max-height="400px"></canvas>
 							</div>
 						</div>
 						<div id="score-card-div">
