@@ -24,4 +24,6 @@ public interface ExamMapper {
 	List<ExamInfo> getRegisteredQustionExamList();
 
 	List<ExamMappingQuestion> getExamQuestionInfobyExamCode(String examCode);
+
+	ExamInfo getExamInfoByExamCode(String examCode);
 }

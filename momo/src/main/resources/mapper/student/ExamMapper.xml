@@ -48,7 +48,24 @@
 	    <result column="exam_inst" property="examInst"/>
 	    <result column="registeredQuestionCount" property="registeredQuestionCount"/>
 	</resultMap>
-	
+	<select id="getExamInfoByExamCode" parameterType="String" resultType="ExamInfo">
+		SELECT
+			ei.exam_code,
+			ei.user_code,
+			u.user_id,
+			u.user_name,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			ei.exam_inst
+		FROM
+			exam_info ei INNER JOIN `user` u ON ei.user_code = u.user_code
+		WHERE
+			ei.exam_code=#{examCode}
+	</select>
 	<select id="getExamQuestionInfobyExamCode" parameterType="String" resultType="ExamMappingQuestion">
 		SELECT
 			qb.sub_mjr_cat_code as subMjrCatCode,

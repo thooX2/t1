@@ -190,27 +190,27 @@
 												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc5')}">
 													<th>사회탐구<br>등록과목</th>
 													<td colspan="3" id="social">
-														<span th:each="eqi, status : ${examQuestionInfo}"
-															th:if="${eqi.subMjrCatCode == 'smjrcc5'}"
-															th:text="${eqi.subMirCatNm + (status.last ? '' : ', ')}"></span>
+
 													</td>
 												</tr>
 
 												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc6')}">
 													<th>과학탐구<br>등록과목</th>
 													<td colspan="3" id="science">
-														<span th:each="eqi, status : ${examQuestionInfo}"
-															th:if="${eqi.subMjrCatCode == 'smjrcc6'}"
-															th:text="${eqi.subMirCatNm + (status.last ? '' : ', ')}"></span>
+
 													</td>
 												</tr>
 
 												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc7')}">
 													<th>직업탐구<br>등록과목</th>
 													<td colspan="3" id="job">
-														<span th:each="eqi, status : ${examQuestionInfo}"
-															th:if="${eqi.subMjrCatCode == 'smjrcc7'}"
-															th:text="${eqi.subMirCatNm + (status.last ? '' : ', ')}"></span>
+
+													</td>
+												</tr>
+												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc8')}">
+													<th>제2외국어<br>등록과목</th>
+													<td colspan="3" id="language">
+
 													</td>
 												</tr>
 
@@ -231,7 +231,7 @@
 		<button type="button" class="bttn2" aria-label="닫기">닫기</button>
 	</div>
 
-	<script>
+	<script th:inline="javascript">
 		var qnaQst = [];
 		console.log(qnaQst);
 		$('#questionContent').append(qnaQst);
@@ -243,20 +243,70 @@
 		$('#insideSubject').find('th').eq(0).height(setHeight);
 
 
-		$(function () {
-			// 과목 나열에서 맨뒤에 , 제거(-2인 이유는 ,뒤에 공백이 먼저 있어서)
-			let socialText = $('#social').find('span').last().text();
-			let newSocialText = socialText.slice(0, -2);
-			$('#social').find('span').last().text(newSocialText);
-			
-			let scienceText = $('#science').find('span').last().text();
-			let newScienceText = scienceText.slice(0, -2);
-			$('#science').find('span').last().text(newScienceText);
-			
-			let jobText = $('#job').find('span').last().text();
-			let newJobText = jobText.slice(0, -2);
-			$('#job').find('span').last().text(newJobText);
+		var examQuestionInfo = /*[[${examQuestionInfo}]]*/[];
+
+
+
+		const socialList = [];
+		const scienceList = [];
+		const jobList = [];
+		const langList = [];
+
+		examQuestionInfo.forEach((element, idx) => {
+			const smjrcc = element['subMjrCatCode'];
+			switch (smjrcc) {
+
+				case 'smjrcc5':
+					if (!socialList.includes(element['subMirCatNm'])) {
+						socialList.push(element['subMirCatNm']);
+						$('#social').append($('<span/>').text(element['subMirCatNm']+', '));
+					}
+
+
+					break;
+				case 'smjrcc6':
+					if (!scienceList.includes(element['subMirCatNm'])) {
+						scienceList.push(element['subMirCatNm']);
+						$('#science').append($('<span/>').text(element['subMirCatNm']+', '));
+					}
+
+					break;
+				case 'smjrcc7':
+					if (!jobList.includes(element['subMirCatNm'])) {
+						jobList.push(element['subMirCatNm']);
+						$('#job').append($('<span/>').text(element['subMirCatNm']+', '));
+					}
+					break;
+				case 'smjrcc8':
+					if (!langList.includes(element['subMirCatNm'])) {
+						langList.push(element['subMirCatNm']);
+						$('#language').append($('<span/>').text(element['subMirCatNm']+', '));
+					}
+					break;
+			}
+
+
 		})
+
+
+
+		// 과목 나열에서 맨뒤에 , 제거(-2인 이유는 ,뒤에 공백이 먼저 있어서)
+		let socialText = $('#social').find('span').last().text();
+		let newSocialText = socialText.slice(0, -2);
+		$('#social').find('span').last().text(newSocialText);
+
+		let scienceText = $('#science').find('span').last().text();
+		let newScienceText = scienceText.slice(0, -2);
+		$('#science').find('span').last().text(newScienceText);
+
+		let jobText = $('#job').find('span').last().text();
+		let newJobText = jobText.slice(0, -2);
+		$('#job').find('span').last().text(newJobText);
+
+		let languageText = $('#language').find('span').last().text();
+		let newLanguageText = languageText.slice(0, -2);
+		$('#language').find('span').last().text(newLanguageText);
+
 
 
 	</script>

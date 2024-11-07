@@ -17,4 +17,6 @@ public class ExamInfo {
 	private String examInst;
 
 	private int registeredQuestionCount;
+	private String userId;
+	private String userName;
 }

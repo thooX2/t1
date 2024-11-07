@@ -21,6 +21,12 @@ public class ExamServiceImpl implements ExamService {
 	private final ExamMapper examMapper;
 
 	@Override
+	public ExamInfo getExamInfoByExamCode(String examCode) {
+
+		return examMapper.getExamInfoByExamCode(examCode);
+	}
+
+	@Override
 	public List<ExamMappingQuestion> getExamQuestionInfobyExamCode(String examCode) {
 
 		return examMapper.getExamQuestionInfobyExamCode(examCode);
