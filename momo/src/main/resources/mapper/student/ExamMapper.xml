@@ -46,9 +46,12 @@
 	    <result column="exam_tar_grd" property="examTarGrd"/>
 	    <result column="exam_date" property="examDate"/>
 	    <result column="exam_inst" property="examInst"/>
+	    <result column="exam_description" property="examDescription"/>
 	    <result column="registeredQuestionCount" property="registeredQuestionCount"/>
+	    <result column="user_name" property="userName"/>
+	    <result column="user_id" property="userId"/>
 	</resultMap>
-	<select id="getExamInfoByExamCode" parameterType="String" resultType="ExamInfo">
+	<select id="getExamInfoByExamCode" parameterType="String" resultMap="ExamInfoMap">
 		SELECT
 			ei.exam_code,
 			ei.user_code,

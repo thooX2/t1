@@ -32,7 +32,7 @@ public class ExamController {
 
 		// 시험에 등록한 문제정보 가져오기
 		List<ExamMappingQuestion> examQuestionInfo = examService.getExamQuestionInfobyExamCode(examCode);
-		log.error("test:{}", examQuestionInfo);
+		
 		// 시험에 관한 정보 가져오기
 		ExamInfo examInfo = examService.getExamInfoByExamCode(examCode);
 
