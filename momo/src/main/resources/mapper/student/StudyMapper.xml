@@ -489,7 +489,14 @@
 		insert into detailed_schedule VALUES(
 		#{detailedSchedule},
 		#{userCode},
-		#{learningSchedule},
+		 <choose>
+            <when test="learningSchedule == null or learningSchedule == '' or learningSchedule == 'null'">
+                NULL
+            </when>
+            <otherwise>
+                #{learningSchedule}
+            </otherwise>
+        </choose>,
 		#{smjrcc},
 		#{smircc},
 		#{detailedScheduleMemo},
@@ -730,7 +737,7 @@
             ds.detailed_schedule_result AS result
         FROM 
             learning_schedule ls 
-        left JOIN 
+        right JOIN 
             detailed_schedule ds
         ON 
             ls.learning_schedule = ds.learning_schedule

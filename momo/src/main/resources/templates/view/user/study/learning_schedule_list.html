@@ -5,7 +5,7 @@
 
 <head>
 <link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
-<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
+<!-- <link rel="stylesheet" th:href="@{/user/css/study/style.css}"> -->
 <!-- <link rel="stylesheet" th:href="@{/user/css/study/common(1).css}"> -->
 <link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
 <link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
@@ -28,6 +28,7 @@ element.style {
 
 ul {
 	list-style-type: none;
+	padding : 0px;
 }
 </style>
 
@@ -53,13 +54,11 @@ ul {
 			<!-- Include the sidebar fragment here -->
 			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
 
-
 			<!-- content -->
 			<div class="content">
 				<div id="wrap_2014">
 					<div class="column_top">
 						<!-- 상단 메뉴 시작 -->
-						<h1>실험1</h1>
 						<div class="column_right cust_test" id="contents">
 							<p
 								style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
@@ -115,14 +114,14 @@ ul {
 															</select>
 														</div>
 														<div class="form-group">
-															<label for="smircc">세부과목리스트</label> <select
+															<label id="nmSmircc" for="smircc">세부과목리스트</label> <select
 																class="form-control" id="smircc" required>
 																<option value="">선택된 과목에 따라 변경됩니다.</option>
 															</select>
 														</div>
-														<div class="form-group">
+														<div id="selectName" class="form-group">
 															<label for="title">현재 학습계획중에 추가하고자 하는 부분이 있습니까?</label>
-															<select class="form-control" id="learning" required>
+															<select class="form-control" id="learning">
 																<option value="">계획을 선택해 주세요.</option>
 																<th:block th:each="list : ${LearningScheduleList}">
 																	<option th:value="${list.learningSchedule}"
@@ -131,19 +130,19 @@ ul {
 															</select>
 														</div>
 
-														<div class="form-group">
-															<label for="startDate">시작일자</label> <input type="date"
+														<div id="startDays" class="form-group">
+															<label  for="startDate">시작일자</label> <input type="date"
 																class="form-control" id="startDate" required>
 														</div>
-														<div class="form-group">
-															<label for="endDate">종료일자</label> <input type="date"
-																class="form-control" id="endDate" required>
+														<div id = "endDays" class="form-group">
+															<label  for="endDate">종료일자</label> <input type="date"
+																class="form-control" id="endDate">
 														</div>
-														<div class="form-group">
-															<label for="startTime">시작시간</label> <input type="time"
+														<div id="startTimer" class="form-group">
+															<label  for="startTime" required>시작시간</label> <input type="time"
 																class="form-control" id="startTime" required>
 														</div>
-														<div class="form-group">
+														<div id="endTimer" class="form-group">
 															<label for="endTime">종료시간</label> <input type="time"
 																class="form-control" id="endTime" required>
 														</div>
