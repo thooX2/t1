@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ks52team01.student.exam.dto.ExamAnalyse;
 import ks52team01.student.exam.dto.ExamInfo;
+import ks52team01.student.exam.dto.ExamMappingQuestion;
 import ks52team01.student.exam.service.ExamService;
-import ks52team01.student.exam.service.ExamServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,15 @@ public class ExamController {
 	public String getExamDetails(@PathVariable(name = "examCode") String examCode,
 			@RequestParam(name = "examName") String examName, Model model) {
 
+		// 시험에 등록한 문제정보 가져오기
+		List<ExamMappingQuestion> examQuestionInfo = examService.getExamQuestionInfobyExamCode(examCode);
+		
+		// 시험에 관한 정보 가져오기
+		ExamInfo examInfo = examService.getExamInfoByExamCode(examCode);
+
 		model.addAttribute("examName", examName);
+		model.addAttribute("examQuestionInfo", examQuestionInfo);
+		model.addAttribute("examInfo", examInfo);
 		return "view/user/exam/user_exam_info_popup";
 	}
 
