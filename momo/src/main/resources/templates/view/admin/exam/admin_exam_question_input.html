@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/admin_layout}">
+
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+	<!-- Site favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="/admin/img/exam/adminExamQuestionInput/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/admin/img/exam/adminExamQuestionInput/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/admin/img/exam/adminExamQuestionInput/favicon-16x16.png">
+
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+		rel="stylesheet">
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamQuestionInput/core.css">
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamQuestionInput/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamQuestionInput/jquery.steps.css">
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminExamQuestionInput/style.css">
+
+	<!-- Select2 CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+	<!-- 애니메이션 효과 -->
+	<style>
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+
+			}
+
+			to {
+				opacity: 1;
+			}
+
+		}
+
+		div {
+			animation: fadeIn 0.5s ease-in-out;
+		}
+
+		.form-group.row {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.form-group.row>label {
+			font-weight: bolder;
+		}
+
+		.bootstrap-select .dropdown-toggle .filter-option {
+			position: static;
+			top: 0;
+			left: 0;
+			float: left;
+			width: 100%;
+			text-align: left;
+			overflow: hidden;
+			display: flex;
+			/* Flexbox를 사용하여 정렬 */
+			align-items: end;
+			/* 세로로 가운데 정렬 */
+			flex: 0 1 auto;
+		}
+
+		.input_warning {
+			border-color: rgb(255, 128, 128);
+			outline: 0;
+			-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgb(255, 128, 128);
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgb(255, 128, 128);
+		}
+
+		.register-page-wrap .wizard-content .wizard>.steps>ul>li {
+			width: 12.5% !important;
+		}
+
+		p {
+			margin: 0px;
+		}
+
+		/* 태그 컨테이너 스타일 */
+		.tag-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 5px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			min-height: 40px;
+		}
+
+		/* 태그 스타일 */
+		.tag {
+			display: flex;
+			align-items: center;
+			background-color: #f0f0f0;
+			color: #555;
+			padding: 5px 10px;
+			border-radius: 20px;
+			border: 1px solid #ccc;
+			font-size: 14px;
+		}
+
+		/* X 아이콘 스타일 */
+		.tag .remove-tag {
+			margin-right: 8px;
+			font-size: 14px;
+			color: #999;
+			cursor: pointer;
+			font-weight: bold;
+			padding-right: 8px;
+			border-right: 1px solid #ccc;
+			/* 세로선 추가 */
+		}
+
+		/* X 아이콘 hover 스타일 */
+		.tag .remove-tag:hover {
+			color: #555;
+		}
+	</style>
+</head>
+<th:block layout:fragment="customJsFile">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<!-- jQuery UI 라이브러리 -->
+	<script src="/admin/js/exam/adminExamQuestionInput/jquery-ui.min.js"></script>
+
+	<script src="/admin/js/exam/adminExamQuestionInput/core.js"></script>
+	<script src="/admin/js/exam/adminExamQuestionInput/script.min.js"></script>
+	<script src="/admin/js/exam/adminExamQuestionInput/process.js"></script>
+	<script src="/admin/js/exam/adminExamQuestionInput/layout-settings.js"></script>
+	<script src="/admin/js/exam/adminExamQuestionInput/jquery.steps.js"></script>
+
+	<!-- flatpickr JS -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/l10n/ko.js"></script>
+
+	<!-- Select2 JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+
+		var examInfoList = /*[[${examInfoList}]]*/[];
+		var questionListKor = /*[[${questionListKor}]]*/[];
+		var questionListMath = /*[[${questionListMath}]]*/[];
+		var questionListEng = /*[[${questionListEng}]]*/[];
+		var questionListKH = /*[[${questionListKH}]]*/[];
+		var questionListInq = /*[[${questionListInq}]]*/[];
+		var questionListLang = /*[[${questionListLang}]]*/[];
+		let questionAllList = {
+			'국어': [],
+			'수학': [],
+			'영어': [],
+			'한국사': [],
+			'탐구': [],
+			'제 2외국어/한문': [],
+		};
+		$(".tab-wizard2").steps({
+			headerTag: "h5",
+			bodyTag: "section",
+			transitionEffect: "fade",
+			titleTemplate: '<span class="step">#index#</span> <span class="info">#title#</span>',
+			labels: {
+				finish: "문제등록",
+				next: "다음",
+				previous: "이전",
+			},
+			onStepChanging: function (event, currentIndex, newIndex) {
+				// --------------------------------------------------------
+				// 현재 스텝에서 다음 스텝으로 이동할 때 (newIndex > currentIndex)
+				if (newIndex > currentIndex) {
+
+					if (currentIndex == 6) {
+						// 시험목록 작성
+						const selectedExamCode = $('input[name = "selectExam"]:checked').prop('value');
+						if (selectedExamCode)
+							$('#selectedExam').empty();
+						examInfoList.forEach((element) => {
+							if (element['examCode'] == selectedExamCode) {
+								const newExamInfo = `
+							                <tr class="l_tr_even" align="center">
+							                    <td class="l_td01">${element.examCode}</td>
+							                    <td class="l_td01" title="종합시험" align="left">${element.examNm}</td>
+							                    <td class="l_td01">${element.examTarGrd + '학년'}</td>
+							                    <td class="l_td01">${element.examType}</td>
+							                    <td class="l_td01">${element.examInst}</td>
+							                    <td class="l_td01">${element.examOeType}</td>
+							                    <td class="l_td01" align="center">
+							                        <span class="label blue">${element.userId}</span>
+							                        <span>${element.userNm}</span>
+							                    </td>
+							                    <td class="l_td01">${element.examDate}</td>
+							                </tr>
+							            `;
+								$('#selectedExam').append(newExamInfo);
+							}
+						});
+						// 국어목록 등록
+						createNewTable('국어')
+						// 수학목록 등록
+						createNewTable('수학')
+						// 영어목록 등록
+						createNewTable('영어')
+						// 한국사목록 등록
+						createNewTable('한국사')
+						// 탐구목록 등록
+						createNewTable('탐구')
+						// 제 2외국어/한문목록 등록
+						createNewTable('제 2외국어/한문')
+
+					}
+
+					// --------------------------------------------------------
+				}
+				return true; // 유효성 검사 통과 시 스텝 이동 허용
+			},
+			onStepChanged: function (event, currentIndex, priorIndex) {
+				$('.steps .current').nextAll().last().addClass('disabled');
+			},
+			onFinished: function (event, currentIndex) {
+				const isRegister = confirm('위 시험문제를 시험에 등록하시겠습니까?')
+				const selectedExamCode = $('input[name = "selectExam"]:checked').prop('value');
+				if (isRegister) {
+					if (!selectedExamCode) {
+						alert('시험을 선택해주세요!');
+						return;
+					}
+					const totalQuestionList = [
+						...questionAllList['국어'],
+						...questionAllList['수학'],
+						...questionAllList['영어'],
+						...questionAllList['한국사'],
+						...questionAllList['탐구'],
+						...questionAllList['제 2외국어/한문']
+					];
+
+					const request = $.ajax({
+						url: `/admin/exam/${selectedExamCode}/questions`,
+						method: 'post',
+						// JSON 형식으로 설정(배열은 json형식으로 보내야함, 기본은 form형식으로 보내기)
+						contentType: 'application/json',
+						// 배열 방식으로 데이터 전송(JSON.stringify필수,혹시 객체로 보내면 controller에서 map으로 받아야함)
+						data: JSON.stringify(totalQuestionList),
+						dataType: 'json'
+					});
+
+					request.done(function (data) {
+						const searchList = data;
+						if (data) {
+							const selectedExamName = $('input[name = "selectExam"]:checked').parent().next().next().find('a').text()
+
+							alert(`< ${selectedExamName} >에 문제가 등록되었습니다`)
+							location.href = "/admin/exam/managementList";
+						} else {
+							alert('문제가 등록되지 않았습니다')
+						}
+					});
+
+					request.fail(function (jqXHR, textStatus, error) {
+						console.log(error);
+					});
+				} else {
+					alert('문제등록을 취소하셨습니다.')
+				}
+
+			}
+		});
+
+
+		function createNewTable(subjectName) {
+			let subjectList = [];
+			subjectTable = '';
+			switch (subjectName) {
+				case '국어':
+					subjectList = questionListKor;
+					subjectTable = '#questionListKor'
+					break;
+				case '수학':
+					subjectList = questionListMath
+					subjectTable = '#questionListMath'
+					break;
+				case '영어':
+					subjectList = questionListEng
+					subjectTable = '#questionListEng'
+					break;
+				case '한국사':
+					subjectList = questionListKH
+					subjectTable = '#questionListKH'
+					break;
+				case '탐구':
+					subjectList = questionListInq
+					subjectTable = '#questionListInq'
+					break;
+				case '제 2외국어/한문':
+					subjectList = questionListLang
+					subjectTable = '#questionListLang'
+					break;
+			}
+			$(subjectTable).empty();
+
+			if (questionAllList[subjectName].length != 0) {
+
+
+				subjectList.forEach((element) => {
+					questionAllList[subjectName].forEach((elem, idx) => {
+						if (element['qnaCode'] == elem) {
+
+							// 날짜 포맷 적용
+							const formattedCreateTime = formatDate(element.qnaCreateTime);
+							const formattedUpdateTime = formatDate(element.qnaUpdateTime);
+
+							const newQuestionList = `
+						<tr class="l_tr_even" align="center">
+						    <td class="l_td01">${idx + 1}</td>
+						    <td class="l_td01">${element.qnaCode}</td>
+						    <td class="l_td01" align="left">
+						        <p class="cate01">[ ${element.subMjrCatNm} - ${element.subMirCatNm} ]</p>
+						        <div style="float: left; margin-top: 4px;">${element.qnaSubject}</div>
+						    </td>
+						    <td class="l_td01">
+						        <input type="button" id="${element.qnaCode}" class="btn_simp" value="미리보기" />
+						    </td>
+						    <td class="l_td01">${element.qnaScr}점</td>
+
+						    <td class="l_td01" align="center">
+						        <p class="label blue" style="display: inline-block; padding: 4px; font-weight: bolder;">${element.userId}</p>
+						        <br>
+						        <p>${element.userName}</p>
+						    </td>
+						    <td class="l_td01">
+						        <span class="label green">사용</span>
+						    </td>
+
+						    <td class="l_td01">${formattedCreateTime}</td>
+						    <td class="l_td01">${(element.qnaUpdateTime != null) ? formattedUpdateTime : ''}</td>
+						</tr>`;
+							$(subjectTable).append(newQuestionList);
+							$(subjectTable).closest('table').prev().find('font[name="questionCount"]').text(questionAllList[subjectName].length);
+						}
+					})
+
+				})
+
+			} else {
+				const newQuestionList = `
+									<tr class="l_tr_even" align="center">
+									    <td class="l_td01" colspan="9">아직시험에 문제가 등록되지 않았습니다</td>
+									</tr>`
+
+				$(subjectTable).append(newQuestionList)
+			}
+
+
+			// =====================================================
+		}
+		// 날짜 형식을 변환하는 함수
+		function formatDate(dateString) {
+			const date = new Date(dateString);
+
+			const year = String(date.getFullYear()).slice(-2); // 연도를 두 자리로 표현
+			const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+			const day = String(date.getDate()).padStart(2, '0');
+
+			return `${year}.${month}.${day}`;
+		}
+
+		$(function () {
+			var picker = flatpickr(".flatpicker", {locale: "ko"});
+		})
+		$('#addExamBtn').click(function () {
+			location.href = "/admin/exam/management";
+		})
+
+		$('#examCount').text(examInfoList.length);
+
+		$('#searchBtn').click(function () {
+			const examType = $('select[name="examType"]').val();
+			const examTarGrd = $('input[name="examTarGrd"]:checked').val();
+			const examOeType = $('input[name="examOeType"]:checked').val();
+			const userCode = $('select[name="userCode"]').val();
+			const endDate = $('input[name="endDate"]').val();
+			const startDate = $('input[name="startDate"]').val();
+			const searchType = $('select[name="searchType"]').val();
+			const searchKeyword = $('input[name="searchKeyword"]').val();
+
+			if (searchKeyword != '' && searchType == '') {
+				alert('검색타입을 선택해주세요');
+				return;
+			}
+
+
+
+			const request = $.ajax({
+				url: '/admin/exam/searchExamList',
+				method: 'get',
+				data: {
+					'examType': examType,
+					'examTarGrd': examTarGrd,
+					'examOeType': examOeType,
+					'userCode': userCode,
+					'endDate': endDate,
+					'startDate': startDate,
+					'searchType': searchType,
+					'searchKeyword': searchKeyword,
+				},
+				dataType: 'json'
+			});
+			request.done(function (data) {
+				const searchList = data;
+				$('#examCount').text(data.length);
+				$('#examListTbody').empty();
+				if (searchList.length > 0) {
+					$(searchList).each(function (idx, item) {
+						// 날짜 포맷 적용
+
+						formattedCreateTime = formatDate(item.examMappingQuestionRegTime);
+
+						const checkRegisteredQuestion = (item.examMappingQuestionRegTime != null) ? 'O' : 'X';
+
+						const newRow = `<tr class="l_tr_even" align="center">
+										  <td class="l_td01"><input type="radio" name="selectExam"
+													 value="${item.examCode}" /> </td>
+						                  <td class="l_td01" >${item.examCode}</td>
+						                  <td class="l_td01" title="종합시험" align="left">
+						                      <a href="/admin/exam/modifyExam?examCode=${item.examCode}">${item.examNm}</a>
+						                  </td>
+						                  <td class="l_td01">${item.examTarGrd}학년</td>
+						                  <td class="l_td01">${item.examType}</td>
+						                  <td class="l_td01">${item.examInst}</td>
+						                  <td class="l_td01">${item.examOeType}</td>
+						                  <td class="l_td01" align="center">
+						                      <span class="label blue">${item.userId}</span>
+						                      <span>${item.userNm}</span>
+						                  </td>
+						                  <td class="l_td01">${item.examDate}</td>
+						                  <td class="l_td01">${checkRegisteredQuestion}</td>
+						                  <td class="l_td01">${formattedCreateTime}</td>
+						              </tr>`;
+						$('#examListTbody').append(newRow);
+					});
+				} else {
+					const newRow = `<tr class="l_tr_even" align="center">
+										<td class="l_td01" colspan="9">해당 검색자료가 없습니다</td>
+									</tr>`
+					$('#examListTbody').append(newRow);
+				}
+
+
+
+			});
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
+		})
+
+		// 시험선택에서 radiobutton을 누르면 해당 시험에 등록되어있는 문제를 미리 선택지에 넣어놓는 부분
+		$(document).on('click', 'input[name="selectExam"]', function () {
+			// 내용을 추가하기전 초기화작업
+			questionAllList['국어'] = [];
+			questionAllList['수학'] = [];
+			questionAllList['영어'] = [];
+			questionAllList['한국사'] = [];
+			questionAllList['탐구'] = [];
+			questionAllList['제 2외국어/한문'] = [];
+			$('.tag-container').empty()
+
+			const examCode = $(this).val();
+
+			const request = $.ajax({
+				url: `/admin/exam/${examCode}/questions`,
+				method: 'get',
+				dataType: 'json'
+			});
+			request.done(function (data) {
+				if (data) {
+
+					data.forEach(element => {
+
+						switch (element['subMjrCatCode']) {
+							case 'smjrcc1':
+								questionAllList['국어'].push(element['qnaCode'])
+								break;
+							case 'smjrcc2':
+								questionAllList['수학'].push(element['qnaCode'])
+								break;
+							case 'smjrcc3':
+								questionAllList['영어'].push(element['qnaCode'])
+								break;
+							case 'smjrcc4':
+								questionAllList['한국사'].push(element['qnaCode'])
+								break;
+							case 'smjrcc5':
+								questionAllList['탐구'].push(element['qnaCode'])
+								break;
+							case 'smjrcc6':
+								questionAllList['탐구'].push(element['qnaCode'])
+								break;
+							case 'smjrcc7':
+								questionAllList['탐구'].push(element['qnaCode'])
+								break;
+							case 'smjrcc8':
+								questionAllList['제 2외국어/한문'].push(element['qnaCode'])
+								break;
+						}
+					})
+					$('.tag-container').each((idx, element) => {
+						const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
+						let questionId = questionAllList[sectionId];
+						let backupQuestionId = questionAllList[sectionId];
+						$(element).prev().find('span').eq(1).text(questionId.length);
+
+						questionId.forEach((elem) => {
+							const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`);
+							// 개별 태그 삭제 기능
+							$tag.find('.remove-tag').on('click', function () {
+								$(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`).children().eq(1).text()
+								const textToRemove = $(this).parent().contents().last().text().trim(); // 태그 텍스트 가져오기
+
+								let newArray = questionId.filter(item => item !== textToRemove);
+								questionAllList[sectionId] = newArray;
+
+								$(this).parent().remove();
+
+								questionId = questionAllList[sectionId];
+								$(element).prev().find('span').eq(1).text(questionAllList[sectionId].length);
+							});
+							$(element).append($tag);
+						});
+
+					});
+
+				}
+			});
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
+		})
+
+		$('#searchReset').click(function () {
+			$('input[name="examTarGrd"]').val("");
+			$('input[name="endDate"]').val("");
+			$('input[name="startDate"]').val("");
+			$('input[name="searchKeyword"]').val("");
+
+			// Select 요소의 value를 초기화 (첫 번째 옵션 선택)
+			$('select[name="examType"]').prop('selectedIndex', 0);
+			$('select[name="searchType"]').prop('selectedIndex', 0);
+			$('select[name="userCode"]').val(null).trigger('change');
+
+			// Radio 버튼의 첫 번째 선택
+			$('input[name="examOeType"]').first().prop('checked', true);
+			$('input[name="examTarGrd"]').first().prop('checked', true);
+		})
+		// Select2 초기화
+		$('.js-example-basic-single').select2({
+			minimumResultsForSearch: 0, // 검색 기능 활성화
+			language: {
+				noResults: function () {
+					return "검색 결과가 없습니다"; // 사용자 정의 메시지
+				}
+			}
+		});
+
+		$(document).on('click', 'input[value="미리보기"]', function () {
+			const $qnaCode = $(this).prop('id');
+			window.open(`/admin/exam/questionPopup?qnaCode=${$qnaCode}`, '문제미리보기', 'width=600,height=830,scrollbars=yes');
+		});
+
+		$('button[name="searchQuestionBtn"]').click(function () {
+
+			const currentBtn = $(this)
+			currentBtn.closest('table').next().next().find('tbody').empty();
+
+			const subjectName = currentBtn.closest('table').prop('id');
+			const subMirCatCode = currentBtn.closest('table').find('select[name="subMirCatCode"]').val();
+
+			const qnaScr = currentBtn.closest('table').find('input[name="qnaScr"]:checked').val(); // 체크된 라디오 버튼 값 가져오기
+			const searchType = currentBtn.closest('table').find('select[name="searchType"]').val();
+
+			const searchKeyword = currentBtn.closest('table').find('input[name="searchKeyword"]').val();
+
+			if (searchKeyword != '' && searchType == '') {
+				alert('검색타입을 선택해주세요');
+				return;
+			}
+			// Ajax 요청
+			const request = $.ajax({
+				url: '/admin/exam/searchQuestionList',
+				method: 'get',
+				data: {
+					'subjectName': subjectName,
+					'qnaCurExamState': 'Y',
+					'subMirCatCode': subMirCatCode,
+					'qnaScr': qnaScr,
+					'searchType': searchType,
+					'searchKeyword': searchKeyword,
+				},
+				dataType: 'json'
+			});
+
+			request.done(function (data) {
+				const searchList = data;
+				const currentTbody = currentBtn.closest('table').next().next().find('tbody');
+
+				// 검색 결과를 비워야 합니다.
+				currentTbody.empty(); // <-- 이 줄을 추가하여 결과를 비웁니다.
+
+				currentBtn.closest('table').nextAll().eq(0).find('font[name="questionCount"]').text(data.length)
+
+				if (searchList.length > 0) {
+					$(searchList).each(function (idx, item) {
+						let questionState = '';
+						if (item.qnaCurExamState === 'Y') {
+							questionState = '<span class="label green">사용</span>';
+						} else {
+							questionState = '<span class="label red">중지</span>';
+						}
+						let subjectCategory = '';
+						if (item.subMirCatNm) {
+							subjectCategory = `[${item.subMjrCatNm} - ${item.subMirCatNm}]`;
+						} else {
+							subjectCategory = `[${item.subMjrCatNm}]`;
+						}
+
+						const newRow = `
+					    <tr class="l_tr_even" align="center">
+					        <td class="l_td01"><input type="checkbox" name="idx" value="${item.qnaCode}" /></td>
+							<td class="l_td01">${searchList.length - idx}</td>
+					        <td class="l_td01">${item.qnaCode}</td>
+					        <td class="l_td01" align="left">
+					            <p class="cate01">${subjectCategory}</p>
+					            <div style="float: left; margin-top: 4px;">
+					                <a href="/admin/exam/modifyQuestion?qnaCode=${item.qnaCode}" target="_Main">${item.qnaSubject}</a>
+					            </div>
+					        </td>
+					        <td class="l_td01"><input type="button" class="btn_simp" id="${item.qnaCode}" value="미리보기" /></td>
+					        <td class="l_td01">${item.qnaScr}점</td>
+					        <td class="l_td01" align="center">
+					            <p class="label blue" style="display: inline-block;padding:4px;font-weight: bolder;">${item.userId}</p>
+					            <br>
+					            <p>${item.userName}</p>
+					        </td>
+					        <td class="l_td01">${questionState}</td>
+					        <td class="l_td01">${new Date(item.qnaCreateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
+					        <td class="l_td01">${item.qnaUpdateTime !== null ? new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'}) : ''}</td>
+					    </tr>
+					    `;
+						currentTbody.append(newRow);  // 새로운 행을 테이블에 추가
+					});
+				} else {
+					const newRow = '<tr class="l_tr_even" align="center"><td class="l_td01" colspan="10" style="padding: 20px; font-weight: bold; color: #555;">검색결과에 해당하는 문제가 없습니다</td></tr>';
+					currentTbody.append(newRow);
+				}
+			});
+
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
+		});
+
+
+		$(document).on('click', 'input[name="AllCheck"]', function () {
+
+			if ($(this).is(':checked')) {
+
+				$(this).closest('table').find('input[name="idx"]').prop('checked', true);
+			} else {
+				$(this).closest('table').find('input[name="idx"]').prop('checked', false);
+			}
+		})
+
+		$(document).on('click', 'input[type="checkbox"]', function () {
+
+			const checkbox = $(this).closest('tbody').find('input[type="checkbox"]').length
+			const checked = $(this).closest('tbody').find('input[type="checkbox"]:checked').length
+
+
+			if (checkbox == checked) {
+				$(this).closest('table').find('input[name="AllCheck"]').attr('checked', true);
+			} else {
+				$(this).closest('table').find('input[name="AllCheck"]').attr('checked', false);
+			}
+		})
+
+		$('button[name="searchReset"]').click(function () {
+			const currentBtn = $(this)
+
+			// select2 초기화 및 선택 설정
+			currentBtn.closest('table').find('select[name="subMirCatCode"]').val('').trigger('change');
+
+			// 모든 라디오 버튼의 체크 해제
+			currentBtn.closest('table').find('input[name="qnaScr"]').prop('checked', false);
+
+			// 첫 번째 select 요소의 옵션 선택 (selectedIndex 또는 prop 사용)
+			currentBtn.closest('table').find('select[name="searchType"]').prop('selectedIndex', 0);
+			currentBtn.closest('table').find('input[name="searchKeyword"]').val("");
+
+		})
+
+
+
+
+
+		/*
+		// Enter 키를 눌렀을 때 검색어 추가(13이 엔터임)
+		$tagInput.on('keypress', function (e) {
+			if (e.which === 13 && $tagInput.val().trim() !== "") {
+				e.preventDefault(); // 폼 전송 방지
+				addTag($tagInput.val().trim());
+				$tagInput.val('');
+			}
+		});
+		*/
+
+		// 모든 태그 지우기 버튼
+		$('button[name="clear-tags"]').on('click', function () {
+			$(this).parent().next().empty();
+			const sectionId = $(this).closest('section').find('table').eq(0).prop('id');
+
+			questionAllList[sectionId] = [];
+
+			$(this).prev().prev().text(questionAllList[sectionId].length);
+
+		});
+
+		$(function () {
+			$('.tag-container').each((idx, element) => {
+				const sectionId = $(element).closest('section').find('table').eq(0).prop('id');
+
+				let questionId = questionAllList[sectionId];
+				let backupQuestionId = questionAllList[sectionId];
+				$(element).prev().find('span').eq(1).text(questionId.length);
+
+				questionId.forEach((elem) => {
+
+					const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`);
+					// 개별 태그 삭제 기능
+					$tag.find('.remove-tag').on('click', function () {
+						$(`<span class="tag"><span class="remove-tag">&times;</span>${elem}</span>`).children().eq(1).text()
+						const textToRemove = $(this).parent().contents().last().text().trim(); // 태그 텍스트 가져오기
+
+						let newArray = questionId.filter(item => item !== textToRemove);
+						questionAllList[sectionId] = newArray;
+
+						$(this).parent().remove();
+
+						questionId = questionAllList[sectionId];
+						$(element).prev().find('span').eq(1).text(questionAllList[sectionId].length);
+
+
+					});
+					$(element).append($tag);
+				});
+
+			});
+		})
+
+		$(document).on('click', '.tag', function (event) {
+			// 클릭한 요소가 '.remove-tag'가 아니라면 효과를 적용
+			if (!$(event.target).closest('.remove-tag').length) {
+				// 여기에 특정 효과를 적용하는 코드를 작성
+				const lastChild = $(this)[0].lastChild.nodeValue
+				window.open(`/admin/exam/questionPopup?qnaCode=${lastChild}`, '문제미리보기', 'width=600,height=830,scrollbars=yes');
+			}
+		});
+
+
+
+		$('button[name="addQuestion"]').click(function () {
+
+			const currentSection = $(this).closest('section')
+			const sectionId = currentSection.find('table').eq(0).prop('id');
+			const checkedQuestion = currentSection.find('table').eq(2).find('input[type="checkbox"]:checked').not('[name="AllCheck"]');
+
+			checkedQuestion.each((idx, element) => {
+
+				const tagText = $(element).val()
+
+				if (!questionAllList[sectionId].includes(tagText)) {
+					questionAllList[sectionId].push(tagText);
+
+					// 길이 업데이트
+					currentSection.find('div').last().prev().find('span').eq(1).text(questionAllList[sectionId].length);
+
+					const limitCount = currentSection.find('div').last().prev().find('span').eq(2).text().substring(3);
+
+
+					if (limitCount != null && limitCount != "") {
+						if (questionAllList[sectionId].length > limitCount) {
+							currentSection.find('div').last().prev().find('span').eq(1).css('color', 'red');
+						}
+					}
+
+
+
+					const $tag = $(`<span class="tag"><span class="remove-tag">&times;</span>${tagText}</span>`);
+
+					// 개별 태그 삭제 기능
+					$tag.find('.remove-tag').on('click', function () {
+						const textToRemove = $(this).parent().contents().last().text().trim();
+
+						let newArray = questionAllList[sectionId].filter(item => item !== textToRemove);
+						questionAllList[sectionId] = newArray;
+
+						$(this).parent().remove();
+
+						// 길이 업데이트
+						currentSection.find('div').last().prev().find('span').eq(1).text(questionAllList[sectionId].length);
+					});
+					currentSection.find('.tag-container').append($tag);
+				}
+			})
+		})
+		$(document).on('click', 'input[value="미리보기"]', function () {
+			const $qnaCode = $(this).prop('id');
+			window.open(`/admin/exam/questionPopup?qnaCode=${$qnaCode}`, '문제미리보기', 'width=600,height=830,scrollbars=yes');
+		});
+
+	</script>
+
+</th:block>
+<th:block layout:fragment="customJs1">
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+
+	<div class="sidebar">
+		<div th:replace="fragments/admin/exam/sidebar :: sidebar"></div>
+	</div>
+	<div class="content" style="padding:0px">
+		<div id="sys-breadcrumb">
+			<button id="sys-breadcrumb-arrow" type="button">
+				<i class="fa fa-minus" style="font-size: 12px;"></i>
+			</button>
+			<div id="sys-page-title">
+				<span id="sys-page-title-nm">시험문제구성 관리</span>
+				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
+			</div>
+			<div id="sys-page-util">
+				<a id="sys-page-util-refresh">
+					<i class="fa fa-retweet"></i>
+				</a>
+			</div>
+		</div>
+		<div id="sys-wrap">
+			<div id="sys-scroll">
+				<div id="alert_area"></div>
+				<div id="sys-contents">
+					<!-- --------------------------------------------------- -->
+
+					<div class="register-page-wrap d-flex align-items-center flex-wrap justify-content-center"
+						style="padding: 0px;">
+						<div class="container" style="max-width: unset;">
+							<div class="row align-items-center" style="width:100%">
+
+								<div style="width:100%">
+									<div class="register-box bg-white box-shadow border-radius-10"
+										style="max-width: unset;">
+										<div class="wizard-content">
+											<form class="tab-wizard2 wizard-circle wizard">
+												<h5>모의고사 선택</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_choose_exam :: chooseExamSection">
+
+												</section>
+												<!-- Step 2 -->
+												<h5>
+													국어 영역<br>문제 선택
+												</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'국어'},maxQuestion=${'45'},questionList=${questionListKor},categoryList=${categoryList1})">
+
+												</section>
+												<!-- Step 3 -->
+												<h5>
+													수학 영역<br>문제 선택
+												</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'수학'},maxQuestion=${'30'},questionList=${questionListMath},categoryList=${categoryList2})">
+
+												</section>
+												<!-- Step 4 -->
+												<h5>
+													영어 영역<br>문제 선택
+												</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'영어'},maxQuestion=${'45'},questionList=${questionListEng},categoryList=${categoryList3})">
+
+												</section>
+												<!-- Step 5 -->
+												<h5>
+													한국사 영역<br>문제 선택
+												</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'한국사'},maxQuestion=${'20'},questionList=${questionListKH},categoryList=${categoryList4})">
+												</section>
+												<!-- Step 6 -->
+												<h5>
+													탐구 영역<br>문제 선택
+												</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'탐구'},,maxQuestion=${'00'},questionList=${questionListInq},categoryList=${categoryList567})">
+												</section>
+												<!-- Step 6 -->
+												<!-- 탐구영역2는 앞에서 한번에 문제를 다 등록하게 수정-->
+												<!-- Step 7 -->
+												<h5>
+													제 2외국어/한문 영역<br>문제 선택
+												</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_add_question :: examSection(subjectName=${'제 2외국어/한문'},,maxQuestion=${'00'},questionList=${questionListLang},categoryList=${categoryList8})">
+
+												</section>
+												<!-- Step 8 -->
+												<h5>
+													모의고사<br>문제 확인
+												</h5>
+												<section
+													th:replace="fragments/admin/exam/adminExamQuestionInput/admin_exam_check_questionList :: checkQuestionListSection">
+												</section>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class SubMjrCate {
+public class AdminSubMjrCate {
 	private String subMjrCatCode; // 과목대분류코드
 	private String subMjrCatNm; // 과목대분류명
 	private int subExamTime; // 과목시험시간
@@ -14,5 +14,5 @@ public class SubMjrCate {
 	private int subQstTotalScr; // 과목총점
 	private String curExamUserState; // 현행시험 사용여부
 
-	private List<SubMirCate> subMirCateList;
+	private List<AdminSubMirCate> subMirCateList;
 }

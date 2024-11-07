@@ -193,6 +193,36 @@
 				$(this).find('.arrow').toggleClass('open');
 			});
 		});
+
+		$('#favorite_select').change(function () {
+			switch ($(this).val()) {
+				case "ksmart":
+					location.href = "https://www.ksmart.or.kr/";
+					break;
+				case "momoAdminExamCate":
+					location.href = "/admin/exam/category";
+					break;
+				case "momoAdminExamQnaBank":
+					location.href = "/admin/exam/questionList";
+					break;
+				case "momoAdminExamAddQuestion":
+					location.href = "/admin/exam/addQuestion";
+					break;
+				case "momoAdminExamManage":
+					location.href = "/admin/exam/managementList";
+					break;
+				case "momoAdminExamAddExam":
+					location.href = "/admin/exam/management";
+					break;
+				case "momoAdminExamAddQuestionToExam":
+					location.href = "/admin/exam/inputQuestion";
+					break;
+			}
+
+
+
+		})
+
 	</script>
 
 	<th:block layout:fragment="customJsFile"></th:block>

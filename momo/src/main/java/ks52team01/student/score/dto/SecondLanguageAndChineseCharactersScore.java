@@ -20,5 +20,6 @@ public class SecondLanguageAndChineseCharactersScore {
 	private Date   frnScrUpdateTime;
 	
 	private SubjectScore subjectScore;
+	private SubjectMajorCategory subjectMajorCategory;
 	private SubjectMinorCategory subjectMinorCategory;
 }

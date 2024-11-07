@@ -8,8 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 import ks52team01.interceptor.LoginCheckInterceptor;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
 	@Value("${file.path}")
@@ -20,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
 		String os = System.getProperty("os.name").toLowerCase();
 
 		if (os.contains("window")) {
-			rootPath += "d:";
+			rootPath += "c:";
 		}
 		return rootPath;
 	}

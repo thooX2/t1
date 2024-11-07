@@ -3,7 +3,7 @@ package ks52team01.admin.exam.dto;
 import lombok.Data;
 
 @Data
-public class SubMirCate {
+public class AdminSubMirCate {
 	// 과목중분류코드
 	private String subMirCatCode;
 
@@ -25,5 +25,5 @@ public class SubMirCate {
 	// 현행시험 사용여부(subject_minor_category)
 	private String subMirState;
 	
-	private SubMjrCate subMjrCate; 
+	private AdminSubMjrCate subMjrCate; 
 }

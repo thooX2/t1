@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class ExamQnaType {
+public class AdminExamQnaType {
 
 	private String examQnaTypeCode; // 문항유형코드
 	private String subMjrCatCode; // 과목

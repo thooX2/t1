@@ -14,21 +14,6 @@
 			display: none;
 		}
 
-		/* 커스텀 버튼 스타일 */
-		#customButton {
-			display: inline-block;
-			padding: 10px 20px;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-
-		#customButton:hover {
-			background-color: #0056b3;
-		}
-
 		/* 파일 이름 텍스트 */
 		#fileName {
 			margin-left: 10px;
@@ -95,95 +80,61 @@
 				height: 300,  // 고정된 높이
 				minHeight: 300,  // 최소 높이 설정 (고정)
 				maxHeight: 300,  // 최대 높이 설정 (고정)
-				placeholder: '여기에 내용을 입력하세요...',  // 플레이스홀더
+				placeholder: '이미지 삽입후 삭제시 꼭 이미지 클릭후 삭제버튼을 눌러주세요',  // 플레이스홀더
 				focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
 				lang: "ko-KR",                // 한글 설정
 				callbacks: {
 					onImageUpload: function (files) {
-						// 파일 업로드 핸들러
-						var reader = new FileReader();
-						reader.onload = function (e) {
-							$('#summernote').summernote('insertImage', e.target.result);
-						};
-						reader.readAsDataURL(files[0]);
+						var data = new FormData();
+						data.append("file", files[0]); // 단일 파일만 업로드
+
+						$.ajax({
+							url: "/admin/exam/upload/image", // 이미지 업로드 API
+							type: "POST",
+							data: data,
+							contentType: false,
+							processData: false
+						}).done(function (response) {
+							// 업로드된 이미지 경로를 Summernote에 삽입
+							$('#summernote').summernote('insertImage', response);
+						}).fail(function (err) {
+							console.error("이미지 업로드 실패", err);
+						});
+					},
+					onMediaDelete: function ($target) {
+						var filePath = $target.attr('src'); // 삭제할 이미지 경로
+
+						$.ajax({
+							url: "/admin/exam/delete/summerNoteImage", // 이미지 삭제 API
+							type: "POST",
+							data: {filePath: filePath}
+						}).done(function (response) {
+							console.log(response); // 삭제 성공 메시지
+						}).fail(function (err) {
+							console.error("이미지 삭제 실패", err);
+						});
 					},
 					onChange: function (contents, $editable) {
-						console.log('Content changed:', contents);
+						// console.log('Content changed:', contents);
 					}
 				},
 				toolbar: [
 					['fontname', ['fontname']],
 					['fontsize', ['fontsize']],
 					['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-					['color', ['forecolor', 'backcolor']],  // 텍스트 색상 및 배경 색상 추가
+					['color', ['forecolor', 'backcolor']],
 					['table', ['table']],
 					['para', ['ul', 'ol', 'paragraph']],
 					['height', ['height']],
-					['insert', ['picture', 'link', 'hr']],  // 수평선 추가
-					['view', ['fullscreen', 'codeview', 'help']],  // 코드 보기 버튼 추가
-
+					['insert', ['picture', 'link', 'hr']],
+					['view', ['fullscreen', 'codeview', 'help']],
 				],
-				fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+				fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '돋움체', '바탕체'],
 				fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
-				airMode: false,  // 공기 모드 활성화 여부
-				disableResize: false,  // 에디터 크기 조정 비활성화 (주석 처리)
-
+				airMode: false,
+				disableResize: false,
 			});
 		});
-
-		// ====================================
-		const fileInput = document.getElementById('fileInput');
-		const fileName = document.getElementById('fileName');
-		const fileList = document.getElementById('fileList');
-
-		// 파일 선택 시
-		fileInput.addEventListener('change', function () {
-			// 선택된 파일들 가져오기
-			const files = Array.from(fileInput.files);
-
-			// 파일명을 표시
-			if (files.length > 0) {
-				fileName.textContent = files.length === 1 ? files[0].name : `${files.length}개의 파일 선택됨`;
-			} else {
-				fileName.textContent = '선택된 파일이 없습니다.';
-			}
-
-			// 기존 파일 리스트 초기화
-			fileList.innerHTML = '';
-
-			// 파일 리스트에 추가
-			files.forEach(file => {
-				const listItem = document.createElement('li');
-				const img = document.createElement('img');
-				img.src = URL.createObjectURL(file); // 이미지 미리보기
-				img.className = 'thumbnail';
-				listItem.appendChild(img);
-				listItem.appendChild(document.createTextNode(file.name));
-
-				// 제거 버튼 생성
-				const removeButton = document.createElement('button');
-				removeButton.textContent = '제거';
-				removeButton.className = 'remove-button';
-				removeButton.onclick = () => {
-					fileList.removeChild(listItem);
-					updateFileInput();
-				};
-
-				listItem.appendChild(removeButton);
-				fileList.appendChild(listItem);
-			});
-		});
-
-		function updateFileInput() {
-			const updatedFiles = Array.from(fileList.children).map(item => item.childNodes[1].textContent);
-			console.log(updatedFiles); // 선택된 파일 목록을 콘솔에 출력
-
-			// 파일 리스트가 비어 있으면 파일명 텍스트 초기화
-			if (fileList.children.length === 0) {
-				fileName.textContent = '선택된 파일이 없습니다.';
-			}
-		}
-
 		// Select2 초기화
 		$('.js-example-basic-single').select2({
 			minimumResultsForSearch: 0, // 검색 기능 활성화
@@ -219,35 +170,10 @@
 		const initialQnaTypeListList = $('#qnaTypeList').html();
 
 		$('#categoryList').change(function () {
-			// value가 없고 text가 한국사인 select를 선택
-			if ($(this).val() == '' && $('#categoryList option:selected').text() == '한국사 > 한국사') {
-				// input hidden에 subject_major_catetory_code를 smjrcc4로 수동입력
-				$('#categorySubMjrCatCode').val('smjrcc4');
-				$('#qnaChapList').empty();
-				$('#qnaTypeList').empty();
-
-				// 위의 hidden value값을 기반으로 전체 문항타입목록에서 같은 값을 찾아 option을 생성 
-				qnaTypeList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-
-						$('#qnaTypeList').append($('<option/>').val(element['examQnaTypeCode']).text(element['examQnaTypeNm']));
-					}
-				})
-
-				// select에서 선택한 smircc를 기반으로 전체 단원목록에서 해당부분만 추출해 단원 select를 생성
-				qnaChapList.forEach(element => {
-					if (element['subMjrCatCode'] == $('#categorySubMjrCatCode').val()) {
-						$('#qnaChapList').append($('<option/>').val(element['examQnaChapCode']).text(element['examQnaChapNm']));
-					}
-				})
-
-
-				// value가 없는 즉, 전체라고 쓰인 select를 선택하면 모든 리스트를 보여줌	
-			} else if ($(this).val() == '') {
+			if ($(this).val() == '') {
 				$('#qnaChapList').html(initialQnaChapList);
 				$('#qnaTypeList').html(initialQnaTypeListList);
 			} else {
-				// 한국사를 제외한 다른 카테고리를 생성시 해당 카테고리의 출제단원과 출제유형만 보이게 설정
 				$('#qnaChapList').empty();
 				$('#qnaTypeList').empty();
 
@@ -286,12 +212,11 @@
 					$('input[name="qnaScr"]').eq(0).prop('disabled', true);
 					$('input[name="qnaScr"]').eq(2).prop('disabled', false);
 				}
-
-
-
 			}
 		});
-
+		$('#customButton').click(function () {
+			$('#fileInput').click();
+		})
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -308,10 +233,7 @@
 			<div id="sys-page-title">
 				<span id="sys-page-title-nm">문제은행</span>
 
-				<button type="button" class="btn_simp yellow">
-					<i class="fa fa-star"></i>
-					퀵메뉴추가
-				</button>
+
 
 			</div>
 			<div id="sys-page-util">
@@ -425,7 +347,7 @@
 										<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
 
 										<!-- 커스텀 버튼과 파일 이름 표시 -->
-										<label for="fileInput" id="customButton">파일 선택</label>
+										<button type="button" id="customButton" class="bttn2">파일 선택</button>
 										<span id="fileName">선택된 파일이 없습니다.</span> <!-- 파일명을 표시하는 텍스트 -->
 
 										<ul id="fileList"></ul>
@@ -448,7 +370,7 @@
 										</select>
 									</td>
 								</tr>
-						
+
 								<tr id="item_tr" style="display: table-row;">
 									<td class="f_th01">문항</td>
 									<td class="f_td01" colspan="3">
@@ -573,16 +495,18 @@
 								</tr>
 								<tr>
 									<td class="f_th01">출제자</td>
-									
+
 									<td class="f_td01" colspan="3">
 										<select name="userCode" class="js-example-basic-single">
 											<option value=""> - 담당자 선택 - </option>
-											<!-- <option th:if="${userList !=null}" th:each="ul:${userList}"
-												th:text="'['+${ul.userId}+'] '+${ul.userName}"
-												th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
 											<option th:if="${userList !=null}" th:each="ul:${userList}"
 												th:text="'['+${ul.userId}+'] '+${ul.userName}"
-												th:value="${ul.userCode}"></option>
+												th:selected="${(session.loggedInUser !=null)?ul.userId == session.loggedInUser.userId:''}"
+												th:value="${ul.userCode}">
+											</option>
+											<!-- <option th:if="${userList !=null}" th:each="ul:${userList}"
+													th:text="'['+${ul.userId}+'] '+${ul.userName}"
+													th:selected="${ul.userId == session.loggedInUser.userId}"></option>-->
 										</select>
 									</td>
 								</tr>
