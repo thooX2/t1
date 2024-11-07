@@ -26,13 +26,20 @@ public class ExamController {
 
 	private final ExamService examService;
 
+	@GetMapping("/searchExam")
+	@ResponseBody
+	public List<ExamInfo> getSearchExamList(ExamInfo examInfo) {
+		List<ExamInfo> searchExamList = examService.getSearchExamList(examInfo);
+		return searchExamList;
+	}
+
 	@GetMapping("/{examCode}/details")
 	public String getExamDetails(@PathVariable(name = "examCode") String examCode,
 			@RequestParam(name = "examName") String examName, Model model) {
 
 		// 시험에 등록한 문제정보 가져오기
 		List<ExamMappingQuestion> examQuestionInfo = examService.getExamQuestionInfobyExamCode(examCode);
-		
+
 		// 시험에 관한 정보 가져오기
 		ExamInfo examInfo = examService.getExamInfoByExamCode(examCode);
 

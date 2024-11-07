@@ -21,10 +21,10 @@ public class ExamInfo {
 	private int registeredQuestionCount;
 	private String userId;
 	private String userName;
-	private String beginYesar;
-	private String endYesar;
-	private String monthAll;
-	private String subjAll;
+	private String beginYear;
+	private String endYear;
+	private boolean monthAll;
+	private boolean subjAll;
 	private List<String> subj;
 	private List<String> month;
 

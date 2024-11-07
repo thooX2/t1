@@ -197,12 +197,45 @@
 		})
 
 
-		// 미완성
+
 		$(document).on('click', '.btn_L_col7', function () {
-			$('select[name="examTarGrd"]').val()
-			$('select[name="examType"]').val()
-			$('select[name="beginYear"]').val()
-			$('select[name="endYear"]').val()
+			const examTarGrd = $('select[name="examTarGrd"]').val()
+			const examType = $('select[name="examType"]').val()
+			const beginYear = $('select[name="beginYear"]').val()
+			const endYear = $('select[name="endYear"]').val()
+			const monthAll = $('input[name="monthAll"]').is(':checked')
+			const subjAll = $('input[name="subjAll"]').is(':checked')
+			const subj = [];
+			$('input[name="subj"]:checked').each((index, element) => {
+				subj.push($(element).val())
+			})
+			const month = [];
+			$('input[name="month"]:checked').each((index, element) => {
+				month.push($(element).val())
+			})
+
+
+			const request = $.ajax({
+				url: '/exam/searchExam',
+				method: 'get',
+				data: {
+					'examTarGrd': examTarGrd,
+					'examType': examType,
+					'beginYear': beginYear,
+					'endYear': endYear,
+					'monthAll': monthAll,
+					'subjAll': subjAll,
+					'subj': subj,
+					'month': month,
+				},
+				dataType: 'json'
+			});
+			request.done(function (data) {
+
+			});
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			})
 		})
 
 
@@ -260,7 +293,6 @@
 							</dt>
 							<dd class="type_yesrs">
 								<select name="beginYear" id="beginYear">
-									<option value="0000" selected="selected">=== 전체 ===</option>
 									<option value="2024">2024</option>
 									<option value="2023">2023</option>
 									<option value="2022">2022</option>
@@ -283,7 +315,6 @@
 								</select>
 								<i class="form_split">~</i>
 								<select name="endYear" id="endYear">
-									<option value="9999" selected="selected">=== 전체 ===</option>
 									<option value="2024">2024</option>
 									<option value="2023">2023</option>
 									<option value="2022">2022</option>
@@ -354,34 +385,35 @@
 										<label for="subjAll">전체</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj1" value="1">
+										<input type="checkbox" name="subj" id="subj1" value="smjrcc1">
 										<label for="subj1">국어</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj2" value="2">
+										<input type="checkbox" name="subj" id="subj2" value="smjrcc2">
 										<label for="subj2">수학</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj3" value="3">
+										<input type="checkbox" name="subj" id="subj3" value="smjrcc3">
 										<label for="subj3">영어</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj4" value="4">
+										<input type="checkbox" name="subj" id="subj4" value="smjrcc4">
 										<label for="subj4">한국사</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj5" value="5">
+										<input type="checkbox" name="subj" id="subj5" value="smjrcc5">
 										<label for="subj5">사회탐구</label>
 									</span>
-									<span class="chk_box"> <input type="checkbox" name="subj" id="subj6" value="6">
+									<span class="chk_box">
+										<input type="checkbox" name="subj" id="subj6" value="smjrcc6">
 										<label for="subj6">과학탐구</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj7" value="7">
-										<label for="subj7">직업탐구</label> <!-- 수정: 잘못된 label 태그 닫힘 오류 -->
+										<input type="checkbox" name="subj" id="subj7" value="smjrcc7">
+										<label for="subj7">직업탐구</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj8" value="8">
+										<input type="checkbox" name="subj" id="subj8" value="smjrcc8">
 										<label for="subj8">제2외국어</label>
 									</span>
 								</div>

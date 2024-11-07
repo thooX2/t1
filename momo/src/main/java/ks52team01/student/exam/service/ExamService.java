@@ -16,4 +16,6 @@ public interface ExamService {
 
 	ExamInfo getExamInfoByExamCode(String examCode);
 
+	List<ExamInfo> getSearchExamList(ExamInfo examInfo);
+
 }
