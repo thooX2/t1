@@ -60,7 +60,9 @@ tr {
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	border: 2px solid rgba(0, 0, 0, 0.25);
+	border-left: 2px solid rgba(0, 0, 0, 0.25);
+	border-right: 2px solid rgba(0, 0, 0, 0.25);
+	border-bottom: 2px solid rgba(0, 0, 0, 0.25);
     padding: 0px;
 }
 
@@ -99,6 +101,12 @@ tr {
     background: #FFFFFF;
 }
 
+.score-btn:focus {
+	outline: none !important;
+	font-weight: bold !important;
+	border-bottom: none !important;
+}
+
 .subject-btn {
 	width: 100% !important;
 	height: 50px !important;
@@ -125,4 +133,14 @@ tr {
 }
 #score-cat-button-div > button.score-btn.active{
 	background-color: yellow !important;
+}
+
+.subject-took-status-a {
+	color: #d05b64 !important;
+	font-weight: bold;
+}
+
+ .subject-took-status-span, .subject-took-status-a:hover {
+	color: #4686B8 !important;
+	font-weight: bold;
 }

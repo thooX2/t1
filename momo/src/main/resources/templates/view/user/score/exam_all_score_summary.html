@@ -12,6 +12,7 @@
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
 	
+		// 
 		const subjectScore = [[${subjectScoreMap}]];
 		let koreanScore = subjectScore['koreanScore'];
 		let mathScore = subjectScore['mathScore'];
@@ -20,12 +21,14 @@
 		let inquiry1Score = subjectScore['inquiry1Score'];
 		let inquiry2Score = subjectScore['inquiry2Score'];
 		let secondLanguageAndChineseCharactersScore = subjectScore['secondLanguageAndChineseCharactersScore'];
-		
+
 		const updateChart = function(chartName, chartType) {
 			console.log(chartName);
-			let config;
+			chartName.config.data.datasets[0].label = `${chartType} 전국 평균`;
+			chartName.config.data.datasets[1].label = `${chartType} 도 평균`;
+			chartName.config.data.datasets[2].label = `${chartType} 시 평균`;
+			chartName.config.data.datasets[3].label = `${chartType}`;
 			if(chartType == '원점수') {
-				chartName.config.data.datasets[3].label = '원점수';
 				chartName.config.data.datasets[0].data = [koreanScore?.subjectOriginalScoreNationAvg??0.0,
 														  mathScore?.subjectOriginalScoreNationAvg??0.0,
 														  englishScore?.subjectOriginalScoreNationAvg??0.0,
@@ -59,8 +62,13 @@
 				chartName.config.options.scales.y.ticks.beginAtZero = true;
 				chartName.config.options.scales.y.ticks.stepSize = 10;
 				chartName.config.options.scales.y.ticks.callback = value => value;
+				chartName.config.options.plugins.tooltip['callbacks'] = {
+					label : function(ctx) {
+						let lbl = Math.round((ctx.raw)*10)/10 ?? '응시안함';
+						return `${ctx.dataset.label} : ${lbl}점`;
+					}
+				}
 			} else if(chartType == '표준점수') {
-				chartName.config.data.datasets[3].label = '표준점수';
 				chartName.config.data.datasets[0].data = [koreanScore?.subjectStandardScoreNationAvg??0.0,
 														  mathScore?.subjectStandardScoreNationAvg??0.0,
 														  englishScore?.subjectStandardScoreNationAvg??0.0,
@@ -93,8 +101,14 @@
 				chartName.config.options.scales.y.max = 150;
 				chartName.config.options.scales.y.ticks.beginAtZero = true;
 				chartName.config.options.scales.y.ticks.stepSize = 10;
+				chartName.config.options.scales.y.ticks.callback = value => value;
+				chartName.config.options.plugins.tooltip['callbacks'] = {
+					label : function(ctx) {
+						let lbl = Math.round((ctx.raw)*10)/10 ?? '응시안함';
+						return `${ctx.dataset.label} : ${lbl}점`;
+					}
+				}
 			} else if(chartType == '백분위') {
-				chartName.config.data.datasets[3].label = '백분위';
 				chartName.config.data.datasets[0].data = [koreanScore?.subjectPercentNationAvg??0.0,
 														  mathScore?.subjectPercentNationAvg??0.0,
 														  englishScore?.subjectPercentNationAvg??0.0,
@@ -127,8 +141,14 @@
 				chartName.config.options.scales.y.max = 100;
 				chartName.config.options.scales.y.ticks.beginAtZero = true;
 				chartName.config.options.scales.y.ticks.stepSize = 10;
+				chartName.config.options.scales.y.ticks.callback = value => value;
+				chartName.config.options.plugins.tooltip['callbacks'] = {
+					label : function(ctx) {
+						let lbl = Math.round((ctx.raw)*10)/10 ?? '응시안함';
+						return `${ctx.dataset.label} : ${lbl}%`;
+					}
+				}
 			} else if(chartType == '등급') {
-				chartName.config.data.datasets[3].label = '등급';
 				chartName.config.data.datasets[0].data = [10 - (koreanScore?.subjectGradeNationAvg??9.0),
 														  10 - (mathScore?.subjectGradeNationAvg??9.0),
 														  10 - (englishScore?.subjectGradeNationAvg??9.0),
@@ -164,53 +184,49 @@
 				chartName.config.options.scales.y.ticks.callback = value => (10-value);
 				chartName.config.options.plugins.tooltip['callbacks'] = {
 					label : function(ctx) {
-						console.log(ctx);
-						//ctx.raw = 10 - ctx.raw;
-						let lbl = 10 - ctx.raw ?? '응시안함';
-						//ctx.parsed.y = ctx.raw;
-						//ctx.dataset.data[ctx.dataIndex] = 10 - ctx.dataset.data[ctx.dataIndex];
-						return `${ctx.dataset.label}: ${lbl}`;
+						let lbl = Math.round((10-ctx.raw)*10)/10 ?? '응시안함';
+						return `${ctx.dataset.label} : ${lbl}등급`;
 					}
 				}
 			} else if(chartType == '석차') {
-				chartName.config.data.datasets[3].label = '석차';
-				chartName.config.data.datasets[0].data = [koreanScore?.subjectRankNationAvg??0.0,
-														  mathScore?.subjectRankNationAvg??0.0,
-														  englishScore?.subjectRankNationAvg??0.0,
-														  koreanHistoryScore?.subjectRankNationAvg??0.0,
-														  inquiry1Score?.subjectRankNationAvg??0.0,
-														  inquiry2Score?.subjectRankNationAvg??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectRankNationAvg??0.0];
-				chartName.config.data.datasets[1].data = [koreanScore?.subjectRankProvinceAvg??0.0,
-														  mathScore?.subjectRankProvinceAvg??0.0,
-														  englishScore?.subjectRankProvinceAvg??0.0,
-														  koreanHistoryScore?.subjectRankProvinceAvg??0.0,
-														  inquiry1Score?.subjectRankProvinceAvg??0.0,
-														  inquiry2Score?.subjectRankProvinceAvg??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectRankProvinceAvg??0.0];
-				chartName.config.data.datasets[2].data = [koreanScore?.subjectRankMunicipalityAvg??0.0,
-														  mathScore?.subjectRankMunicipalityAvg??0.0,
-														  englishScore?.subjectRankMunicipalityAvg??0.0,
-														  koreanHistoryScore?.subjectRankMunicipalityAvg??0.0,
-														  inquiry1Score?.subjectRankMunicipalityAvg??0.0,
-														  inquiry2Score?.subjectRankMunicipalityAvg??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectRankMunicipalityAvg??0.0];
-				chartName.config.data.datasets[3].data = [koreanScore?.subjectRank??0.0,
-														  mathScore?.subjectRank??0.0,
-														  englishScore?.subjectRank??0.0,
-														  koreanHistoryScore?.subjectRank??0.0,
-														  inquiry1Score?.subjectRank??0.0,
-														  inquiry2Score?.subjectRank??0.0,
-														  secondLanguageAndChineseCharactersScore?.subjectRank??0.0];
-				chartName.config.options.scales.y.min = 1;
-				chartName.config.options.scales.y.max = 200;
+				chartName.config.data.datasets[0].data = [20 - (koreanScore?.subjectRankNationAvg??20),
+														  20 - (mathScore?.subjectRankNationAvg??20),
+														  20 - (englishScore?.subjectRankNationAvg??20),
+														  20 - (koreanHistoryScore?.subjectRankNationAvg??20),
+														  20 - (inquiry1Score?.subjectRankNationAvg??20),
+														  20 - (inquiry2Score?.subjectRankNationAvg??20),
+														  20 - (secondLanguageAndChineseCharactersScore?.subjectRankNationAvg??20)];
+				chartName.config.data.datasets[1].data = [20 - (koreanScore?.subjectRankProvinceAvg??20),
+														  20 - (mathScore?.subjectRankProvinceAvg??20),
+														  20 - (englishScore?.subjectRankProvinceAvg??20),
+														  20 - (koreanHistoryScore?.subjectRankProvinceAvg??20),
+													      20 - (inquiry1Score?.subjectRankProvinceAvg??20),
+														  20 - (inquiry2Score?.subjectRankProvinceAvg??20),
+														  20 - (secondLanguageAndChineseCharactersScore?.subjectRankProvinceAvg??20)];
+				chartName.config.data.datasets[2].data = [20 - (koreanScore?.subjectRankMunicipalityAvg??20),
+														  20 - (mathScore?.subjectRankMunicipalityAvg??20),
+														  20 - (englishScore?.subjectRankMunicipalityAvg??20),
+														  20 - (koreanHistoryScore?.subjectRankMunicipalityAvg??20),
+														  20 - (inquiry1Score?.subjectRankMunicipalityAvg??20),
+														  20 - (inquiry2Score?.subjectRankMunicipalityAvg??20),
+														  20 - (secondLanguageAndChineseCharactersScore?.subjectRankMunicipalityAvg??20)];
+				chartName.config.data.datasets[3].data = [20 - (koreanScore?.subjectRank??20),
+														  20 - (mathScore?.subjectRank??20),
+														  20 - (englishScore?.subjectRank??20),
+														  20 - (koreanHistoryScore?.subjectRank??20),
+														  20 - (inquiry1Score?.subjectRank??20),
+														  20 - (inquiry2Score?.subjectRank??20),
+														  20 - (secondLanguageAndChineseCharactersScore?.subjectRank??20)];
+				chartName.config.options.scales.y.min = 0;
+				chartName.config.options.scales.y.max = 20;
 				chartName.config.options.scales.y.ticks.beginAtZero = false;
-				chartName.config.options.scales.y.ticks.stepSize = 20;
-				chartName.config.options.scales.y.ticks.callback = value => (200-value);
-				chartName.config.options.plugins.tooltip.callbacks.label = function(ctx) {
-					let lbl = 200 - ctx.raw;
-					lbl = lbl ?? '응시안함';
-					return `${ctx.dataset.label}: ${lbl}`;
+				chartName.config.options.scales.y.ticks.stepSize = 2;
+				chartName.config.options.scales.y.ticks.callback = value => (20-value);
+				chartName.config.options.plugins.tooltip['callbacks'] = {
+					label : function(ctx) {
+						let lbl = Math.round((20-ctx.raw)*10)/10 ?? '응시안함';
+						return `${ctx.dataset.label} : ${lbl}등`;
+					}
 				}
 			}
 			chartName.update();
@@ -383,7 +399,7 @@
 			labels : [ '국어', '수학', '영어', '한국사', '탐구1', '탐구2', '제2외국어 및 한문' ],
 			datasets : [
 			{
-				label : '전국 평균',
+				label : '원점수 전국 평균',
 				data : [koreanScore == null ? 0.0 : koreanScore.subjectOriginalScoreNationAvg,
 						mathScore == null ? 0.0 : mathScore.subjectOriginalScoreNationAvg,
 						englishScore == null ? 0.0 : englishScore.subjectOriginalScoreNationAvg,
@@ -400,7 +416,7 @@
 				type: 'line'
 			},
 			{
-				label : '도 평균',
+				label : '원점수 도 평균',
 				data : [koreanScore == null ? 0.0 : koreanScore.subjectOriginalScoreProvinceAvg,
 						mathScore == null ? 0.0 : mathScore.subjectOriginalScoreProvinceAvg,
 						englishScore == null ? 0.0 : englishScore.subjectOriginalScoreProvinceAvg,
@@ -417,7 +433,7 @@
 				type: 'line'
 			},
 			{
-				label : '시 평균',
+				label : '원점수 시 평균',
 				data : [koreanScore == null ? 0.0 : koreanScore.subjectOriginalScoreMunicipalityAvg,
 						mathScore == null ? 0.0 : mathScore.subjectOriginalScoreMunicipalityAvg,
 						englishScore == null ? 0.0 : englishScore.subjectOriginalScoreMunicipalityAvg,
@@ -443,6 +459,7 @@
 						inquiry2Score == null ? 0.0 : inquiry2Score.subjectOriginalScore,
 						secondLanguageAndChineseCharactersScore == null ? 0.0 : secondLanguageAndChineseCharactersScore.subjectOriginalScore],
 								 
+				barThickness : 50,
 						 
 				backgroundColor: ['rgba(255, 173, 173, 0.75)',
 					              'rgba(255, 214, 165, 0.75)',
@@ -576,32 +593,32 @@
 									<tr class="report-card-subject-tr">
 										<td>응시여부</td>
 										<td id="koreanHistoryTookStatus">
-											<span th:if="*{['koreanHistoryScore'] != null}">응시</span>
-											<a th:unless="*{['koreanHistoryScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+											<span class="subject-took-status-span" th:if="*{['koreanHistoryScore'] != null}">응시</span>
+											<a class="subject-took-status-a" th:unless="*{['koreanHistoryScore'] != null}" th:href="@{/exam/examList}">미응시</a>
 										</td>
 										<td id="koreanTookStatus">
-											<span th:if="*{['koreanScore'] != null}">응시</span>
-											<a th:unless="*{['koreanScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+											<span class="subject-took-status-span" th:if="*{['koreanScore'] != null}">응시</span>
+											<a class="subject-took-status-a" th:unless="*{['koreanScore'] != null}" th:href="@{/exam/examList}">미응시</a>
 										</td>
 										<td id="mathTookStatus">
-											<span th:if="*{['mathScore'] != null}">응시</span>
-											<a th:unless="*{['mathScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+											<span class="subject-took-status-span" th:if="*{['mathScore'] != null}">응시</span>
+											<a class="subject-took-status-a" th:unless="*{['mathScore'] != null}" th:href="@{/exam/examList}">미응시</a>
 										</td>
 										<td id="englishTookStatus">
-											<span th:if="*{['englishScore'] != null}">응시</span>
-											<a th:unless="*{['englishScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+											<span class="subject-took-status-span" th:if="*{['englishScore'] != null}">응시</span>
+											<a class="subject-took-status-a" th:unless="*{['englishScore'] != null}" th:href="@{/exam/examList}">미응시</a>
 										</td>
 										<td id="inquiry1TookStatus">
-											<span th:if="*{['inquiry1Score'] != null}">응시</span>
-											<a th:unless="*{['inquiry1Score'] != null}" th:href="@{/exam/examList}">미응시</a>
+											<span class="subject-took-status-span" th:if="*{['inquiry1Score'] != null}">응시</span>
+											<a class="subject-took-status-a" th:unless="*{['inquiry1Score'] != null}" th:href="@{/exam/examList}">미응시</a>
 										</td>
 										<td id="inquiry2TookStatus">
-											<span th:if="*{['inquiry2Score'] != null}">응시</span>
-											<a th:unless="*{['inquiry2Score'] != null}" th:href="@{/exam/examList}">미응시</a>
+											<span class="subject-took-status-span" th:if="*{['inquiry2Score'] != null}">응시</span>
+											<a class="subject-took-status-a" th:unless="*{['inquiry2Score'] != null}" th:href="@{/exam/examList}">미응시</a>
 										</td>
 										<td id="secondLanguageAndChineseCharactersTookStatus">
-											<span th:if="*{['secondLanguageAndChineseCharactersScore'] != null}">응시</span>
-											<a th:unless="*{['secondLanguageAndChineseCharactersScore'] != null}" th:href="@{/exam/examList}">미응시</a>
+											<span class="subject-took-status-span" th:if="*{['secondLanguageAndChineseCharactersScore'] != null}">응시</span>
+											<a class="subject-took-status-a" th:unless="*{['secondLanguageAndChineseCharactersScore'] != null}" th:href="@{/exam/examList}">미응시</a>
 										</td>
 									</tr>									
 									<tr class="report-card-subject-tr">
