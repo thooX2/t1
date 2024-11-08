@@ -39,31 +39,43 @@ tr {
     width: 100%;
 }
 
-#score-analysis-div {
+#score-analysis-div, #score-analysis-div2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
-#score-cat-button-div {
+#scoreCatBtnDiv, #subjectBtnDiv {
 	display: flex;
 	justify-content: cetner;
 	align-items: center;
 	width: 100%;
 }
 
-#score-cat-chart-div {
+#score-cat-chart-div, #subjectChartDiv {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	border-left: 2px solid rgba(0, 0, 0, 0.25);
-    border-right: 2px solid rgba(0, 0, 0, 0.25);
-    border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+	border-right: 2px solid rgba(0, 0, 0, 0.25);
+	border-bottom: 2px solid rgba(0, 0, 0, 0.25);
     padding: 0px;
+}
+
+.score-li {
+	width: 20%;
+}
+
+.subject-li {
+	width: calc(100%/7);
+}
+
+.nav-link {
+	width: 100%;
 }
 
 #score-card-div {
@@ -75,9 +87,30 @@ tr {
 }
 
 .score-btn {
-	width: 20% !important;
+	width: 100% !important;
 	height: 50px !important;
     font-size: 20px !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-top: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-left: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-bottom-left-radius: 0px !important;
+    border-right: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.25) !important;
+    border-bottom-right-radius: 0px !important;
+    background: #FFFFFF;
+}
+
+.score-btn:focus {
+	outline: none !important;
+	font-weight: bold !important;
+	border-bottom: none !important;
+}
+
+.subject-btn {
+	width: 100% !important;
+	height: 50px !important;
+    font-size: 15px !important;
     border-top-left-radius: 10px !important;
     border-top-right-radius: 10px !important;
     border-top: 2px solid rgba(0, 0, 0, 0.25) !important;
@@ -100,4 +133,14 @@ tr {
 }
 #score-cat-button-div > button.score-btn.active{
 	background-color: yellow !important;
+}
+
+.subject-took-status-a {
+	color: #d05b64 !important;
+	font-weight: bold;
+}
+
+ .subject-took-status-span, .subject-took-status-a:hover {
+	color: #4686B8 !important;
+	font-weight: bold;
 }
