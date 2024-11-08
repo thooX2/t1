@@ -1590,7 +1590,7 @@
 #examMain .btn_L_col2 {background:#2e3d61;}
 #examMain .btn_L_col2:disabled {background:#e8e8e8; border:1px solid #dbdbdb; color:#a0a0a0; line-height:3.6rem;}
 #examMain .btn_L_col2.has_down {display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex; text-align:center; padding:0rem; -webkit-box-align:center; -ms-flex-align:center; align-items:center; -webkit-box-pack:center; -ms-flex-pack:center; justify-content:center;}
-#examMain .btn_L_col2.has_down:after {display:inline-block; width:1.1rem; height:1.3rem; margin-left:0.5rem; background:url('/user/img/exam/ico_download4.png') no-repeat; content:''; background-size:100% 100%;}
+#examMain .btn_L_col2.has_down:after {display:inline-block; width:1.3rem; height:1.3rem; margin-left:0.5rem; background:url('/user/img/exam/ico_download4.png') no-repeat; content:''; background-size:100% 100%;}
 #examMain .btn_L_col2.has_arrow span::after {content:''; display:inline-block; margin-left:1.5rem; width:0.6rem; height:1rem; background:url(/user/img/exam/ico_arrow_right.png) no-repeat center center / 100% auto;}
 #examMain .btn_L_col2.has_print span {display:-webkit-box;display:-ms-flexbox;display:flex; text-align:center; -webkit-box-align:center; -ms-flex-align:center; align-items:center; -webkit-box-pack:center; -ms-flex-pack:center; justify-content:center;}
 #examMain .btn_L_col2.has_print span::before {position:relative; top:1px; display:inline-block; width:2.1rem; height:1.6rem; margin-right:1rem; background:url('/user/img/exam/ico_print_white.png') no-repeat; content:''; background-size:100% 100%;}

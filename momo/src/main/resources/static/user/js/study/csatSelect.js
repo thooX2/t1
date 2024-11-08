@@ -1,4 +1,4 @@
- document.addEventListener('DOMContentLoaded', function() {
+/* document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('smjrcc').addEventListener('change', function() {
         const selectedSubject = this.value;
         const detailSubjectSelect = document.getElementById('smircc');
@@ -98,4 +98,4 @@
             detailSubjectSelect.appendChild(option); // 옵션 추가
         });
     });
-});
+});*/

@@ -290,6 +290,11 @@
 				}
 			});
 		});
+
+		$('#addCategoryBtn').click(function () {
+			alert('해당기능은 차후에 지원 예정입니다');
+		})
+
 	</script>
 
 </th:block>
@@ -308,9 +313,7 @@
 			<div id="sys-page-title">
 				<span id="sys-page-title-nm">문제은행</span>
 				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
-				<button type="button" class="btn_simp yellow">
-					<i class="fa fa-star"></i> 퀵메뉴추가
-				</button>
+
 
 			</div>
 			<div id="sys-page-util">
@@ -337,7 +340,7 @@
 						<!-- 오른쪽 섹션 -->
 						<div class="right-section">
 
-							<form name="form1" method="post">
+							<form name="" method="">
 								<table class="c_tb01" cellpadding="0" cellspacing="0">
 									<tbody>
 										<tr>
@@ -363,66 +366,18 @@
 											</td>
 										</tr>
 
-										<tr>
-											<td class="f_th01">순서</td>
-											<td class="f_td01">
-												<select name="sort" id="sortArea" hname="정렬" required="Y"
-													option="number">
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3</option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-													<option value="6">6</option>
-													<option value="7">7</option>
-													<option value="8">8</option>
-													<option value="9">9</option>
-													<option value="10">10</option>
-													<option value="11">11</option>
-													<option value="12">12</option>
-													<option value="13">13</option>
-													<option value="14">14</option>
-													<option value="15">15</option>
-													<option value="16">16</option>
-													<option value="17">17</option>
-													<option value="18">18</option>
-													<option value="19">19</option>
-													<option value="20">20</option>
-													<option value="21">21</option>
-													<option value="22">22</option>
-													<option value="23">23</option>
-													<option value="24">24</option>
-													<option value="25">25</option>
-													<option value="26">26</option>
-													<option value="27">27</option>
-												</select>
-											</td>
-										</tr>
+
 										<tr>
 											<td class="f_th01">담당자</td>
 											<td class="f_td01" colspan="3">
 												<select name="manager_id" class="js-example-basic-single select2"
 													hname="담당자" required="Y">
 													<option value=""> - 담당자 선택 - </option>
-													<option value="-99"> [공용] 모든 최고관리자, 운영자, 과정운영자 </option>
-													<option value="50425">[운영자] ttestt02</option>
-													<option value="50295">[운영자] 박수영</option>
-													<option value="50323">[운영자] 홍길동</option>
-													<option value="50093">[운영자] 홍길동1</option>
-													<option value="50005">[과정운영자] test3</option>
-													<option value="50006">[과정운영자] test4</option>
-													<option value="50427">[과정운영자] ttestt04</option>
-													<option value="50124">[과정운영자] 관리자</option>
-													<option value="50019">[과정운영자] 홍길동5</option>
-													<option value="50454">[최고관리자] admin5</option>
-													<option value="50460">[최고관리자] malgnjudy</option>
-													<option value="50424">[최고관리자] ttestt01</option>
-													<option value="50464">[최고관리자] wjdehdhs</option>
-													<option value="2073">[최고관리자] 나우수</option>
-													<option value="50112">[최고관리자] 맑은</option>
-													<option value="50277">[최고관리자] 영업왕 주대리</option>
-													<option value="2229">[최고관리자] 운영자</option>
-													<option value="2001">[최고관리자] 최고관리자</option>
+													<option th:if="${userList !=null}" th:each="ul:${userList}"
+														th:value="${ul.userCode}"
+														th:text="${'['+ul.userId+'] '+ul.userName }">
+
+													</option>
 												</select>
 											</td>
 										</tr>
@@ -431,7 +386,7 @@
 										<tr>
 											<td class="b_th01"></td>
 											<td class="b_td01">
-												<button type="submit" class="bttn2">등록</button>
+												<button type="button" class="bttn2" id="addCategoryBtn">등록</button>
 											</td>
 										</tr>
 									</tfoot>

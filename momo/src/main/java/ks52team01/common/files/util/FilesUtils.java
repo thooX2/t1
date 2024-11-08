@@ -37,6 +37,12 @@ public class FilesUtils {
 
 		File file = new File(path);
 
+		// 파일 존재 여부 확인
+		if (!file.exists()) {
+			System.out.println("파일이 존재하지 않습니다: " + path);
+			return false; // 파일이 존재하지 않으면 삭제하지 않음
+		}
+
 		Path targetPath = Paths.get(file.getAbsolutePath());
 		try {
 			Files.deleteIfExists(targetPath);

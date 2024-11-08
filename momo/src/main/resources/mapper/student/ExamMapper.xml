@@ -36,7 +36,71 @@
 			<result column="exam_inst" 	  property="examInst"/>
 		</association>
 	</resultMap>
-	<select id="selectUserExamData" resultType="ks52team01.student.exam.dto.ExamAnalyseDto">
+	
+	<resultMap id="ExamInfoMap" type="ExamInfo">
+	    <id column="exam_code" property="examCode"/>
+	    <result column="user_code" property="userCode"/>
+	    <result column="exam_nm" property="examNm"/>
+	    <result column="exam_type" property="examType"/>
+	    <result column="exam_oe_type" property="examOEType"/>
+	    <result column="exam_tar_grd" property="examTarGrd"/>
+	    <result column="exam_date" property="examDate"/>
+	    <result column="exam_inst" property="examInst"/>
+	    <result column="exam_description" property="examDescription"/>
+	    <result column="registeredQuestionCount" property="registeredQuestionCount"/>
+	    <result column="user_name" property="userName"/>
+	    <result column="user_id" property="userId"/>
+	</resultMap>
+	<select id="getExamInfoByExamCode" parameterType="String" resultMap="ExamInfoMap">
+		SELECT
+			ei.exam_code,
+			ei.user_code,
+			u.user_id,
+			u.user_name,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			ei.exam_inst
+		FROM
+			exam_info ei INNER JOIN `user` u ON ei.user_code = u.user_code
+		WHERE
+			ei.exam_code=#{examCode}
+	</select>
+	<select id="getExamQuestionInfobyExamCode" parameterType="String" resultType="ExamMappingQuestion">
+		SELECT
+			qb.sub_mjr_cat_code as subMjrCatCode,
+			smirc.sub_mir_cat_nm as subMirCatNm
+		FROM
+			exam_mapping_question emq INNER JOIN qna_bank qb ON emq.exam_qna_code = qb.qna_code
+			INNER JOIN sub_mir_cat smirc ON qb.sub_mir_cat_code=smirc.sub_mir_cat_code
+		WHERE
+			exam_code = #{examCode}
+	</select>
+	
+	<select id="getRegisteredQustionExamList" resultMap="ExamInfoMap">
+		SELECT
+			ei.exam_code,
+			ei.user_code,
+			ei.exam_nm,
+			ei.exam_type,
+			ei.exam_oe_type,
+			ei.exam_tar_grd,
+			ei.exam_description,
+			ei.exam_date,
+			ei.exam_inst,
+			COUNT(emq.exam_qna_code) AS registeredQuestionCount
+		FROM
+			exam_info ei LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
+		GROUP BY ei.exam_code
+		HAVING
+			registeredQuestionCount>0 AND
+			exam_type != '자체'
+	</select>
+
+	<select id="selectUserExamData" resultType="ks52team01.student.exam.dto.ExamAnalyse">
         SELECT
             subject_score_code AS subjectScoreCode,
             user_code AS userCode,

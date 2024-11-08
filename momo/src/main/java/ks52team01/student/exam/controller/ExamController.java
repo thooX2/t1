@@ -5,44 +5,62 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ks52team01.student.exam.dto.ExamAnalyseDto;
+import ks52team01.student.exam.dto.ExamAnalyse;
+import ks52team01.student.exam.dto.ExamInfo;
+import ks52team01.student.exam.dto.ExamMappingQuestion;
 import ks52team01.student.exam.service.ExamService;
-import ks52team01.student.exam.service.ExamServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/exam")
 public class ExamController {
 
 	private final ExamService examService;
 
-	public ExamController(ExamServiceImpl examServiceImpl) {
-		this.examService = examServiceImpl;
+	@GetMapping("/{examCode}/details")
+	public String getExamDetails(@PathVariable(name = "examCode") String examCode,
+			@RequestParam(name = "examName") String examName, Model model) {
+
+		// 시험에 등록한 문제정보 가져오기
+		List<ExamMappingQuestion> examQuestionInfo = examService.getExamQuestionInfobyExamCode(examCode);
+		
+		// 시험에 관한 정보 가져오기
+		ExamInfo examInfo = examService.getExamInfoByExamCode(examCode);
+
+		model.addAttribute("examName", examName);
+		model.addAttribute("examQuestionInfo", examQuestionInfo);
+		model.addAttribute("examInfo", examInfo);
+		return "view/user/exam/user_exam_info_popup";
 	}
 
 	// AJAX 요청을 처리하는 메서드
-    @GetMapping("/userExamData")
-    @ResponseBody
-    public List<ExamAnalyseDto> getUserExamData(@RequestParam String userCode, @RequestParam String majorCode) {
-        log.info("사용자 {}의 {}에 대한 시험 데이터 요청", userCode, majorCode);
-        
-        List<ExamAnalyseDto> scores = examService.getUserExamData(userCode, majorCode);
-        log.info("test:{}",scores);
-        return scores; // 데이터 반환
-    }
-	
-	@GetMapping("/examList")
-	public String moveExamList() {
-		log.info("모의고사 메인으로 이동");
-		return "view/user/exam/user_exam_list";
+	@GetMapping("/userExamData")
+	@ResponseBody
+	public List<ExamAnalyse> getUserExamData(@RequestParam String userCode, @RequestParam String majorCode) {
+		log.info("사용자 {}의 {}에 대한 시험 데이터 요청", userCode, majorCode);
+
+		List<ExamAnalyse> scores = examService.getUserExamData(userCode, majorCode);
+		log.info("test:{}", scores);
+		return scores; // 데이터 반환
 	}
 
+	@GetMapping("/examList")
+	public String moveExamList(Model model) {
+		log.info("모의고사 메인으로 이동");
+		List<ExamInfo> examList = examService.getRegisteredQustionExamList();
+
+		model.addAttribute("examList", examList);
+		return "view/user/exam/user_exam_list";
+	}
 
 	@GetMapping("/examMain")
 	public String moveExamMain() {

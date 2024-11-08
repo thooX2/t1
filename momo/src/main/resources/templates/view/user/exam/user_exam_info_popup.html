@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminCustom.css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<style>
+		/* 기본적인 스타일 */
+		body {
+			font-family: Dotum, 돋움, Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f9f9f9;
+		}
+
+		.scbox {
+			height: 595px;
+			overflow-y: auto;
+			border: 1px solid #ccc;
+			background-color: #fff;
+			border-radius: 8px;
+			padding: 10px;
+			position: relative;
+		}
+
+		.bttn2 {
+			cursor: pointer;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+		}
+
+		.f_td01 input[type="text"] {
+			width: 100%;
+			border: 1px solid #d1d1d1;
+			padding: 5px;
+			border-radius: 4px;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			/* 셀 간격을 없애고 경계선을 결합 */
+			border: none;
+			/* border="0" 대신 사용 */
+		}
+
+		table th,
+		table td {
+			border: 1px solid #ccc;
+			/* 테이블 경계선 */
+			padding: 10px;
+			/* 테이블 내부 여백 (cellpadding 대체) */
+		}
+
+		/* th의 텍스트 스타일 */
+		table th {
+			background-color: #f1f1f1;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+
+	<table>
+		<tbody>
+			<tr>
+				<td style="border:0;">
+					<table id="p_title_pop">
+						<tbody>
+							<tr height="42">
+								<td style="padding-left:5px;border:0">
+									<div id="_ttl_">
+										<div class="blt"><!----></div>
+										<div><strong style="font-size:17px;">시험 정보보기</strong></div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table>
+						<tbody>
+							<tr>
+								<td style="padding:10px;border:0">
+
+									<div class="scbox">
+										<table class="c_tb01">
+											<tbody>
+												<tr>
+													<th colspan="2" th:text="${examInfo.examNm}">문제 1</th>
+												</tr>
+											</tbody>
+										</table>
+										<table class="f_tb01">
+											<colgroup>
+												<col width="80">
+												<col width="*">
+												<col width="80">
+												<col width="*">
+											</colgroup>
+											<tbody>
+												<tr>
+													<th>시험날짜</th>
+													<td th:text="${examInfo.examDate}"></td>
+													<th>담당자</th>
+													<td th:text="${'['+examInfo.userId+'] '+examInfo.userName}"> </td>
+												</tr>
+												<tr>
+													<th>시험유형</th>
+													<td colspan="3" th:text="${examInfo.examType}"></td>
+												</tr>
+												<tr>
+													<th>출제기관</th>
+													<td colspan="3" th:text="${examInfo.examInst}">수학</td>
+												</tr>
+												<tr>
+													<th>문제 분류</th>
+													<td th:text="${examInfo.examOEType}"></td>
+													<th>대상학년</th>
+													<td th:text="${examInfo.examTarGrd+'학년'}"></td>
+												</tr>
+												<tr>
+													<th>시험 설명</th>
+													<td colspan="3" id="questionContent"> </td>
+												</tr>
+												<tr>
+													<th>등록 과목</th>
+													<td colspan="3">
+														<table id="insideSubject">
+															<colgroup>
+																<col width="60">
+																<col width="*">
+																<col width="60">
+																<col width="*">
+																<col width="60">
+																<col width="*">
+																<col width="60">
+																<col width="*">
+															</colgroup>
+															<tr>
+																<th>국어</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc1')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+																<th>수학</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc2')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+																<th>영어</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc3')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+																<th>한국사</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc4')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+															</tr>
+															<tr>
+																<th>사회<br>탐구</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc5')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+																<th>과학<br>탐구</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc6')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+																<th>직업<br>탐구</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc7')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+																<th>외국어<br>/ 한문</th>
+																<td th:text="${#strings.contains(examQuestionInfo, 'smjrcc8')?'O':'X'}"
+																	style="text-align: center;">
+																</td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc5')}">
+													<th>사회탐구<br>등록과목</th>
+													<td colspan="3" id="social">
+
+													</td>
+												</tr>
+
+												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc6')}">
+													<th>과학탐구<br>등록과목</th>
+													<td colspan="3" id="science">
+
+													</td>
+												</tr>
+
+												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc7')}">
+													<th>직업탐구<br>등록과목</th>
+													<td colspan="3" id="job">
+
+													</td>
+												</tr>
+												<tr th:if="${#strings.contains(examQuestionInfo, 'smjrcc8')}">
+													<th>제2외국어<br>등록과목</th>
+													<td colspan="3" id="language">
+
+													</td>
+												</tr>
+
+											</tbody>
+										</table>
+
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div style="text-align: right;margin-right: 35px;">
+		<button type="button" class="bttn2" aria-label="닫기">닫기</button>
+	</div>
+
+	<script th:inline="javascript">
+
+		// 닫기 버튼 클릭 이벤트 추가
+		$('.bttn2').click(function () {
+			window.close(); // 팝업 창 닫기
+		});
+		const setHeight = $('#insideSubject').find('th').eq(4).height();
+		$('#insideSubject').find('th').eq(0).height(setHeight);
+
+
+		var examQuestionInfo = /*[[${examQuestionInfo}]]*/[];
+		// examInfo.examDescription 값을 가져온다고 가정
+		var examInfo = /*[[${examInfo}]]*/ {}; // 서버에서 examInfo 객체를 전달받음
+		var examDescription = examInfo.examDescription || '해당 시험에 작성된 설명이 없습니다.';
+
+		// 줄바꿈(\n)을 <br>로 변환
+		var formattedDescription = examDescription.replace(/\n/g, "<br>");
+
+		// questionContent에 HTML로 추가
+		$('#questionContent').html(formattedDescription);
+
+		const socialList = [];
+		const scienceList = [];
+		const jobList = [];
+		const langList = [];
+
+		examQuestionInfo.forEach((element, idx) => {
+			const smjrcc = element['subMjrCatCode'];
+			switch (smjrcc) {
+
+				case 'smjrcc5':
+					if (!socialList.includes(element['subMirCatNm'])) {
+						socialList.push(element['subMirCatNm']);
+						$('#social').append($('<span/>').text(element['subMirCatNm'] + ', '));
+					}
+
+
+					break;
+				case 'smjrcc6':
+					if (!scienceList.includes(element['subMirCatNm'])) {
+						scienceList.push(element['subMirCatNm']);
+						$('#science').append($('<span/>').text(element['subMirCatNm'] + ', '));
+					}
+
+					break;
+				case 'smjrcc7':
+					if (!jobList.includes(element['subMirCatNm'])) {
+						jobList.push(element['subMirCatNm']);
+						$('#job').append($('<span/>').text(element['subMirCatNm'] + ', '));
+					}
+					break;
+				case 'smjrcc8':
+					if (!langList.includes(element['subMirCatNm'])) {
+						langList.push(element['subMirCatNm']);
+						$('#language').append($('<span/>').text(element['subMirCatNm'] + ', '));
+					}
+					break;
+			}
+
+
+		})
+
+
+
+		// 과목 나열에서 맨뒤에 , 제거(-2인 이유는 ,뒤에 공백이 먼저 있어서)
+		let socialText = $('#social').find('span').last().text();
+		let newSocialText = socialText.slice(0, -2);
+		$('#social').find('span').last().text(newSocialText);
+
+		let scienceText = $('#science').find('span').last().text();
+		let newScienceText = scienceText.slice(0, -2);
+		$('#science').find('span').last().text(newScienceText);
+
+		let jobText = $('#job').find('span').last().text();
+		let newJobText = jobText.slice(0, -2);
+		$('#job').find('span').last().text(newJobText);
+
+		let languageText = $('#language').find('span').last().text();
+		let newLanguageText = languageText.slice(0, -2);
+		$('#language').find('span').last().text(newLanguageText);
+
+
+
+	</script>
+
+</body>
+
+</html>

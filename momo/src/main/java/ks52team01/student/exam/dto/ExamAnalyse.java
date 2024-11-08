@@ -4,7 +4,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ExamAnalyseDto {
+public class ExamAnalyse {
     private String subjectScoreCode; // 과목 점수 코드
     private String userCode;          // 회원 코드
     private String tookExamInfoCode;          // 응시 시험 코드

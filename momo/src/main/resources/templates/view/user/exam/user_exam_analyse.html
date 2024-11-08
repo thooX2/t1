@@ -21,6 +21,7 @@
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
 	// session에 저장된 userCode가져오기(위에 th:inline="javascript필수")
+    
     var userCode = /*[[${session.loggedInUser.userCode}]]*/[];
     
         $(function() {     
@@ -86,8 +87,13 @@
                 dataType: 'JSON'
             })
             request.done(function(data){
+            	// ------------------------------------------------------------------------------
+            	
             	 console.log(data);
-            
+            	
+            	 
+            	 if(data!=null&&data.length !=0){
+            	 
             	 // x축 데이터 (응시시험코드)
             	 const categories = data.map(entry => entry.scoreRegTime); 
             	 // y축 데이터 (과목원점수)
@@ -125,6 +131,15 @@
                      }]
                  }); 
             	// console.log(scores);
+            	 }else{
+            		 $('#memRateArea2').empty().css({'display':'flex','justify-content':'center','height':'50px'})            		 				   
+            		       		
+            		 const newText=`<span style="font-size:30px; text-align:center"> 시험 데이터가 없습니다.</span>`;
+            		 $('#memRateArea2').append(newText);
+            	 }
+    
+            	// ------------------------------------------------------------------------------
+            	
              })
              request.fail(function (jqXHR, textStatus, error) {
  				console.log(error);
@@ -183,10 +198,10 @@
 
 					<div class="searchSection--menu ty2" id="schTabMenu">
 						<a href="JavaScript:;" onclick="fncTabSet(1)" class="on"><strong>분석1</strong>성적
-							변화</a> <a href="/exam/ccr" onclick="fncTabSet(2)"><strong>분석2</strong>단원별
-							정답률</a> <a href="/exam/weak" onclick="fncTabSet(3)"><strong>분석3</strong>취약
-							유형</a> <a href="/exam/chap" onclick="fncTabSet(4)"><strong>분석4</strong>단원/배점/문항별
-							분석</a>
+							변화</a> <a href="/exam/ccr" onclick="fncTabSet(2)"><strong>분석2</strong>단원별 분석</a>
+							<a href="/exam/weak" onclick="fncTabSet(3)" ><strong>분석3</strong>유형별 분석</a> 
+							<!-- <a href="/exam/chap" onclick="fncTabSet(4)"><strong>분석4</strong>단원/배점/문항별
+							분석</a> -->
 					</div>
 
 					<div id="ContArea">
@@ -194,7 +209,7 @@
 						<div class="bx_analysis">
 							<div class="section_analysis">
 								<div class="tit_analysis on" id="tit_main2">성적 변화</div>
-									
+
 								<div class="cont_analysis" id="dtlCont2"
 									style="margin-bottom: 15px;">
 									<div class="top_legend" style="margin-right: 20px"></div>
@@ -213,7 +228,9 @@
 											</select> -->
 										</div>
 										<div id="graphArea" style="margin: 10px auto;">
-											<div id="memRateArea2" style="width: 740px; height: 400px;"></div>
+											<div id="memRateArea2" style="width: 740px; height: 400px;">
+												
+											</div>
 										</div>
 									</div>
 								</div>
