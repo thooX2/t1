@@ -100,14 +100,14 @@
 	        </foreach>
 	    </if>
 	
-	    <!-- subjAll이 false일 때만 subj 리스트 필터 추가(여기 수정해야함) -->
-	    <if test="subjAll == false and subj != null and subj.size > 0">
-	        AND newCode = concat
-	        <foreach collection="subj" item="s" open="(" separator=", ', ', " close=")">
-	            #{s}
-	        </foreach>
-	        
-	    </if>
+	   <!-- subjAll이 false일 때만 subj 리스트 필터 추가(여기 수정해야함) -->
+		<if test="subj != null and subj.size > 0">
+	
+			<foreach collection="subj" item="s">
+				AND newCode LIKE concat('%', #{s},'%')
+			</foreach>
+
+		</if>
 	</select>
 	
 	<select id="getExamInfoByExamCode" parameterType="String" resultMap="ExamInfoMap">

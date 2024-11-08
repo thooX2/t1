@@ -24,7 +24,6 @@ public class ExamInfo {
 	private String beginYear;
 	private String endYear;
 	private boolean monthAll;
-	private boolean subjAll;
 	private List<String> subj;
 	private List<String> month;
 

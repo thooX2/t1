@@ -26,6 +26,12 @@ public class ExamController {
 
 	private final ExamService examService;
 
+	@GetMapping("/{examCode}/examination")
+	public String getExamListByExamCode(@PathVariable(name = "examCode") String examCode) {
+
+		return "view/user/exam/user_exam_take";
+	}
+
 	@GetMapping("/searchExam")
 	@ResponseBody
 	public List<ExamInfo> getSearchExamList(ExamInfo examInfo) {
@@ -53,10 +59,9 @@ public class ExamController {
 	@GetMapping("/userExamData")
 	@ResponseBody
 	public List<ExamAnalyse> getUserExamData(@RequestParam String userCode, @RequestParam String majorCode) {
-		log.info("사용자 {}의 {}에 대한 시험 데이터 요청", userCode, majorCode);
 
 		List<ExamAnalyse> scores = examService.getUserExamData(userCode, majorCode);
-		log.info("test:{}", scores);
+		log.info("성적 분석 - 분석1)성적변화 로 이동");
 		return scores; // 데이터 반환
 	}
 
@@ -69,11 +74,10 @@ public class ExamController {
 		return "view/user/exam/user_exam_list";
 	}
 
-	@GetMapping("/examMain")
-	public String moveExamMain() {
-		log.info("모의고사 메인으로 이동");
-		return "view/user/exam/user_exam_list";
-	}
+	/*
+	 * @GetMapping("/examMain") public String moveExamMain() {
+	 * log.info("모의고사 메인으로 이동"); return "view/user/exam/user_exam_list"; }
+	 */
 
 	@GetMapping("/userExamCreate")
 	public String moveExamCreate() {
@@ -94,10 +98,17 @@ public class ExamController {
 	}
 
 	@GetMapping("/userExamTake")
-	public String userExamTake() {
+	public String userExamTake(@RequestParam(name = "examCode") String examCode, Model model) {
 
+		ExamInfo examInfo = examService.getExamInfoByExamCode(examCode);
+
+		// 시험에 등록한 문제정보 가져오기
+		List<ExamMappingQuestion> examQuestionInfo = examService.getExamQuestionInfobyExamCode(examCode);
 		log.info("모의고사 응시로 이동");
-		return "view/user/exam/user_exam_take";
+
+		model.addAttribute("examInfo", examInfo);
+		model.addAttribute("examQuestionInfo", examQuestionInfo);
+		return "view/user/exam/user_exam_take_main";
 	}
 
 	@GetMapping("/userExamAnalyse")
