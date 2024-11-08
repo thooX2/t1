@@ -1801,8 +1801,7 @@ html {
 -----------------------*/
 .footer {
 	background: #F3F6FA;
-	padding-top: 70px;
-	padding-bottom: 0;
+	padding: 50px;
 } #momoDefault .footer__about {
 	margin-bottom: 30px;
 } #momoDefault .footer__about ul li {
