@@ -11,4 +11,10 @@ public class HomeController {
     	System.out.println("index 페이지 이동");
         return  "view/home/index";
     }
+	
+	@GetMapping("/aboutUs")
+	public String moveAboutUs() {
+		System.out.println("test move");
+		return "view/home/aboutUs";
+	}
 }

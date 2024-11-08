@@ -12,8 +12,9 @@ public class ExamMappingQuestion {
 	private String examCode; // exam_code
 	private String examQnaCode; // exam_qna_code
 	private Timestamp examMappingQuestionRegTime; // exam_mapping_question_reg_time
-
+	
 	private String subMjrCatCode;
+	private String subMirCatCode;
 	private String subMirCatNm;
 
 }

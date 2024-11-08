@@ -164,18 +164,17 @@
 				alert('과목을 선택하세요');
 			}
 		}
-		function paperOn() {
-			const width = window.innerWidth * 1.0;
-			const height = window.innerHeight * 1.0;
 
-			window.open('/exam/userExamTake', 'popupWindow',
-				`width=${width},height=${height},scrollbars=yes`);
-		}
 		const $title = document.querySelector('title');
 		$title.textContent = '모의고사 기출문제';
 
-		$('.btn_popup_test').click(function () {
-			paperOn();
+		$(document).on('click', '.btn_popup_test', function () {
+			const width = window.innerWidth * 1.0;
+			const height = window.innerHeight * 1.0;
+			const clickedExamCode = $(this).closest('li').find('img').prop('alt');
+
+			window.open(`/exam/userExamTake?examCode=${clickedExamCode}`, 'popupWindow',
+				`width=${width},height=${height},scrollbars=yes`);
 		})
 
 		$(document).on('click', '.btn_L_col2.has_down', function () {
@@ -197,12 +196,110 @@
 		})
 
 
-		// 미완성
+
 		$(document).on('click', '.btn_L_col7', function () {
-			$('select[name="examTarGrd"]').val()
-			$('select[name="examType"]').val()
-			$('select[name="beginYear"]').val()
-			$('select[name="endYear"]').val()
+			const examTarGrd = $('select[name="examTarGrd"]').val()
+			const examType = $('select[name="examType"]').val()
+			const beginYear = $('select[name="beginYear"]').val()
+			const endYear = $('select[name="endYear"]').val()
+			const monthAll = $('input[name="monthAll"]').is(':checked')
+			const subjAll = $('input[name="subjAll"]').is(':checked')
+			const subj = [];
+			$('input[name="subj"]:checked').each((index, element) => {
+				subj.push($(element).val())
+			})
+			const month = [];
+			$('input[name="month"]:checked').each((index, element) => {
+				month.push($(element).val())
+			})
+
+
+			const request = $.ajax({
+				url: '/exam/searchExam',
+				method: 'get',
+				data: {
+					'examTarGrd': examTarGrd,
+					'examType': examType,
+					'beginYear': beginYear,
+					'endYear': endYear,
+					'monthAll': monthAll,
+					'subjAll': subjAll,
+					'subj': subj,
+					'month': month,
+				},
+				dataType: 'json'
+			});
+			request.done(function (data) {
+				const searchData = data;
+				$('.count_area > p > em').eq(0).text(data.length);
+				if (data != null && data.length > 0) {
+					$(searchData).each((idx, element) => {
+
+						const imgSrc = (element.examType === '교육청')
+							? '/user/img/exam/educationCenter.png'
+							: (element.examType === '평가원')
+								? '/user/img/exam/KICE.png'
+								: '/user/img/exam/privateExam.png';
+
+
+						const newRow = `
+					    <li>
+					        <div class="img">
+					            <img src="${imgSrc}" alt="${element.examCode}">
+					        </div>
+					        <div class="txt_wrap">
+					            <div class="txt_group">
+					                <p class="tit">${element.examNm}</p>
+					                <ul class="txt_info">
+					                    <li>${element.examType}</li>
+					                    <li><span>${element.examTarGrd}</span>학년</li>
+					                    <li>${element.examDate}</li>
+					                </ul>
+					            </div>
+					            <div class="survey_wrap" id="survey_wrap_24271023">
+					                <dl class="survey_result answer01">
+					                    <dt>
+					                        <a href="#">
+					                            <p style="width: 65.7051282051282%;">쉬워요!</p>
+					                        </a>
+					                    </dt>
+					                    <dd>205명</dd>
+					                </dl>
+					                <dl class="survey_result answer02">
+					                    <dt>
+					                        <a href="#">
+					                            <p style="width: 34.294871794871796%;">어려워요!</p>
+					                        </a>
+					                    </dt>
+					                    <dd>107명</dd>
+					                </dl>
+					            </div>
+					        </div>
+					        <div class="btn_wrap">
+					            <div class="btn_row btn_down_row">
+					                <button type="button" class="btn_L_col2 has_down">
+					                    <span>시험정보</span>
+					                </button>
+					            </div>
+					            <div class="btn_row btn_popup_row">
+					                <button type="button" class="btn_popup_test" style="width: 100%">
+					                    <span>응시하기</span>
+					                </button>
+					            </div>
+					        </div>
+					    </li>
+					`;
+						$('.board_qusesion ul').empty();
+						$('.board_qusesion ul').append(newRow);
+					})
+				} else {
+					$('.board_qusesion ul').empty();
+					$('.board_qusesion ul').append(`<li style="display: flex; justify-content: center; align-items: center; text-align: center; height: 100px;font-size:2rem;color:rgb(153,153,153)"><span>해당 조건을 만족하는 검색결과가 없습니다</span></li>`);
+				}
+			});
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			})
 		})
 
 
@@ -222,8 +319,8 @@
 
 
 				<div class="con_banner_wrap past_question">
-					<img src="/user/img/exam/bnr_main_visual3.jpg" alt="" class="visual_pc"> <img
-						src="/user/img/exam/bnr_main_visual3.jpg" alt="" class="visual_m">
+					<img src="/user/img/exam/bnr_main_visual3.png" alt="" class="visual_pc"> <img
+						src="/user/img/exam/bnr_main_visual3.png" alt="" class="visual_m">
 				</div>
 				<!-- searchbox -->
 				<div class="search_box2">
@@ -260,7 +357,6 @@
 							</dt>
 							<dd class="type_yesrs">
 								<select name="beginYear" id="beginYear">
-									<option value="0000" selected="selected">=== 전체 ===</option>
 									<option value="2024">2024</option>
 									<option value="2023">2023</option>
 									<option value="2022">2022</option>
@@ -283,7 +379,6 @@
 								</select>
 								<i class="form_split">~</i>
 								<select name="endYear" id="endYear">
-									<option value="9999" selected="selected">=== 전체 ===</option>
 									<option value="2024">2024</option>
 									<option value="2023">2023</option>
 									<option value="2022">2022</option>
@@ -354,34 +449,35 @@
 										<label for="subjAll">전체</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj1" value="1">
+										<input type="checkbox" name="subj" id="subj1" value="smjrcc1">
 										<label for="subj1">국어</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj2" value="2">
+										<input type="checkbox" name="subj" id="subj2" value="smjrcc2">
 										<label for="subj2">수학</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj3" value="3">
+										<input type="checkbox" name="subj" id="subj3" value="smjrcc3">
 										<label for="subj3">영어</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj4" value="4">
+										<input type="checkbox" name="subj" id="subj4" value="smjrcc4">
 										<label for="subj4">한국사</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj5" value="5">
+										<input type="checkbox" name="subj" id="subj5" value="smjrcc5">
 										<label for="subj5">사회탐구</label>
 									</span>
-									<span class="chk_box"> <input type="checkbox" name="subj" id="subj6" value="6">
+									<span class="chk_box">
+										<input type="checkbox" name="subj" id="subj6" value="smjrcc6">
 										<label for="subj6">과학탐구</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj7" value="7">
-										<label for="subj7">직업탐구</label> <!-- 수정: 잘못된 label 태그 닫힘 오류 -->
+										<input type="checkbox" name="subj" id="subj7" value="smjrcc7">
+										<label for="subj7">직업탐구</label>
 									</span>
 									<span class="chk_box">
-										<input type="checkbox" name="subj" id="subj8" value="8">
+										<input type="checkbox" name="subj" id="subj8" value="smjrcc8">
 										<label for="subj8">제2외국어</label>
 									</span>
 								</div>
@@ -398,15 +494,15 @@
 				</div>
 
 				<div id="boardListArea">
-					<form action="#" name="pagingForm" id="pagingForm" method="post">
-						<!-- board_head -->
-						<div class="board_head" style="margin-top: 3rem;">
-							<div class="count_area">
-								<p>
-									검색결과 <em class="tot" th:text="${#lists.size(examList)}"></em><em class="tot">개</em>
-								</p>
-							</div>
-							<!--	<div class="order_area">
+
+					<!-- board_head -->
+					<div class="board_head" style="margin-top: 3rem;">
+						<div class="count_area">
+							<p>
+								검색결과 <em class="tot" th:text="${#lists.size(examList)}"></em><em class="tot">개</em>
+							</p>
+						</div>
+						<!--	<div class="order_area">
 								<div class="btn_wrap">
 									<button type="button" class="btn_order on">
 										<span>최근등록순</span>
@@ -421,70 +517,69 @@
 									<option value="50">50개씩 보기</option>
 								</select>
 							</div>-->
-						</div>
-						<!-- //board_head -->
+					</div>
+					<!-- //board_head -->
 
-						<!-- board_list -->
-						<div class="board_qusesion">
-							<ul>
-								<li th:if="${examList !=null}" th:each="el:${examList}">
-									<div class="img">
-										<img th:if="${el.examType=='교육청'}" src="/user/img/exam/educationCenter.png"
-											th:alt="${el.examCode}">
-										<img th:if="${el.examType=='평가원'}" src="/user/img/exam/KICE.png"
-											th:alt="${el.examCode}">
-										<img th:if="${el.examType=='사설'}" src="/user/img/exam/privateExam.png"
-											th:alt="${el.examCode}">
+					<!-- board_list -->
+					<div class="board_qusesion">
+						<ul>
+							<li th:if="${examList !=null}" th:each="el:${examList}">
+								<div class="img">
+									<img th:if="${el.examType=='교육청'}" src="/user/img/exam/educationCenter.png"
+										th:alt="${el.examCode}">
+									<img th:if="${el.examType=='평가원'}" src="/user/img/exam/KICE.png"
+										th:alt="${el.examCode}">
+									<img th:if="${el.examType=='사설'}" src="/user/img/exam/privateExam.png"
+										th:alt="${el.examCode}">
+								</div>
+								<div class="txt_wrap">
+									<div class="txt_group">
+										<p class="tit" th:text="${el.examNm}">2024년&nbsp;고3 9월 모평(평가원)&nbsp;언어와 매체
+											&nbsp;</p>
+										<ul class="txt_info">
+											<li th:text="${el.examType}">평가원</li>
+											<li><span th:text="${el.examTarGrd}"></span>학년</li>
+											<li th:text="${el.examDate}">2024-11-01</li>
+										</ul>
 									</div>
-									<div class="txt_wrap">
-										<div class="txt_group">
-											<p class="tit" th:text="${el.examNm}">2024년&nbsp;고3 9월 모평(평가원)&nbsp;언어와 매체
-												&nbsp;</p>
-											<ul class="txt_info">
-												<li th:text="${el.examType}">평가원</li>
-												<li><span th:text="${el.examTarGrd}"></span>학년</li>
-												<li th:text="${el.examDate}">2024-11-01</li>
-											</ul>
-										</div>
-										<div class="survey_wrap" id="survey_wrap_24271023">
-											<dl class="survey_result answer01">
-												<dt>
-													<a href="#">
-														<p style="width: 65.7051282051282%;">쉬워요!</p>
-													</a>
-												</dt>
-												<dd>205명</dd>
-											</dl>
-											<dl class="survey_result answer02">
-												<dt>
-													<a href="">
-														<p style="width: 34.294871794871796%;">어려워요!</p>
-													</a>
-												</dt>
-												<dd>107명</dd>
-											</dl>
-										</div>
+									<div class="survey_wrap" id="survey_wrap_24271023">
+										<dl class="survey_result answer01">
+											<dt>
+												<a href="#">
+													<p style="width: 65.7051282051282%;">쉬워요!</p>
+												</a>
+											</dt>
+											<dd>205명</dd>
+										</dl>
+										<dl class="survey_result answer02">
+											<dt>
+												<a href="">
+													<p style="width: 34.294871794871796%;">어려워요!</p>
+												</a>
+											</dt>
+											<dd>107명</dd>
+										</dl>
 									</div>
-									<div class="btn_wrap">
-										<div class="btn_row btn_down_row">
-											<button type="button" class="btn_L_col2 has_down">
-												<span>시험정보</span>
-											</button>
+								</div>
+								<div class="btn_wrap">
+									<div class="btn_row btn_down_row">
+										<button type="button" class="btn_L_col2 has_down">
+											<span>시험정보</span>
+										</button>
 
-										</div>
-										<div class="btn_row btn_popup_row">
-
-											<button type="button" class="btn_popup_test" style="width: 100%">
-												<span>응시하기</span>
-											</button>
-										</div>
 									</div>
-								</li>
-							</ul>
-						</div>
-						<!-- pagination -->
-					</form>
-					<div class="pagination" style="margin-bottom: 30px">
+									<div class="btn_row btn_popup_row">
+										<button type="button" class="btn_popup_test" style="width: 100%">
+											<span>응시하기</span>
+										</button>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- pagination -->
+
+					<!--	<div class="pagination" style="margin-bottom: 30px">
 						<a href="javascript:;" class="btn_first" style="cursor: default"><span class="blind">맨
 								처음</span></a><a href="javascript:;" class="btn_prev" style="cursor: default"><span
 								class="blind">이전</span></a>
@@ -494,7 +589,7 @@
 						</div>
 						<a href="javascript:goPage(2)" class="btn_next"><span class="blind">다음</span></a><a
 							href="javascript:goPage(10)" class="btn_last"><span class="blind">맨 마지막</span></a>
-					</div>
+					</div>-->
 					<!-- //board_list -->
 				</div>
 				<!-- //board_list -->
