@@ -51,6 +51,65 @@
 	    <result column="user_name" property="userName"/>
 	    <result column="user_id" property="userId"/>
 	</resultMap>
+	<select id="getSearchExamList" parameterType="examInfo" resultMap="ExamInfoMap">
+		 SELECT
+	        ei.exam_code,
+	        ei.user_code,
+	        ei.exam_nm,
+	        ei.exam_type,
+	        ei.exam_oe_type,
+	        ei.exam_tar_grd,
+	        ei.exam_description,
+	        ei.exam_date,
+	        ei.exam_inst,
+	        COUNT(emq.exam_qna_code) AS registeredQuestionCount,
+			GROUP_CONCAT(DISTINCT qb.sub_mjr_cat_code ORDER BY qb.sub_mjr_cat_code SEPARATOR ', ') AS newCode
+	    FROM
+	        exam_info ei
+	        LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
+			INNER JOIN qna_bank qb ON emq.exam_qna_code = qb.qna_code
+	    <!-- GROUP BY 절 -->
+	    GROUP BY
+	        ei.exam_code
+	
+	    <!-- HAVING 절에서 조건 처리 -->
+	    HAVING
+	        registeredQuestionCount > 0
+	        AND ei.exam_type != '자체'
+	        
+	    <!-- beginYear와 endYear 조건 -->
+	    <if test="beginYear != null and endYear != null">
+	        AND YEAR(ei.exam_date) BETWEEN #{beginYear} AND #{endYear}
+	    </if>
+	
+	    <!-- examType 조건 -->
+	    <if test="examType != null and examType != ''">
+	        AND ei.exam_type = #{examType}
+	    </if>
+	
+	    <!-- examTarGrd 조건 -->
+	    <if test="examTarGrd != null and examTarGrd != ''">
+	        AND ei.exam_tar_grd = #{examTarGrd}
+	    </if>
+	
+	    <!-- monthAll이 false일 때만 month 리스트 필터 추가 -->
+	    <if test="monthAll == false and month != null and month.size > 0">
+	        AND MONTH(ei.exam_date) IN 
+	        <foreach collection="month" item="m" open="(" separator="," close=")">
+	            #{m}
+	        </foreach>
+	    </if>
+	
+	   <!-- subjAll이 false일 때만 subj 리스트 필터 추가(여기 수정해야함) -->
+		<if test="subj != null and subj.size > 0">
+	
+			<foreach collection="subj" item="s">
+				AND newCode LIKE concat('%', #{s},'%')
+			</foreach>
+
+		</if>
+	</select>
+	
 	<select id="getExamInfoByExamCode" parameterType="String" resultMap="ExamInfoMap">
 		SELECT
 			ei.exam_code,
@@ -72,7 +131,8 @@
 	<select id="getExamQuestionInfobyExamCode" parameterType="String" resultType="ExamMappingQuestion">
 		SELECT
 			qb.sub_mjr_cat_code as subMjrCatCode,
-			smirc.sub_mir_cat_nm as subMirCatNm
+			smirc.sub_mir_cat_nm as subMirCatNm,
+			smirc.sub_mir_cat_code as SubMirCatCode
 		FROM
 			exam_mapping_question emq INNER JOIN qna_bank qb ON emq.exam_qna_code = qb.qna_code
 			INNER JOIN sub_mir_cat smirc ON qb.sub_mir_cat_code=smirc.sub_mir_cat_code
