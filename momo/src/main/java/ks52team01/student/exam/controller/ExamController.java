@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ks52team01.student.exam.dto.ExamAnalyse;
 import ks52team01.student.exam.dto.ExamInfo;
 import ks52team01.student.exam.dto.ExamMappingQuestion;
+import ks52team01.student.exam.dto.QnaBank;
 import ks52team01.student.exam.service.ExamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +29,27 @@ public class ExamController {
 	private final ExamService examService;
 
 	@GetMapping("/{examCode}/examination")
-	public String getExamListByExamCode(@PathVariable(name = "examCode") String examCode) {
+	public String getQuestionInfoListByExamCode(@PathVariable(name = "examCode") String examCode,
+			@RequestParam(name = "subject") List<String> subject, @RequestParam(name = "examName") String examName,
+			Model model) {
+		String pathString = "redirect:/exam/examList";
 
-		return "view/user/exam/user_exam_take";
+		String currentSubject = "";
+		if (subject != null && !subject.isEmpty()) {
+			// 첫 번째 요소를 반환하고 제거
+			currentSubject = subject.remove(0);
+
+			List<QnaBank> questionInfoList = examService.getQuestionInfoListByExamCode(examCode, currentSubject);
+			log.error("List:{}", examName);
+
+			model.addAttribute("examCode", examCode);
+			model.addAttribute("examName", examName);
+			model.addAttribute("questionInfoList", questionInfoList);
+
+			pathString = "view/user/exam/user_exam_take";
+		}
+
+		return pathString;
 	}
 
 	@GetMapping("/searchExam")
