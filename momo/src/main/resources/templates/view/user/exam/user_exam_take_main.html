@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>공무원 모의고사 응시 페이지</title>
+	<title>시험 과목 선택</title>
 	<script src="https://code.jquery.com/jquery-3.7.1.js"
 		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<style>
@@ -177,17 +177,17 @@
 					<tr>
 						<td>언어 영역</td>
 						<td>국어</td>
-						<td><input type="checkbox" name="subject" value="" id="korSubject" /></td>
+						<td><input type="checkbox" name="subject" value="smjrcc1" id="korSubject" /></td>
 					</tr>
 					<tr>
 						<td>수리 영역</td>
 						<td>수학</td>
-						<td><input type="checkbox" name="subject" value="" id="mathSubject" /></td>
+						<td><input type="checkbox" name="subject" value="smjrcc2" id="mathSubject" /></td>
 					</tr>
 					<tr>
 						<td>영어 영역</td>
 						<td>영어</td>
-						<td><input type="checkbox" name="subject" value="" id="engSubject" /></td>
+						<td><input type="checkbox" name="subject" value="smjrcc3" id="engSubject" /></td>
 					</tr>
 					<tr>
 						<td>한국사 영역</td>
@@ -252,15 +252,6 @@
 		examQuestionInfo.forEach((element, idx) => {
 			const smjrcc = element['subMjrCatCode'];
 			switch (smjrcc) {
-				case 'smjrcc1':
-					$('#korSubject').val(element['subMirCatCode']);
-					break;
-				case 'smjrcc2':
-					$('#mathSubject').val(element['subMirCatCode']);
-					break;
-				case 'smjrcc3':
-					$('#engSubject').val(element['subMirCatCode']);
-					break;
 				case 'smjrcc4':
 					$('#korHSubject').val(element['subMirCatCode']);
 					break;

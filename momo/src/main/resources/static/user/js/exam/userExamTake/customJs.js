@@ -222,15 +222,15 @@ function gradeAnswer() {
 
 	// 문제지 정답
 	const Answer = [];
-	
+
 
 	questionList.forEach((elem, idx) => {
-		console.log(elem)
+
 		Answer.push(elem['qnaAns']);
 	})
 
-	console.log(Answer)
-	
+
+
 	// 유저정답
 	const userAnswer = checkAnswer();
 
@@ -304,15 +304,53 @@ function addSpanToRadioValue(questionNumber, value, check) {
 // 시험 채점후 정답/해설보기에서 채점결과를 가지고 해설페이지로 이동
 $('#examSolutionBtn').click(function() {
 	if (nextFlag) {
+		// 문제 qnaCode를 같이 전송(user_ans테이블에 기록용)
+		const questionQnaCode = [];
 		const examAnswer = [];
-
+		const userAnswer = checkAnswer();
 		questionList.forEach((elem, idx) => {
 			examAnswer.push(elem['qnaAns']);
 		})
-		const $form = $(`<form><input type="hidden" name="userAnswer" value="${checkAnswer().join(',')}"/>
-		<input type="hidden" name="examAnswer" value="${examAnswer.join(',')}"/></form>`);
-		$form.attr('action', "/exam/userExamSolution");
+		const $form = $(`<form></form>`);
+		$form.attr('action', `/exam/${$examCode}/solutions`);
 		$form.attr('method', 'post');
+		userAnswer.forEach((element, idx) => {
+			const userAnswerInput = `<input type="hidden" name="userAnswer" value="${element}" />`;
+			$form.append(userAnswerInput);
+		})
+		examAnswer.forEach((element, idx) => {
+			const examAnswerInput = `<input type="hidden" name="examAnswer" value="${element}" />`;
+			$form.append(examAnswerInput);
+		})
+
+		const currentSubjectInput = `<input type="hidden" name="currentSubject" value="${$currentSubject}" />`;
+		$form.append(currentSubjectInput);
+		
+		const currentSubjectName = $('.popexam-wrap__header--title').text()
+		const currentSubjectNameInput = `<input type="hidden" name="currentSubjectName" value="${currentSubjectName}" />`;
+		$form.append(currentSubjectNameInput);
+
+
+		if ($subject != null && $subject.length != 0) {
+			$subject.forEach((element, idx) => {
+				const $subjectInput = `<input type="hidden" name="subject" value="${element}" />`;
+				$form.append($subjectInput);
+			})
+		}
+
+		// 문제 QnaCode전송
+		questionList.forEach((elem, idx) => {
+			questionQnaCode.push(elem['examQnaCode']);
+		})
+		questionQnaCode.forEach((element, idx) => {
+			const qnaCodeInput = `<input type="hidden" name="qnaCode" value="${element}" />`;
+			$form.append(qnaCodeInput);
+		})
+
+		// 과목 대분류 구분용 텍스트 전송
+		const subMjrCatCodeInput = `<input type="hidden" name="subMjrCateCode" value="${questionList[0]['subMjrCatCode']}" />`;
+		$form.append(subMjrCatCodeInput);
+
 		$form.appendTo('body');
 		$form.submit();
 	} else {
@@ -322,15 +360,56 @@ $('#examSolutionBtn').click(function() {
 
 $('#topMenu > li > a').click(function() {
 	if (nextFlag) {
+		// 문제 qnaCode를 같이 전송(user_ans테이블에 기록용)
+		const questionQnaCode = [];
 		const examAnswer = [];
+		const userAnswer = checkAnswer();
 		questionList.forEach((elem, idx) => {
 			examAnswer.push(elem['qnaAns']);
 		})
-
-		const $form = $(`<form><input type="hidden" name="userAnswer" value="${checkAnswer().join(',')}"/>
-			<input type="hidden" name="examAnswer" value="${examAnswer.join(',')}"/></form>`);
-		$form.attr('action', "/exam/userExamSolution");
+		const $form = $(`<form></form>`);
+		$form.attr('action', `/exam/${$examCode}/solutions`);
 		$form.attr('method', 'post');
+		userAnswer.forEach((element, idx) => {
+			const userAnswerInput = `<input type="hidden" name="userAnswer" value="${element}" />`;
+			$form.append(userAnswerInput);
+		})
+		examAnswer.forEach((element, idx) => {
+			const examAnswerInput = `<input type="hidden" name="examAnswer" value="${element}" />`;
+			$form.append(examAnswerInput);
+		})
+
+		const currentSubjectInput = `<input type="hidden" name="currentSubject" value="${$currentSubject}" />`;
+		$form.append(currentSubjectInput);
+
+		const currentSubjectName = $('.popexam-wrap__header--title').text()
+		const currentSubjectNameInput = `<input type="hidden" name="currentSubjectName" value="${currentSubjectName}" />`;
+		$form.append(currentSubjectNameInput);
+
+
+		if ($subject != null && $subject.length != 0) {
+			$subject.forEach((element, idx) => {
+				const $subjectInput = `<input type="hidden" name="subject" value="${element}" />`;
+				$form.append($subjectInput);
+			})
+		}
+
+		// 문제 QnaCode전송
+		questionList.forEach((elem, idx) => {
+			questionQnaCode.push(elem['examQnaCode']);
+		})
+		questionQnaCode.forEach((element, idx) => {
+
+			const qnaCodeInput = `<input type="hidden" name="qnaCode" value="${element}" />`;
+			$form.append(qnaCodeInput);
+		})
+
+		// 과목 대분류 구분용 텍스트 전송
+		const subMjrCatCodeInput = `<input type="hidden" name="subMjrCateCode" value="${questionList[0]['subMjrCatCode']}" />`;
+		$form.append(subMjrCatCodeInput);
+
+
+
 		$form.appendTo('body');
 		$form.submit();
 	} else {

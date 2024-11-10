@@ -21,4 +21,6 @@ public interface ExamService {
 
 	List<QnaBank> getQuestionInfoListByExamCode(String examCode, String currentSubject);
 
+	void registerResultToSubjectTable(String userCode, String examCode, String subMjrCateCode, List<String> qnaCode, List<String> userAnswer);
+
 }

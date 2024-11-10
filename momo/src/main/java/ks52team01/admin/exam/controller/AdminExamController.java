@@ -307,6 +307,7 @@ public class AdminExamController {
 		List<QnaImg> qnaImgList = new ArrayList<QnaImg>();
 		qnaImgList = fileService.getQnaImgListByQnaCode(qnaCode);
 
+		log.error("imgList:{}", qnaImgList);
 		List<QnaImg> qnaImgFileInputList = new ArrayList<QnaImg>();
 		qnaImgFileInputList = fileService.getQnaImgFileInputListByQnaCode(qnaCode);
 

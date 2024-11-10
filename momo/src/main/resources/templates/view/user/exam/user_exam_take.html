@@ -10,7 +10,12 @@
 	<link rel="stylesheet" th:href="@{/user/css/exam/userExamTake/examCustom.css}">
 </head>
 <style>
-	.button-txt__exam.button-txt__exam--size_flow.button-txt__exam--color_red:hover {
+	/*.button-txt__exam.button-txt__exam--size_flow.button-txt__exam--color_red:hover {
+		background-color: red !important;
+		color: white !important;
+		text-decoration: none !important;
+	}*/
+	.button-txt__exam.button-txt__exam--size_fixed.button-txt__exam--color_red:hover {
 		background-color: red !important;
 		color: white !important;
 		text-decoration: none !important;
@@ -31,6 +36,10 @@
 	a {
 		text-decoration: unset !important;
 		font-weight: bolder;
+	}
+
+	.question_img {
+		width: 5% !important
 	}
 </style>
 
@@ -122,23 +131,78 @@
 
 							</div>
 
+							<div class="popexam-wrap__question__title" th:each="qilImg : ${qnaImgList}"
+								th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='fileInput'}">
+								<div class="question-image">
+									<img th:src="@{${qilImg.qnaImgPath}}" alt="@{${qilImg.qnaImgOriginalName}}"
+										class="question_img" />
+								</div>
+							</div>
 							<div class="popexam-wrap__question__choice">
 								<ol>
 									<li>① &nbsp;<span style="text-indent: -15.0pt; margin-left: 15.0pt;"
 											th:text="${qil.QnaSlt1}">105인
-											사건이 일어났다.</span></li>
+											사건이 일어났다.</span>
+										<div class="popexam-wrap__question__title" th:each="qilImg : ${qnaImgList}"
+											th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='item1_file'}">
+											<div class="question-image">
+												<img th:src="@{${qilImg.qnaImgPath}}"
+													alt="@{${qilImg.qnaImgOriginalName}}" class="question_img" />
+											</div>
+										</div>
+									</li>
 									<li>② &nbsp;<span style="text-indent: -15.0pt; margin-left: 15.0pt;"
 											th:text="${qil.QnaSlt2}">&nbsp;독립
-											협회가 만들어졌다.</span></li>
+											협회가 만들어졌다.</span>
+
+										<div class="popexam-wrap__question__title" th:each="qilImg : ${qnaImgList}"
+											th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='item2_file'}">
+											<div class="question-image">
+												<img th:src="@{${qilImg.qnaImgPath}}"
+													alt="@{${qilImg.qnaImgOriginalName}}" class="question_img" />
+											</div>
+
+										</div>
+									</li>
 									<li>③ &nbsp;<span style="text-indent: -15.0pt; margin-left: 15.0pt;"
 											th:text="${qil.QnaSlt3}">&nbsp;고종이
-											강제로 퇴위당하였다.</span></li>
+											강제로 퇴위당하였다.</span>
+
+										<div class="popexam-wrap__question__title" th:each="qilImg : ${qnaImgList}"
+											th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='item3_file'}">
+											<div class="question-image">
+												<img th:src="@{${qilImg.qnaImgPath}}"
+													alt="@{${qilImg.qnaImgOriginalName}}" class="question_img" />
+											</div>
+
+										</div>
+									</li>
 									<li>④ &nbsp;<span style="text-indent: -15.0pt; margin-left: 15.0pt;"
 											th:text="${qil.QnaSlt4}">&nbsp;대한민국
-											임시 정부가 수립되었다.</span></li>
+											임시 정부가 수립되었다.</span>
+
+										<div class="popexam-wrap__question__title" th:each="qilImg : ${qnaImgList}"
+											th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='item4_file'}">
+											<div class="question-image">
+												<img th:src="@{${qilImg.qnaImgPath}}"
+													alt="@{${qilImg.qnaImgOriginalName}}" class="question_img" />
+											</div>
+
+										</div>
+									</li>
 									<li>⑤ &nbsp;<span style="text-indent: -15.0pt; margin-left: 15.0pt;"
 											th:text="${qil.QnaSlt5}">&nbsp;국가
-											재건 최고 회의가 설치되었다.</span></li>
+											재건 최고 회의가 설치되었다.</span>
+
+										<div class="popexam-wrap__question__title" th:each="qilImg : ${qnaImgList}"
+											th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='item5_file'}">
+											<div class="question-image">
+												<img th:src="@{${qilImg.qnaImgPath}}"
+													alt="@{${qilImg.qnaImgOriginalName}}" class="question_img" />
+											</div>
+
+										</div>
+									</li>
 								</ol>
 							</div>
 
@@ -173,7 +237,7 @@
 							</tr>
 							<tr id="examResult" style="display: none;">
 								<th colspan="6" class="info">
-									<h3>총 20 문항</h3>
+									<h3 id="totalQuestion">총 20 문항</h3>
 									<div class="exp" id="myoxcnt">
 										<!--정답 2 <strong>오답 18</strong>-->
 									</div>
@@ -209,16 +273,16 @@
 							class="button-txt__exam button-txt__exam--size_fixed button-txt__exam--color_blue"
 							id="gradeExam" style="font-weight: bolder;">채점하기
 						</a>
-						<div class="popexam-wrap__question--button popexam-wrap__question--button_second"
-							id="examDoneMenu" style="display: none;">
+						<!--<div class="popexam-wrap__question--button popexam-wrap__question--button_second"-->
+						<div class="popexam-wrap__question--button" id="examDoneMenu" style="display: none;">
 							<a href="javascript:;"
-								class="button-txt__exam button-txt__exam--size_flow button-txt__exam--color_red"
+								class="button-txt__exam button-txt__exam--size_fixed button-txt__exam--color_red"
 								style="font-weight: bolder;" id="examSolutionBtn">정답/해설
 								보기</a>
-							<a href="javascript:;" onclick="takeReExam()"
+							<!--<a href="javascript:;" onclick="takeReExam()"
 								class="button-txt__exam button-txt__exam--size_flow button-txt__exam--color_blue"
 								style="font-weight: bolder;">다시
-								풀기</a>
+								풀기</a>-->
 						</div>
 					</div>
 
@@ -232,9 +296,11 @@
 	<script src="/user/js/exam/userExamTake/customJs.js"></script>
 	<script th:inline="javascript">
 		const questionList =/*[[${questionInfoList}]]*/[];
+		const $examCode =/*[[${examCode}]]*/[];
+		const $currentSubject =/*[[${currentSubject}]]*/[];
+		const $subject =/*[[${subject}]]*/[];
 
 		//	시험제목 표기
-		console.log(questionList[0]['subMjrCatCode'])
 		let subjectArea = "";
 		let subjectName = "";
 		switch (questionList[0]['subMjrCatCode']) {
@@ -275,7 +341,7 @@
 		const subjectTitle = $('#subTxt')
 		subjectTitle.find('span').eq(0).text(subjectArea);
 		subjectTitle.find('span').eq(1).text(subjectName);
-	
+
 		subjectTitle.find('em').text(`(${questionList.length}문제)`);
 
 		// ID가 'test'로 시작하는 요소 선택 (^=)
@@ -284,6 +350,7 @@
 		$(document).on('click', '[id^="qans"]', function () {
 			fncViewQues($(this).prop('id'))
 		})
+		$('#totalQuestion').text(`총 ${questionList.length} 문항`);
 	</script>
 </body>
 
