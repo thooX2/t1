@@ -17,6 +17,33 @@
 	    <result property="qnaImgUpdateTime" column="qna_img_update_time" />
 	</resultMap>
 	
+	<select id="getQnaImgListByExamCode" parameterType="String" resultMap="QnaImgResultMap">
+		SELECT
+			qi.qna_img_code,
+			qi.qna_code,
+			qi.user_code,
+			qi.qna_img_type,
+			qi.qna_img_path,
+			qi.qna_img_sort_col,
+			qi.qna_img_original_name,
+			qi.qna_img_new_name,
+			qi.qna_file_size,
+			qi.qna_img_create_time,
+			qi.qna_img_update_time
+		FROM
+			qna_img qi INNER JOIN  qna_bank qb ON qi.qna_code = qb.qna_code
+		WHERE
+			1=1
+		   <if test="currentSubject != null">
+          	 and qb.sub_mir_cat_code =#{currentSubject}
+           </if>
+		   <if test="currentMjrCode != null">
+          	 and qb.sub_mjr_cat_code =#{currentMjrCode}
+           </if>
+	</select>
+	
+	
+	
 	<select id="getFileInfoByQnaCodeAndQnaImgOriginalName" parameterType="String" resultMap="QnaImgResultMap">
 		SELECT
 			qna_img_code,

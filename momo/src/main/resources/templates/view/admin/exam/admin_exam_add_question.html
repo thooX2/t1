@@ -214,6 +214,61 @@
 				}
 			}
 		});
+
+
+		// 이미지 업로드 부분(문제 본문 이미지)
+		const fileInput = document.getElementById('fileInput');
+		const fileName = document.getElementById('fileName');
+		const fileList = document.getElementById('fileList');
+
+		// 파일 선택 시
+		fileInput.addEventListener('change', function () {
+			// 선택된 파일들 가져오기
+			const files = Array.from(fileInput.files);
+
+			// 파일명을 표시
+			if (files.length > 0) {
+				fileName.textContent = files.length === 1 ? files[0].name : `${files.length}개의 파일 선택됨`;
+			} else {
+				fileName.textContent = '선택된 파일이 없습니다.';
+			}
+
+			// 기존 파일 리스트 초기화
+			fileList.innerHTML = '';
+
+			// 파일 리스트에 추가
+			files.forEach(file => {
+				const listItem = document.createElement('li');
+				const img = document.createElement('img');
+				img.src = URL.createObjectURL(file); // 이미지 미리보기
+				img.className = 'thumbnail';
+				listItem.appendChild(img);
+				listItem.appendChild(document.createTextNode(file.name));
+
+				// 제거 버튼 생성
+				const removeButton = document.createElement('button');
+				removeButton.textContent = '제거';
+				removeButton.className = 'remove-button';
+				removeButton.onclick = () => {
+					fileList.removeChild(listItem);
+					updateFileInput();
+				};
+
+				listItem.appendChild(removeButton);
+				fileList.appendChild(listItem);
+			});
+		});
+
+		function updateFileInput() {
+			const updatedFiles = Array.from(fileList.children).map(item => item.childNodes[1].textContent);
+			console.log(updatedFiles); // 선택된 파일 목록을 콘솔에 출력
+
+			// 파일 리스트가 비어 있으면 파일명 텍스트 초기화
+			if (fileList.children.length === 0) {
+				fileName.textContent = '선택된 파일이 없습니다.';
+			}
+		}
+
 		$('#customButton').click(function () {
 			$('#fileInput').click();
 		})

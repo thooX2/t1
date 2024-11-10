@@ -25,4 +25,6 @@ public interface FileService {
 
 	void deleteImg(String qnaCode, String qnaImgOriginalName);
 
+	List<QnaImg> getQnaImgListByExamCode(String currentSubject);
+
 }
