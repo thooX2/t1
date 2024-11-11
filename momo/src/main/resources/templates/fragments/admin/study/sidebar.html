@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 다른 페이지에 포함시킬 영역을 th:fragment로 선언해준다.-->
+<header>
+<style>
+#gnb #top_menu a.current {
+    background-color: #1784f4;
+}
+</style>
+</header>
+<div th:fragment="sidebar">
+	<div id="lnb_wrapper">
+		<div id="lnb_shortcut" style="line-height: 0px;">
+			<select id="favorite_select">
+				<option value="">======== 퀵메뉴 ========</option>
+				<optgroup label="사이트링크">
+					<option id="ksmart" value="ksmart" data-target="#">→ 한국스마트정보교육원</option>
+				</optgroup>
+			</select>
+
+
+		</div>
+
+		<div id="lnb_contents_wrapper">
+			<div id="lnb_contents">
+				<ul class="acc-nav" id="lnb-14" style="width: 100%;">
+
+					<li class="acc-title acc-node-70"><a href="#">
+							<i class="fa fa-pencil-square-o"></i>목표 관리<span class="arrow"></span>
+						</a>
+						<ul class="acc-sub" style="display: none;">
+							<li class="acc-node-71">
+								<a th:href="@{/admin/study/getTargetUniversityList}" target="_self"><i
+										class="fa fa-angle-right"></i>목표 대학 </a>
+							</li>
+							<li class="acc-node-32">
+								<a th:href="@{/admin/study/StudyCsat}" target="_self"><i
+										class="fa fa-angle-right"></i>목표 과목 </a>
+							</li>
+							<li class="acc-node-32">
+								<a th:href="@{/admin/study/getTargetGradeList}" target="_self"><i
+										class="fa fa-angle-right"></i>목표 등급 </a>
+							</li>
+						</ul>
+					</li>
+					<li class="acc-title acc-node-78"><a href="#">
+							<i class="fa fa-file-text"></i>일정 관리<span class="arrow"></span>
+						</a>
+						<ul class="acc-sub" style="display: none;">
+							<li class="acc-node-72">
+								<a th:href="@{/admin/study/getLearningScheduleList}" target="_self">
+									<i class="fa fa-angle-right"></i>전체 일정
+								</a>
+							</li>
+							<li class="acc-node-73"><a th:href="@{/admin/study/getDetailedScheduleList}" target="_self">
+									<i class="fa fa-angle-right"></i>세부일정
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					<li class="acc-title acc-node-78"><a href="#">
+							<i class="fa fa-file-text"></i>문제 관리<span class="arrow"></span>
+						</a>
+						<ul class="acc-sub" style="display: none;">
+							<li class="acc-node-72">
+								<a th:href="@{/admin/study/getQuestionScrapeList}" target="_self">
+									<i class="fa fa-angle-right"></i>문제 스크랩
+								</a>
+							</li>
+							<li class="acc-node-73"><a th:href="@{/admin/study/getProblemSolvingList}" target="_self">
+									<i class="fa fa-angle-right"></i>문제 노트
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+</html>
