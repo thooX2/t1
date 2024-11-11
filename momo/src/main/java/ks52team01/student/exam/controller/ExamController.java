@@ -1,5 +1,6 @@
 package ks52team01.student.exam.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -7,14 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
+import ks52team01.common.files.dto.QnaImg;
+import ks52team01.common.files.service.FileService;
 import ks52team01.student.exam.dto.ExamAnalyse;
 import ks52team01.student.exam.dto.ExamInfo;
 import ks52team01.student.exam.dto.ExamMappingQuestion;
+import ks52team01.student.exam.dto.QnaBank;
 import ks52team01.student.exam.service.ExamService;
+import ks52team01.student.user.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,11 +32,77 @@ import lombok.extern.slf4j.Slf4j;
 public class ExamController {
 
 	private final ExamService examService;
+	private final FileService fileService;
+
+	@PostMapping("/{examCode}/solutions")
+	public String userExamSolution(@PathVariable(name = "examCode") String examCode,
+			@RequestParam(name = "userAnswer") List<String> userAnswer,
+			@RequestParam(name = "examAnswer") List<String> examAnswer,
+			@RequestParam(name = "currentSubject") String currentSubject,
+			@RequestParam(name = "currentSubjectName") String currentSubjectName,
+			@RequestParam(name = "subMjrCateCode") String subMjrCateCode,
+			@RequestParam(name = "subject", required = false) List<String> subject,
+			@RequestParam(name = "qnaCode") List<String> qnaCode, Model model, HttpSession session) {
+
+		// currentSubject는 국어/수학/영어/한국사를 제외한 과목을 선택할수 있는 과목은 과목중분류를
+		// 국어/수학/영어/한국사는 과목대분류를 반환한다
+
+		// 그래서 유저정답을 저장할 메서드에 필요한 선택한 모든과목의 대분류를 subMirCateCode로 반환
+		// subject는 exam_take_main에서 선택한 과목의 list이다.(현재 시험본 과목제외)
+
+		User loginUser = null; // 인터셉터 활성화시 이부분의 if를 지워도 무방
+		if (session.getAttribute("loggedInUser") != null) {
+			loginUser = (User) session.getAttribute("loggedInUser");
+			String userCode = loginUser.getUserCode();
+			examService.registerResultToSubjectTable(userCode, examCode, subMjrCateCode, qnaCode, userAnswer);
+		}
+
+		List<QnaBank> questionInfoList = examService.getQuestionInfoListByExamCode(examCode, currentSubject);
+		List<QnaImg> qnaImgList = new ArrayList<QnaImg>();
+		qnaImgList = fileService.getQnaImgListByExamCode(currentSubject);
+
+		model.addAttribute("questionInfoList", questionInfoList);
+		model.addAttribute("userAnswer", userAnswer);
+		model.addAttribute("examAnswer", examAnswer);
+		// 이게 아래(getQuestionInfoListByExamCode)의 examName임
+		model.addAttribute("examName", currentSubjectName);
+		model.addAttribute("subject", subject);
+		model.addAttribute("examCode", examCode);
+		model.addAttribute("qnaImgList", qnaImgList);
+		log.info("모의고사 해설화면으로 이동");
+
+		return "view/user/exam/user_exam_solution";
+	}
 
 	@GetMapping("/{examCode}/examination")
-	public String getExamListByExamCode(@PathVariable(name = "examCode") String examCode) {
+	public String getQuestionInfoListByExamCode(@PathVariable(name = "examCode") String examCode,
+			@RequestParam(name = "subject", required = false) List<String> subject,
+			@RequestParam(name = "examName") String examName, Model model) {
+		String pathString = "redirect:/exam/examList";
 
-		return "view/user/exam/user_exam_take";
+		String currentSubject = "";
+		if (subject != null) {
+			// 첫 번째 요소를 반환하고 제거
+			currentSubject = subject.remove(0);
+
+			List<QnaBank> questionInfoList = examService.getQuestionInfoListByExamCode(examCode, currentSubject);
+			List<QnaImg> qnaImgList = new ArrayList<QnaImg>();
+			qnaImgList = fileService.getQnaImgListByExamCode(currentSubject);
+
+			model.addAttribute("examCode", examCode);
+			model.addAttribute("examName", examName);
+			model.addAttribute("subject", subject);
+			// 해설페이지에서 해설을 가져오기 위해 전달
+			model.addAttribute("currentSubject", currentSubject);
+			model.addAttribute("questionInfoList", questionInfoList);
+			model.addAttribute("qnaImgList", qnaImgList);
+
+			pathString = "view/user/exam/user_exam_take";
+		} else {
+			pathString = "view/user/exam/user_exam_take_done";
+		}
+
+		return pathString;
 	}
 
 	@GetMapping("/searchExam")
@@ -115,17 +188,6 @@ public class ExamController {
 	public String userExamAnalyse() {
 		log.info("모의고사 결과분석으로 이동");
 		return "view/user/exam/user_exam_analyse";
-	}
-
-	@PostMapping("/userExamSolution")
-	public String userExamSolution(@RequestParam String userAnswer, @RequestParam String examAnswer, Model model) {
-
-		model.addAttribute("userAnswer", userAnswer);
-		model.addAttribute("examAnswer", examAnswer);
-
-		log.info("모의고사 해설화면으로 이동");
-
-		return "view/user/exam/user_exam_solution";
 	}
 
 	@GetMapping("/ccr")

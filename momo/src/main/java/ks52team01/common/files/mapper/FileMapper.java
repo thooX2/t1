@@ -23,4 +23,8 @@ public interface FileMapper {
 
 	List<QnaImg> getFileInfoByQnaCodeAndQnaImgOriginalName(String qnaImgOriginalName, String qnaCode);
 
+	List<QnaImg> getQnaImgListByExamCode(String currentSubject, String currentMjrCode);
+
+	
+
 }

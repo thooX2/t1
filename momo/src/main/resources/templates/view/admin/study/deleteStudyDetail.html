@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/admin_layout}">
+
+<head>
+<!-- Select2 CSS -->
+<link rel="stylesheet" th:href="@{/user/css/study/bootstrap.min.css}">
+<style>
+thead {
+	border: 2px solid #B8D0FA;;
+}
+</style>
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+	rel="stylesheet" />
+</head>
+<th:block layout:fragment="customJsFile">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous"></script>
+	<!-- Select2 JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<script th:src="@{/admin/js/study/adminDeleteStudy.js}"></script>
+</th:block>
+<th:block layout:fragment="customJs">
+
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+
+	<div class="sidebar">
+		<div th:replace="fragments/admin/study/sidebar :: sidebar"></div>
+	</div>
+	<div class="content" style="padding: 0px">
+		<div id="sys-breadcrumb">
+			<button id="sys-breadcrumb-arrow" type="button">
+				<i class="fa fa-minus" style="font-size: 12px;"></i>
+			</button>
+			<div id="sys-page-title">
+				<span id="sys-page-title-nm">세부 일정 삭제</span>
+				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
+			</div>
+			<div id="sys-page-util">
+
+				<a id="sys-page-util-refresh"> <i class="fa fa-retweet"></i>
+				</a>
+			</div>
+		</div>
+		<div id="sys-wrap">
+			<div id="sys-scroll">
+				<div id="alert_area"></div>
+				<div id="sys-contents">
+					
+					<form th:action="@{/admin/study/removeDetailedSchedule}"
+						method="post" class="insert form-horizontal">
+
+						<br><br><br>
+						<h2 class="text-center">정말로 삭제하시겠습니까?</h2>
+
+						<div class="form-group">
+
+							<div class="col-sm-9">
+								<input type="hidden" id="targetUniverseCode"
+									name="detailedSchedule" class="form-control"
+									th:value="${listIdx}" />
+							</div>
+						</div>
+
+
+						<div class="form-group text-center">
+							<div class="col-sm-12">
+
+								<input type="submit" class="btn btn-danger" value="세부일정 삭제" />
+
+								<a th:href="@{/admin/study/getDetailedScheduleList}" class="btn btn-default">취소</a>
+							</div>
+						</div>
+					</form>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modalContainer"></div>
+</div>
+
+</html>

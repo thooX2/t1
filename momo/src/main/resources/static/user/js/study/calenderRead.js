@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		else if (selectedSubject === "smjrcc3") {
 			options = [
 				{ value: "smircc10", text: "영어1" },
-				{ value: "smircc11", text: "영어1" }
+				{ value: "smircc11", text: "영어2" }
 			]
 
 		}
@@ -126,8 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		success: function(data) {
 			data.forEach(function(item) {
 				const endDays = new Date(item.endDay);
-				const compleate = (item.result).substring(0, 3);
-				
+				const compleate = (item.compleateMemo).substring(0, 3);
+
 				const detail = item.result !== null ? (item.result).substring(0, 3) : item.result;
 				if (compleate === '미달성') {
 					item.compleateMemo = '진행중 : 현재 진행중인 상태 입니다.';
@@ -144,46 +144,27 @@ document.addEventListener('DOMContentLoaded', function() {
 				endDays.setDate(endDays.getDate() + 1);
 				const eventitem = item.fullSchedule;
 				if (item.detailed === null || item.FullSchedule !== null) {
-				if (!Event.has(eventitem)) {
-					Event.add(eventitem);
+					if (!Event.has(eventitem)) {
+						Event.add(eventitem);
 
-					currentEvent = calendar.addEvent({
-						title: item.lesMemo,
-						mainKey: item.fullSchedule,
-						subKey: item.detailed,
-						subject1: item.submjr,
-						subject2: item.submir,
-						start: item.startDay,
-						end: endDays,
-						days: item.days,
-						startDays: item.startDay,
-						endDays: endDays,
-						allDay: true,
-						extendedProps: {
-							result: item.compleateMemo
-						}
-					});
+						currentEvent = calendar.addEvent({
+							title: item.lesMemo,
+							mainKey: item.fullSchedule,
+							subKey: item.detailed,
+							subject1: item.submjr,
+							subject2: item.submir,
+							start: item.startDay,
+							end: endDays,
+							days: item.days,
+							startDays: item.startDay,
+							endDays: endDays,
+							allDay: true,
+							extendedProps: {
+								result: item.compleateMemo
+							}
+						});
+					}
 				}
-				}
-
-				/*if (item.detailed === null || item.FullSchedule !== null) {
-					currentEvent = calendar.addEvent({
-						title: item.lesMemo,
-						mainKey: item.fullSchedule,
-						subKey: item.detailed,
-						subject1: item.submjr,
-						subject2: item.submir,
-						start: item.startDay,
-						end: endDays,
-						days: item.days,
-						startDays: item.startDay,
-						endDays: endDays,
-						allDay: true,
-						extendedProps: {
-							result: item.compleateMemo
-						}
-					});
-				}*/
 
 				if (item.detailed !== null) {
 					const startday = new Date(`${item.detailDate}T${item.startTime}`);
@@ -244,9 +225,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			const startMonth = String(startDate.getMonth() + 1).padStart(2, '0');
 			const startDay = String(startDate.getDate()).padStart(2, '0');
 			const startDateOnly = `${startYear}-${startMonth}-${startDay}`;
-
 			const endYear = endDate.getFullYear();
 			const endMonth = String(endDate.getMonth() + 1).padStart(2, '0');
+			const learning = document.getElementById('learning').value;
 			let endDay = String(endDate.getDate()).padStart(2, '0');
 			if (startDay != endDay) {
 				endDay = String(endDate.getDate() - 1).padStart(2, '0');
@@ -286,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log("종료일" + document.getElementById('endDate').value);
 			console.log("시작일" + document.getElementById('startDate').value);
 			if (document.getElementById('endDate').value !== document.getElementById('startDate').value) {
+				document.getElementById('learning').removeAttribute('required');
 				document.getElementById('selectName').style.display = 'none';
 				document.getElementById('endTimer').style.display = 'none';
 				document.getElementById('startTimer').style.display = 'none';
@@ -320,6 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				const result = document.getElementById('result').value;
 				const learningType = document.getElementById('learning');
 				const learning = document.getElementById('learning').value;
+
+				learningType.setAttribute('required', 'required');
 
 				console.log("우선 날자 간격 :" + days);
 				console.log("다음으로 시작일 :" + start);
@@ -367,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				// 시작일자와 종료일자 비교
 				if (start.toDateString() !== end.toDateString()) {
-
+					learningType.removeAttribute('required');
 					$.ajax({
 						url: '/study/addLearningSchedule', // learning 테이블로 보내는 API URL
 						method: 'POST',
@@ -375,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						data: JSON.stringify(learningData),
 
 						success: function(response) {
-							/*window.location.href = '/study/getLearningScheduleList';*/
+							window.location.href = '/study/getLearningScheduleList';
 						},
 
 						error: function(xhr, status, error) {
@@ -402,6 +386,11 @@ document.addEventListener('DOMContentLoaded', function() {
 						return;
 					}
 
+					if (learningType.value === "" || learningType.value === "null") {
+						alert('계획의 선택은 필수 입니다.\n 계획을 추가해 주시거나 선택해 주세요.');
+						return;
+					}
+
 					$.ajax({
 						url: '/study/addDetailedSchedule', // detail 테이블로 보내는 API URL
 						method: 'POST',
@@ -409,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						data: JSON.stringify(detailData),
 						success: function(response) {
 							/*	console.log('Detail 데이터 저장 성공:', response);*/
-							/*window.location.href = '/study/getLearningScheduleList';*/
+							window.location.href = '/study/getLearningScheduleList';
 						},
 						error: function(xhr, status, error) {
 							/*	console.error('Detail 데이터 저장 실패:', error);*/
@@ -496,14 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log(eventDateOnly);
 			console.log(event.end);
 
-			/*if (document.getElementById('endDate').value !== document.getElementById('startDate').value) {
-
-				document.getElementById('learning').setAttribute('required', true);
-			}
-			else {
-				document.getElementById('learning').setAttribute('required', true);
-			}*/
-
 			if (event.end == null) {
 				document.getElementById('endDate').value = eventDateOnly;
 				document.getElementById('endTime').avlue = event.start.toTimeString().split(' ')[0].slice(0, 5)
@@ -547,11 +528,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 			else {
 				document.getElementById('eventModalLabel').textContent = "세부계획 생성";
-
 				document.getElementById('selectName').style.display = '';
 				document.getElementById('endTimer').style.display = '';
 				document.getElementById('startTimer').style.display = '';
 				document.getElementById('endDays').style.display = 'none';
+
 			}
 
 			const subjects = {
@@ -636,7 +617,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			const result = document.getElementById('result').value;
 			const userCode = document.getElementById('userId').value;
 			const mainKey = document.getElementById('learning').value;
+			const learningType = document.getElementById('learning');
 			const subKey = currentEvent.extendedProps.subKey;
+			const resultType = document.getElementById('result');
+
 
 			if (startDays[mainKey] > startDate || startDate > EndDays[mainKey]) {
 				console.log('실패');
@@ -695,6 +679,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 			if (start.toDateString() !== end.toDateString()) {
+				inputElement.removeAttribute('required');
+
 				$.ajax({
 					url: '/study/modifyLearningSchedule', // learning 테이블로 보내는 API URL
 					method: 'POST',
@@ -702,9 +688,8 @@ document.addEventListener('DOMContentLoaded', function() {
 					data: JSON.stringify(learningData),
 
 					success: function(response) {
-						/*window.location.href = '/study/getLearningScheduleList';*/
-						/*console.log('Learning 데이터 저장 성공:', response);
-					*/},
+						window.location.href = '/study/getLearningScheduleList';
+					},
 					error: function(xhr, status, error) {
 						/*console.error('Learning 데이터 저장 실패:', error);
 					*/}
@@ -715,6 +700,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 
 			else {
+				if (learningType.value === "" || learningType.value === "null") {
+					alert('계획의 선택은 필수 입니다.\n 계획을 추가해 주시거나 선택해 주세요.');
+					return;
+				}
+
+
 				console.log(startDays[mainKey] > startDate);
 				console.log(EndDays[mainKey] < startDate);
 
@@ -724,8 +715,8 @@ document.addEventListener('DOMContentLoaded', function() {
 					contentType: 'application/json',
 					data: JSON.stringify(detailData),
 					success: function(response) {
-						/*window.location.href = '/study/getLearningScheduleList';
-						*//*console.log('Detail 데이터 저장 성공:', response);
+						window.location.href = '/study/getLearningScheduleList';
+						/*console.log('Detail 데이터 저장 성공:', response);
 					*/},
 					error: function(xhr, status, error) {
 						/*console.error('Detail 데이터 저장 실패:', error);
@@ -748,8 +739,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			const end = new Date(`${endDate}T${endTime}`);
 			const mainKey = currentEvent.extendedProps.mainKey;
 			const subKey = currentEvent.extendedProps.subKey;
+			const userKey = document.getElementById('userId').value;
+
 			const learningData = {
 				learningSchedule: mainKey,
+				userCode: userKey
 			}
 			const detailData = {
 				detailedSchedule: subKey,
@@ -765,7 +759,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					data: JSON.stringify(learningData),
 
 					success: function(response) {
-						/*window.location.href = '/study/getLearningScheduleList';*/
+						window.location.href = '/study/getLearningScheduleList';
 						/*console.log('Learning 데이터 저장 성공:', response);
 					*/},
 					error: function(xhr, status, error) {
@@ -783,8 +777,8 @@ document.addEventListener('DOMContentLoaded', function() {
 					contentType: 'application/json',
 					data: JSON.stringify(detailData),
 					success: function(response) {
-						/*window.location.href = '/study/getLearningScheduleList';
-						*//*console.log('Detail 데이터 저장 성공:', response);*/
+						window.location.href = '/study/getLearningScheduleList';
+						/*console.log('Detail 데이터 저장 성공:', response);*/
 
 					},
 					error: function(xhr, status, error) {

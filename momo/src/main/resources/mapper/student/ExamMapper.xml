@@ -51,6 +51,106 @@
 	    <result column="user_name" property="userName"/>
 	    <result column="user_id" property="userId"/>
 	</resultMap>
+	<resultMap id="ExamMappingQuestionResultMap" type="QnaBank">
+	    <id property="ExamMappingQuestionCode" column="exam_mapping_question_code" />
+	    <result property="ExamCode" column="exam_code" />
+	    <result property="ExamQnaCode" column="exam_qna_code" />
+	    <result property="SubMjrCatCode" column="sub_mjr_cat_code" />
+	    <result property="SubMirCatNm" column="sub_mir_cat_nm" />
+	    <result property="SubMirCatCode" column="sub_mir_cat_code" />
+	    <result property="ExamQnaTypeNm" column="exam_qna_type_nm" />
+	    <result property="QnaType" column="qna_type" />
+	    <result property="ExamQnaChapNm" column="exam_qna_chap_nm" />
+	    <result property="QnaChap" column="qna_chap" />
+	    <result property="QnaSubject" column="qna_subject" />
+	    <result property="QnaQst" column="qna_qst" />
+	    <result property="QnaSlt1" column="qna_slt1" />
+	    <result property="QnaSlt2" column="qna_slt2" />
+	    <result property="QnaSlt3" column="qna_slt3" />
+	    <result property="QnaSlt4" column="qna_slt4" />
+	    <result property="QnaSlt5" column="qna_slt5" />
+	    <result property="QnaAns" column="qna_ans" />
+	    <result property="QnaScr" column="qna_scr" />
+	    <result property="QnaCmt" column="qna_cmt" />
+	    <result property="QnaCreateTime" column="qna_create_time" />
+	</resultMap>
+	
+	
+	<insert id="registerResultToSubjectTable" parameterType="ExamSubjectResult">
+		<selectKey keyProperty="maxNumber" resultType="Int" order="BEFORE">
+			/* 해당테이블에서 pk에서 가장큰 숫자를 알아오는 코드 */
+			SELECT
+				CASE
+				WHEN COUNT(*) = 0 THEN 1
+				ELSE
+					MAX(CAST(SUBSTRING_INDEX(${pkColumnName}, #{preCode}, -1) AS UNSIGNED))+1
+				END AS maxNumber
+			FROM
+				${tableName};
+		</selectKey>
+		INSERT INTO ${tableName} 
+	    VALUES
+		  <foreach collection="qnaCode" item="qna" index="idx" separator=",">
+			  
+	        (
+	            CONCAT(#{preCode}, (#{idx}+#{maxNumber})),
+	            #{userCode},
+	            (SELECT sub_mjr_cat_code FROM qna_bank WHERE qna_code = #{qna}),
+	            (SELECT sub_mir_cat_code FROM qna_bank WHERE qna_code = #{qna}),
+	            #{examCode},
+	            #{qna},
+	            #{userAnswer[${idx}]},
+	            (SELECT qna_scr FROM qna_bank WHERE qna_code = #{qna}),
+	            NOW(),
+	            1
+	        )
+	    
+	    </foreach>
+	</insert>
+	
+	<select id="getQuestionInfoListByExamCode" parameterType="String" resultMap="ExamMappingQuestionResultMap">
+	  SELECT
+        emq.exam_mapping_question_code,
+        emq.exam_code,
+        emq.exam_qna_code,
+        qb.sub_mjr_cat_code,
+        smirc.sub_mir_cat_nm,
+        qb.sub_mir_cat_code,
+        eqt.exam_qna_type_nm,
+        qb.qna_type,
+        eqc.exam_qna_chap_nm,
+        qb.qna_chap,
+        qb.qna_subject,
+        qb.qna_qst,
+        qb.qna_slt1,
+        qb.qna_slt2,
+        qb.qna_slt3,
+        qb.qna_slt4,
+        qb.qna_slt5,
+        qb.qna_ans,
+        qb.qna_scr,
+        qb.qna_cmt,
+        qb.qna_create_time
+    FROM
+        exam_mapping_question emq 
+        INNER JOIN qna_bank qb ON emq.exam_qna_code = qb.qna_code
+        INNER JOIN sub_mir_cat smirc ON qb.sub_mir_cat_code = smirc.sub_mir_cat_code
+        INNER JOIN exam_qna_chap eqc ON qb.qna_chap = eqc.exam_qna_chap_code
+        INNER JOIN exam_qna_type eqt ON qb.qna_type = eqt.exam_qna_type_code
+    WHERE
+        emq.exam_code=#{examCode}
+        <if test="currentSubject != null">
+            AND qb.sub_mir_cat_code=#{currentSubject}
+        </if>
+        <if test="currentMjrCode != null">
+            AND qb.sub_mjr_cat_code=#{currentMjrCode}
+        </if>
+    ORDER BY
+        CAST(SUBSTRING(exam_mapping_question_code,5) AS UNSIGNED)
+	</select>
+	
+	
+	
 	<select id="getSearchExamList" parameterType="examInfo" resultMap="ExamInfoMap">
 		 SELECT
 	        ei.exam_code,

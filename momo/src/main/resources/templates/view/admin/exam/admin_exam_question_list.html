@@ -415,7 +415,7 @@
 									</td>
 
 									<td class="l_td01" th:text="${#dates.format(ql.qnaCreateTime, 'yy.MM.dd')}"></td>
-									<td class="l_td01" th:text="${#dates.format(ql.qnaUpdateTime, 'yy.MM.dd')}"></td>
+									<td class="l_td01" th:text="${ql.qnaUpdateTime!=null?#dates.format(ql.qnaUpdateTime, 'yy.MM.dd'):''}"></td>
 
 								</tr>
 

@@ -61,8 +61,8 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	@Override
-    public List<LearningScheduleDto> getLearningSchedules() {
-        return studyMapper.getLearningSchedules();
+    public List<LearningScheduleDto> getLearningSchedules(String id) {
+        return studyMapper.getLearningSchedules(id);
     }
 	
 

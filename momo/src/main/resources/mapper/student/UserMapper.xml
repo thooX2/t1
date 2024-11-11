@@ -50,33 +50,43 @@
 		FROM
 			user
 		WHERE
-			#{searchType} = #{searchValue};
+			${searchType} = #{searchValue};
 	</select>
 
 	<insert id="userJoinAction" parameterType="UserJoinInfo">
-<!-- 		<selectKey keyProperty="productCode" resultType="string" order="BEFORE">
-			/* 상품코드 자동증가 */
+ 		<selectKey keyProperty="userCode" resultType="string" order="BEFORE">
+			/* 유저코드 자동증가 */
 			SELECT
 				CASE
-				WHEN COUNT(*) = 0 THEN CONCAT('prod_', 1)
+					WHEN COUNT(*) = 0 THEN CONCAT('uc', 1)
 				ELSE
-					CONCAT('prod_', MAX(CAST(SUBSTRING_INDEX(prod_cd, 'prod_', -1) AS UNSIGNED))+1)
-				END AS productCode
+					CONCAT('uc', MAX(CAST(SUBSTRING_INDEX(user_code, 'uc', -1) AS UNSIGNED))+1)
+				END AS userCode
 			FROM
-				products;
-		</selectKey> -->
-<!-- 		INSERT INTO user
+				user;
+		</selectKey>
+ 		INSERT INTO user
 			(user_code, user_id, grade_code, area_city_code, user_pw, 
 			user_email, user_address, user_detail_address, user_phone, 
 			user_name, user_birth_date, user_gender, 
 			user_sign_date, user_update_date, 
 			user_delete_date, user_dormant_status, user_delete_status)
 		VALUES 
-			(#{}, #{userId}, #{}, #{}, #{userPw},
-			#{userEmail}, #{userAddress}, #{userDetailAddress}, #{userPhone},
+			(#{userCode}, #{userId}, 'ugc2', #{userAddrSigungu}, #{userPw},
+			#{userEmail}, #{userRoadJibun}, #{userDetailAddress}, #{userPhone},
 			#{userName}, #{userBirthDate}, #{userGender},
 			NOW(), NOW(),
-			null, 0, 0); -->
+			null, 0, 0);
 	</insert>
+
+	<select id="searchAreaCode" parameterType="string" resultType="string">
+	/* 시군구를 기반으로 지역코드 검색 */
+	SELECT
+		area_city_code
+	FROM
+		area_city 
+	WHERE
+		#{userAddress} = CONCAT(area_nm, ' ', area_city_nm);
+	</select>
 
 </mapper>

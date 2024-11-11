@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ks52team01.admin.study.mapper.AdminStudyMapper">
+	<resultMap type="ks52team01.admin.study.dto.AdminStudyTarget" id="AdminStudyTargetsResultMap">
+		<id column="csat_sel_code" property="idx" />
+		<result column="user_code" property="usercode" />
+		<result column="sub_mir_cat_com_kor" property="smcck" />
+		<result column="sub_mir_cat_sel_kor" property="smcsk" />
+		<result column="sub_mir_cat_com_math" property="smccm" />
+		<result column="sub_mir_cat_sel_math" property="smcsm" />
+		<result column="sub_mir_cat_inq1" property="smci1" />
+		<result column="sub_mir_cat_inq2" property="smci2" />
+		<result column="sub_mir_cat_lang" property="smcl1" />
+		<result column="sub_mir_cat_lang2" property="smcl2" />
+		<result column="sub_mir_cat_kh" property="smck" />
+		
+		<result property="smcsknm" column="smcsknm" />
+		<result property="smcsmnm" column="smcsmnm" />
+		<result property="smci1nm" column="smci1nm" />
+		<result property="smci2nm" column="smci2nm" />
+		<result property="smcl2nm" column="smcl2nm" />
+		<result property="smcknm" column="smcknm" />
+	</resultMap>
+	<select id="AdmingetStudyTarget" resultMap="AdminStudyTargetsResultMap">
+
+		SELECT
+		csat_sel_code,
+		user_code,
+		sub_mir_cat_com_kor,
+		sub_mir_cat_sel_kor,
+		sub_mir_cat_com_math,
+		sub_mir_cat_sel_math,
+		sub_mir_cat_inq1,
+		sub_mir_cat_inq2,
+		sub_mir_cat_lang,
+		sub_mir_cat_lang2,
+		sub_mir_cat_kh,
+		smic1.sub_mir_cat_nm as smcsknm,
+		smic2.sub_mir_cat_nm as smcsmnm,
+		smic3.sub_mir_cat_nm as smci1nm,
+		smic4.sub_mir_cat_nm as smci2nm,
+		smic5.sub_mir_cat_nm as smcl2nm,
+		smic6.sub_mir_cat_nm as smcknm
+		FROM
+		CSAT cs
+		LEFT
+		JOIN sub_mir_cat smic1
+		ON smic1.sub_mir_cat_code =
+		cs.sub_mir_cat_sel_kor
+		LEFT JOIN sub_mir_cat smic2
+		ON
+		smic2.sub_mir_cat_code = cs.sub_mir_cat_sel_math
+		LEFT JOIN sub_mir_cat
+		smic3
+		ON smic3.sub_mir_cat_code = cs.sub_mir_cat_inq1
+		LEFT JOIN
+		sub_mir_cat smic4
+		ON smic4.sub_mir_cat_code = cs.sub_mir_cat_inq2
+		LEFT
+		JOIN sub_mir_cat smic5
+		ON smic5.sub_mir_cat_code = cs.sub_mir_cat_lang2
+		LEFT JOIN sub_mir_cat smic6
+		ON smic6.sub_mir_cat_code =
+		cs.sub_mir_cat_kh
+	</select>
+
+
+	<resultMap
+		type="ks52team01.admin.study.dto.AdminTargetUniversity" id="AdminTargetUniversityResultMap">
+		<id column="target_university_code" property="targetUniverseCode" />
+		<result column="user_code" property="usercode" />
+		<result column="target_university_name"
+			property="targetUniversityName" />
+		<result column="target_university_lesson"
+			property="targetUniversityLesson" />
+		<result column="target_university_rangking"
+			property="targetUniversityRangking" />
+
+	</resultMap>
+	<select id="AdmingetTargetUniversity" resultMap="AdminTargetUniversityResultMap">
+
+		SELECT
+		target_university_code,
+		user_code,
+		target_university_name,
+		target_university_lesson,
+		target_university_rangking
+
+		FROM
+		target_university
+	</select>
+
+
+
+
+
+	<resultMap type="ks52team01.admin.study.dto.AdminTargetGrade"
+		id="AdminTargetGradeResultMap">
+		<id column="obj_grade_code" property="gradeCode" />
+		<result column="user_code" property="UserCode" />
+		<result column="sub_mjr_cat_code" property="smjcc" />
+		<result column="sub_mir_cat_code" property="smicc" />
+		<result column="last_grade_set" property="lastGrade" />
+		<result column="recent_grade_set" property="recentGrade" />
+		<result column="obj_grade_set" property="tar_grade_set" />
+		<result column="result_grade_set" property="result_grade_set" />
+		<result column="count_grade_set" property="count_grade_set" />
+		<result property="subMjrCatNm" column="sub_mjr_cat_nm" />
+		<result property="subMirCatNm" column="sub_mir_cat_nm" />
+		
+
+	</resultMap>
+	<select id="AdmingetTargetGrade" resultMap="AdminTargetGradeResultMap">
+		select
+		og.obj_grade_code,
+		og.user_code,
+		og.sub_mjr_cat_code,
+		og.sub_mir_cat_code,
+		og.last_grade_set,
+		og.recent_grade_set,
+		og.obj_grade_set,
+		smjc.sub_mjr_cat_code,
+		smjc.sub_mjr_cat_nm,
+		smic.sub_mir_cat_code,
+		smic.sub_mir_cat_nm
+		FROM
+		obejctive_grade og
+		JOIN sub_mjr_cat smjc
+		ON
+		og.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+		JOIN sub_mir_cat smic
+		ON
+		og.sub_mir_cat_code = smic.sub_mir_cat_code
+	</select>
+
+
+	<resultMap type="ks52team01.admin.study.dto.AdminStudySchedule"
+		id="AdminStudyScheduleResultMap">
+		<id column="learning_schedule" property="learningSchedule" />
+		<result column="user_code" property="userCode" />
+		<result column="sub_mjr_cat_code" property="smjcc" />
+		<result column="sub_mir_cat_code" property="smicc" />
+		<result column="learning_schedule_memo"
+			property="learningScheduleMemo" />
+		<result column="learning_schedule_days"
+			property="learningScheduleDay" />
+		<result column="learning_schedule_start"
+			property="learningScheduleStart" />
+		<result column="learning_schedule_end"
+			property="learningScheduleEnd" />
+		<result column="learning_schedule_compleate"
+			property="learningScheduleCompleate" />
+	</resultMap>
+	<select id="AdmingetStudySchedule" resultMap="AdminStudyScheduleResultMap">
+
+		SELECT
+
+		learning_schedule,
+		user_code,
+		sub_mjr_cat_code,
+		sub_mir_cat_code,
+		learning_schedule_memo,
+		learning_schedule_days,
+		learning_schedule_start,
+		learning_schedule_end,
+		learning_schedule_compleate
+
+		FROM
+		learning_schedule
+	</select>
+
+
+
+
+
+
+	<resultMap type="ks52team01.admin.study.dto.AdminDetailedSchedule" id="AdminDetailedScheduleResultMap">
+		<id column="detailed_schedule_code" property="detailedSchedule" />
+		<result column="user_code" property="userCode" />
+		<result column="learning_schedule" property="learningSchedule" />
+		<result column="detailed_schedule_memo"
+			property="detailedScheduleMemo" />	
+		<result column="smjrcc"
+			property="smjrcc" />	
+		<result column="smircc"
+			property="smircc" />	
+		<result column="detailed_schedule_date"
+			property="detailedScheduleDate" />
+		<result column="detailed_schedule_starttime"
+			property="detailedScheduleStartTime" />
+		<result column="detailed_schedule_endtime"
+			property="detailedScheduleEndTime" />
+		<result column="detailed_schedule_studytime"
+			property="detailedScheduleStudyTime" />
+		<result column="detailed_schedule_result"
+			property="detailedScheduleResult" />
+	</resultMap>
+	<select id="AdmingetDetailedSchedule" resultMap="AdminDetailedScheduleResultMap">
+
+		SELECT
+		detailed_schedule_code,
+		user_code,
+		learning_schedule,
+		detailed_schedule_memo,
+		detailed_schedule_date,
+		detailed_schedule_starttime,
+		detailed_schedule_endtime,
+		detailed_schedule_studytime,
+		detailed_schedule_result
+
+		FROM
+		detailed_schedule
+	</select>
+
+
+	<!-- 딜리트 추가 -->
+	<delete id='adminremoveCastSubject'
+		parameterType="ks52team01.student.study.dto.StudyTarget">
+		DELETE FROM CSAT cs WHERE cs.csat_sel_code = #{idx};
+	</delete>
+	
+
+	<delete id='adminremoveTargetUniversity'
+		parameterType="ks52team01.student.study.dto.TargetUniversity">
+		DELETE FROM target_university tu WHERE
+		tu.target_university_code = #{targetUniverseCode};
+	</delete>
+	
+	<delete id='adminremoveTargetGrade'
+		parameterType="ks52team01.student.study.dto.TargetGrade">
+		DELETE FROM obejctive_grade og WHERE og.obj_grade_code=
+		#{gradeCode};
+	</delete>
+	
+	<!-- <delete id='adminremoveLearningSchedule'
+		parameterType="ks52team01.student.study.dto.StudySchedule">
+		delete FROM learning_schedule ls where
+		ls.learning_schedule = #{learningSchedule};
+	</delete> -->
+	<delete id='adminremoveLearningSchedule'
+		parameterType="ks52team01.student.study.dto.StudySchedule">
+		 CALL study_ls_delete (#{learningSchedule}, #{userCode})
+	</delete>
+	
+	<delete id='adminremoveDetailedSchedule'
+		parameterType="ks52team01.student.study.dto.DetailedSchedule">
+		delete FROM detailed_schedule ds where
+		ds.detailed_schedule_code = #{detailedSchedule};
+	</delete>
+
+
+
+
+
+	<!-- 석진씨가 담당해야 할 부분들 -->
+
+
+
+
+ 
+<!-- 	<resultMap type="ks52team01.admin.study.dto.ProblemScrape"
+		id="ProblemScrapeResultMap">
+		<id column="question_scrape_code" property="questionScrape" />
+		<result column="user_code" property="userCode" />
+		<result column="exam_code" property="examCode" />
+		<result column="exam_qna_code" property="examQnaCode" />
+		<result column="question_scrape_memo"
+			property="questionScrapeMemo" />
+		<result column="question_scrape_level"
+			property="questionScrapeLevel" />
+		<result column="question_scrape_time"
+			property="questionScrapeCreateTime" />
+		<result column="question_scrapemodify_time"
+			property="questionScrapeModifyTime" />
+		<result column="question_scrape_result"
+			property="questionScrapeResult" />
+
+	</resultMap>
+	<select id="getProblemScrape" resultMap="ProblemScrapeResultMap">
+
+		SELECT
+		question_scrape_code,
+		user_code,
+		exam_code,
+		exam_qna_code,
+		question_scrape_memo,
+		question_scrape_level,
+		question_scrape_time,
+		question_scrapemodify_time,
+		question_scrape_result
+
+		FROM
+		question_scrape;
+	</select>
+
+	
+	<delete id='removeQuestionScrape'
+		parameterType="ks52team01.admin.study.dto.ProblemScrape">
+		delete FROM question_scrape qs where
+		qs.question_scrape_code = #{questionScrape};
+	</delete>
+
+	<resultMap type="ks52team01.admin.study.dto.ProblemSolving"
+		id="ProblemSolvingResultMap">
+		<id column="solving_history" property="solvingHistory" />
+		<result column="question_scrape_code"
+			property="questionScrapeCode" />
+		<result column="user_code" property="UserCode" />
+		<result column="sub_mjr_cat_code" property="smjcc" />
+		<result column="sub_mir_cat_code" property="smicc" />
+		<result column="solving_date" property="solvingDate" />
+		<result column="qna_code" property="qnaCode" />
+		<result column="solving_type" property="solvingType" />
+		<result column="solving_qna_type" property="solvingcategory" />
+		<result column="solving_history_note"
+			property="solvingHistoryNote" />
+		<result column="solving_history_count"
+			property="solvingHistoryCount" />
+	</resultMap>
+	<select id="getProblemSolving"
+		resultMap="ProblemSolvingResultMap">
+
+		SELECT
+		solving_history,
+		question_scrape_code,
+		user_code,
+		sub_mjr_cat_code,
+		sub_mir_cat_code,
+		solving_date,
+		qna_code,
+		solving_type,
+		solving_qna_type,
+		solving_history_note,
+		solving_history_count
+
+		FROM
+		problem_solving_history;
+	</select>
+
+	
+	<delete id='removeProblemSolving'
+		parameterType="ks52team01.admin.study.dto.ProblemSolving">
+		delete FROM problem_solving_history psh where
+		psh.solving_history = #{solvingHistory};
+	</delete> -->
+
+
+</mapper>

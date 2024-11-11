@@ -2,323 +2,357 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>공무원 모의고사 응시 페이지</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 20px;
-        }
+	<meta charset="UTF-8" />
+	<title>시험 과목 선택</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f8f8f8;
+			margin: 0;
+			padding: 20px;
+		}
 
-        .container {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+		.container {
+			background-color: #ffffff;
+			border: 1px solid #ddd;
+			padding: 20px;
+			max-width: 800px;
+			margin: 0 auto;
+		}
 
-        .header {
-            font-size: 20px;
-            font-weight: bold;
-            background-color: #f0ede8;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
+		.header {
+			font-size: 20px;
+			font-weight: bold;
+			background-color: #f0ede8;
+			padding: 10px;
+			margin-bottom: 20px;
+		}
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
+		.info-row {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 10px;
+		}
 
-        .info-row span {
-            color: #333;
-        }
+		.info-row span {
+			color: #333;
+		}
 
-        .info-row .label {
-            font-weight: bold;
-        }
+		.info-row .label {
+			font-weight: bold;
+		}
 
-        .alert-box {
-            background-color: #f8f8f8;
-            padding: 10px;
-            margin-top: 20px;
-            border: 1px solid #ddd;
-        }
+		.alert-box {
+			background-color: #f8f8f8;
+			padding: 10px;
+			margin-top: 20px;
+			border: 1px solid #ddd;
+		}
 
-        .alert-box .alert-icon {
-            color: #1d4f9a;
-            font-weight: bold;
-        }
+		.alert-box .alert-icon {
+			color: #1d4f9a;
+			font-weight: bold;
+		}
 
-        .alert-text {
-            color: #1d4f9a;
-            margin-left: 5px;
-        }
+		.alert-text {
+			color: #1d4f9a;
+			margin-left: 5px;
+		}
 
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+		.table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
 
-        .table th,
-        .table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
+		.table th,
+		.table td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+		}
 
-        .table th {
-            background-color: rgb(241, 241, 241);
-            color: black;
-        }
+		.table th {
+			background-color: rgb(241, 241, 241);
+			color: black;
+		}
 
-        .required-text {
-            color: red;
-            margin-top: 10px;
-        }
+		.required-text {
+			color: red;
+			margin-top: 10px;
+		}
 
-        .button-section {
-            text-align: center;
-            margin-top: 20px;
-        }
+		.button-section {
+			text-align: center;
+			margin-top: 20px;
+		}
 
-        .submit-btn {
-            background-color: #3a80c6;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+		.submit-btn {
+			background-color: #3a80c6;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+		}
 
-        .warning-box {
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-top: 20px;
-        }
+		.warning-box {
+			background-color: #f8f8f8;
+			border: 1px solid #ddd;
+			padding: 10px;
+			margin-top: 20px;
+		}
 
-        .warning-box .warning-icon {
-            color: #1d4f9a;
-            font-weight: bold;
-        }
-    </style>
+		.warning-box .warning-icon {
+			color: #1d4f9a;
+			font-weight: bold;
+		}
+	</style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="header" th:text=${examInfo.examNm} style="text-align: center;">[공무원] 2023년 제1회 온라인 모의고사</div>
+	<div class="container">
+		<div class="header" th:text=${examInfo.examNm} style="text-align: center;">[공무원] 2023년 제1회 온라인 모의고사</div>
 
-        <table class="table">
-            <colgroup>
-                <col width="120" />
-                <col width="*" />
-                <col width="120" />
-                <col width="*" />
-            </colgroup>
-            <tbody>
-                <tr>
-                    <th>응시자</th>
-                    <td>
-                        <span th:text="${'['+examInfo.userId+'] '+examInfo.userName}"></span>
-                    </td>
-                    <th>시험 날짜</th>
-                    <td th:text="${examInfo.examDate}">2024-06-08</td>
-                </tr>
-                <tr>
-                    <th>대상 학년</th>
-                    <td th:text="${examInfo.examTarGrd+'학년'}">1학년</td>
-                    <th>응시 날짜</th>
-                    <td th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">2024-11-08</td>
-                </tr>
-                <tr>
-                    <th>시험 유형</th>
-                    <td th:text="${examInfo.examType}">평가원</td>
-                    <th>출제기관</th>
-                    <td th:text="${examInfo.examInst}">한국스마트정보교육원</td>
-                </tr>
-            </tbody>
-        </table>
+		<table class="table">
+			<colgroup>
+				<col width="120" />
+				<col width="*" />
+				<col width="120" />
+				<col width="*" />
+			</colgroup>
+			<tbody>
+				<tr>
+					<th>응시자</th>
+					<td>
+						<span th:text="${'['+examInfo.userId+'] '+examInfo.userName}"></span>
+					</td>
+					<th>시험 날짜</th>
+					<td th:text="${examInfo.examDate}">2024-06-08</td>
+				</tr>
+				<tr>
+					<th>대상 학년</th>
+					<td th:text="${examInfo.examTarGrd+'학년'}">1학년</td>
+					<th>응시 날짜</th>
+					<td th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">2024-11-08</td>
+				</tr>
+				<tr>
+					<th>시험 유형</th>
+					<td th:text="${examInfo.examType}">평가원</td>
+					<th>출제기관</th>
+					<td th:text="${examInfo.examInst}">한국스마트정보교육원</td>
+				</tr>
+			</tbody>
+		</table>
 
-        <div class="alert-box">
-            <span class="alert-icon">🔊</span> &nbsp;주의사항<br />
-            <span class="alert-text">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>1) 이 모의고사는 무료모의고사 입니다.</span>
-                <br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
-                    2) 모의고사를 응시하면 모의고사 결과와 해설을 모의고사 응시 목록에서
-                    확인할 수 있습니다.
-                </span>
-                <br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
-                    3) 응시할 과목을 선택해 주세요.
-                </span>
-            </span>
-        </div>
+		<div class="alert-box">
+			<span class="alert-icon">🔊</span> &nbsp;주의사항<br />
+			<span class="alert-text">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span>1) 이 모의고사는 무료모의고사 입니다.</span>
+				<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
+					2) 모의고사를 응시하면 모의고사 결과와 해설을 모의고사 응시 목록에서
+					확인할 수 있습니다.
+				</span>
+				<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
+					3) 응시할 과목을 선택해 주세요.
+				</span>
+			</span>
+		</div>
+		<form name="selectSubjectForm" method="get" target="popupWindow">
+			<input type="hidden" name="examName" value="" />
+			<table class="table">
+				<thead>
+					<tr>
+						<th>분류</th>
+						<th>과목</th>
+						<th>응시</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>언어 영역</td>
+						<td>국어</td>
+						<td><input type="checkbox" name="subject" value="smjrcc1" id="korSubject" /></td>
+					</tr>
+					<tr>
+						<td>수리 영역</td>
+						<td>수학</td>
+						<td><input type="checkbox" name="subject" value="smjrcc2" id="mathSubject" /></td>
+					</tr>
+					<tr>
+						<td>영어 영역</td>
+						<td>영어</td>
+						<td><input type="checkbox" name="subject" value="smjrcc3" id="engSubject" /></td>
+					</tr>
+					<tr>
+						<td>한국사 영역</td>
+						<td>한국사</td>
+						<td><input type="checkbox" name="subject" value="" id="korHSubject" /></td>
+					</tr>
+					<tr id="social"></tr>
+					<tr id="science"></tr>
+					<tr id="job"></tr>
+					<tr id="lang"></tr>
+					<tr id="last"></tr>
+				</tbody>
+			</table>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>분류</th>
-                    <th>과목</th>
-                    <th>응시</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>언어 영역</td>
-                    <td>국어</td>
-                    <td><input type="checkbox" name="subject" value="smircc1" /></td>
-                </tr>
-                <tr>
-                    <td>수리 영역</td>
-                    <td>수학</td>
-                    <td><input type="checkbox" name="subject" value="smircc5" /></td>
-                </tr>
-                <tr>
-                    <td>영어 영역</td>
-                    <td>영어</td>
-                    <td><input type="checkbox" name="subject" value="smircc10" /></td>
-                </tr>
-                <tr>
-                    <td>한국사 영역</td>
-                    <td>한국사</td>
-                    <td><input type="checkbox" name="subject" value="smircc48" /></td>
-                </tr>
-                <tr id="social"></tr>
-                <tr id="science"></tr>
-                <tr id="job"></tr>
-                <tr id="lang"></tr>
-                <tr id="last"></tr>
-            </tbody>
-        </table>
+			<div class="button-section">
+				<button type="submit" class="submit-btn">확인</button>
+			</div>
+		</form>
+	</div>
 
-        <div class="button-section">
-            <button class="submit-btn">확인</button>
-        </div>
-    </div>
+	<script th:inline="javascript">
+		var examInfoExamCode = /*[[${examInfo.examCode}]]*/
 
-    <script th:inline="javascript">
-        $('.submit-btn').click(function () {
-            const width = window.innerWidth * 1.0;
-            const height = window.innerHeight * 1.0;
-            const examCode = 'doyoung1234';
-            window.open(`/exam/${examCode}/examination`, 'popupWindow', `width=${width},height=${height},scrollbars=yes`);
-        })
+			/*$('.submit-btn').click(function () {
+				const width = window.innerWidth * 1.0;
+				const height = window.innerHeight * 1.0;
+				const examCode = examInfoExamCode;
+				window.open(`/exam/${examCode}/examination`, 'popupWindow', `width=${width},height=${height},scrollbars=yes`);
+			})*/
 
-        const socialList = [];
-        const scienceList = [];
-        const jobList = [];
-        const langList = [];
-        var examQuestionInfo = /*[[${examQuestionInfo}]]*/[];
-        examQuestionInfo.forEach((element, idx) => {
-            const smjrcc = element['subMjrCatCode'];
-            switch (smjrcc) {
-                case 'smjrcc5':
-                    if (!socialList.includes(element['subMirCatNm'])) {
-                        socialList.push(element['subMirCatNm']);
-                        let newRow = ``;
-                        if (socialList.length == 1) {
-                            newRow = `
+			$(document).on('submit', 'form[name="selectSubjectForm"]', function (event) {
+				const examCode = examInfoExamCode;
+				const popupUrl = `/exam/${examCode}/examination`;
+				$(this).attr('action', popupUrl);
+				// 팝업 창 열기
+				const width = window.innerWidth * 1.0;
+				const height = window.innerHeight * 1.0;
+				const popup = window.open("", "popupWindow", `width=${width},height=${height},scrollbars=yes`);
+				console.log($('input[name="subject"]:checked'));
+				if ($('input[name="subject"]:checked').length == 0) {
+					alert('과목을 최소 한종류는 선택해주세요')
+					return false;
+				}
+
+				$('input[name="examName"]').val($('.header').text());
+
+				// 팝업 창이 성공적으로 열렸는지 확인 후 폼 제출
+				if (popup) {
+					this.target = "popupWindow"; // 폼의 target을 popupWindow로 설정
+					this.submit(); // 폼을 팝업 창으로 제출
+				} else {
+					alert("팝업 창을 열 수 없습니다. 팝업 차단을 해제해주세요.");
+				}
+
+			})
+
+		const socialList = [];
+		const scienceList = [];
+		const jobList = [];
+		const langList = [];
+		var examQuestionInfo = /*[[${examQuestionInfo}]]*/[];
+		examQuestionInfo.forEach((element, idx) => {
+			const smjrcc = element['subMjrCatCode'];
+			switch (smjrcc) {
+				case 'smjrcc4':
+					$('#korHSubject').val(element['subMirCatCode']);
+					break;
+				case 'smjrcc5':
+					if (!socialList.includes(element['subMirCatNm'])) {
+						socialList.push(element['subMirCatNm']);
+						let newRow = ``;
+						if (socialList.length == 1) {
+							newRow = `
                                 <td>사회탐구 영역</td>
                                 <td>${element['subMirCatNm']}</td>
                                 <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}"/></td>
                             `;
-                            $('#social').append(newRow);
-                        } else {
-                            newRow = `
+							$('#social').append(newRow);
+						} else {
+							newRow = `
                                 <tr>
                                     <td>${element['subMirCatNm']}</td>
                                     <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}" /></td>
                                 </tr>
                             `;
-                            $('#science').before(newRow);
-                        }
-                        $('#social').find('td').eq(0).prop('rowspan', socialList.length);
-                    }
-                    break;
+							$('#science').before(newRow);
+						}
+						$('#social').find('td').eq(0).prop('rowspan', socialList.length);
+					}
+					break;
 
-                case 'smjrcc6':
-                    if (!scienceList.includes(element['subMirCatNm'])) {
-                        scienceList.push(element['subMirCatNm']);
-                        let newRow = ``;
-                        if (scienceList.length == 1) {
-                            newRow = `
+				case 'smjrcc6':
+					if (!scienceList.includes(element['subMirCatNm'])) {
+						scienceList.push(element['subMirCatNm']);
+						let newRow = ``;
+						if (scienceList.length == 1) {
+							newRow = `
                                 <td>과학탐구 영역</td>
                                 <td>${element['subMirCatNm']}</td>
                                 <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}" /></td>
                             `;
-                            $('#science').append(newRow);
-                        } else {
-                            newRow = `
+							$('#science').append(newRow);
+						} else {
+							newRow = `
                                 <tr>
                                     <td>${element['subMirCatNm']}</td>
                                     <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}" /></td>
                                 </tr>
                             `;
-                            $('#job').before(newRow);
-                        }
-                        $('#science').find('td').eq(0).prop('rowspan', scienceList.length);
-                    }
-                    break;
+							$('#job').before(newRow);
+						}
+						$('#science').find('td').eq(0).prop('rowspan', scienceList.length);
+					}
+					break;
 
-                case 'smjrcc7':
-                    if (!jobList.includes(element['subMirCatNm'])) {
-                        jobList.push(element['subMirCatNm']);
-                        let newRow = ``;
-                        if (jobList.length == 1) {
-                            newRow = `
+				case 'smjrcc7':
+					if (!jobList.includes(element['subMirCatNm'])) {
+						jobList.push(element['subMirCatNm']);
+						let newRow = ``;
+						if (jobList.length == 1) {
+							newRow = `
                                 <td>직업탐구 영역</td>
                                 <td>${element['subMirCatNm']}</td>
                                 <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}" /></td>
                             `;
-                            $('#job').append(newRow);
-                        } else {
-                            newRow = `
+							$('#job').append(newRow);
+						} else {
+							newRow = `
                                 <tr>
                                     <td>${element['subMirCatNm']}</td>
                                     <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}" /></td>
                                 </tr>
                             `;
-                            $('#lang').before(newRow);
-                        }
-                        $('#job').find('td').eq(0).prop('rowspan', jobList.length);
-                    }
-                    break;
+							$('#lang').before(newRow);
+						}
+						$('#job').find('td').eq(0).prop('rowspan', jobList.length);
+					}
+					break;
 
-                case 'smjrcc8':
-                    if (!langList.includes(element['subMirCatNm'])) {
-                        langList.push(element['subMirCatNm']);
-                        let newRow = ``;
-                        if (langList.length == 1) {
-                            newRow = `
+				case 'smjrcc8':
+					if (!langList.includes(element['subMirCatNm'])) {
+						langList.push(element['subMirCatNm']);
+						let newRow = ``;
+						if (langList.length == 1) {
+							newRow = `
                                 <td>외국어 영역</td>
                                 <td>${element['subMirCatNm']}</td>
                                 <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}" /></td>
                             `;
-                            $('#lang').append(newRow);
-                        } else {
-                            newRow = `
+							$('#lang').append(newRow);
+						} else {
+							newRow = `
                                 <tr>
                                     <td>${element['subMirCatNm']}</td>
                                     <td><input type="checkbox" name="subject" value="${element['subMirCatCode']}" /></td>
                                 </tr>
                             `;
-                            $('#last').before(newRow);
-                        }
-                        $('#lang').find('td').eq(0).prop('rowspan', langList.length);
-                    }
-                    break;
-            }
-        })
-    </script>
+							$('#last').before(newRow);
+						}
+						$('#lang').find('td').eq(0).prop('rowspan', langList.length);
+					}
+					break;
+			}
+		})
+	</script>
 </body>
 
 </html>
