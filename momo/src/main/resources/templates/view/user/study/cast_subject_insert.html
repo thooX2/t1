@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 
 <head>
-	<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/bootstrap.min.css}">
 </head>
 <th:block layout:fragment="customJsFile">
 	<script th:src="@{/user/js/study/jquery-3.5.1.min.js}"></script>
@@ -17,108 +19,130 @@
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
-		<!-- container -->
-		<section class="container">
-			<!-- sub_container -->
-			<div class="sub_container">
+	<!-- container -->
+	<section class="container">
+		<!-- sub_container -->
+		<div class="sub_container">
 
-				<!-- Include the sidebar fragment here -->
-				<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
-
-
-
-				<!-- content -->
-				<div class="content">
-					<div id="wrap_2014">
-						<div class="column_top">
-							<!-- 상단 메뉴 시작 -->
-							<div class="column_right cust_test" id="contents">
-								<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
-									수능과목추가
-								</p>
-								<div id="tabContent">
-
-									<div class="myWorkbook">
-										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-										</div>
-
-										<div id="MyTestArea">
-											<form th:action="@{/study/addCastSubject}" method="post" class="bot_tbl--type">
-												<input type="hidden" name="usercode" th:value="${session.loggedInUser.userCode}" /> 
-												<input type="hidden" name="smcck" value="smircc1,smircc2" />
-												<input type="hidden" name="smccm" value="smircc6,smircc7" />
-												<input type="hidden" name="smcl1" value="smircc11, smircc12" />
-												<input type="hidden" name="smck" value="smircc18" />											
-												<a>국어 선택과목 :
-													<select name="smcsk" style="width:500px">
-														<option value="smircc3">화법과 작문</option>
-														<option value="smircc4">언어와 매체</option>
-													</select>
-												</a><br/>
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
 
 
-												<a>수학 선택과목 :
-													<select name="smcsm" style="width:500px">
-														<option value="smircc8">확률과통계</option>
-														<option value="smircc9">미분과적분</option>
-														<option value="smircc10">기하</option>
-													</select></a><br />
 
+			<!-- content -->
+			<div class="content">
+				<div id="wrap_2014">
+					<div class="column_top">
+						<!-- 상단 메뉴 시작 -->
+						<div class="column_right cust_test" id="contents">
+							<p
+								style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
+								수능과목추가</p>
+							<div id="tabContent">
 
-												<a>사회탐구 선택과목 :
-													<select name="smci1" style="width:500px">
-														<option value="smircc15">생활과윤리</option>
-														<option value="smircc16">윤리와사상</option>
-														<option value="smircc17">한국지리</option>
-														<option value="smircc18">세계지리</option>
-														<option value="smircc19">동아시아</option>
-														<option value=" smircc20">세계사</option>
-														<option value="smircc21">경제</option>
-														<option value="smircc22">정치와법</option>
-														<option value="smircc23">사회문학</option>
+								<div class="myWorkbook">
+									<div class="sort_select"
+										style="width: 150px; margin-bottom: 20px;"></div>
 
+									<div id="MyTestArea" class="text-center">
+										<form th:action="@{/study/addCastSubject}" method="post">
+											<input type="hidden" name="usercode"
+												th:value="${session.loggedInUser.userCode}" /> <input
+												type="hidden" name="smcck" value="smircc1,smircc2" /> <input
+												type="hidden" name="smccm" value="smircc6,smircc7" /> <input
+												type="hidden" name="smcl1" value="smircc11, smircc12" /> <input
+												type="hidden" name="smck" value="smircc48" />
 
-													</select></a><br />
+											<!-- 국어 선택과목 -->
+											<br><br><br>
+											<div class="form-group">
+												<label for="smcsk">국어 선택과목</label> <select name="smcsk"
+													id="smcsk" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="smircc3">화법과 작문</option>
+													<option value="smircc4">언어와 매체</option>
+												</select>
+											</div>
 
-												<a>과학탐구 선택과목 :
-													<select name="smci2" style="width:500px">
-														<option value="smircc25">물리학1</option>
-														<option value="smircc26">화학1</option>
-														<option value="smircc27">생명과학1</option>
-														<option value="smircc28">지구과학1</option>
-														<option value="smircc29">물리학2</option>
-														<option value="smircc30">화학2</option>
-														<option value="smircc31">생명과학2</option>
-														<option value="smircc32">지구과학2</option>
-													</select></a><br />
+											<!-- 수학 선택과목 -->
+											<div class="form-group">
+												<label for="smcsm">수학 선택과목</label> <select name="smcsm"
+													id="smcsm" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="smircc7">확률과통계</option>
+													<option value="smircc8">미분과적분</option>
+													<option value="smircc9">기하</option>
+												</select>
+											</div>
 
-												<a>외국어 선택과목 :
-													<select name="smcl2" style="width:500px">
-														<option value="smircc39">독일어1</option>
-														<option value="smircc40">프랑스어1</option>
-														<option value="smircc41">스페인어1</option>
-														<option value="smircc42">중국어1</option>
-														<option value="smircc43">일본어1</option>
-														<option value="smircc44">러시아어1</option>
-														<option value="smircc45">아랍어1</option>
-														<option value="smircc46">베트남어1</option>
-														<option value="smircc47">한문1</option>
-													</select></a><br />
-												<br />
-												<input type="submit" value="목표과목생성">
+											<!-- 사회탐구 선택과목 -->
+											<div class="form-group">
+												<label for="smci1">사회탐구 선택과목</label> <select name="smci1"
+													id="smci1" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="smircc12">생활과윤리</option>
+													<option value="smircc13">윤리와사상</option>
+													<option value="smircc14">한국지리</option>
+													<option value="smircc15">세계지리</option>
+													<option value="smircc16">동아시아</option>
+													<option value="smircc17">세계사</option>
+													<option value="smircc18">경제</option>
+													<option value="smircc19">정치와법</option>
+													<option value="smircc20">사회문학</option>
+												</select>
+											</div>
+
+											<!-- 과학탐구 선택과목 -->
+											<div class="form-group">
+												<label for="smci2">과학탐구 선택과목</label> <select name="smci2"
+													id="smci2" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="smircc21">물리학1</option>
+													<option value="smircc22">화학1</option>
+													<option value="smircc23">생명과학1</option>
+													<option value="smircc24">지구과학1</option>
+													<option value="smircc25">물리학2</option>
+													<option value="smircc26">화학2</option>
+													<option value="smircc27">생명과학2</option>
+													<option value="smircc28">지구과학2</option>
+												</select>
+											</div>
+
+											<!-- 외국어 선택과목 -->
+											<div class="form-group">
+												<label for="smcl2">외국어 선택과목</label> <select name="smcl2"
+													id="smcl2" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="smircc35">독일어1</option>
+													<option value="smircc36">프랑스어1</option>
+													<option value="smircc37">스페인어1</option>
+													<option value="smircc38">중국어1</option>
+													<option value="smircc39">일본어1</option>
+													<option value="smircc40">러시아어1</option>
+													<option value="smircc41">아랍어1</option>
+													<option value="smircc42">베트남어1</option>
+													<option value="smircc43">한문1</option>
+												</select>
+											</div>
+
+											<!-- 제출 버튼 -->
+											<div class="form-group">
+												<input type="submit" value="목표과목생성" class="btn btn-primary" />
+											</div>
 										</form>
-											
-										</div>
 									</div>
+
+
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
 
-	</div>
+</div>
 </div>
 
 </html>

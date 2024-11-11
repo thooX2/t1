@@ -1,9 +1,9 @@
-package ks52team01.student.study.dto;
+package ks52team01.admin.study.dto;
 
 import lombok.Data;
 
 @Data
-public class TargetGrade {
+public class AdminTargetGrade {
 	private String gradeCode;
 	private String UserCode;
 	private String smjcc;
