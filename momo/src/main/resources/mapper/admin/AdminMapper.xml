@@ -3,7 +3,30 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.admin.user.mapper.AdminMapper">
-
+	<select id="getAdminById" parameterType="String" resultType="User" >
+		SELECT
+			user_code,
+			user_id,
+			grade_code,
+			area_city_code,
+			user_pw, user_email,
+			user_address,
+			user_detail_address,
+			user_phone,
+			user_name,
+			user_birth_date,
+			user_gender,
+			user_sign_date,
+			user_update_date,
+			user_delete_date,
+			user_dormant_status,
+			user_delete_status
+		FROM
+			`user`
+		WHERE
+			user_id = #{userId}
+			AND grade_code='ugc1'
+	</select>
 
 
 
