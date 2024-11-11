@@ -101,6 +101,13 @@
 	<!--<script src="vendors/scripts/script.min.js"></script>
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>-->
+	<script th:inline="javascript">
+		var errorMessage =/*[[${error}]]*/[]
+		if (errorMessage.length != 0)
+			alert(errorMessage)
+
+
+	</script>
 </body>
 
 </html>

@@ -3,7 +3,26 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ks52team01.admin.user.mapper.AdminMapper">
-	<select id="getAdminById" parameterType="String" resultType="User" >
+	<resultMap type="ks52team01.student.user.dto.User" id="userResultMap">
+		<id column="user_code" property="userCode" />
+		<result column="user_id" property="userId" />
+		<result column="grade_code" property="gradeCode" />
+		<result column="area_city_code" property="areaCityCode" />
+		<result column="user_pw" property="userPw" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_address" property="userAddress" />
+		<result column="user_detail_address" property="userDetailAddress" />
+		<result column="user_phone" property="userPhone" />
+		<result column="user_name" property="userName" />
+		<result column="user_birth_date" property="userBirthDate" />
+		<result column="user_gender" property="userGender" />
+		<result column="user_sign_date" property="userSignDate" />
+		<result column="user_update_date" property="userUpdateDate" />
+		<result column="user_delete_date" property="userDeleteDate" />
+		<result column="user_dormant_status" property="userDormantStatus" />
+		<result column="user_delete_staus" property="userDeleteStatus" />
+	</resultMap>
+	<select id="getAdminById" parameterType="String" resultMap="userResultMap" >
 		SELECT
 			user_code,
 			user_id,

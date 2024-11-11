@@ -65,7 +65,7 @@ public class AdminServiceImpl implements AdminService {
 	public int adminLoginAction(String userId, String userPw) {
 		// 사용자 ID로 유저 정보를 조회합니다.
 		User foundUser = adminMapper.getAdminById(userId, userPw);
-
+		
 		// 1. 아이디가 존재하지 않는 경우
 		if (foundUser == null || foundUser.getUserId() == null) {
 			return -1; // 아이디 없음

@@ -33,20 +33,21 @@ public class AdminController {
 		// 아이디가 없는 경우
 		if (loginResult == -1) {
 			model.addAttribute("error", "해당정보를 가진 관리자아이디가 없습니다");
-			return "view/user/user/user_login";
+			return "view/admin/user/admin_login";
 		}
 
 		// 비밀번호가 틀린 경우
 		if (loginResult == 0) {
 			model.addAttribute("error", "해당정보를 가진 관리자아이디가 없습니다");
 
-			return "view/user/user/user_login";
+			return "view/admin/user/admin_login";
 		}
-
+		User user = new User();
+		user.setUserId(userId);
+		user.setUserPw(userPw);
 		// 로그인 성공 시
 		User loginUser = userService.getUserById(user);
 		session.setAttribute("loggedInUser", loginUser);
-		return "view/home/index";
 
 		return "redirect:/admin/exam/category";
 	}
