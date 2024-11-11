@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 
 import ks52team01.common.ResponseError;
+import ks52team01.student.user.dto.AreaCity;
 import ks52team01.student.user.dto.User;
 import ks52team01.student.user.dto.UserJoinInfo;
 import ks52team01.student.user.mapper.UserMapper;
@@ -119,8 +120,8 @@ public class UserServiceImpl implements UserService {
 			error.setSuccess(false);
 			return error;
 		}
-		if(userJoinInfo.getUserPw().equals(userJoinInfo.getUserPwCheck())) {
-			error.setErrorCode("PwError"); 
+		if(!(userJoinInfo.getUserPw().equals(userJoinInfo.getUserPwCheck()))) {
+			error.setErrorCode("PwCheckError"); 
 			error.setErrorMessage("비밀번호가 일치하지 않습니다.");
 			error.setSuccess(false);
 			return error;
@@ -136,8 +137,13 @@ public class UserServiceImpl implements UserService {
 			return error;
 		}
 		
+		// Address Convert
+		// ~도 ~시 ~구를 검색해 시군구코드로 대체
+		String inputSigungu = userJoinInfo.getUserAddrSigungu();
+		userJoinInfo.setUserAddrSigungu(userMapper.searchAreaCode(inputSigungu));
+		
 		// Phone Check
-		if(userMapper.searchUser("user_email", userJoinInfo.getUserPhone())) {
+		if(userMapper.searchUser("user_phone", userJoinInfo.getUserPhone())) {
 			error.setErrorCode("PhoneError"); 
 			error.setErrorMessage("입력한 핸드폰 번호로 가입된 정보가 있습니다.\n다른 번호를 사용하세요.");
 			error.setSuccess(false);
@@ -145,7 +151,7 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		// Email Check
-		if(userMapper.searchUser("userPhone", userJoinInfo.getUserEmail())) {
+		if(userMapper.searchUser("user_email", userJoinInfo.getUserEmail())) {
 			error.setErrorCode("EmailError"); 
 			error.setErrorMessage("입력한 이메일로 가입된 정보가 있습니다.\n다른 이메일을 사용하세요.");
 			error.setSuccess(false);

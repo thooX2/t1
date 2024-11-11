@@ -25,6 +25,28 @@ public class FileServiceImpl implements FileService {
 	private final CommonMapper commonMapper;
 
 	@Override
+	public List<QnaImg> getQnaImgListByExamCode(String currentSubject) {
+
+		String currentMjrCode = null;
+		switch (currentSubject) {
+		case "smjrcc1":
+			currentMjrCode = currentSubject;
+			currentSubject = null;
+			break;
+		case "smjrcc2":
+			currentMjrCode = currentSubject;
+			currentSubject = null;
+			break;
+		case "smjrcc3":
+			currentMjrCode = currentSubject;
+			currentSubject = null;
+			break;
+		}
+
+		return fileMapper.getQnaImgListByExamCode(currentSubject, currentMjrCode);
+	}
+
+	@Override
 	public void deleteImg(String qnaCode, String qnaImgOriginalName) {
 		List<QnaImg> fileInfoList = fileMapper.getFileInfoByQnaCodeAndQnaImgOriginalName(qnaImgOriginalName, qnaCode);
 		for (QnaImg element : fileInfoList) {

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserJoinInfo {
+	private String userCode;
 	private String userId;
 	private String userPw;
 	private String userPwCheck;
@@ -11,6 +12,8 @@ public class UserJoinInfo {
 	private String userZip;
 	private String userAddress;
 	private String userDetailAddress;
+	private String userAddrSigungu;
+	private String userRoadJibun;
 	private String userPhone;
 	private String userEmail;
 	private String userBirthDate;

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/admin_layout}">
+
+<head>
+<!-- Select2 CSS -->
+<link rel="stylesheet" th:href="@{/user/css/study/bootstrap.min.css}">
+<style>
+  thead {
+    border: 1px solid #B8D0FA;;
+  }
+  tbody {
+    border: 1px solid black;;
+  }
+  #gnb #top_menu a.current {
+    background-color: rgb(35, 92, 159);
+}
+ #gnb #top_menu a.study {
+ 	 background-color: #1784f4;
+ } 
+</style>
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+	rel="stylesheet" />
+</head>
+<th:block layout:fragment="customJsFile">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous"></script>
+	<!-- Select2 JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</th:block>
+<th:block layout:fragment="customJs">
+
+</th:block>
+<!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content" id="examMain">
+
+	<div class="sidebar">
+		<div th:replace="fragments/admin/study/sidebar :: sidebar"></div>
+	</div>
+	<div class="content" style="padding: 0px">
+		<div id="sys-breadcrumb">
+			<button id="sys-breadcrumb-arrow" type="button">
+				<i class="fa fa-minus" style="font-size: 12px;"></i>
+			</button>
+			<div id="sys-page-title">
+				<span id="sys-page-title-nm">목표 등급 관리</span>
+				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
+			</div>
+			<div id="sys-page-util">
+
+				<a id="sys-page-util-refresh"> <i class="fa fa-retweet"></i>
+				</a>
+			</div>
+		</div>
+		<div id="sys-wrap">
+			<div id="sys-scroll">
+				<div id="alert_area"></div>
+				<div id="sys-contents">
+					<table class="t_tb01" cellpadding="0" cellspacing="0"
+						style="table-layout: fixed;">
+						<colgroup>
+							<col style="width: 120px;">
+							<!-- 첫 번째 열의 너비를 120px로 설정 -->
+							<col>
+							<!-- 두 번째 열 (너비 기본값) -->
+							<col style="width: 120px;">
+							<!-- 세 번째 열의 너비를 120px로 설정 -->
+							<col>
+							<!-- 네 번째 열 (너비 기본값) -->
+						</colgroup>
+						<tbody>
+							<tr>
+								<td class="t_th01">카테고리</td>
+								<td class="t_td01" colspan="3">과목삭제 페이지</td>
+							</tr>
+							<tr>
+								<td class="t_th01">관리자 코드</td>
+								<td class="t_td01" colspan="3" th:text= "${session.loggedInUser.userCode}">
+							</tr>
+
+							<tr>
+								<td class="t_th01">현재 권한 코드</td>
+								<td class="t_td01" colspan="3" th:text= "${session.loggedInUser.gradeCode}"> </td>
+							</tr>
+						</tbody>
+					</table>
+
+					<form name="form2" method="post" action="#" target="sysfrm">
+						<input type="hidden" name="mode" value="status" />
+
+						<table class="table table-striped table-bordered table-hover"
+							style="background-color: #ffffff;">
+							<colgroup>
+								<col width="50">
+								<col width="90">
+								<col width="50">
+								<col width="90">
+								<col width="90">
+								<col width="90">
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="text-center align-middle">과목 대분류</th>
+									<th class="text-center align-middle">선택 과목</th>
+									<th class="text-center align-middle">평균 등급</th>
+									<th class="text-center align-middle">최근 등급</th>
+									<th class="text-center align-middle">목표 등급</th>
+									<th class="text-center align-middle">삭제</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="list : ${TargetGradeList}" style="background-color: #ffffff;">
+
+									<td class="text-center align-middle" th:text="${list.subMjrCatNm}"></td>
+									<td class="text-center align-middle" th:text="${list.subMirCatNm}"></td>
+									<td class="text-center align-middle" th:text="${list.lastGrade}"></td>
+									<td class="text-center align-middle" th:text="${list.recentGrade}"></td>
+									<td class="text-center align-middle" th:text="${list.tar_grade_set}"></td>
+									<td class="text-center align-middle"><a
+										class="text-center align-middle" th:href="@{/admin/study/removeTargetGrade(list.gradeCode=*{list.gradeCode})}">삭제</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

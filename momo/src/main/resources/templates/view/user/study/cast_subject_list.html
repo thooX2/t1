@@ -4,11 +4,12 @@
 
 <head>
 	<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
+<!-- 	<link rel="stylesheet" th:href="@{/user/css/study/style.css}"> -->
 	<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
 	<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
 	<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
 	<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+	<link rel="stylesheet" th:href="@{/user/css/study/bootstrap.min.css}">
 </head>
 <th:block layout:fragment="customJsFile">
 	<script th:src="@{/user/js/study/jquery-3.5.1.min.js}"></script>
@@ -70,16 +71,17 @@
 														<th>삭제</th>
 													</tr>
 												</thead>
+												<tbody>
 													<tr th:each="list : ${CastSubjectList}">
-														<td th:text="${list.smcck}"></td>
-														<td th:text="${list.smcsk}"></td>
-														<td th:text="${list.smccm}"></td>
-														<td th:text="${list.smcsm}"></td>
-														<td th:text="${list.smci1}"></td>
-														<td th:text="${list.smci2}"></td>
-														<td th:text="${list.smcl1}"></td>
-														<td th:text="${list.smcl2}"></td>
-														<td th:text="${list.smck}"></td>
+														<td>공통국어</td>
+														<td th:text="${list.smcsknm}"></td>
+														<td>공통수학</td>
+														<td th:text="${list.smcsmnm}"></td>
+														<td th:text="${list.smci1nm}"></td>
+														<td th:text="${list.smci2nm}"></td>
+														<td>공통영어</td>
+														<td th:text="${list.smcl2nm}"></td>
+														<td th:text="${list.smcknm}"></td>
 														<td><a th:href="@{/study/modifyCastSubject(list.idx=*{list.idx})}">수정</a></td>
 														<td><a th:href="@{/study/removeCastSubject(list.idx=*{list.idx})}">삭제</a></td>
 													</tr>

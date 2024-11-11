@@ -13,4 +13,6 @@ public class TargetGrade {
 	private String tar_grade_set;
 	private String result_grade_set;
 	private String count_grade_set;
+	private String subMjrCatNm; 
+    private String subMirCatNm;
 }

@@ -15,4 +15,12 @@ public class StudyTarget {
 	private String smcl1;
 	private String smcl2;
 	private String smck;
+	
+	private String smcsknm;
+	private String smcsmnm;
+	private String smci1nm;
+	private String smci2nm;
+	private String smcl1nm;
+	private String smcl2nm;
+	private String smcknm;
 }

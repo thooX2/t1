@@ -14,8 +14,7 @@
 			<!-- 콘텐츠 시작 { -->
 			<div class="wrapper">
 				<div id="formContent">
-					<form id="fregisterform" name="fregisterform" action="/user/userJoinAction"
-						onsubmit="return fregisterform_submit(this);" method="post" enctype="multipart/form-data"
+					<form id="fregisterform" name="fregisterform" action="/user/userJoinAction" method="post" enctype="multipart/form-data"
 						autocomplete="off">
 						<div id="register_form" class="form_01">
 							<h3> 회원가입 정보 </h3>
@@ -32,7 +31,7 @@
 												<input type="text" name="userId" value="" id="reg_mb_id" required=""
 													class="reg_input" minlength="4" maxlength="20"
 													placeholder="영문소문자/숫자, 8~20자">
-												<span id="msg_mb_id" class="reg_msg"></span>
+												<div id="msg_mb_id" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -42,6 +41,7 @@
 												<input type="password" name="userPw" id="reg_mb_password" required=""
 													class="reg_input" minlength="3" maxlength="20"
 													placeholder="영문대소문자/숫자/특수문자, 8~20자">
+												<div id="msg_mb_pw" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -49,7 +49,7 @@
 											<td>
 												<input type="password" name="userPwCheck" id="reg_mb_password_re"
 													required="" class="reg_input" minlength="3" maxlength="20">
-												<span id="msg_mb_pw" class="reg_msg"></span>
+												<div id="msg_mb_pw_check" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -57,6 +57,7 @@
 											<td>
 												<input type="text" id="reg_mb_name" name="userName" value="" required=""
 													class="reg_input">
+												<div id="msg_mb_name" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -70,6 +71,8 @@
 													required="" class="reg_input" placeholder="기본주소" readonly>
 												<input type="text" name="userDetailAddress" id="userDetailAddress"
 													class="reg_input" placeholder="상세주소">
+												<input type="hidden" id="addrSigungu" value="">
+												<input type="hidden" id="roadJibun" value="">
 											</td>
 										</tr>
 										<tr>
@@ -89,6 +92,7 @@
 													<input type="text" name="hp3" value="" id="hp3" class="reg_input" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
 														maxlength="4" required="">
 												</div>
+												<div id="msg_mb_phone" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -108,6 +112,7 @@
 														<option value="hanmail.com">hanmail.com</option>
 													</select>
 												</div>
+												<div id="msg_mb_email" class="reg_msg"></div>
 											</td>
 										</tr>
 										<tr>
@@ -164,7 +169,7 @@
 							</div>
 							<div class="btn_confirm">
 								<input type="button" class="btn_cancel" value="CANCLE" onClick="location.href='/'">
-								<input type="submit" class="btn_submit" value="JOIN">
+								<input type="button" class="btn_submit" value="JOIN" id="joinBtn">
 							</div>
 						</div>
 					</form>
@@ -179,8 +184,6 @@
 						let date = today.getDate();
 						if(date < 10) day = '0' + date;
 						const maxday = year + '-' + month + '-' + date;
-						console.log(today);
-						console.log(maxday);
 						$birthDate.setAttribute('max', maxday);
 					
 						const $email2 = document.getElementById('email2');
@@ -194,37 +197,61 @@
 							}
 						})
 					
+						const $joinBtn = document.getElementById('joinBtn');
+						const $fregisterform = document.getElementById('fregisterform');
+						$joinBtn.addEventListener('click', function() {
+								const $reg_msg = document.querySelectorAll('.reg_msg');
+								$reg_msg.forEach(element => {
+									element.textContent = '';
+								})
+								fregisterform_submit($fregisterform, function(isSubmit){								
+									if(isSubmit) $fregisterform.submit();
+							})
+							
+						});
+						
 						function findAddr() {
 							new daum.Postcode({
+								shorthand : false,
 								oncomplete: function (data) {
 									// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
 									// 각 주소의 노출 규칙에 따라 주소를 조합한다.
 									// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-									var addr = ''; // 주소 변수
-
+									let sigungu = ''; // 주소 변수
+									let road_jibun = '';
+									let sp;
 									//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
 									if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-										addr = data.roadAddress;
-									} else { // 사용자가 지번 주소를 선택했을 경우(J)
-										addr = data.jibunAddress;
+										sp = data.roadAddress.split(data.roadname);
+										road_jibun = data.roadname;
+									} else { 
+										// 사용자가 지번 주소를 선택했을 경우(J)
+										sp = data.jibunAddress.split(data.bname);
+										road_jibun = data.bname;
+									}
+									sigungu = sp[0];
+									for(let i = 1; i < sp.length; i+=1) {
+										road_jibun += sp[i];
 									}
 
-									// 우편번호와 주소 정보를 해당 필드에 넣는다.
+									// 우편번호와 주소 정보를 해당 필드에 넣는다. (화면에 보여주기 위함)
 									document.getElementById('userZip').value = data.zonecode;
-									document.getElementById('userAddress').value = addr;
+									document.getElementById('userAddress').value = sigungu + road_jibun;
 									// 커서를 상세주소 필드로 이동한다.
 									document.getElementById('userDetailAddress').focus();
+									
+									// 실제 서버로 넘어가는 값
+									const $addrSigungu = document.getElementById('addrSigungu').value = sigungu.trim();
+									document.getElementById('roadJibun').value = road_jibun.trim();
 								}
 							}).open();
 						}
 						
-						function fregisterform_submit(formData) {
+						function fregisterform_submit(formData, callback) {
 							let isSubmit = true;
 							const userPhone = formData.hp1.value + '-' + formData.hp2.value + '-' + formData.hp3.value;
 							const userEmail = formData.email1.value + '@' + formData.email2.value;
-							let birthMonth = formData.birthMonth.value;
-							let birthDay = formData.birthDay.value;
 							
  					 		const request = $.ajax({
  								url : '/user/userJoinCheck',
@@ -237,6 +264,8 @@
  									'userZip' : formData.userZip.value,
  									'userAddress' : formData.userAddress.value,
  									'userDetailAddress' : formData.userDetailAddress.value,
+ 									'userAddrSigungu' : formData.addrSigungu.value,
+ 									'userRoadJibun' : formData.roadJibun.value,
  									'userPhone' : userPhone,
  									'userEmail' : userEmail,
  									'userBirthDate' : formData.userBirthDate.value,
@@ -246,18 +275,36 @@
  							});
 				 		
   					 		request.done(function(response) {
- 								if(!response.isSuccess) {
+								
+ 								if(!response.success) {
  									isSubmit = false;
- 								}
- 							})
+ 									let $errorPos;
+ 									if(response.errorCode == 'IdError') {
+ 										$errorPos = document.getElementById('msg_mb_id');
+ 									} else if(response.errorCode == 'PwError') {
+ 										$errorPos = document.getElementById('msg_mb_pw');
+ 									} else if(response.errorCode == 'PwCheckError') {
+ 										$errorPos = document.getElementById('msg_mb_pw_check');
+ 									} else if(response.errorCode == 'NameError') {
+ 										$errorPos = document.getElementById('msg_mb_name');
+ 									} else if(response.errorCode == 'PhoneError') {
+ 										$errorPos = document.getElementById('msg_mb_phone');
+ 									} else if(response.errorCode == 'EmailError') {
+ 										$errorPos = document.getElementById('msg_mb_email');
+ 									}
+ 									$errorPos.textContent=response.errorMessage;
+ 									callback(isSubmit);
+ 								}else{
+									location.href="/user/loginMove"
+								}
+ 							});
 						
  							request.fail(function(jqXHR, textStatus, error){
- 								isSubmit = false;
- 								console.log(error);
+ 								
  							});
 					 		
-					 		isSubmit = false;
-							return isSubmit;
+  					 		return isSubmit;
+							//return response.isSuccess;
 						}
 					</script>
 
