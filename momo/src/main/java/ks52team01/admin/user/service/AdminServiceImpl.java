@@ -1,4 +1,4 @@
-package ks52team01.admin.service;
+package ks52team01.admin.user.service;
 
 import org.springframework.stereotype.Service;
 
