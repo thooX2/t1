@@ -19,4 +19,6 @@ public interface AdminService {
 	public void adminFindIdAction();
 	
 	public void adminFindPwAction();
+
+	public int adminLoginAction(String userId, String userPw);
 }

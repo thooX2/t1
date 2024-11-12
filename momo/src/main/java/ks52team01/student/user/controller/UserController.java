@@ -53,15 +53,15 @@ public class UserController {
 		// 로그인 성공 시
 		User loginUser = userService.getUserById(user);
 		session.setAttribute("loggedInUser", loginUser);
-		return "view/home/index";
+		return "redirect:/index";
 
 	}
 
-	@GetMapping("/user/userLogout")
+	@GetMapping("/user/logout")
 	public String logoutAction(HttpSession session) {
 		System.out.println("유저 로그아웃");
 		session.invalidate();
-		return "view/home/index";
+		return "redirect:/index";
 	}
 
 	@GetMapping("/user/userInfoModfiy")
@@ -77,7 +77,7 @@ public class UserController {
 	public String userJoinMove() {
 		return "view/user/user/user_join_form";
 	}
-	
+
 	@PostMapping("/user/userJoinAction")
 	public String userJoinAction() {
 		return "view/home/index";
@@ -88,7 +88,6 @@ public class UserController {
 	public ResponseError getUserJoinCheck(UserJoinInfo userJoinInfo) {
 		return userService.userJoinCheck(userJoinInfo);
 	}
-
 
 	public void userInfoDetailAction() {
 
@@ -120,7 +119,7 @@ public class UserController {
 	public void userFindPwAction() {
 
 	}
-	
+
 	@GetMapping("/user/userNotLogIn")
 	public String userNotLogIn() {
 		return "view/user/user/not_login";
