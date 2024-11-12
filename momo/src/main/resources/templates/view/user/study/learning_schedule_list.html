@@ -30,6 +30,9 @@ ul {
 	list-style-type: none;
 	padding : 0px;
 }
+a {
+	 color : black;
+}
 </style>
 
 
@@ -88,6 +91,7 @@ ul {
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
+												
 												<div class="modal-body">
 													<form id="eventForm" th:action="@{/study/addCastSubject}"
 														method="post">
@@ -121,8 +125,8 @@ ul {
 														</div>
 														<div id="selectName" class="form-group">
 															<label for="title">현재 학습계획중에 추가하고자 하는 부분이 있습니까?</label>
-															<select class="form-control" id="learning">
-																<option value="">계획을 선택해 주세요.</option>
+															<select class="form-control" id="learning" required>
+																<option value=null>계획을 선택해 주세요.</option>
 																<th:block th:each="list : ${LearningScheduleList}">
 																	<option th:value="${list.learningSchedule}"
 																		th:text="${list.learningScheduleMemo}"></option>

@@ -16,6 +16,14 @@
 		<result column="sub_mir_cat_lang" property="smcl1" />
 		<result column="sub_mir_cat_lang2" property="smcl2" />
 		<result column="sub_mir_cat_kh" property="smck" />
+
+
+		<result property="smcsknm" column="smcsknm" />
+		<result property="smcsmnm" column="smcsmnm" />
+		<result property="smci1nm" column="smci1nm" />
+		<result property="smci2nm" column="smci2nm" />
+		<result property="smcl2nm" column="smcl2nm" />
+		<result property="smcknm" column="smcknm" />
 	</resultMap>
 	<select id="getStudyTarget" resultMap="StudyTargetsResultMap">
 
@@ -30,12 +38,36 @@
 		sub_mir_cat_inq2,
 		sub_mir_cat_lang,
 		sub_mir_cat_lang2,
-		sub_mir_cat_kh
-
+		sub_mir_cat_kh,
+		smic1.sub_mir_cat_nm as smcsknm,
+		smic2.sub_mir_cat_nm as smcsmnm,
+		smic3.sub_mir_cat_nm as smci1nm,
+		smic4.sub_mir_cat_nm as smci2nm,
+		smic5.sub_mir_cat_nm as smcl2nm,
+		smic6.sub_mir_cat_nm as smcknm
 		FROM
-		CSAT
+		CSAT cs
+		LEFT
+		JOIN sub_mir_cat smic1
+		ON smic1.sub_mir_cat_code =
+		cs.sub_mir_cat_sel_kor
+		LEFT JOIN sub_mir_cat smic2
+		ON
+		smic2.sub_mir_cat_code = cs.sub_mir_cat_sel_math
+		LEFT JOIN sub_mir_cat
+		smic3
+		ON smic3.sub_mir_cat_code = cs.sub_mir_cat_inq1
+		LEFT JOIN
+		sub_mir_cat smic4
+		ON smic4.sub_mir_cat_code = cs.sub_mir_cat_inq2
+		LEFT
+		JOIN sub_mir_cat smic5
+		ON smic5.sub_mir_cat_code = cs.sub_mir_cat_lang2
+		LEFT JOIN sub_mir_cat smic6
+		ON smic6.sub_mir_cat_code =
+		cs.sub_mir_cat_kh
 		where
-		  user_code = #{id};
+		user_code = #{id};
 	</select>
 
 	<insert id='addCastSubject'
@@ -72,12 +104,10 @@
 		parameterType="ks52team01.student.study.dto.StudyTarget">
 		update CSAT
 		<trim prefix="SET" suffixOverrides=",">
-			<if
-				test="smcl2 != null and smcl2 != ''">
+			<if test="smcl2 != null and smcl2 != ''">
 				sub_mir_cat_sel_kor = #{smcsk},
 			</if>
-			<if
-				test="smcsm != null and smcsm != ''">
+			<if test="smcsm != null and smcsm != ''">
 				sub_mir_cat_sel_math = #{smcsm},
 			</if>
 			<if test="smci1 != null and smci1 != ''">
@@ -118,7 +148,8 @@
 			property="targetUniversityRangking" />
 
 	</resultMap>
-	<select id="getTargetUniversity" resultMap="TargetUniversityResultMap">
+	<select id="getTargetUniversity"
+		resultMap="TargetUniversityResultMap">
 
 		SELECT
 		target_university_code,
@@ -130,7 +161,7 @@
 		FROM
 		target_university
 		where
-		  user_code = #{id};
+		user_code = #{id};
 	</select>
 
 
@@ -169,15 +200,18 @@
 		parameterType="ks52team01.student.study.dto.TargetUniversity">
 		update target_university
 		<trim prefix="SET" suffixOverrides=",">
-		<if test="targetUniversityName != null and targetUniversityName != ''">
-		target_university_name= #{targetUniversityName},
-		</if>
-		<if test="targetUniversityLesson != null and targetUniversityLesson != ''">
-		target_university_lesson= #{targetUniversityLesson},
-		</if>
-		<if test="targetUniversityRangking != null and targetUniversityRangking != ''">
-		 target_university_rangking= #{targetUniversityRangking}
-		</if>
+			<if
+				test="targetUniversityName != null and targetUniversityName != ''">
+				target_university_name= #{targetUniversityName},
+			</if>
+			<if
+				test="targetUniversityLesson != null and targetUniversityLesson != ''">
+				target_university_lesson= #{targetUniversityLesson},
+			</if>
+			<if
+				test="targetUniversityRangking != null and targetUniversityRangking != ''">
+				target_university_rangking= #{targetUniversityRangking}
+			</if>
 		</trim>
 		WHERE
 		target_university_code = #{targetUniverseCode};
@@ -213,24 +247,33 @@
 		<result column="obj_grade_set" property="tar_grade_set" />
 		<result column="result_grade_set" property="result_grade_set" />
 		<result column="count_grade_set" property="count_grade_set" />
+		<result property="subMjrCatNm" column="sub_mjr_cat_nm" />
+		<result property="subMirCatNm" column="sub_mir_cat_nm" />
 
 	</resultMap>
 	<select id="getTargetGrade" resultMap="TargetGradeResultMap">
-		SELECT
-		obj_grade_code,
-		user_code,
-		sub_mjr_cat_code,
-		sub_mir_cat_code,
-		last_grade_set,
-		recent_grade_set,
-		obj_grade_set,
-		result_grade_set,
-		count_grade_set
-
+		select
+		og.obj_grade_code,
+		og.user_code,
+		og.sub_mjr_cat_code,
+		og.sub_mir_cat_code,
+		og.last_grade_set,
+		og.recent_grade_set,
+		og.obj_grade_set,
+		smjc.sub_mjr_cat_code,
+		smjc.sub_mjr_cat_nm,
+		smic.sub_mir_cat_code,
+		smic.sub_mir_cat_nm
 		FROM
-		obejctive_grade
+		obejctive_grade og
+		JOIN sub_mjr_cat smjc
+		ON
+		og.sub_mjr_cat_code = smjc.sub_mjr_cat_code
+		JOIN sub_mir_cat smic
+		ON
+		og.sub_mir_cat_code = smic.sub_mir_cat_code
 		where
-		  user_code = #{id};
+		og.user_code = #{id};
 	</select>
 
 	<!-- 목표등급 추가 0 -->
@@ -250,47 +293,53 @@
 		</selectKey>
 
 
-		insert into obejctive_grade VALUES(
+		insert into obejctive_grade  (obj_grade_code, user_code, sub_mjr_cat_code, sub_mir_cat_code, last_grade_set, recent_grade_set, obj_grade_set, result_grade_set, count_grade_set)
+	    SELECT
 		#{gradeCode},
 		#{UserCode},
 		#{smjcc},
 		#{smicc},
-		#{lastGrade},
-		#{recentGrade},
-		#{tar_grade_set},
-		#{result_grade_set},
-		#{count_grade_set}
-		);
+		IF(${lastGrade}=0, IFNULL(AVG(last_grade_set), 1), ${lastGrade}),
+		${recentGrade},
+		${tar_grade_set},
+		IF(SUM(result_grade_set)=0, IFNULL((${recentGrade}),0), SUM(result_grade_set)),
+		COUNT(result_grade_set)+1
+		FROM
+ 		obejctive_grade
+ 		WHERE user_code=#{UserCode}
+		ORDER BY
+		obj_grade_code desc
+		LIMIT 1
 	</insert>
 	<!-- 목표등급 수정 수정 -->
 	<update id='modifyTargetGrade'
 		parameterType="ks52team01.student.study.dto.TargetGrade">
 		update obejctive_grade
 		<trim prefix="SET" suffixOverrides=",">
-		<if test="smjcc != null and smjcc != ''">
-		sub_mjr_cat_code = #{smjcc},
-		</if>
-		<if test="smicc != null and smicc != ''">		
-		sub_mir_cat_code = #{smicc},
-		</if>
-		<if test="lastGrade != null and lastGrade != ''">
-		last_grade_set = #{lastGrade},
-		</if>
-		<if test="recentGrade != null and recentGrade != ''">
-		recent_grade_set =#{recentGrade} ,
-		</if>
-		<if test="tar_grade_set != null and tar_grade_set != ''">
-		obj_grade_set = #{tar_grade_set},
-		</if>
-		<if test="result_grade_set != null and result_grade_set != ''">	
-		result_grade_set = #{result_grade_set},
-		</if>
-		<if test="count_grade_set != null and count_grade_set != ''">
-		count_grade_set = #{count_grade_set}
-		</if>
+			<if test="smjcc != null and smjcc != ''">
+				sub_mjr_cat_code = #{smjcc},
+			</if>
+			<if test="smicc != null and smicc != ''">
+				sub_mir_cat_code = #{smicc},
+			</if>
+			<if test="lastGrade != null and lastGrade != ''">
+				last_grade_set = #{lastGrade},
+			</if>
+			<if test="recentGrade != null and recentGrade != ''">
+				recent_grade_set =#{recentGrade} ,
+			</if>
+			<if test="tar_grade_set != null and tar_grade_set != ''">
+				obj_grade_set = #{tar_grade_set},
+			</if>
+			<if test="result_grade_set != null and result_grade_set != ''">
+				result_grade_set = #{result_grade_set},
+			</if>
+			<if test="count_grade_set != null and count_grade_set != ''">
+				count_grade_set = #{count_grade_set}
+			</if>
 		</trim>
 		WHERE obj_grade_code = #{gradeCode};
-		
+
 	</update>
 	<!-- 목표등급 삭제 -->
 	<delete id='removeTargetGrade'
@@ -345,7 +394,8 @@
 		FROM
 		learning_schedule
 		where
-		  user_code = #{id};
+		user_code =
+		#{id};
 	</select>
 
 	<!-- 학습목표 추가 0 -->
@@ -385,36 +435,42 @@
 		parameterType="ks52team01.student.study.dto.StudySchedule">
 		UPDATE learning_schedule
 		<trim prefix="SET" suffixOverrides=",">
-		<if test="smjcc != null and smjcc != ''">
-		sub_mjr_cat_code = #{smjcc},
-		</if>
-		<if test="smicc != null and smicc != ''">
-		sub_mir_cat_code = #{smicc},
-		</if>
-		<if test="learningScheduleMemo != null and learningScheduleMemo != ''">
-		learning_schedule_memo = #{learningScheduleMemo},
-		</if>
-		<if test="learningScheduleDay != null and learningScheduleDay != ''">
-		learning_schedule_days = #{learningScheduleDay},
-		</if>
-		<if test="learningScheduleStart != null and learningScheduleStart != ''">
-		learning_schedule_start = #{learningScheduleStart},
-		</if>
-		<if test="learningScheduleEnd != null and learningScheduleEnd != ''">
-		learning_schedule_end = #{learningScheduleEnd},
-		</if>
-		<if test="learningScheduleCompleate != null and learningScheduleCompleate != ''">
-		learning_schedule_compleate = #{learningScheduleCompleate}
-		</if>
+			<if test="smjcc != null and smjcc != ''">
+				sub_mjr_cat_code = #{smjcc},
+			</if>
+			<if test="smicc != null and smicc != ''">
+				sub_mir_cat_code = #{smicc},
+			</if>
+			<if
+				test="learningScheduleMemo != null and learningScheduleMemo != ''">
+				learning_schedule_memo = #{learningScheduleMemo},
+			</if>
+			<if
+				test="learningScheduleDay != null and learningScheduleDay != ''">
+				learning_schedule_days = #{learningScheduleDay},
+			</if>
+			<if
+				test="learningScheduleStart != null and learningScheduleStart != ''">
+				learning_schedule_start = #{learningScheduleStart},
+			</if>
+			<if
+				test="learningScheduleEnd != null and learningScheduleEnd != ''">
+				learning_schedule_end = #{learningScheduleEnd},
+			</if>
+			<if
+				test="learningScheduleCompleate != null and learningScheduleCompleate != ''">
+				learning_schedule_compleate = #{learningScheduleCompleate}
+			</if>
 		</trim>
 		WHERE learning_schedule = #{learningSchedule};
 	</update>
-	
+
 	<!-- 학습목표 삭제 -->
 	<delete id='removeLearningSchedule'
 		parameterType="ks52team01.student.study.dto.StudySchedule">
-		delete FROM learning_schedule ls where
-		ls.learning_schedule = #{learningSchedule};
+		<!-- delete FROM learning_schedule ls where
+		ls.learning_schedule = #{learningSchedule}; -->
+		CALL study_ls_delete (#{learningSchedule}, #{userCode})
 	</delete>
 
 
@@ -432,11 +488,9 @@
 		<result column="user_code" property="userCode" />
 		<result column="learning_schedule" property="learningSchedule" />
 		<result column="detailed_schedule_memo"
-			property="detailedScheduleMemo" />	
-		<result column="smjrcc"
-			property="smjrcc" />	
-		<result column="smircc"
-			property="smircc" />	
+			property="detailedScheduleMemo" />
+		<result column="smjrcc" property="smjrcc" />
+		<result column="smircc" property="smircc" />
 		<result column="detailed_schedule_date"
 			property="detailedScheduleDate" />
 		<result column="detailed_schedule_starttime"
@@ -465,7 +519,7 @@
 		FROM
 		detailed_schedule
 		where
-		  user_code = #{id};
+		user_code = #{id};
 	</select>
 
 	<!-- 상세일정 추가 0 -->
@@ -489,21 +543,24 @@
 		insert into detailed_schedule VALUES(
 		#{detailedSchedule},
 		#{userCode},
-		 <choose>
-            <when test="learningSchedule == null or learningSchedule == '' or learningSchedule == 'null'">
-                NULL
-            </when>
-            <otherwise>
-                #{learningSchedule}
-            </otherwise>
-        </choose>,
+		<choose>
+			<when
+				test="learningSchedule == null or learningSchedule == '' or learningSchedule == 'null'">
+				NULL
+			</when>
+			<otherwise>
+				#{learningSchedule}
+			</otherwise>
+		</choose>
+		,
 		#{smjrcc},
 		#{smircc},
 		#{detailedScheduleMemo},
 		#{detailedScheduleDate},
 		#{detailedScheduleStartTime},
 		#{detailedScheduleEndTime},
-		TIME_FORMAT(TIMEDIFF(#{detailedScheduleEndTime}, #{detailedScheduleStartTime}), '%H:%i'),
+		TIME_FORMAT(TIMEDIFF(#{detailedScheduleEndTime},
+		#{detailedScheduleStartTime}), '%H:%i'),
 		#{detailedScheduleResult}
 		);
 	</insert>
@@ -717,29 +774,36 @@
 	</delete>
 
 
-	<select id="getLearningSchedules" resultType="ks52team01.student.study.dto.LearningScheduleDto">
-       SELECT 
-            ls.learning_schedule AS FullSchedule,
-            ds.detailed_schedule_code AS detailed,
-            ls.user_code AS usercode,
-            ls.sub_mjr_cat_code AS submjr,
-            ls.sub_mir_cat_code AS submir,
-            ls.learning_schedule_memo AS lesMemo,
-            ls.learning_schedule_days AS days,
-            ls.learning_schedule_start AS startDay,
-            ls.learning_schedule_end AS endDay,
-            ls.learning_schedule_compleate AS compleateMemo,
-            ds.detailed_schedule_memo AS detailMemo,
-            ds.detailed_schedule_date AS detailDate,
-            ds.detailed_schedule_starttime AS startTime,
-            ds.detailed_schedule_endtime AS endTime,
-            ds.detailed_schedule_studytime AS studyTime,
-            ds.detailed_schedule_result AS result
-        FROM 
-            learning_schedule ls 
-        right JOIN 
-            detailed_schedule ds
-        ON 
-            ls.learning_schedule = ds.learning_schedule
-    </select>
+	<select id="getLearningSchedules"
+		resultType="ks52team01.student.study.dto.LearningScheduleDto">
+		SELECT
+		ls.learning_schedule AS FullSchedule,
+		ds.detailed_schedule_code AS detailed,
+		ls.user_code AS usercode,
+		ls.sub_mjr_cat_code AS submjr,
+		ls.sub_mir_cat_code AS submir,
+		ls.learning_schedule_memo AS lesMemo,
+		ls.learning_schedule_days AS
+		days,
+		ls.learning_schedule_start AS startDay,
+		ls.learning_schedule_end
+		AS endDay,
+		ls.learning_schedule_compleate AS compleateMemo,
+		ds.detailed_schedule_memo AS detailMemo,
+		ds.detailed_schedule_date AS
+		detailDate,
+		ds.detailed_schedule_starttime AS startTime,
+		ds.detailed_schedule_endtime AS endTime,
+		ds.detailed_schedule_studytime AS studyTime,
+		ds.detailed_schedule_result AS result
+		FROM
+		learning_schedule ls
+		right
+		JOIN
+		detailed_schedule ds
+		ON
+		ls.learning_schedule = ds.learning_schedule
+		where
+		ls.user_code = #{id};
+	</select>
 </mapper>

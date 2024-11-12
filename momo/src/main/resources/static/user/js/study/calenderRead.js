@@ -289,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				document.getElementById('selectName').style.display = 'none';
 				document.getElementById('endTimer').style.display = 'none';
 				document.getElementById('startTimer').style.display = 'none';
+				document.getElementById('endDays').style.display = '';
 				eventModalLabel
 				document.getElementById('eventModalLabel').textContent = "학습계획 생성";
 
@@ -541,6 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				document.getElementById('selectName').style.display = 'none';
 				document.getElementById('endTimer').style.display = 'none';
 				document.getElementById('startTimer').style.display = 'none';
+				document.getElementById('endDays').style.display = '';
 				eventModalLabel
 				document.getElementById('eventModalLabel').textContent = "학습계획 생성";
 

@@ -84,5 +84,5 @@ public interface StudyService {
 	
 	List<ProblemSolving> getProblemSolving();
 	
-	 List<LearningScheduleDto> getLearningSchedules();
+	List<LearningScheduleDto> getLearningSchedules(String id);
 }

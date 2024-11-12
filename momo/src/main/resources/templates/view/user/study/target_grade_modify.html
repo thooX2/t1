@@ -1,147 +1,158 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 
 <head>
-	<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
-	<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
+<link rel="stylesheet" th:href="@{/user/css/study/past_question.css}">
+<link rel="stylesheet" th:href="@{/user/css/study/bootstrap.min.css}">
 </head>
 <th:block layout:fragment="customJsFile">
 	<script th:src="@{/user/js/study/jquery-3.5.1.min.js}"></script>
+	<script th:src="@{/user/js/study/selectSubject.js}"></script>
 </th:block>
 <th:block layout:fragment="customJs">
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content" id="examMain">
-		<!-- container -->
-		<section class="container">
-			<!-- sub_container -->
-			<div class="sub_container">
+	<!-- container -->
+	<section class="container">
+		<!-- sub_container -->
+		<div class="sub_container">
 
-				<!-- Include the sidebar fragment here -->
-				<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
+			<!-- Include the sidebar fragment here -->
+			<div th:replace="fragments/user/study/sidebar :: sidebar"></div>
 
 
 
-				<!-- content -->
-				<div class="content">
-					<div id="wrap_2014">
-						<div class="column_top">
-							<!-- 상단 메뉴 시작 -->
-							<div class="column_right cust_test" id="contents">
-								<p style="color:black;font-weight: bolder;font-size: 28px;margin-bottom: 40px;">
-									목표등급 수정
-								</p>
-								<div id="tabContent">
+			<!-- content -->
+			<div class="content">
+				<div id="wrap_2014">
+					<div class="column_top">
+						<!-- 상단 메뉴 시작 -->
+						<div class="column_right cust_test" id="contents">
+							<p
+								style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
+								목표등급 수정</p>
+							<div id="tabContent">
 
-									<div class="myWorkbook">
-										<div class="sort_select" style="width:150px;margin-bottom: 20px;">
-											
-										</div>
+								<div class="myWorkbook">
+									<div class="sort_select"
+										style="width: 150px; margin-bottom: 20px;"></div>
 
-										<div id="MyTestArea">
-											<form th:action="@{/study/modifyTargetGrade}" method="post" class="insert">
-				<input type="hidden" name="gradeCode" th:value="${listIdx}" />
-					
-					<a>대과목 선택 : <br />
-						<select name="smjcc" style="width: 500px">
-							<option value="smjrcc1">국어</option>
-							<option value="smjrcc2">수학</option>
-							<option value="smjrcc3">영어</option>
-							<option value="smjrcc4">한국사</option>
-							<option value="smjrcc5">사회탐구</option>
-							<option value="smjrcc6">과학탐구</option>
-							<option value="smjrcc7">직업탐구</option>
-							<option value="smjrcc8">제2외국어 및 한문</option>
-						</select>
-					</a><br /> 
-					
-					
-					<a>선택과목 선택 : <br />
-						<select name="smicc" style="width: 500px">
-							<option value="smircc39">독일어1</option>
-							<option value="smircc40">프랑스어1</option>
-							<option value="smircc41">스페인어1</option>
-							<option value="smircc42">중국어1</option>
-							<option value="smircc43">일본어1</option>
-							<option value="smircc44">러시아어1</option>
-							<option value="smircc45">아랍어1</option>
-							<option value="smircc46">베트남어1</option>
-							<option value="smircc47">한문1</option>
-						</select>
-					</a><br /> 
-					
-					 <a>평균등급 : <br />
-						 <select name="lastGrade" style="width: 500px">
-							<option value=1>1등급</option>
-							<option value=2>2등급</option>
-							<option value=3>3등급</option>
-							<option value=4>4등급</option>
-							<option value=5>5등급</option>
-							<option value=6>6등급</option>
-							<option value=7>7등급</option>
-							<option value=8>8등급</option>
-							<option value=9>9등급</option>
-							<option value=0>미기재</option>
-						</select>
-					</a><br />
-					
-					<a>최근등급 : <br />
-						<select name="recentGrade" style="width: 500px">
-							<option value="1">1등급</option>
-							<option value="2">2등급</option>
-							<option value="3">3등급</option>
-							<option value="4">4등급</option>
-							<option value="5">5등급</option>
-							<option value="6">6등급</option>
-							<option value="7">7등급</option>
-							<option value="8">8등급</option>
-							<option value="9">9등급</option>
-							<option value="0">미기재</option>
-						</select>
-					</a>
-					<br />
-					
-	
-					 <a>목표등급 : <br />
-					 	<select name="tar_grade_set" style="width: 500px">
-							<option value=1>1등급</option>
-							<option value=2>2등급</option>
-							<option value=3>3등급</option>
-							<option value=4>4등급</option>
-							<option value=5>5등급</option>
-							<option value=6>6등급</option>
-							<option value=7>7등급</option>
-							<option value=8>8등급</option>
-							<option value=9>9등급</option>
-							<option value=0>미기재</option>
-						</select>
-					</a><br /> 
-					
-					
-					<input type="hidden" name="result_grade_set" value=0 /> <br /> 
-					<input type="hidden" name="count_grade_set" value=0 /> <br /> 
-					
-					
-					<input type="submit" value="목표등급 수정"> <br />
-					<br />
-					<br />
-				</form>
-										</div>
+									<div id="MyTestArea" class="text-center">
+										<form th:action="@{/study/modifyTargetGrade}" method="post"
+											class="insert">
+											<input type="hidden" name="gradeCode" th:value="${listIdx}" />
+
+											<!-- 대과목 선택 -->
+											<div class="form-group">
+												<label for="smjcc">대과목 선택</label> <select name="smjcc"
+													id="smjcc" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="smjrcc1">국어</option>
+													<option value="smjrcc2">수학</option>
+													<option value="smjrcc3">영어</option>
+													<option value="smjrcc4">한국사</option>
+													<option value="smjrcc5">사회탐구</option>
+													<option value="smjrcc6">과학탐구</option>
+													<option value="smjrcc7">직업탐구</option>
+													<option value="smjrcc8">제2외국어 및 한문</option>
+												</select>
+											</div>
+
+											<!-- 선택과목 선택 -->
+											<div class="form-group">
+												<label for="smicc">선택과목 선택</label> <select name="smicc"
+													id="smicc" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="smircc1">독서</option>
+														<option value="smircc2">문학</option>
+														<option value="smircc3">화법과 작문</option>
+														<option value="smircc4">언어와 매체</option>
+												</select>
+											</div>
+
+											<!-- 평균등급 -->
+											<div class="form-group">
+												<label for="lastGrade">평균등급</label> <select name="lastGrade"
+													id="lastGrade" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value=1>1등급</option>
+													<option value=2>2등급</option>
+													<option value=3>3등급</option>
+													<option value=4>4등급</option>
+													<option value=5>5등급</option>
+													<option value=6>6등급</option>
+													<option value=7>7등급</option>
+													<option value=8>8등급</option>
+													<option value=9>9등급</option>
+													<option value=0>미기재</option>
+												</select>
+											</div>
+
+											<!-- 최근등급 -->
+											<div class="form-group">
+												<label for="recentGrade">최근등급</label> <select
+													name="recentGrade" id="recentGrade" class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value="1">1등급</option>
+													<option value="2">2등급</option>
+													<option value="3">3등급</option>
+													<option value="4">4등급</option>
+													<option value="5">5등급</option>
+													<option value="6">6등급</option>
+													<option value="7">7등급</option>
+													<option value="8">8등급</option>
+													<option value="9">9등급</option>
+													<option value="0">미기재</option>
+												</select>
+											</div>
+
+											<!-- 목표등급 -->
+											<div class="form-group">
+												<label for="tar_grade_set">목표등급</label> <select
+													name="tar_grade_set" id="tar_grade_set"
+													class="form-control"
+													style="width: 500px; display: inline-block;">
+													<option value=1>1등급</option>
+													<option value=2>2등급</option>
+													<option value=3>3등급</option>
+													<option value=4>4등급</option>
+													<option value=5>5등급</option>
+													<option value=6>6등급</option>
+													<option value=7>7등급</option>
+													<option value=8>8등급</option>
+													<option value=9>9등급</option>
+													<option value=0>미기재</option>
+												</select>
+											</div>
+
+											<div class="form-group">
+												<input type="hidden" name="result_grade_set" value=0 /> <input
+													type="hidden" name="count_grade_set" value=0 /> <input
+													type="submit" value="목표등급 수정" class="btn btn-primary" />
+											</div>
+										</form>
 									</div>
+
+
+
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
 
-	</div>
+</div>
 </div>
 
 </html>
