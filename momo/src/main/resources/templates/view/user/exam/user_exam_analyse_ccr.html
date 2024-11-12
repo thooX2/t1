@@ -70,35 +70,6 @@
  				console.log(error);
  			});
 	
-	
-	
-	
-	/* const $title = document.querySelector('title');
-	$title.textContent = '모의고사 결과분석';
-
-	function fncShowDtl(id) {
-	    const content = document.getElementById('dtlCont' + id);
-	    const classname = document.getElementById('tit_main' + id);
-	    
-	    // 모든 내용 숨기기
-	    const allContents = document.querySelectorAll('[id^="dtlCont"]');
-	    const allClassNames = document.querySelectorAll('[id^="tit_main"]');
-	    allContents.forEach((item) => {
-	        item.style.display = "none";
-	    });
-	    allClassNames.forEach((item) => {
-	        item.classList.remove("on");
-	        item.classList.add("off");
-	    });
-
-	    // 클릭한 항목 표시하기
-	    if (content.style.display == "none" || content.style.display == "") {
-	        content.style.display = "block";
-	        classname.classList.remove("off");
-	        classname.classList.add("on");
-	    }
-	} */
-
 	</script>
 </th:block>
 <!-- layout.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
@@ -186,7 +157,7 @@
 
 
 										<div class="item_cont ">
-											<p class="tit_grapth">선사 문화와 여러나라의 성장 </p>
+											<p class="tit_grapth">독서 </p>
 											<div class="bx_bargrapth">
 												
 												<div class="bg_grapth">
@@ -211,7 +182,7 @@
 
 
 										<div class="item_cont ">
-											<p class="tit_grapth">삼국과 가야의 발전 </p>
+											<p class="tit_grapth">문학 </p>
 											<div class="bx_bargrapth">
 
 												<div class="bg_grapth">
@@ -234,7 +205,7 @@
 
 
 										<div class="item_cont">
-											<p class="tit_grapth">통일 신라와 발해의 발전 </p>
+											<p class="tit_grapth">화법</p>
 											<div class="bx_bargrapth">
 
 												<div class="bg_grapth">
@@ -256,7 +227,7 @@
 
 
 										<div class="item_cont ">
-											<p class="tit_grapth">대외 교류와 문화 발전 </p>
+											<p class="tit_grapth">작문 </p>
 											<div class="bx_bargrapth">
 
 												
@@ -277,7 +248,50 @@
 												
 											</ul>
 										</div>
+									<div class="item_cont ">
+											<p class="tit_grapth">언어 </p>
+											<div class="bx_bargrapth">
 
+												
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">정답률</p>
+													<div class="qnum"></div>
+												</li>
+												<li>
+													<p class="qtit">풀이횟수</p>
+													<div class="qnum ty2"></div>
+												</li>
+												
+											</ul>
+										</div>
+										<div class="item_cont ">
+											<p class="tit_grapth">매체 </p>
+											<div class="bx_bargrapth">
+
+												
+												<div class="bg_grapth">
+													<div class="garpth_bar my" style="width:100%"></div>
+													<span class="percent my">%</span>
+												</div>
+											</div>
+											<ul class="bx_question_total">
+												<li>
+													<p class="qtit">정답률</p>
+													<div class="qnum"></div>
+												</li>
+												<li>
+													<p class="qtit">풀이횟수</p>
+													<div class="qnum ty2"></div>
+												</li>
+												
+											</ul>
+										</div>
 									</div>
 
 								</div>
