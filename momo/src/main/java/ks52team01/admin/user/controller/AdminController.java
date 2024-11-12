@@ -58,8 +58,14 @@ public class AdminController {
 	}
 
 	@GetMapping("/admin/adminLoginMove")
-	public String adminLoginMove() {
-		return "view/admin/user/admin_login";
+	public String adminLoginMove(HttpSession session) {
+		String url = "view/admin/user/admin_login";
+		
+		if (session.getAttribute("loggedInUser") != null) {
+			url = "redirect:/admin/exam/category";
+		}
+
+		return url;
 	}
 
 	// 15번 문서 보면서 URI 매핑하다가 의도를 모르겠어서 중지
