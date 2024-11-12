@@ -39,7 +39,11 @@
 	}
 
 	.question_img {
-		width: 5% !important
+		width: 10% !important
+	}
+
+	.clickedImg {
+		width: 70% !important
 	}
 </style>
 
@@ -125,15 +129,12 @@
 							<div class="popexam-wrap__question__source" th:text="${'출처 : '+qil.QnaSubject}">출처 :
 								2023.10.12 학평&nbsp;한국사&nbsp;5번</div>
 
-
-							<div class="popexam-wrap__question__title" th:utext="${qil.QnaQst}">
-
-
+							<div class="popexam-wrap__question__title" th:utext="${qil.QnaQst}"
+								style="height: auto; overflow: visible; display: inline-block; padding: 10px; box-sizing: border-box;">
 							</div>
-
-							<div class="popexam-wrap__question__title" th:each="qilImg : ${qnaImgList}"
-								th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='fileInput'}">
-								<div class="question-image">
+							<div class="popexam-wrap__question__title">
+								<div th:each="qilImg : ${qnaImgList}" class="question-image" style="width:100%"
+									th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='fileInput'}">
 									<img th:src="@{${qilImg.qnaImgPath}}" alt="@{${qilImg.qnaImgOriginalName}}"
 										class="question_img" />
 								</div>
@@ -351,6 +352,9 @@
 			fncViewQues($(this).prop('id'))
 		})
 		$('#totalQuestion').text(`총 ${questionList.length} 문항`);
+		$(document).on('click', 'img', function () {
+			$(this).toggleClass('clickedImg');
+		})
 	</script>
 </body>
 
