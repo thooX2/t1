@@ -1,82 +1,113 @@
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Windmill Dashboard</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../admin/css/tailwind.output.css" />
-    <script
-      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
-      defer
-    ></script>
-    <script src="../admin/js/init-alpine.js"></script>
-  </head>
-  <body>
-    <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
-      <div
-        class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800"
-      >
-        <div class="flex flex-col overflow-y-auto md:flex-row">
-          <div class="h-32 md:h-auto md:w-1/2">
-            <img
-              aria-hidden="true"
-              class="object-cover w-full h-full dark:hidden"
-              src="../admin/img/login-office.jpeg"
-              alt="Office"
-            />
-            <img
-              aria-hidden="true"
-              class="hidden object-cover w-full h-full dark:block"
-              src="../admin/img/login-office-dark.jpeg"
-              alt="Office"
-            />
-          </div>
-          <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-            <div class="w-full">
-              <h1
-                class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200"
-              >
-                Login
-              </h1>
-              <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">ID</span>
-                <input
-                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                  placeholder="ID"
-                />
-              </label>
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Password</span>
-                <input
-                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                  placeholder="PW"
-                  type="password"
-                />
-              </label>
+<html>
 
-              <!-- You should use a button here, as the anchor is only used for the example  -->
-              <a class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 border border-transparent rounded-lg"
-                href="/admin/adminPage"
-				style="background-color: #2e78b2;">LOGIN</a>
-              <hr class="my-8" />
+<head>
+	<!-- Basic Page Info -->
+	<meta charset="utf-8">
+	<title>MOMO 관리자 로그인</title>
 
-              <p class="mt-4">
-                <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" href="/">ID찾기</a>
-              </p>
-			  <p class="mt-4">
-	            <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" href="/">PW찾기</a>
-	          </p>
-              <p class="mt-1">
-                <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" href="/">Create account</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+		rel="stylesheet">
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminLogin/core.css">
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminLogin/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/admin/css/exam/adminLogin/style.css">
+</head>
+<style>
+	.select-role .btn-group .btn {
+		width: calc(33% - 10px) !important;
+		font-size: 10px;
+	}
+</style>
+
+<body class="login-page">
+	<div class="login-header box-shadow">
+		<div class="container-fluid d-flex justify-content-between align-items-center">
+			<div class="brand-logo">
+				<a href="login.html">
+					<img src="/admin/img/exam/adminLogin/logo.png" alt="">
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-6 col-lg-7">
+					<img src="/admin/img/exam/adminLogin/login-page-img.png" alt="">
+				</div>
+				<div class="col-md-6 col-lg-5">
+					<div class="login-box bg-white box-shadow border-radius-10">
+						<div class="login-title">
+							<h2 class="text-center text-primary" style="color:rgb(0,90,167) !important">Login To MoMo
+							</h2>
+						</div>
+						<form action="/admin/adminLoginMove" method="post">
+							<div class="select-role">
+								<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									<label class="btn active">
+										<input type="radio" name="options" id="seller">
+										<div class="icon"><img src="/admin/img/exam/adminLogin/seller.png" class="svg"
+												alt=""></div>
+										<span>I'm</span>
+										관리자
+									</label>
+									<label class="btn">
+										<!--<input type="radio" name="options" id="user">-->
+										<div class="icon">
+											<img src="/admin/img/exam/adminLogin/person.svg" class="svg" alt="">
+										</div>
+										<span>I'm</span>
+										사용자
+									</label>
+								</div>
+							</div>
+							<div class="input-group custom">
+								<input type="text" name="userId" class="form-control form-control-lg" placeholder="아이디"
+									required>
+								<div class="input-group-append custom">
+									<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
+								</div>
+							</div>
+							<div class="input-group custom">
+								<input type="password" name="userPw" class="form-control form-control-lg"
+									placeholder="비밀번호" required>
+								<div class="input-group-append custom">
+									<span class="input-group-text"><i class="dw dw-padlock1"></i></span>
+								</div>
+							</div>
+
+							<div class="row" style="margin-top:40px">
+								<div class="col-sm-12">
+									<div class="input-group mb-0">
+										<!--
+											use code for form submit
+											<input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
+										-->
+										<button class="btn btn-primary btn-lg btn-block" type="submit"
+											style="font-weight: bolder;background-color:rgb(0,90,167) !important;border-color: rgb(0,90,167) !important;">로그인</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- js -->
+	<!--<script src="/admin/js/exam/adminLogin/core.js"></script>-->
+	<!--<script src="vendors/scripts/script.min.js"></script>
+	<script src="vendors/scripts/process.js"></script>
+	<script src="vendors/scripts/layout-settings.js"></script>-->
+	<script th:inline="javascript">
+		var errorMessage =/*[[${error}]]*/[]
+		if (errorMessage.length != 0)
+			alert(errorMessage)
+
+
+	</script>
+</body>
+
 </html>
