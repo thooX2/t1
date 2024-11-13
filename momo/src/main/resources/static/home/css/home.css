@@ -221,3 +221,8 @@ section .section-title {
 	background: transparent !important;
 	padding: 0px !important;
 }
+
+#heroP {
+	font-weight: bold !important;
+	color: #252525 !important;
+}
