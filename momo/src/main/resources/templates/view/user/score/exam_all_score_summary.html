@@ -8,10 +8,13 @@
 </head>
 <th:block layout:fragment="customJs">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script th:inline="javascript">const subjectScore = [[${subjectScoreMap}]];</script>
+	<script th:inline="javascript">
+		const tookExamList = [[${tookExamList}]];
+		const subjectScore = [[${subjectScoreMap}]];
+	</script>
 	<script src="/user/js/score/score.js"></script>
 </th:block>
-<div layout:fragment="content" id="momoDefault">
+<div th:if="${tookExamList} != null" layout:fragment="content" id="momoDefault">
 	<ul>
 		<!-- Product Section Begin -->
 		<section class="product spad">
@@ -192,5 +195,4 @@
 		</section>
 	</ul>
 </div>
-
 </html>
