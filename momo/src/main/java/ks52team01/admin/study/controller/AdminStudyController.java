@@ -43,7 +43,7 @@ public class AdminStudyController {
 
 		model.addAttribute("CastSubjectList", adminstudyService.AdmingetStudyTarget(id));
 
-		return "view/admin/study/StudyCsat";
+		return "view/admin/study/admin_study_get_csat";
 	}
 
 	// 타겟 대학교 설정
@@ -54,7 +54,7 @@ public class AdminStudyController {
 		String id = user.getUserCode();
 		String grade = user.getGradeCode();
 		model.addAttribute("TargetUniversityList", adminstudyService.AdmingetTargetUniversity(id));
-		return "view/admin/study/StudyUnivers";
+		return "view/admin/study/admin_study_get_univers";
 	}
 
 	// 목표 등급 설정
@@ -65,7 +65,7 @@ public class AdminStudyController {
 		String id = user.getUserCode();
 		String grade = user.getGradeCode();
 		model.addAttribute("TargetGradeList", adminstudyService.AdmingetTargetGrade(id));
-		return "view/admin/study/StudyGrade";
+		return "view/admin/study/admin_study_get_grade";
 	}
 
 	// 학습목표 설정
@@ -76,7 +76,7 @@ public class AdminStudyController {
 		String id = user.getUserCode();
 		String grade = user.getGradeCode();
 		model.addAttribute("LearningScheduleList", adminstudyService.AdmingetStudySchedule(id));
-		return "view/admin/study/Studylearning";
+		return "view/admin/study/admin_study_get_learning";
 	}
 
 	// 상세 스케쥴
@@ -86,73 +86,48 @@ public class AdminStudyController {
 		String id = user.getUserCode();
 		String grade = user.getGradeCode();
 		model.addAttribute("DetailedScheduleList", adminstudyService.AdmingetDetailedSchedule(id));
-		return "view/admin/study/Studydetail";
+		return "view/admin/study/admin_study_get_detail";
 	}
 
-	// 문제 스크랩
-	@GetMapping("/getQuestionScrapeList")
-	public String getQuestionScrapeList(Model model) {
-		model.addAttribute("QuestionScrapeList", adminstudyService.AdmingetProblemScrape());
-		return "view/admin/study/question_scrape_list";
-	}
-
-	
-	
 	// 삭제주소 로딩
 
 	@GetMapping("/removeCastSubject")
 	public String adminDeleteProducts(@RequestParam("list.idx") String listIdx, Model model) {
 		System.out.println("과목을 삭제하기");
 		model.addAttribute("listIdx", listIdx);
-		return "view/admin/study/deleteStudyCsat";
+		return "view/admin/study/admin_study_delete_csat";
 	}
-	
+
 	@GetMapping("/removeTargetUniversity")
-	public String deleteUniversity(@RequestParam("list.targetUniverseCode") String listIdx, Model model) {
+	public String admindeleteUniversity(@RequestParam("list.targetUniverseCode") String listIdx, Model model) {
 		System.out.print(listIdx);
 		System.out.println("목표대학교 삭제하기");
 		model.addAttribute("listIdx", listIdx);
-		return "view/admin/study/deleteStudyUnivers";
+		return "view/admin/study/admin_study_delete_univers";
 	}
-	
+
 	@GetMapping("/removeTargetGrade")
-	public String deleteGrade(@RequestParam("list.gradeCode") String listIdx, Model model) {
+	public String admindeleteGrade(@RequestParam("list.gradeCode") String listIdx, Model model) {
 		model.addAttribute("listIdx", listIdx);
 		System.out.println("목표등급 삭제하기");
-		return "view/admin/study/deleteStudyGrade";
+		return "view/admin/study/admin_study_delete_grade";
 	}
-	
+
 	@GetMapping("/removeLearningSchedule")
-	public String deletelearning(@RequestParam("list.learningSchedule")  String listIdx,@RequestParam("list.userCode") String usercode, Model model) {
+	public String admindeletelearning(@RequestParam("list.learningSchedule") String listIdx,
+			@RequestParam("list.userCode") String usercode, Model model) {
 		model.addAttribute("listIdx", listIdx);
 		model.addAttribute("usercode", usercode);
 		System.out.println("상세스케쥴 삭제하기");
-		return "view/admin/study/deleteStudyLearning";
+		return "view/admin/study/admin_study_delete_learning";
 	}
-	
+
 	@GetMapping("/removeDetailedSchedule")
-	public String deleteDetailed(@RequestParam("list.detailedSchedule") String listIdx, Model model) {
+	public String admindeleteDetailed(@RequestParam("list.detailedSchedule") String listIdx, Model model) {
 		model.addAttribute("listIdx", listIdx);
 		System.out.println("상세스케쥴 삭제하기");
-		return "view/admin/study/deleteStudyDetail";
+		return "view/admin/study/admin_study_delete_detail";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	// 삭제 부분
 	@GetMapping("/getProblemSolvingList")
@@ -160,18 +135,18 @@ public class AdminStudyController {
 		model.addAttribute("ProblemSolvingList", adminstudyService.AdmingetProblemSolving());
 		return "view/admin/study/problem_solving_list";
 	}
-	
-	
+
 	@PostMapping("/removeCastSubject")
 	public String adminremoveCastSubject(@ModelAttribute AdminStudyTarget adminstudytarget, Model model) {
 		System.out.print("오류확인1" + adminstudytarget);
-		
+
 		adminstudyService.adminremoveCastSubject(adminstudytarget);
 		return "redirect:/admin/study/StudyCsat";
 	}
 
 	@PostMapping("/removeTargetUniversity")
-	public String adminremoveTargetUniversity(@ModelAttribute AdminTargetUniversity admintargetuniversity, Model model) {
+	public String adminremoveTargetUniversity(@ModelAttribute AdminTargetUniversity admintargetuniversity,
+			Model model) {
 		adminstudyService.adminremoveTargetUniversity(admintargetuniversity);
 		return "redirect:/admin/study/getTargetUniversityList";
 	}
@@ -193,6 +168,13 @@ public class AdminStudyController {
 		adminstudyService.adminremoveDetailedSchedule(admindetailedSchedule);
 		return "redirect:/admin/study/getDetailedScheduleList";
 	}
-	
 
+	// 문제 스크랩
+	@GetMapping("/getQuestionScrapeList")
+	public String getQuestionScrapeList(Model model) {
+		model.addAttribute("QuestionScrapeList", adminstudyService.AdmingetProblemScrape());
+		return "view/admin/study/question_scrape_list";
+	}
 }
+
+
