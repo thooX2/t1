@@ -2,8 +2,6 @@ package ks52team01.student.study.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +29,6 @@ import ks52team01.student.user.dto.User;
 @RequestMapping("/study")
 public class StudyController {
 
-	@Autowired
 	private final StudyService studyService;
 
 	public StudyController(StudyServiceImpl studyServiceImpl) {
@@ -43,7 +40,6 @@ public class StudyController {
 
 		User user = (User) session.getAttribute("loggedInUser");
 		String id = user.getUserCode();
-		String grade = user.getGradeCode();
 
 		model.addAttribute("CastSubjectList", studyService.getStudyTarget(id));
 
@@ -95,7 +91,6 @@ public class StudyController {
 	public String getTargetUniversityList(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("loggedInUser");
 		String id = user.getUserCode();
-		String grade = user.getGradeCode();
 		model.addAttribute("TargetUniversityList", studyService.getTargetUniversity(id));
 		return "view/user/study/target_university_list";
 	}
@@ -168,7 +163,6 @@ public class StudyController {
 	public String getTargetGradeList(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("loggedInUser");
 		String id = user.getUserCode();
-		String grade = user.getGradeCode();
 		model.addAttribute("TargetGradeList", studyService.getTargetGrade(id));
 		return "view/user/study/target_grade_list";
 	}
@@ -189,106 +183,6 @@ public class StudyController {
 	public String removeTargetGrade(@ModelAttribute TargetGrade targetgrade, Model model) {
 		studyService.removeTargetGrade(targetgrade);
 		return "redirect:/study/getTargetGradeList";
-	}
-
-	// 학습목표 설정
-
-	@GetMapping("/addLearningSchedule")
-	public String addlearning(Model model) {
-		System.out.println("상세스케쥴 추가하기");
-		return "view/user/study/learning_schedule_insert";
-	}
-
-	@GetMapping("/modifyLearningSchedule")
-	public String modifylearning(@RequestParam("list.learningSchedule") String listIdx, Model model) {
-		model.addAttribute("listIdx", listIdx);
-		System.out.println("상세스케쥴 수정하기");
-		return "view/user/study/learning_schedule_modify";
-	}
-
-	@GetMapping("/removeLearningSchedule")
-	public String deletelearning(@RequestParam("list.learningSchedule") String listIdx, Model model) {
-		model.addAttribute("listIdx", listIdx);
-		System.out.println("상세스케쥴 삭제하기");
-		return "view/user/study/learning_schedule_delete";
-	}
-
-	@GetMapping("/getLearningScheduleList")
-	public String getLearningScheduleList(HttpSession session, Model model) {
-		User user = (User) session.getAttribute("loggedInUser");
-		String id = user.getUserCode();
-		String grade = user.getGradeCode();
-		model.addAttribute("LearningScheduleList", studyService.getStudySchedule(id));
-		return "view/user/study/learning_schedule_list";
-	}
-
-	@PostMapping("/addLearningSchedule")
-	public ResponseEntity<String> saveLearning(@RequestBody StudySchedule studyschedule) {
-		studyService.addLearningSchedule(studyschedule);
-		return ResponseEntity.ok("Learning event saved successfully.");
-	}
-
-	// 실험용
-	@PostMapping("/modifyLearningSchedule")
-	public ResponseEntity<String> modifyLearning(@RequestBody StudySchedule studyschedule) {
-		studyService.modifyLearningSchedule(studyschedule);
-		return ResponseEntity.ok("Learning event saved successfully.");
-	}
-
-	@PostMapping("/removeLearningSchedule")
-	public ResponseEntity<String> removeLearning(@RequestBody StudySchedule studyschedule) {
-		studyService.removeLearningSchedule(studyschedule);
-		return ResponseEntity.ok("Learning event saved successfully.");
-	}
-
-	// 상세 스케쥴
-
-	@GetMapping("/addDetailedSchedule")
-	public String addDetailed(Model model) {
-		System.out.println("상세스케쥴 추가하기");
-		return "view/user/study/detailed_schedule_insert";
-	}
-
-	@GetMapping("/modifyDetailedSchedule")
-	public String modifyDetailed(@RequestParam("list.detailedSchedule") String listIdx, Model model) {
-		model.addAttribute("listIdx", listIdx);
-		System.out.println("상세스케쥴 수정하기");
-		return "view/user/study/detailed_schedule_modify";
-	}
-
-	@GetMapping("/removeDetailedSchedule")
-	public String deleteDetailed(@RequestParam("list.detailedSchedule") String listIdx, Model model) {
-		model.addAttribute("listIdx", listIdx);
-		System.out.println("상세스케쥴 삭제하기");
-		return "view/user/study/detailed_schedule_delete";
-	}
-
-	@GetMapping("/getDetailedScheduleList")
-	public String getDetailedScheduleList(HttpSession session, Model model) {
-		User user = (User) session.getAttribute("loggedInUser");
-		String id = user.getUserCode();
-		String grade = user.getGradeCode();
-		model.addAttribute("DetailedScheduleList", studyService.getDetailedSchedule(id));
-		return "view/user/study/detailed_schedule_list";
-	}
-
-	@PostMapping("/addDetailedSchedule")
-	public ResponseEntity<String> saveDetail(@RequestBody DetailedSchedule detailedschedule) {
-		studyService.addDetailedSchedule(detailedschedule);
-		return ResponseEntity.ok("Detail event saved successfully.");
-	}
-
-	@PostMapping("/modifyDetailedSchedule")
-	public ResponseEntity<String> modifyDetail(@RequestBody DetailedSchedule detailedschedule) {
-		System.out.println("case2 : 2차진행");
-		studyService.modifyDetailedSchedule(detailedschedule);
-		return ResponseEntity.ok("Detail event saved successfully.");
-	}
-
-	@PostMapping("/removeDetailedSchedule")
-	public ResponseEntity<String> removeDetail(@RequestBody DetailedSchedule detailedschedule) {
-		studyService.removeDetailedSchedule(detailedschedule);
-		return ResponseEntity.ok("Detail event saved successfully.");
 	}
 
 	// 이후 부터가 석진씨 담당
@@ -385,16 +279,111 @@ public class StudyController {
 		return "view/user/study/problem_solving_delete";
 	}
 
-	// 현재 내가 따로 실험하기 위해서 추가한 코드
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 해당하는 값들을 불러오는 코드
 	@GetMapping("/learning-schedules")
 	@ResponseBody
 	public List<LearningScheduleDto> getLearningSchedules(HttpSession session) {
 		
 		User user = (User) session.getAttribute("loggedInUser");
 		String id = user.getUserCode();
-		String grade = user.getGradeCode();
 		
 		List<LearningScheduleDto> schedule = studyService.getLearningSchedules(id);
 		return schedule;
+	}
+	
+	// 풀캘린더가 있는 페이지로 이동하기 위한 코드
+	@GetMapping("/getLearningScheduleList")
+	public String getLearningScheduleList(HttpSession session, Model model) {
+		User user = (User) session.getAttribute("loggedInUser");
+		String id = user.getUserCode();
+		model.addAttribute("LearningScheduleList", studyService.getStudySchedule(id));
+		return "view/user/study/learning_schedule_list";
+	}
+
+	//학습계획을 추가하기 위한 코드
+	@PostMapping("/addLearningSchedule")
+	@ResponseBody
+	public  String saveLearning(@RequestBody StudySchedule studyschedule) {
+
+		studyService.addLearningSchedule(studyschedule);
+		
+		String ClearText = "학습계획을 추가하시는데 성공하였습니다.";
+		return ClearText;
+		
+	}
+
+	@PostMapping("/modifyLearningSchedule")
+	@ResponseBody
+	public String modifyLearning(@RequestBody StudySchedule studyschedule) {
+		studyService.modifyLearningSchedule(studyschedule);
+		String ClearText = "학습계획을 수정하시는데 성공하였습니다.";
+		return ClearText;
+	}
+
+	@PostMapping("/removeLearningSchedule")
+	@ResponseBody
+	public String removeLearning(@RequestBody StudySchedule studyschedule) {
+		studyService.removeLearningSchedule(studyschedule);
+		String ClearText = "학습계획을 삭제하시는데 성공하였습니다.";
+		return ClearText;
+	}
+
+	@PostMapping("/addDetailedSchedule")
+	@ResponseBody
+	public String saveDetail(@RequestBody DetailedSchedule detailedschedule) {
+		
+		studyService.addDetailedSchedule(detailedschedule);
+
+		String ClearText = "상세계획을 추가하시는데 성공하였습니다.";
+		return ClearText;
+	}
+
+	@PostMapping("/modifyDetailedSchedule")
+	@ResponseBody
+	public String modifyDetail(@RequestBody DetailedSchedule detailedschedule) {
+		System.out.println("case2 : 2차진행");
+		studyService.modifyDetailedSchedule(detailedschedule);
+		String ClearText = "상세계획을 수정하시는데 성공하였습니다.";
+		return ClearText;
+	}
+
+	@PostMapping("/removeDetailedSchedule")
+	@ResponseBody
+	public String removeDetail(@RequestBody DetailedSchedule detailedschedule) {
+		studyService.removeDetailedSchedule(detailedschedule);
+		String ClearText = "상세계획을 삭제하시는데 성공하였습니다.";
+		return ClearText;
 	}
 }
