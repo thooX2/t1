@@ -8,6 +8,8 @@ public class LearningScheduleDto {
 	    private String FullSchedule;
 	    private String detailed;
 	    private String usercode;
+	    private String mainmjr;
+	    private String mainmir;
 	    private String submjr;
 	    private String submir;
 	    private String lesMemo;
