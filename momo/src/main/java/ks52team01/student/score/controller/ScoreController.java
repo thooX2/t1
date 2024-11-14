@@ -40,7 +40,6 @@ public class ScoreController {
 		// 최초로 응시한 모의고사 목록 조회
 		String userCode = user.getUserCode();
 		List<TookExamInfo> firstTookExamList = scoreExamAllService.getFirstTookExamList(userCode);
-		firstTookExamList = null;
 		
 		Map<String, Subject> subjectScoreMap = null;
 		if(firstTookExamList != null) {
