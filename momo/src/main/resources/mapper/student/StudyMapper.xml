@@ -419,8 +419,24 @@
 		insert into learning_schedule VALUES(
 		#{learningSchedule},
 		#{userCode},
-		#{smjcc},
-		#{smicc},
+		<choose>
+			<when
+				test="smjcc == null or smjcc == '' or smjcc == 'null'">
+				NULL
+			</when>
+			<otherwise>
+				#{smjcc}
+			</otherwise>
+		</choose>,
+		<choose>
+			<when
+				test="smicc == null or smicc == '' or smicc == 'null'">
+				NULL
+			</when>
+			<otherwise>
+				#{smicc}
+			</otherwise>
+		</choose>,
 		#{learningScheduleMemo},
 		#{learningScheduleDay},
 		#{learningScheduleStart},
@@ -543,18 +559,25 @@
 		insert into detailed_schedule VALUES(
 		#{detailedSchedule},
 		#{userCode},
+		#{learningSchedule},
 		<choose>
 			<when
-				test="learningSchedule == null or learningSchedule == '' or learningSchedule == 'null'">
+				test="smjrcc == null or smjrcc == '' or smjrcc == 'null'">
 				NULL
 			</when>
 			<otherwise>
-				#{learningSchedule}
+				#{smjrcc}
 			</otherwise>
-		</choose>
-		,
-		#{smjrcc},
-		#{smircc},
+		</choose>,
+		<choose>
+			<when
+				test="smircc == null or smircc == '' or smircc == 'null'">
+				NULL
+			</when>
+			<otherwise>
+				#{smircc}
+			</otherwise>
+		</choose>,
 		#{detailedScheduleMemo},
 		#{detailedScheduleDate},
 		#{detailedScheduleStartTime},
@@ -585,6 +608,14 @@
 				detailed_schedule_starttime = #{detailedScheduleStartTime},
 			</if>
 			<if
+				test="smjrcc != null and smjrcc !=''">
+				smjrcc = #{smjrcc},
+			</if>
+			<if
+				test="smircc != null and smircc !=''">
+				smircc = #{smircc},
+			</if>
+			<if
 				test="detailedScheduleEndTime != null and detailedScheduleEndTime !=''">
 				detailed_schedule_endtime = #{detailedScheduleEndTime},
 			</if>
@@ -596,6 +627,7 @@
 				test="detailedScheduleResult != null and detailedScheduleResult !=''">
 				detailed_schedule_result = #{detailedScheduleResult}
 			</if>
+			
 		</trim>
 		WHERE detailed_schedule_code = #{detailedSchedule};
 	</update>
@@ -780,8 +812,8 @@
 		ls.learning_schedule AS FullSchedule,
 		ds.detailed_schedule_code AS detailed,
 		ls.user_code AS usercode,
-		ls.sub_mjr_cat_code AS submjr,
-		ls.sub_mir_cat_code AS submir,
+		ls.sub_mjr_cat_code AS mainmjr,
+		ls.sub_mir_cat_code AS mainmir,
 		ls.learning_schedule_memo AS lesMemo,
 		ls.learning_schedule_days AS
 		days,
@@ -789,16 +821,17 @@
 		ls.learning_schedule_end
 		AS endDay,
 		ls.learning_schedule_compleate AS compleateMemo,
+		ds.smjrcc AS submjr,
+		ds.smircc AS submir,
 		ds.detailed_schedule_memo AS detailMemo,
-		ds.detailed_schedule_date AS
-		detailDate,
+		ds.detailed_schedule_date AS detailDate,
 		ds.detailed_schedule_starttime AS startTime,
 		ds.detailed_schedule_endtime AS endTime,
 		ds.detailed_schedule_studytime AS studyTime,
 		ds.detailed_schedule_result AS result
 		FROM
 		learning_schedule ls
-		right
+		left
 		JOIN
 		detailed_schedule ds
 		ON
