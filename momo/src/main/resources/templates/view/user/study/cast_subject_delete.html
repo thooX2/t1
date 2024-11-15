@@ -45,9 +45,10 @@
 										style="width: 150px; margin-bottom: 20px;"></div>
 
 									<div id="MyTestArea" class="text-center">
-										<form th:action="@{/study/removeCastSubject}" method="post">
-											<br><br><br><br><br><br>
+										<form name="deleteCsat" th:action="@{/study/removeCastSubject}" method="post">
+											<br>
 											<h2>정말로 삭제하시겠습니까?</h2>
+											<br><br><br>
 											<input type="hidden" name="idx" th:value="${listIdx}" />
 											<div class="form-group">
 												<input type="submit" value="목표과목삭제" class="btn btn-danger" />

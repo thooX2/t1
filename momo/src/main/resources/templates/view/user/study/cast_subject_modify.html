@@ -37,7 +37,7 @@
 						<div class="column_right cust_test" id="contents">
 							<p
 								style="color: black; font-weight: bolder; font-size: 28px; margin-bottom: 40px;">
-								수능과목리스트</p>
+								수능과목수정</p>
 							<div id="tabContent">
 
 								<div class="myWorkbook">
@@ -45,7 +45,7 @@
 										style="width: 150px; margin-bottom: 20px;"></div>
 
 									<div id="MyTestArea" class="text-center">
-										<form th:action="@{/study/modifyCastSubject}" method="post">
+										<form name = "csatModifyForm" th:action="@{/study/modifyCastSubject}" method="post">
 											<input type="hidden" name="idx" th:value="${listIdx}" /> <input
 												type="hidden" name="smcck" value="smircc1,smircc2" /> <input
 												type="hidden" name="smccm" value="smircc6,smircc7" /> <input

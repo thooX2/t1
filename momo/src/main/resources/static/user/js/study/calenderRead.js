@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						data: JSON.stringify(learningData),
 
 						success: function(response) {
-							alert('학습 계획 생성에 성공하셨습니다.\n학습 계획의 변경에 의해 페이지가 다시 로드 됩니다.');
+							alert(response);
 							window.location.href = '/study/getLearningScheduleList';
 						},
 
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						contentType: 'application/json',
 						data: JSON.stringify(detailData),
 						success: function(response) {
-							alert('세부 게획 생성에 성공하셨습니다.\n 페이지를 다시 로드 합니다.');
+							alert(response);
 							window.location.href = '/study/getLearningScheduleList';
 						},
 						error: function(xhr, status, error) {
@@ -565,7 +565,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					data: JSON.stringify(learningData),
 
 					success: function(response) {
-						alert('학습 계획 생성에 성공하셨습니다.\n페이지를 다시 한번 로드 합니다.');
+						alert(response);
 						window.location.href = '/study/getLearningScheduleList';
 					},
 					error: function(xhr, status, error) {
@@ -594,7 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					contentType: 'application/json',
 					data: JSON.stringify(detailData),
 					success: function(response) {
-						alert('세부 계획 수정에 성공하셨습니다.\n페이지를 다시 한번 로드 합니다.');
+						alert(response);
 						window.location.href = '/study/getLearningScheduleList';
 					},
 					error: function(xhr, status, error) {
@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					data: JSON.stringify(learningData),
 
 					success: function(response) {
-						alert('학습 계획 삭제에 성공하셨습니다.\n 페이지를 다시 한번 로드합니다.');
+						alert(response);
 						window.location.href = '/study/getLearningScheduleList';
 					},
 					error: function(xhr, status, error) {
@@ -655,7 +655,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					contentType: 'application/json',
 					data: JSON.stringify(detailData),
 					success: function(response) {
-						alert('세부 계획 삭제에 성공하셨습니다.\n 페이지를 다시 한번 로드합니다.');
+						alert(response);
 						window.location.href = '/study/getLearningScheduleList';
 					},
 					error: function(xhr, status, error) {
