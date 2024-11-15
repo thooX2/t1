@@ -45,7 +45,7 @@
 										style="width: 150px; margin-bottom: 20px;"></div>
 
 									<div id="MyTestArea" class="text-center">
-										<form th:action="@{/study/addCastSubject}" method="post">
+										<form name = "csatInsertForm" th:action="@{/study/addCastSubject}" method="post">
 											<input type="hidden" name="usercode"
 												th:value="${session.loggedInUser.userCode}" /> <input
 												type="hidden" name="smcck" value="smircc1,smircc2" /> <input
