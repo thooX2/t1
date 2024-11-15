@@ -39,8 +39,6 @@ public class AdminStudyController {
 
 		User user = (User) session.getAttribute("loggedInUser");
 		String id = user.getUserCode();
-		String grade = user.getGradeCode();
-
 		model.addAttribute("CastSubjectList", adminstudyService.AdmingetStudyTarget(id));
 
 		return "view/admin/study/admin_study_get_csat";
@@ -129,7 +127,6 @@ public class AdminStudyController {
 		return "view/admin/study/admin_study_delete_detail";
 	}
 
-	// 삭제 부분
 	@GetMapping("/getProblemSolvingList")
 	public String getProblemSolvingList(Model model) {
 		model.addAttribute("ProblemSolvingList", adminstudyService.AdmingetProblemSolving());
@@ -167,13 +164,6 @@ public class AdminStudyController {
 	public String adminremovedetailSchedule(@ModelAttribute AdminDetailedSchedule admindetailedSchedule) {
 		adminstudyService.adminremoveDetailedSchedule(admindetailedSchedule);
 		return "redirect:/admin/study/getDetailedScheduleList";
-	}
-
-	// 문제 스크랩
-	@GetMapping("/getQuestionScrapeList")
-	public String getQuestionScrapeList(Model model) {
-		model.addAttribute("QuestionScrapeList", adminstudyService.AdmingetProblemScrape());
-		return "view/admin/study/question_scrape_list";
 	}
 }
 
