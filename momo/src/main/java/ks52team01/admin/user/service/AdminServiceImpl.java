@@ -17,51 +17,6 @@ public class AdminServiceImpl implements AdminService {
 	private final AdminMapper adminMapper;
 
 	@Override
-	public void adminPage() {
-
-	}
-
-	@Override
-	public void adminLoginMove() {
-
-	}
-
-	@Override
-	public void adminLogoutAction() {
-
-	}
-
-	@Override
-	public void adminInfoModifyAction() {
-
-	}
-
-	@Override
-	public void adminJoinAction() {
-
-	}
-
-	@Override
-	public void adminInfoDetailAction() {
-
-	}
-
-	@Override
-	public void adminDeleteAction() {
-
-	}
-
-	@Override
-	public void adminFindIdAction() {
-
-	}
-
-	@Override
-	public void adminFindPwAction() {
-
-	}
-
-	@Override
 	public int adminLoginAction(String userId, String userPw) {
 		// 사용자 ID로 유저 정보를 조회합니다.
 		User foundUser = adminMapper.getAdminById(userId, userPw);

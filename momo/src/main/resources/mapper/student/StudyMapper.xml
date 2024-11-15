@@ -451,10 +451,10 @@
 		parameterType="ks52team01.student.study.dto.StudySchedule">
 		UPDATE learning_schedule
 		<trim prefix="SET" suffixOverrides=",">
-			<if test="smjcc != null and smjcc != ''">
+			<if test="smjcc != null and smjcc != '' and smjcc!='null'  ">
 				sub_mjr_cat_code = #{smjcc},
 			</if>
-			<if test="smicc != null and smicc != ''">
+			<if test="smicc != null and smicc != '' and smjcc!='null' ">
 				sub_mir_cat_code = #{smicc},
 			</if>
 			<if
@@ -608,11 +608,11 @@
 				detailed_schedule_starttime = #{detailedScheduleStartTime},
 			</if>
 			<if
-				test="smjrcc != null and smjrcc !=''">
+				test="smjrcc != null and smjrcc !='' and smjrcc!='null' ">
 				smjrcc = #{smjrcc},
 			</if>
 			<if
-				test="smircc != null and smircc !=''">
+				test="smircc != null and smircc !='' and smircc!='null'">
 				smircc = #{smircc},
 			</if>
 			<if

@@ -5,63 +5,20 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
-
 import ks52team01.common.ResponseError;
-import ks52team01.student.user.dto.AreaCity;
 import ks52team01.student.user.dto.User;
 import ks52team01.student.user.dto.UserJoinInfo;
 import ks52team01.student.user.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
 	private final UserMapper userMapper;
-
-	public UserServiceImpl(UserMapper userMapper) {
-		this.userMapper = userMapper;
-	}
-
-	@Override
-	public void userMyPage() {
-
-	}
-
-	@Override
-	public void userInfoModify() {
-
-	}
-
-	@Override
-	public void userInfoModifyAction() {
-
-	}
-
-	@Override
-	public void userJoinAction() {
-
-	}
-
-	@Override
-	public void userInfoDetailAction() {
-
-	}
-
-	@Override
-	public void userDeleteAction() {
-
-	}
-
-	public void userFindIdAction() {
-
-	}
-
-	public void userFindPwAction() {
-
-	}
-
+	
 	@Override
 	public User getUserById(User user) {
 

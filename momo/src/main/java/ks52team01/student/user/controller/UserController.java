@@ -64,15 +64,6 @@ public class UserController {
 		return "redirect:/index";
 	}
 
-	@GetMapping("/user/userInfoModfiy")
-	public String userInfoModify() {
-		return "view/user/user/user_info_modify";
-	}
-
-	public void userInfoModifyAction() {
-
-	}
-
 	@GetMapping("/user/userJoinMove")
 	public String userJoinMove() {
 		return "view/user/user/user_join_form";
@@ -87,37 +78,6 @@ public class UserController {
 	@ResponseBody
 	public ResponseError getUserJoinCheck(UserJoinInfo userJoinInfo) {
 		return userService.userJoinCheck(userJoinInfo);
-	}
-
-	public void userInfoDetailAction() {
-
-	}
-
-	@GetMapping("/user/userDeleteMove")
-	public String userDeleteMove() {
-		return "view/user/user/user_delete";
-	}
-
-	public void userDeleteAction() {
-
-	}
-
-	@GetMapping("/user/userFindIdMove")
-	public String userFindIdMove() {
-		return "view/user/user/user_find_id";
-	}
-
-	public void userFindIdAction() {
-
-	}
-
-	@GetMapping("/user/userFindPwMove")
-	public String userFindPwMove() {
-		return "view/user/user/user_find_pw";
-	}
-
-	public void userFindPwAction() {
-
 	}
 
 	@GetMapping("/user/userNotLogIn")
