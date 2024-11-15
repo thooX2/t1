@@ -240,8 +240,8 @@
 		id="TargetGradeResultMap">
 		<id column="obj_grade_code" property="gradeCode" />
 		<result column="user_code" property="UserCode" />
-		<result column="sub_mjr_cat_code" property="smjcc" />
-		<result column="sub_mir_cat_code" property="smicc" />
+		<result column="sub_mjr_cat_code" property="smjrcc" />
+		<result column="sub_mir_cat_code" property="smircc" />
 		<result column="last_grade_set" property="lastGrade" />
 		<result column="recent_grade_set" property="recentGrade" />
 		<result column="obj_grade_set" property="tar_grade_set" />
@@ -297,8 +297,8 @@
 	    SELECT
 		#{gradeCode},
 		#{UserCode},
-		#{smjcc},
-		#{smicc},
+		#{smjrcc},
+		#{smircc},
 		IF(${lastGrade}=0, IFNULL(AVG(last_grade_set), 1), ${lastGrade}),
 		${recentGrade},
 		${tar_grade_set},
@@ -316,11 +316,11 @@
 		parameterType="ks52team01.student.study.dto.TargetGrade">
 		update obejctive_grade
 		<trim prefix="SET" suffixOverrides=",">
-			<if test="smjcc != null and smjcc != ''">
-				sub_mjr_cat_code = #{smjcc},
+			<if test="smjrcc != null and smjrcc != ''">
+				sub_mjr_cat_code = #{smjrcc},
 			</if>
-			<if test="smicc != null and smicc != ''">
-				sub_mir_cat_code = #{smicc},
+			<if test="smircc != null and smircc != ''">
+				sub_mir_cat_code = #{smircc},
 			</if>
 			<if test="lastGrade != null and lastGrade != ''">
 				last_grade_set = #{lastGrade},
