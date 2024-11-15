@@ -6,8 +6,8 @@ import lombok.Data;
 public class TargetGrade {
 	private String gradeCode;
 	private String UserCode;
-	private String smjcc;
-	private String smicc;
+	private String smjrcc;
+	private String smircc;
 	private String lastGrade;
 	private String recentGrade;
 	private String tar_grade_set;
