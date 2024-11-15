@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import ks52team01.student.study.dto.DetailedSchedule;
 import ks52team01.student.study.dto.LearningScheduleDto;
-import ks52team01.student.study.dto.ProblemScrape;
-import ks52team01.student.study.dto.ProblemSolving;
 import ks52team01.student.study.dto.StudySchedule;
 import ks52team01.student.study.dto.StudyTarget;
 import ks52team01.student.study.dto.TargetGrade;
@@ -48,16 +46,6 @@ public class StudyServiceImpl implements StudyService {
 	@Override
 	public List<DetailedSchedule> getDetailedSchedule(String id){
 		return studyMapper.getDetailedSchedule(id);
-	}
-
-	@Override
-	public List<ProblemScrape> getProblemScrape(){
-		return studyMapper.getProblemScrape();
-	}
-	
-	@Override
-	public List<ProblemSolving> getProblemSolving(){
-		return studyMapper.getProblemSolving();
 	}
 	
 	@Override
@@ -167,44 +155,6 @@ public class StudyServiceImpl implements StudyService {
 		studyMapper.removeDetailedSchedule(detailedscheduleDAO);
 	}
 
-	@Override
-	public void addQuestionScrape(ProblemScrape problemscrapeDAO) {
-		studyMapper.addQuestionScrape(problemscrapeDAO);
-	}
 
-	@Override
-	public void getQuestionScrapeList(ProblemScrape problemscrapeDAO) {
-		studyMapper.getQuestionScrapeList(problemscrapeDAO);
-	}
-
-	@Override
-	public void modifyQuestionScrape(ProblemScrape problemscrapeDAO) {
-		studyMapper.modifyQuestionScrape(problemscrapeDAO);
-	}
-
-	@Override
-	public void removeQuestionScrape(ProblemScrape problemscrapeDAO) {
-		studyMapper.removeQuestionScrape(problemscrapeDAO);
-	}
-
-	@Override
-	public void addProblemSolving(ProblemSolving problemsolvingDAO) {
-		studyMapper.addProblemSolving(problemsolvingDAO);
-	}
-
-	@Override
-	public void getProblemSolvingList(ProblemSolving problemsolvingDAO) {
-		studyMapper.getProblemSolvingList(problemsolvingDAO);
-	}
-
-	@Override
-	public void modifyProblemSolving(ProblemSolving problemsolvingDAO) {
-		studyMapper.modifyProblemSolving(problemsolvingDAO);
-	}
-
-	@Override
-	public void removeProblemSolving(ProblemSolving problemsolvingDAO) {
-		studyMapper.removeProblemSolving(problemsolvingDAO);
-	}
 
 }
