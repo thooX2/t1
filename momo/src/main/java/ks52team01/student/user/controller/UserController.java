@@ -93,33 +93,6 @@ public class UserController {
 
 	}
 
-	@GetMapping("/user/userDeleteMove")
-	public String userDeleteMove() {
-		return "view/user/user/user_delete";
-	}
-
-	public void userDeleteAction() {
-
-	}
-
-	@GetMapping("/user/userFindIdMove")
-	public String userFindIdMove() {
-		return "view/user/user/user_find_id";
-	}
-
-	public void userFindIdAction() {
-
-	}
-
-	@GetMapping("/user/userFindPwMove")
-	public String userFindPwMove() {
-		return "view/user/user/user_find_pw";
-	}
-
-	public void userFindPwAction() {
-
-	}
-
 	@GetMapping("/user/userNotLogIn")
 	public String userNotLogIn() {
 		return "view/user/user/not_login";
