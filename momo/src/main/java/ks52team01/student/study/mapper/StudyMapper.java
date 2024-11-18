@@ -6,8 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import ks52team01.student.study.dto.DetailedSchedule;
 import ks52team01.student.study.dto.LearningScheduleDto;
-import ks52team01.student.study.dto.ProblemScrape;
-import ks52team01.student.study.dto.ProblemSolving;
 import ks52team01.student.study.dto.StudySchedule;
 import ks52team01.student.study.dto.StudyTarget;
 import ks52team01.student.study.dto.TargetGrade;
@@ -56,21 +54,6 @@ public interface StudyMapper {
 
 	public void removeDetailedSchedule(DetailedSchedule detailedSchedule);
 
-	public void addQuestionScrape(ProblemScrape problemscrapeDAO);
-
-	public void getQuestionScrapeList(ProblemScrape problemscrapeDAO);
-
-	public void modifyQuestionScrape(ProblemScrape problemscrapeDAO);
-
-	public void removeQuestionScrape(ProblemScrape problemscrapeDAO);
-
-	public void addProblemSolving(ProblemSolving problemsolvingDAO);
-
-	public void getProblemSolvingList(ProblemSolving problemsolvingDAO);
-
-	public void modifyProblemSolving(ProblemSolving problemsolvingDAO);
-
-	public void removeProblemSolving(ProblemSolving problemsolvingDAO);
 
 	List<StudyTarget> getStudyTarget(String id);
 	
@@ -81,10 +64,6 @@ public interface StudyMapper {
 	List<StudySchedule> getStudySchedule(String id);
 
 	List<DetailedSchedule> getDetailedSchedule(String id);
-
-	List<ProblemScrape> getProblemScrape();
-	
-	List<ProblemSolving> getProblemSolving();
 
 	List<LearningScheduleDto> getLearningSchedules(String id);
 }

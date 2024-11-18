@@ -7,9 +7,18 @@
 <!-- Select2 CSS -->
 <link rel="stylesheet" th:href="@{/user/css/study/bootstrap.min.css}">
 <style>
-thead {
-	border: 2px solid #B8D0FA;;
+  thead {
+    border: 1px solid #B8D0FA;;
+  }
+  tbody {
+    border: 1px solid black;;
+  }
+  #gnb #top_menu a.current {
+    background-color: rgb(35, 92, 159);
 }
+ #gnb #top_menu a.study {
+ 	 background-color: #1784f4;
+ } 
 </style>
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
@@ -39,7 +48,7 @@ thead {
 				<i class="fa fa-minus" style="font-size: 12px;"></i>
 			</button>
 			<div id="sys-page-title">
-				<span id="sys-page-title-nm">목표 과목 삭제</span>
+				<span id="sys-page-title-nm">목표 등급 삭제</span>
 				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
 			</div>
 			<div id="sys-page-util">
@@ -52,8 +61,8 @@ thead {
 			<div id="sys-scroll">
 				<div id="alert_area"></div>
 				<div id="sys-contents">
-					
-					<form th:action="@{/admin/study/removeCastSubject}"
+	
+					<form th:action="@{/admin/study/removeTargetGrade}"
 						method="post" class="insert form-horizontal">
 
 						<br><br><br>
@@ -62,8 +71,8 @@ thead {
 						<div class="form-group">
 
 							<div class="col-sm-9">
-								<input type="hidden" id="targetUniverseCode"
-									name="idx" class="form-control"
+								<input type="hidden" id="gradeCode"
+									name="gradeCode" class="form-control"
 									th:value="${listIdx}" />
 							</div>
 						</div>
@@ -72,13 +81,12 @@ thead {
 						<div class="form-group text-center">
 							<div class="col-sm-12">
 
-								<input type="submit" class="btn btn-danger" value="목표과목 삭제" />
-								
-								<a th:href="@{/admin/study/StudyCsat}" class="btn btn-default">취소</a>
+								<input type="submit" class="btn btn-danger" value="목표 등급 삭제" />
+
+								<a th:href="@{/admin/study/getTargetGradeList}" class="btn btn-default">취소</a>
 							</div>
 						</div>
 					</form>
-					
 				</div>
 			</div>
 		</div>

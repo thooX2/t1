@@ -26,11 +26,6 @@
 								</ul>
 							</li>
 							<li><a th:href="@{/score/scoreMain}">성적조회</a>
-								<ul class="header__menu__dropdown">
-									<li><a th:href="@{/score/examAllScoreSummary}">모의고사 성적 개요</a></li>
-									<li><a th:href="@{/score/examSubjectScoreSummary}">모의고사 과목별 성적 개요</a></li>
-									<li><a th:href="@{/score/examAllScoreList}">모의고사 성적 목록</a></li>
-								</ul>
 							</li>
 							<li><a href="#">학습관리</a>
 								<ul class="header__menu__dropdown">
@@ -38,8 +33,6 @@
 									<li><a th:href="@{/study/getTargetUniversityList}">목표 대학 관리</a></li>
 									<li><a th:href="@{/study/getTargetGradeList}">목표 등급 관리</a></li>
 									<li><a th:href="@{/study/getLearningScheduleList}">학습 목표 관리</a></li>
-									<li><a th:href="@{/study/getQuestionScrapeList}">문제 스크랩 관리</a></li>
-									<li><a th:href="@{/study/getProblemSolvingList}">문제 노트 관리</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -70,7 +63,6 @@
 							</a>
 							<div class="dropdown-menu">
 								<a href="/user/userMyPage">프로필 보기</a>
-								<a href="/user/userInfoModfiy">회원정보수정</a>
 								<th:block th:if="${session.loggedInUser.gradeCode == 'ugc1'}">
 									<a href="/admin/exam/category">관리자메뉴이동</a>
 								</th:block>

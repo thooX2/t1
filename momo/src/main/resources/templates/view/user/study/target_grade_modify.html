@@ -5,7 +5,6 @@
 
 <head>
 <link rel="stylesheet" th:href="@{/user/css/study/exam_new.css}">
-<link rel="stylesheet" th:href="@{/user/css/study/style.css}">
 <link rel="stylesheet" th:href="@{/user/css/study/common(1).css}">
 <link rel="stylesheet" th:href="@{/user/css/study/layout(1).css}">
 <link rel="stylesheet" th:href="@{/user/css/study/board(1).css}">
@@ -42,108 +41,105 @@
 							<div id="tabContent">
 
 								<div class="myWorkbook">
-									<div class="sort_select"
-										style="width: 150px; margin-bottom: 20px;"></div>
+										<div class="sort_select"
+											style="width: 150px; margin-bottom: 20px;"></div>
 
-									<div id="MyTestArea" class="text-center">
-										<form th:action="@{/study/modifyTargetGrade}" method="post"
-											class="insert">
-											<input type="hidden" name="gradeCode" th:value="${listIdx}" />
+										<div id="MyTestArea" class="text-center">
+											<form name="modifyGrade" th:action="@{/study/modifyTargetGrade}" method="post"
+												class="insert">
+												<input type="hidden" name="gradeCode"
+													th:value="${listIdx}"/>
 
-											<!-- 대과목 선택 -->
-											<div class="form-group">
-												<label for="smjcc">대과목 선택</label> <select name="smjcc"
-													id="smjcc" class="form-control"
-													style="width: 500px; display: inline-block;">
-													<option value="smjrcc1">국어</option>
-													<option value="smjrcc2">수학</option>
-													<option value="smjrcc3">영어</option>
-													<option value="smjrcc4">한국사</option>
-													<option value="smjrcc5">사회탐구</option>
-													<option value="smjrcc6">과학탐구</option>
-													<option value="smjrcc7">직업탐구</option>
-													<option value="smjrcc8">제2외국어 및 한문</option>
-												</select>
-											</div>
+												<!-- 대과목 선택 -->
+												<div class="form-group">
+													<label for="smjcc">대과목 선택</label> <select name="smjrcc"
+														id="smjrcc" class="form-control"
+														style="width: 500px; display: inline-block;">
+														<option value="smjrcc1">국어</option>
+														<option value="smjrcc2">수학</option>
+														<option value="smjrcc3">영어</option>
+														<option value="smjrcc4">한국사</option>
+														<option value="smjrcc5">사회탐구</option>
+														<option value="smjrcc6">과학탐구</option>
+														<option value="smjrcc7">직업탐구</option>
+														<option value="smjrcc8">제2외국어 및 한문</option>
+													</select>
+												</div>
 
-											<!-- 선택과목 선택 -->
-											<div class="form-group">
-												<label for="smicc">선택과목 선택</label> <select name="smicc"
-													id="smicc" class="form-control"
-													style="width: 500px; display: inline-block;">
-													<option value="smircc1">독서</option>
+												<!-- 선택과목 선택 -->
+												<div class="form-group">
+													<label for="smircc">선택과목 선택</label> <select name="smircc"
+														id="smircc" class="form-control"
+														style="width: 500px; display: inline-block;">
+														<option value="smircc1">독서</option>
 														<option value="smircc2">문학</option>
 														<option value="smircc3">화법과 작문</option>
 														<option value="smircc4">언어와 매체</option>
-												</select>
-											</div>
+													</select>
+												</div>
 
-											<!-- 평균등급 -->
-											<div class="form-group">
-												<label for="lastGrade">평균등급</label> <select name="lastGrade"
-													id="lastGrade" class="form-control"
-													style="width: 500px; display: inline-block;">
-													<option value=1>1등급</option>
-													<option value=2>2등급</option>
-													<option value=3>3등급</option>
-													<option value=4>4등급</option>
-													<option value=5>5등급</option>
-													<option value=6>6등급</option>
-													<option value=7>7등급</option>
-													<option value=8>8등급</option>
-													<option value=9>9등급</option>
-													<option value=0>미기재</option>
-												</select>
-											</div>
+												<!-- 평균등급 -->
+												<div class="form-group">
+													<label for="lastGrade">평균등급</label> <select
+														name="lastGrade" id="lastGrade" class="form-control"
+														style="width: 500px; display: inline-block;">
+														<option value=1>1등급</option>
+														<option value=2>2등급</option>
+														<option value=3>3등급</option>
+														<option value=4>4등급</option>
+														<option value=5>5등급</option>
+														<option value=6>6등급</option>
+														<option value=7>7등급</option>
+														<option value=8>8등급</option>
+														<option value=9>9등급</option>
+														<option value=0>미기재</option>
+													</select>
+												</div>
 
-											<!-- 최근등급 -->
-											<div class="form-group">
-												<label for="recentGrade">최근등급</label> <select
-													name="recentGrade" id="recentGrade" class="form-control"
-													style="width: 500px; display: inline-block;">
-													<option value="1">1등급</option>
-													<option value="2">2등급</option>
-													<option value="3">3등급</option>
-													<option value="4">4등급</option>
-													<option value="5">5등급</option>
-													<option value="6">6등급</option>
-													<option value="7">7등급</option>
-													<option value="8">8등급</option>
-													<option value="9">9등급</option>
-													<option value="0">미기재</option>
-												</select>
-											</div>
+												<!-- 최근등급 -->
+												<div class="form-group">
+													<label for="recentGrade">최근등급</label> <select
+														name="recentGrade" id="recentGrade" class="form-control"
+														style="width: 500px; display: inline-block;">
+														<option value="1">1등급</option>
+														<option value="2">2등급</option>
+														<option value="3">3등급</option>
+														<option value="4">4등급</option>
+														<option value="5">5등급</option>
+														<option value="6">6등급</option>
+														<option value="7">7등급</option>
+														<option value="8">8등급</option>
+														<option value="9">9등급</option>
+														<option value="0">미기재</option>
+													</select>
+												</div>
 
-											<!-- 목표등급 -->
-											<div class="form-group">
-												<label for="tar_grade_set">목표등급</label> <select
-													name="tar_grade_set" id="tar_grade_set"
-													class="form-control"
-													style="width: 500px; display: inline-block;">
-													<option value=1>1등급</option>
-													<option value=2>2등급</option>
-													<option value=3>3등급</option>
-													<option value=4>4등급</option>
-													<option value=5>5등급</option>
-													<option value=6>6등급</option>
-													<option value=7>7등급</option>
-													<option value=8>8등급</option>
-													<option value=9>9등급</option>
-													<option value=0>미기재</option>
-												</select>
-											</div>
+												<!-- 목표등급 -->
+												<div class="form-group">
+													<label for="tar_grade_set">목표등급</label> <select
+														name="tar_grade_set" id="tar_grade_set"
+														class="form-control"
+														style="width: 500px; display: inline-block;">
+														<option value=1>1등급</option>
+														<option value=2>2등급</option>
+														<option value=3>3등급</option>
+														<option value=4>4등급</option>
+														<option value=5>5등급</option>
+														<option value=6>6등급</option>
+														<option value=7>7등급</option>
+														<option value=8>8등급</option>
+														<option value=9>9등급</option>
+														<option value=0>미기재</option>
+													</select>
+												</div>
 
-											<div class="form-group">
-												<input type="hidden" name="result_grade_set" value=0 /> <input
-													type="hidden" name="count_grade_set" value=0 /> <input
-													type="submit" value="목표등급 수정" class="btn btn-primary" />
-											</div>
-										</form>
-									</div>
-
-
-
-								</div>
+												<div class="form-group">
+													<input type="hidden" name="result_grade_set" value=0 /> <input
+														type="hidden" name="count_grade_set" value=0 /> <input
+														type="submit" value="목표등급 수정" class="btn btn-primary" />
+												</div>
+											</form>
+										</div>
 							</div>
 						</div>
 					</div>

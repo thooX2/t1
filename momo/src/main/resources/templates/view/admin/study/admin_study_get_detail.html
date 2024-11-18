@@ -48,7 +48,7 @@
 				<i class="fa fa-minus" style="font-size: 12px;"></i>
 			</button>
 			<div id="sys-page-title">
-				<span id="sys-page-title-nm">목표 대학 관리</span>
+				<span id="sys-page-title-nm">세부 일정 관리</span>
 				<!-- <a id="sys-page-title-shortcut" href="javascript:addShortcut();"><i class="fa fa-star"></i></a> -->
 			</div>
 			<div id="sys-page-util">
@@ -76,7 +76,7 @@
 						<tbody>
 							<tr>
 								<td class="t_th01">카테고리</td>
-								<td class="t_td01" colspan="3">과목삭제 페이지</td>
+								<td class="t_td01" colspan="3">학습게획 관리자 페이지</td>
 							</tr>
 							<tr>
 								<td class="t_th01">관리자 코드</td>
@@ -98,31 +98,36 @@
 							<colgroup>
 								<col width="50">
 								<col width="90">
-								<col width="90">
-
-								<!-- 수정 칸 넓이 줄이기 -->
 								<col width="50">
-								<!-- 삭제 칸 넓이 줄이기 -->
+								<col width="90">
+								<col width="90">
+								<col width="90">
+								<col width="70">
+								<col width="70">
 							</colgroup>
-							<thead>
-								<tr>
-									<th class="text-center align-middle">목표 대학교 이름</th>
-									<th class="text-center align-middle">목표 대학교 학과</th>
-									<th class="text-center align-middle">목표 대학교 지망</th>
 
+							<thead >
+								<tr >
+									<th class="text-center align-middle">학습목표 코드</th>
+									<th class="text-center align-middle">일정 메모</th>
+									<th class="text-center align-middle">일정 날짜</th>
+									<th class="text-center align-middle">일정 시작 시간</th>
+									<th class="text-center align-middle">일정 종료 시간</th>
+									<th class="text-center align-middle">일정 소모 시간</th>
+									<th class="text-center align-middle">일정 결과</th>
 									<th class="text-center align-middle">삭제</th>
-
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="list : ${TargetUniversityList}" style="background-color: #ffffff;">
-
-									<td class="text-center align-middle" th:text="${list.targetUniversityName}"></td>
-									<td class="text-center align-middle" th:text="${list.targetUniversityLesson}"></td>
-									<td class="text-center align-middle" th:text="${list.targetUniversityRangking}"></td>
-								
-									<td class="text-center align-middle"><a class="text-center align-middle"
-										th:href="@{/admin/study/removeTargetUniversity(list.targetUniverseCode=*{list.targetUniverseCode})}">삭제</a></td>
+								<tr th:each="list : ${DetailedScheduleList}" style="background-color: #ffffff;">
+									<td class="text-center align-middle" th:text="${list.learningSchedule}"></td>
+									<td class="text-center align-middle" th:text="${list.detailedScheduleMemo}"></td>
+									<td class="text-center align-middle" th:text="${list.detailedScheduleDate}"></td>
+									<td class="text-center align-middle" th:text="${list.detailedScheduleStartTime}"></td>
+									<td class="text-center align-middle" th:text="${list.detailedScheduleEndTime}"></td>
+									<td class="text-center align-middle" th:text="${list.detailedScheduleStudyTime}"></td>
+									<td class="text-center align-middle" th:text="${list.detailedScheduleResult}"></td>
+									<td class="text-center align-middle"><a class="text-center align-middle" th:href="@{/admin/study/removeDetailedSchedule(list.detailedSchedule=*{list.detailedSchedule})}">삭제</a></td>
 								</tr>
 							</tbody>
 						</table>
