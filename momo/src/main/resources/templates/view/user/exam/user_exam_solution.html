@@ -20,6 +20,11 @@
 		text-decoration: unset !important;
 		font-weight: bolder;
 	}
+
+
+	.clickedImg {
+		width: 70% !important
+	}
 </style>
 
 <body>
@@ -115,10 +120,16 @@
 
 									<div class="popexam-wrap__question__txt"></div>
 
-									<div class="popexam-wrap__question__title" th:utext="${qil.QnaQst}">
-
+									<div class="popexam-wrap__question__title" th:utext="${qil.QnaQst}"
+										style="height: auto; overflow: visible; display: inline-block; padding: 10px; box-sizing: border-box;">
 									</div>
-
+									<div class="popexam-wrap__question__title">
+										<div th:each="qilImg : ${qnaImgList}" class="question-image" style="width:100%"
+											th:if="${qil.ExamQnaCode == qilImg.qnaCode && qilImg.qnaImgType =='fileInput'}">
+											<img th:src="@{${qilImg.qnaImgPath}}" alt="@{${qilImg.qnaImgOriginalName}}"
+												class="question_img" style="width:10%"/>
+										</div>
+									</div>
 									<div class="popexam-wrap__question__choice">
 										<ol>
 											<li>① &nbsp;<span style="text-indent: -15.0pt; margin-left: 15.0pt;"
@@ -433,6 +444,9 @@
 				$form.appendTo('body');
 				$form.submit();
 			}
+		})
+		$(document).on('click', 'img', function () {
+			$(this).toggleClass('clickedImg');
 		})
 
 	</script>

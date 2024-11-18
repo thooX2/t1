@@ -91,7 +91,7 @@ public class AdminExamController {
 
 		// 해당테이블에서 내용을 지우고 그다음에 등록하는걸로 데이터 등록
 		int isDeleted = adminExamService.deleteQuestionFromExam(selectedExamCode);
-		log.error("TEST:{}", totalQuestionList);
+	
 		if (!totalQuestionList.isEmpty() && totalQuestionList != null) {
 			done = adminExamService.registerQuestionToExam(examMappingQuestion);
 		}
