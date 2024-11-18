@@ -42,7 +42,7 @@ public class ScoreController {
 		
 		Map<String, Subject> subjectScoreMap = null;
 		if(firstTookExamList != null) {
-			// 현재 모의고사 점수 조회
+			// 현재 모의고사 점수 조회 
 			TookExamInfo curTookExam = firstTookExamList.get(0);
 			String areaCityCode = curTookExam.getAreaCityCode();
 			String examCode = curTookExam.getExamCode();
