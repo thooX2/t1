@@ -462,7 +462,7 @@
 				AND qb.sub_mjr_cat_code IN
 				(SELECT SUBSTRING_INDEX(#{subMjrCatCode}, ',', 1)
 				UNION
-				SELECT SUBSTRING_INDEX(SUBSTRING_INDEX('smjrcc5,smjrcc6,smjrcc7', ',', 2), ',', -1)
+				SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(#{subMjrCatCode}, ',', 2), ',', -1)
 				UNION
 				SELECT SUBSTRING_INDEX(#{subMjrCatCode}, ',', -1)
 				)
