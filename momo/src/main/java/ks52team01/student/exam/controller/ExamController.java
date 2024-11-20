@@ -34,6 +34,20 @@ public class ExamController {
 	private final ExamService examService;
 	private final FileService fileService;
 
+	@PostMapping("/chooseLHExam")
+	@ResponseBody
+	public boolean chooseLHExam(@RequestParam(name = "rate") String rate,
+			@RequestParam(name = "examCode") String ExamCode, HttpSession session) {
+		boolean isChecked = true;
+		User user = (User) session.getAttribute("loggedInUser");
+		String userCode = user.getUserCode();
+		int result = examService.searchExamRatingExist(userCode, ExamCode);
+		if (result > 0) {
+
+		}
+		return isChecked;
+	}
+
 	@PostMapping("/{examCode}/solutions")
 	public String userExamSolution(@PathVariable(name = "examCode") String examCode,
 			@RequestParam(name = "userAnswer") List<String> userAnswer,

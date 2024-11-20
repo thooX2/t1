@@ -34,4 +34,6 @@ public interface ExamMapper {
 	List<QnaBank> getQuestionInfoListByExamCode(String examCode, String currentSubject,String currentMjrCode);
 
 	int registerResultToSubjectTable(ExamSubjectResult examResult);
+
+	int searchExamRatingExist(String userCode, String examCode);
 }

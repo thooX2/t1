@@ -26,6 +26,14 @@ public class ExamServiceImpl implements ExamService {
 	private final ExamMapper examMapper;
 
 	@Override
+	public int searchExamRatingExist(String userCode, String examCode) {
+
+		int result = examMapper.searchExamRatingExist(userCode, examCode);
+		
+		return result;
+	}
+
+	@Override
 	public void registerResultToSubjectTable(String userCode, String examCode, String subMjrCateCode,
 			List<String> qnaCode, List<String> userAnswer) {
 

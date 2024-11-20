@@ -103,7 +103,7 @@
 	<script src="vendors/scripts/layout-settings.js"></script>-->
 	<script th:inline="javascript">
 		var errorMessage =/*[[${error}]]*/[]
-		if (errorMessage.length != 0)
+		if (errorMessage.length != null)
 			alert(errorMessage)
 	</script>
 </body>
