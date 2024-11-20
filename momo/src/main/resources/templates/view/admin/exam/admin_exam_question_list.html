@@ -107,7 +107,7 @@
 				        </td>
 				        <td class="l_td01">${questionState}</td>
 				        <td class="l_td01">${new Date(item.qnaCreateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
-				        <td class="l_td01">${new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'})}</td>
+				        <td class="l_td01">${(item.qnaUpdateTime != null) ? new Date(item.qnaUpdateTime).toLocaleDateString('ko-KR', {year: '2-digit', month: '2-digit', day: '2-digit'}) : ''}</td>
 				    </tr>
 				    `;
 						$('#questionListTable').append(newRow);  // 새로운 행을 테이블에 추가
@@ -356,7 +356,7 @@
 							</tbody>
 						</table>
 
-						<table class="l_tb01" cellpadding="0" cellspacing="0" >
+						<table class="l_tb01" cellpadding="0" cellspacing="0">
 							<thead>
 								<tr align="center">
 									<td class="l_th01" width="20">
@@ -415,7 +415,9 @@
 									</td>
 
 									<td class="l_td01" th:text="${#dates.format(ql.qnaCreateTime, 'yy.MM.dd')}"></td>
-									<td class="l_td01" th:text="${ql.qnaUpdateTime!=null?#dates.format(ql.qnaUpdateTime, 'yy.MM.dd'):''}"></td>
+									<td class="l_td01"
+										th:text="${ql.qnaUpdateTime!=null?#dates.format(ql.qnaUpdateTime, 'yy.MM.dd'):''}">
+									</td>
 
 								</tr>
 
