@@ -2440,3 +2440,8 @@ html {
 		font-size: 24px;
 	}
 }
+
+.team-info-li {
+	font-weight: bold;
+	list-style: none;
+}
