@@ -2,6 +2,7 @@ package ks52team01.student.exam.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,10 +42,20 @@ public class ExamController {
 		boolean isChecked = true;
 		User user = (User) session.getAttribute("loggedInUser");
 		String userCode = user.getUserCode();
-		int result = examService.searchExamRatingExist(userCode, ExamCode);
-		if (result > 0) {
+		Map<String, Object> result = examService.searchExamRatingExist(userCode, ExamCode);
 
+		int countResult = ((Long) result.get("count")).intValue();
+
+		if (countResult > 0) {
+			if (rate.equals((result.get("examLH") + ""))) {
+				isChecked = false;
+			} else {
+				examService.modifyExamRatingToExam(userCode, ExamCode, rate);
+			}
+		} else {
+			examService.registerExamRatingToExam(userCode, ExamCode, rate);
 		}
+
 		return isChecked;
 	}
 

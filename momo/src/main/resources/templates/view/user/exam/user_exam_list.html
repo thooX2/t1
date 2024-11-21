@@ -177,7 +177,7 @@
 
 				window.open(`/exam/userExamTake?examCode=${clickedExamCode}`, 'popupWindow',
 					`width=${width},height=${height},scrollbars=yes`);
-			}else{
+			} else {
 				alert('로그인 후 시험에 응시할 수 있습니다.')
 			}
 
@@ -239,6 +239,7 @@
 				const searchData = data;
 				$('.count_area > p > em').eq(0).text(data.length);
 				if (data != null && data.length > 0) {
+					$('.board_qusesion ul').empty();
 					$(searchData).each((idx, element) => {
 
 						const imgSrc = (element.examType === '교육청')
@@ -295,8 +296,7 @@
 					        </div>
 					    </li>
 					`;
-						$('.board_qusesion ul').empty();
-						$('.board_qusesion ul').append(newRow);
+						$('#examSearchList').append(newRow);
 					})
 				} else {
 					$('.board_qusesion ul').empty();
@@ -357,7 +357,23 @@
 				console.log(error);
 			})
 		}
+		// 쉬워요/어려워요 바 크기 조정
+		$(function () {
+			$('a[name="examLike"]').each((idx, element) => {
+				// 숫자를 가져와서 뒤에 ~명자를 빼는 과정
+				const likeNum = parseInt($(element).parent().next().text().slice(0, -1));
+				const hateNum = parseInt($(element).closest('dl').next().find('dd').text().slice(0, -1));
+				if (likeNum == 0 && hateNum == 0) {
+				} else {
+					const likeWidthNum = (likeNum / (likeNum + hateNum)) * 100;
+					const hateWidthNum = (hateNum / (likeNum + hateNum)) * 100;
 
+					$(element).find('p').css('width', `${likeWidthNum}%`)
+					$(element).closest('dl').next().find('p').css('width', `${hateWidthNum}%`)
+				}
+			})
+
+		})
 
 
 	</script>
@@ -579,7 +595,7 @@
 
 					<!-- board_list -->
 					<div class="board_qusesion">
-						<ul>
+						<ul id="examSearchList">
 							<li th:if="${examList !=null}" th:each="el:${examList}">
 								<div class="img">
 									<img th:if="${el.examType=='교육청'}" src="/user/img/exam/educationCenter.png"
@@ -601,17 +617,28 @@
 									</div>
 									<div class="survey_wrap" id="survey_wrap_24271023">
 										<dl class="survey_result answer01">
-											<dt>
+											<dt style="position: relative; text-align: left;">
 												<a href="#" name="examLike">
-													<p style="width: 65.7051282051282%;">쉬워요!</p>
+													<p style="width: 0%; ">
+														<span
+															style="position: absolute; top: 0; left: 3rem; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">
+															쉬워요!
+														</span>
+													</p>
 												</a>
+
 											</dt>
 											<dd th:text="${el.examLike+'명'}">205명</dd>
 										</dl>
 										<dl class="survey_result answer02">
-											<dt>
+											<dt style="position: relative; text-align: left;">
 												<a href="#" name="examHate">
-													<p style="width: 34.294871794871796%;">어려워요!</p>
+													<p style="width: 0%;">
+														<span
+															style="position: absolute; top: 0; left: 3rem; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">
+															어려워요!
+														</span>
+													</p>
 												</a>
 											</dt>
 											<dd th:text="${el.examHate+'명'}">107명</dd>

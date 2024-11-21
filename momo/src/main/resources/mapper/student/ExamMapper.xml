@@ -77,9 +77,26 @@
 	    <result property="QnaCreateTime" column="qna_create_time" />
 	</resultMap>
 	
-	<select id="searchExamRatingExist" parameterType="String" resultType="int">
+	<update id="modifyExamRatingToExam" parameterType="String">
+		UPDATE exam_rating
+		SET
+			exam_rating_lh=#{rating}
+		WHERE
+			exam_code=#{examCode} AND
+			user_code=#{userCode}
+	</update>
+	
+	
+	<insert id="registerExamRatingToExam" parameterType="String">
+		INSERT INTO exam_rating
+			(exam_rating_code, exam_code, user_code, exam_rating_lh, exam_rating_reg_date)
+		VALUES
+			(#{newPk}, #{examCode}, #{userCode}, #{rating}, NOW())
+	</insert>
+	<select id="searchExamRatingExist" parameterType="String" resultType="Map">
 		SELECT
-			COUNT(*)
+			COUNT(*) as count,
+			exam_rating_lh = 1 as examLH
 		FROM
 			exam_rating
 		WHERE

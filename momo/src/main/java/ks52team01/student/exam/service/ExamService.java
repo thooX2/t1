@@ -1,6 +1,7 @@
 package ks52team01.student.exam.service;
 
 import java.util.List;
+import java.util.Map;
 
 import ks52team01.student.exam.dto.ExamAnalyse;
 import ks52team01.student.exam.dto.ExamInfo;
@@ -24,6 +25,10 @@ public interface ExamService {
 	void registerResultToSubjectTable(String userCode, String examCode, String subMjrCateCode, List<String> qnaCode,
 			List<String> userAnswer);
 
-	int searchExamRatingExist(String userCode, String examCode);
+	Map<String, Object> searchExamRatingExist(String userCode, String examCode);
+
+	void registerExamRatingToExam(String userCode, String examCode, String rate);
+
+	void modifyExamRatingToExam(String userCode, String examCode, String rating);
 
 }
