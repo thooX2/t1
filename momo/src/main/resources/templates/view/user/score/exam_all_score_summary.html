@@ -9,6 +9,7 @@
 <th:block layout:fragment="customJs">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script th:inline="javascript">
+		const user = [[${user}]];
 		const tookExamList = [[${tookExamList}]];
 		const subjectScore = [[${subjectScoreMap}]];
 	</script>
@@ -30,7 +31,7 @@
 						<div id="took-exam-div">
 							<strong>최근 응시하신&nbsp</strong>
 							<select id="took-exam-select">
-								<option th:each="l : ${tookExamList}" 
+								<option th:each="l : ${firstTookExamList}" 
 										th:data-area-city-code="${l.areaCityCode}"
 										th:data-exam-code="${l.examCode}"
 										th:data-took-exam-info-code="${l.tookExamInfoCode}"
