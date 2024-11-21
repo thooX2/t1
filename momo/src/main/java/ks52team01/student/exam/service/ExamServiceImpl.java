@@ -24,6 +24,30 @@ import lombok.extern.slf4j.Slf4j;
 public class ExamServiceImpl implements ExamService {
 
 	private final ExamMapper examMapper;
+	private final CommonMapper commonMapper;
+
+	@Override
+	public void modifyExamRatingToExam(String userCode, String examCode, String rating) {
+		examMapper.modifyExamRatingToExam(userCode, examCode, rating);
+
+	}
+
+	@Override
+	public void registerExamRatingToExam(String userCode, String examCode, String rating) {
+
+		String newPk = commonMapper.getPrimaryKey("exam_rating", "exam_rating_code", "erc");
+
+		examMapper.registerExamRatingToExam(newPk, userCode, examCode, rating);
+
+	}
+
+	@Override
+	public Map<String, Object> searchExamRatingExist(String userCode, String examCode) {
+
+		Map<String, Object> result = examMapper.searchExamRatingExist(userCode, examCode);
+
+		return result;
+	}
 
 	@Override
 	public void registerResultToSubjectTable(String userCode, String examCode, String subMjrCateCode,
