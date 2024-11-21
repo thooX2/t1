@@ -268,7 +268,7 @@
 			INNER JOIN took_exam_info tei
 			ON tei.took_exam_info_code = ss.took_exam_info_code
 		WHERE
-			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 4) = #{municipalityCode};
 	</select>
 
 	<select id="getMathScore" parameterType="String" resultMap="SubjectMap">
@@ -347,7 +347,7 @@
 			INNER JOIN took_exam_info tei
 			ON tei.took_exam_info_code = ss.took_exam_info_code
 		WHERE
-			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 4) = #{municipalityCode};
 	</select>
 
 	<select id="getEnglishScore" parameterType="String" resultMap="SubjectMap">
@@ -424,7 +424,7 @@
 			INNER JOIN took_exam_info tei
 			ON tei.took_exam_info_code = ss.took_exam_info_code
 		WHERE
-			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 4) = #{municipalityCode};
 	</select>
 	
 	<select id="getKoreanHistoryScore" parameterType="String" resultMap="SubjectMap">
@@ -501,7 +501,7 @@
 			INNER JOIN took_exam_info tei
 			ON tei.took_exam_info_code = ss.took_exam_info_code
 		WHERE
-			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 4) = #{municipalityCode};
 	</select>
 	
 	<select id="getInquiry1Score" parameterType="String" resultMap="SubjectMap">
@@ -580,7 +580,7 @@
 			INNER JOIN took_exam_info tei
 			ON tei.took_exam_info_code = ss.took_exam_info_code
 		WHERE
-			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 4) = #{municipalityCode};
 	</select>
 	
 	<select id="getInquiry2Score" parameterType="String" resultMap="SubjectMap">
@@ -659,7 +659,7 @@
 			INNER JOIN took_exam_info tei
 			ON tei.took_exam_info_code = ss.took_exam_info_code
 		WHERE
-			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 4) = #{municipalityCode};
 	</select>
 
 	<select id="getSecondLanguageAndChineseCharactersScore" parameterType="String" resultMap="SubjectMap">
@@ -738,6 +738,6 @@
 			INNER JOIN took_exam_info tei
 			ON tei.took_exam_info_code = ss.took_exam_info_code
 		WHERE
-			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 3, 2) = #{municipalityCode};
+			tei.exam_code = #{examCode} AND SUBSTRING(tei.area_city_code, 1, 4) = #{municipalityCode};
 	</select>
 </mapper>

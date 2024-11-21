@@ -36,15 +36,19 @@ public class ScoreController {
 		// 세션에 저장된 회원 정보
 		User user = (User) session.getAttribute("loggedInUser");
 		
-		// 최초로 응시한 모의고사 목록 조회
 		String userCode = user.getUserCode();
-		List<TookExamInfo> firstTookExamList = scoreExamAllService.getFirstTookExamList(userCode);
-		
+		// 응시한 모의고사 조회
+		List<TookExamInfo> tookExamList = scoreExamAllService.getTookExamList(userCode);
+		if(tookExamList.size() == 0) tookExamList = null;
+		List<TookExamInfo> firstTookExamList = null;
 		Map<String, Subject> subjectScoreMap = null;
-		if(firstTookExamList != null) {
+		
+		if(tookExamList != null) {
+		// 최초로 응시한 모의고사 목록 조회
+			firstTookExamList = scoreExamAllService.getFirstTookExamList(userCode);
 			// 현재 모의고사 점수 조회 
 			TookExamInfo curTookExam = firstTookExamList.get(0);
-			String areaCityCode = curTookExam.getAreaCityCode();
+			String areaCityCode = user.getAreaCityCode();
 			String examCode = curTookExam.getExamCode();
 			String tookExamInfoCode = curTookExam.getTookExamInfoCode();
 			subjectScoreMap = scoreExamAllService.getTookExamScore(userCode, areaCityCode, examCode, tookExamInfoCode);
@@ -54,7 +58,8 @@ public class ScoreController {
 		String formattedUserBirthDate = new SimpleDateFormat("yy.MM.dd").format(userBirthDate);
 		
 		model.addAttribute("user", user);
-		model.addAttribute("tookExamList", firstTookExamList);
+		model.addAttribute("tookExamList", tookExamList);
+		model.addAttribute("firstTookExamList", firstTookExamList);
 		model.addAttribute("subjectScoreMap", subjectScoreMap);
 		model.addAttribute("formattedUserBirthDate", formattedUserBirthDate);
 		return "view/user/score/exam_all_score_summary";
@@ -68,7 +73,7 @@ public class ScoreController {
 		String userCode = user.getUserCode();
 
 		// 현재 모의고사 점수 조회
-		String areaCityCode = tookExamInfo.getAreaCityCode();
+		String areaCityCode = user.getAreaCityCode();
 		String examCode = tookExamInfo.getExamCode();
 		String tookExamInfoCode = tookExamInfo.getTookExamInfoCode();
 		return scoreExamAllService.getTookExamScore(userCode, areaCityCode, examCode, tookExamInfoCode);

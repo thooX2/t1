@@ -19,4 +19,10 @@ public class HomeController {
     	log.info("index 페이지 이동");
         return  "view/home/index";
     }
+	
+	@GetMapping("/siteMap")
+    public String moveSiteMap() {
+    	log.info("사이트맵 페이지 이동");
+        return  "view/home/site_map";
+    }
 }
