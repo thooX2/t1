@@ -25,6 +25,18 @@ public class AdminController {
 	private final AdminService adminService;
 	private final UserService userService;
 
+	@GetMapping("/admin/adminHaveNotAuth")
+	public String adminHaveNotAuth() {
+
+		return "view/admin/user/admin_not_have_auth";
+	}
+
+	@GetMapping("/admin/adminNotLogin")
+	public String adminNotLoginMove() {
+
+		return "view/admin/user/admin_not_login";
+	}
+
 	@PostMapping("/admin/adminLoginMove")
 	public String adminLoginMove(@RequestParam(name = "userId") String userId,
 			@RequestParam(name = "userPw") String userPw, HttpSession session, Model model) {
@@ -55,7 +67,7 @@ public class AdminController {
 	@GetMapping("/admin/adminLoginMove")
 	public String adminLoginMove(HttpSession session) {
 		String url = "view/admin/user/admin_login";
-		
+
 		if (session.getAttribute("loggedInUser") != null) {
 			url = "redirect:/admin/exam/category";
 		}

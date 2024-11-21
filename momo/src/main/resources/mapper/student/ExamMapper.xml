@@ -50,6 +50,8 @@
 	    <result column="registeredQuestionCount" property="registeredQuestionCount"/>
 	    <result column="user_name" property="userName"/>
 	    <result column="user_id" property="userId"/>
+	    <result column="examLike" property="examLike"/>
+	    <result column="examHate" property="examHate"/>
 	</resultMap>
 	<resultMap id="ExamMappingQuestionResultMap" type="QnaBank">
 	    <id property="ExamMappingQuestionCode" column="exam_mapping_question_code" />
@@ -74,6 +76,33 @@
 	    <result property="QnaCmt" column="qna_cmt" />
 	    <result property="QnaCreateTime" column="qna_create_time" />
 	</resultMap>
+	
+	<update id="modifyExamRatingToExam" parameterType="String">
+		UPDATE exam_rating
+		SET
+			exam_rating_lh=#{rating}
+		WHERE
+			exam_code=#{examCode} AND
+			user_code=#{userCode}
+	</update>
+	
+	
+	<insert id="registerExamRatingToExam" parameterType="String">
+		INSERT INTO exam_rating
+			(exam_rating_code, exam_code, user_code, exam_rating_lh, exam_rating_reg_date)
+		VALUES
+			(#{newPk}, #{examCode}, #{userCode}, #{rating}, NOW())
+	</insert>
+	<select id="searchExamRatingExist" parameterType="String" resultType="Map">
+		SELECT
+			COUNT(*) as count,
+			exam_rating_lh = 1 as examLH
+		FROM
+			exam_rating
+		WHERE
+			exam_code=#{examCode} AND
+			user_code=#{userCode}
+	</select>
 	
 	
 	<insert id="registerResultToSubjectTable" parameterType="ExamSubjectResult">
@@ -152,31 +181,46 @@
 	
 	
 	<select id="getSearchExamList" parameterType="examInfo" resultMap="ExamInfoMap">
-		 SELECT
-	        ei.exam_code,
-	        ei.user_code,
-	        ei.exam_nm,
-	        ei.exam_type,
-	        ei.exam_oe_type,
-	        ei.exam_tar_grd,
-	        ei.exam_description,
-	        ei.exam_date,
-	        ei.exam_inst,
-	        COUNT(emq.exam_qna_code) AS registeredQuestionCount,
-			GROUP_CONCAT(DISTINCT qb.sub_mjr_cat_code ORDER BY qb.sub_mjr_cat_code SEPARATOR ', ') AS newCode
-	    FROM
-	        exam_info ei
-	        LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
-			INNER JOIN qna_bank qb ON emq.exam_qna_code = qb.qna_code
-	    <!-- GROUP BY 절 -->
-	    GROUP BY
-	        ei.exam_code
-	
-	    <!-- HAVING 절에서 조건 처리 -->
-	    HAVING
-	        registeredQuestionCount > 0
-	        AND ei.exam_type != '자체'
-	        
+		SELECT
+		   ei.exam_code,
+		   ei.user_code,
+		   ei.exam_nm,
+		   ei.exam_type,
+		   ei.exam_oe_type,
+		   ei.exam_tar_grd,
+		   ei.exam_description,
+		   ei.exam_date,
+		   ei.exam_inst,
+		   COUNT(emq.exam_qna_code) AS registeredQuestionCount,
+			GROUP_CONCAT(DISTINCT qb.sub_mjr_cat_code ORDER BY qb.sub_mjr_cat_code SEPARATOR ', ') AS newCode,
+			(
+			 SELECT 
+				IFNULL(SUM(CASE WHEN exam_rating_lh = 1 THEN 1 ELSE 0 END), 0)
+			 FROM
+			 	exam_rating
+			 WHERE
+			 	exam_code=ei.exam_code
+			) AS examLike,
+			(
+			 SELECT 
+				IFNULL(SUM(CASE WHEN exam_rating_lh = 0 THEN 1 ELSE 0 END), 0)
+			 FROM
+				exam_rating
+			 WHERE
+			 	exam_code=ei.exam_code
+			) AS examHate
+			FROM
+			   exam_info ei
+			   LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
+				INNER JOIN qna_bank qb ON emq.exam_qna_code = qb.qna_code
+				LEFT JOIN exam_rating er ON ei.exam_code = er.exam_code
+		   <!-- GROUP BY 절 -->
+			GROUP BY
+		      ei.exam_code
+		   <!-- HAVING 절에서 조건 처리 -->
+		   HAVING
+		      registeredQuestionCount > 0
+		      AND ei.exam_type != '자체'
 	    <!-- beginYear와 endYear 조건 -->
 	    <if test="beginYear != null and endYear != null">
 	        AND YEAR(ei.exam_date) BETWEEN #{beginYear} AND #{endYear}
@@ -251,9 +295,18 @@
 			ei.exam_description,
 			ei.exam_date,
 			ei.exam_inst,
-			COUNT(emq.exam_qna_code) AS registeredQuestionCount
+			COUNT(emq.exam_qna_code) AS registeredQuestionCount,
+			(SELECT 
+				IFNULL(SUM(CASE WHEN exam_rating_lh = 1 THEN 1 ELSE 0 END), 0)
+			FROM exam_rating
+			WHERE exam_code=ei.exam_code) AS examLike,
+			(SELECT 
+				IFNULL(SUM(CASE WHEN exam_rating_lh = 0 THEN 1 ELSE 0 END), 0)
+			FROM exam_rating
+			WHERE exam_code=ei.exam_code) AS examHate
 		FROM
 			exam_info ei LEFT JOIN exam_mapping_question emq ON ei.exam_code = emq.exam_code
+			LEFT JOIN exam_rating er ON ei.exam_code = er.exam_code
 		GROUP BY ei.exam_code
 		HAVING
 			registeredQuestionCount>0 AND

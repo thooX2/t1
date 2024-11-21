@@ -26,5 +26,6 @@ public class ExamInfo {
 	private boolean monthAll;
 	private List<String> subj;
 	private List<String> month;
-
+	private String examLike;
+	private String examHate;
 }
