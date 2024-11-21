@@ -17,7 +17,6 @@ else {
 	let secondLanguageAndChineseCharactersScore = subjectScore['secondLanguageAndChineseCharactersScore'];
 
 	const updateChart = function(chartName, chartType) {
-		console.log(chartName);
 		chartName.config.data.datasets[0].label = `${chartType} 전국 평균`;
 		chartName.config.data.datasets[1].label = `${chartType} 도 평균`;
 		chartName.config.data.datasets[2].label = `${chartType} 시 평균`;
@@ -30,13 +29,20 @@ else {
 			inquiry1Score?.subjectOriginalScoreNationAvg ?? 0.0,
 			inquiry2Score?.subjectOriginalScoreNationAvg ?? 0.0,
 			secondLanguageAndChineseCharactersScore?.subjectOriginalScoreNationAvg ?? 0.0];
-			chartName.config.data.datasets[1].data = [koreanScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
-			mathScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
-			englishScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
-			koreanHistoryScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
-			inquiry1Score?.subjectOriginalScoreProvinceAvg ?? 0.0,
-			inquiry2Score?.subjectOriginalScoreProvinceAvg ?? 0.0,
-			secondLanguageAndChineseCharactersScore?.subjectOriginalScoreProvinceAvg ?? 0.0];
+			const areaCode = user.areaCityCode.substring(0, 2);
+			if(areaCode=='11' || areaCode=='26' || areaCode=='27' || areaCode=='28' ||
+			   areaCode=='29' || areaCode=='30' || areaCode=='31' || areaCode=='36') {
+				chartName.config.data.datasets[1].data = null;                                   
+			}
+			else {
+				chartName.config.data.datasets[1].data = [koreanScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
+				mathScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
+				englishScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
+				koreanHistoryScore?.subjectOriginalScoreProvinceAvg ?? 0.0,
+				inquiry1Score?.subjectOriginalScoreProvinceAvg ?? 0.0,
+				inquiry2Score?.subjectOriginalScoreProvinceAvg ?? 0.0,
+				secondLanguageAndChineseCharactersScore?.subjectOriginalScoreProvinceAvg ?? 0.0];
+			}
 			chartName.config.data.datasets[2].data = [koreanScore?.subjectOriginalScoreMunicipalityAvg ?? 0.0,
 			mathScore?.subjectOriginalScoreMunicipalityAvg ?? 0.0,
 			englishScore?.subjectOriginalScoreMunicipalityAvg ?? 0.0,
@@ -70,13 +76,20 @@ else {
 			inquiry1Score?.subjectStandardScoreNationAvg ?? 0.0,
 			inquiry2Score?.subjectStandardScoreNationAvg ?? 0.0,
 			secondLanguageAndChineseCharactersScore?.subjectStandardScoreNationAvg ?? 0.0];
-			chartName.config.data.datasets[1].data = [koreanScore?.subjectStandardScoreProvinceAvg ?? 0.0,
-			mathScore?.subjectStandardScoreProvinceAvg ?? 0.0,
-			englishScore?.subjectStandardScoreProvinceAvg ?? 0.0,
-			koreanHistoryScore?.subjectStandardScoreProvinceAvg ?? 0.0,
-			inquiry1Score?.subjectStandardScoreProvinceAvg ?? 0.0,
-			inquiry2Score?.subjectStandardScoreProvinceAvg ?? 0.0,
-			secondLanguageAndChineseCharactersScore?.subjectStandardScoreProvinceAvg ?? 0.0];
+			const areaCode = user.areaCityCode.substring(0, 2);
+			if(areaCode=='11' || areaCode=='26' || areaCode=='27' || areaCode=='28' ||
+			   areaCode=='29' || areaCode=='30' || areaCode=='31' || areaCode=='36') {
+				chartName.config.data.datasets[1].data = null;                                   
+			}
+			else {
+				chartName.config.data.datasets[1].data = [koreanScore?.subjectStandardScoreProvinceAvg ?? 0.0,
+				mathScore?.subjectStandardScoreProvinceAvg ?? 0.0,
+				englishScore?.subjectStandardScoreProvinceAvg ?? 0.0,
+				koreanHistoryScore?.subjectStandardScoreProvinceAvg ?? 0.0,
+				inquiry1Score?.subjectStandardScoreProvinceAvg ?? 0.0,
+				inquiry2Score?.subjectStandardScoreProvinceAvg ?? 0.0,
+				secondLanguageAndChineseCharactersScore?.subjectStandardScoreProvinceAvg ?? 0.0];
+			}
 			chartName.config.data.datasets[2].data = [koreanScore?.subjectStandardScoreMunicipalityAvg ?? 0.0,
 			mathScore?.subjectStandardScoreMunicipalityAvg ?? 0.0,
 			englishScore?.subjectStandardScoreMunicipalityAvg ?? 0.0,
@@ -110,13 +123,20 @@ else {
 			inquiry1Score?.subjectPercentNationAvg ?? 0.0,
 			inquiry2Score?.subjectPercentNationAvg ?? 0.0,
 			secondLanguageAndChineseCharactersScore?.subjectPercentNationAvg ?? 0.0];
-			chartName.config.data.datasets[1].data = [koreanScore?.subjectPercentProvinceAvg ?? 0.0,
-			mathScore?.subjectPercentProvinceAvg ?? 0.0,
-			englishScore?.subjectPercentProvinceAvg ?? 0.0,
-			koreanHistoryScore?.subjectPercentProvinceAvg ?? 0.0,
-			inquiry1Score?.subjectPercentProvinceAvg ?? 0.0,
-			inquiry2Score?.subjectPercentProvinceAvg ?? 0.0,
-			secondLanguageAndChineseCharactersScore?.subjectPercentProvinceAvg ?? 0.0];
+			const areaCode = user.areaCityCode.substring(0, 2);
+			if(areaCode=='11' || areaCode=='26' || areaCode=='27' || areaCode=='28' ||
+			   areaCode=='29' || areaCode=='30' || areaCode=='31' || areaCode=='36') {
+				chartName.config.data.datasets[1].data = null;                                   
+			}
+			else {
+				chartName.config.data.datasets[1].data = [koreanScore?.subjectPercentProvinceAvg ?? 0.0,
+				mathScore?.subjectPercentProvinceAvg ?? 0.0,
+				englishScore?.subjectPercentProvinceAvg ?? 0.0,
+				koreanHistoryScore?.subjectPercentProvinceAvg ?? 0.0,
+				inquiry1Score?.subjectPercentProvinceAvg ?? 0.0,
+				inquiry2Score?.subjectPercentProvinceAvg ?? 0.0,
+				secondLanguageAndChineseCharactersScore?.subjectPercentProvinceAvg ?? 0.0];
+			}
 			chartName.config.data.datasets[2].data = [koreanScore?.subjectPercentMunicipalityAvg ?? 0.0,
 			mathScore?.subjectPercentMunicipalityAvg ?? 0.0,
 			englishScore?.subjectPercentMunicipalityAvg ?? 0.0,
@@ -150,13 +170,22 @@ else {
 			10 - (inquiry1Score?.subjectGradeNationAvg ?? 9.0),
 			10 - (inquiry2Score?.subjectGradeNationAvg ?? 9.0),
 			10 - (secondLanguageAndChineseCharactersScore?.subjectGradeNationAvg ?? 9.0)];
-			chartName.config.data.datasets[1].data = [10 - (koreanScore?.subjectGradeProvinceAvg ?? 9.0),
-			10 - (mathScore?.subjectGradeProvinceAvg ?? 9.0),
-			10 - (englishScore?.subjectGradeProvinceAvg ?? 9.0),
-			10 - (koreanHistoryScore?.subjectGradeProvinceAvg ?? 9.0),
-			10 - (inquiry1Score?.subjectGradeProvinceAvg ?? 9.0),
-			10 - (inquiry2Score?.subjectGradeProvinceAvg ?? 9.0),
-			10 - (secondLanguageAndChineseCharactersScore?.subjectGradeProvinceAvg ?? 9.0)];
+			const areaCode = user.areaCityCode.substring(0, 2);
+			console.log(areaCode);
+			if(areaCode=='11' || areaCode=='26' || areaCode=='27' || areaCode=='28' ||
+			   areaCode=='29' || areaCode=='30' || areaCode=='31' || areaCode=='36') {
+				chartName.config.data.datasets[1].data = null;                                   
+			}
+			else {
+				console.log("aaa");
+				chartName.config.data.datasets[1].data = [10 - (koreanScore?.subjectGradeProvinceAvg ?? 9.0),
+				10 - (mathScore?.subjectGradeProvinceAvg ?? 9.0),
+				10 - (englishScore?.subjectGradeProvinceAvg ?? 9.0),
+				10 - (koreanHistoryScore?.subjectGradeProvinceAvg ?? 9.0),
+				10 - (inquiry1Score?.subjectGradeProvinceAvg ?? 9.0),
+				10 - (inquiry2Score?.subjectGradeProvinceAvg ?? 9.0),
+				10 - (secondLanguageAndChineseCharactersScore?.subjectGradeProvinceAvg ?? 9.0)];
+			}
 			chartName.config.data.datasets[2].data = [10 - (koreanScore?.subjectGradeMunicipalityAvg ?? 9.0),
 			10 - (mathScore?.subjectGradeMunicipalityAvg ?? 9.0),
 			10 - (englishScore?.subjectGradeMunicipalityAvg ?? 9.0),
@@ -190,13 +219,20 @@ else {
 			20 - (inquiry1Score?.subjectRankNationAvg ?? 20),
 			20 - (inquiry2Score?.subjectRankNationAvg ?? 20),
 			20 - (secondLanguageAndChineseCharactersScore?.subjectRankNationAvg ?? 20)];
-			chartName.config.data.datasets[1].data = [20 - (koreanScore?.subjectRankProvinceAvg ?? 20),
-			20 - (mathScore?.subjectRankProvinceAvg ?? 20),
-			20 - (englishScore?.subjectRankProvinceAvg ?? 20),
-			20 - (koreanHistoryScore?.subjectRankProvinceAvg ?? 20),
-			20 - (inquiry1Score?.subjectRankProvinceAvg ?? 20),
-			20 - (inquiry2Score?.subjectRankProvinceAvg ?? 20),
-			20 - (secondLanguageAndChineseCharactersScore?.subjectRankProvinceAvg ?? 20)];
+			const areaCode = user.areaCityCode.substring(0, 2);
+			if(areaCode=='11' || areaCode=='26' || areaCode=='27' || areaCode=='28' ||
+			   areaCode=='29' || areaCode=='30' || areaCode=='31' || areaCode=='36') {
+				chartName.config.data.datasets[1].data = null;                                   
+			}
+			else {
+				chartName.config.data.datasets[1].data = [20 - (koreanScore?.subjectRankProvinceAvg ?? 20),
+				20 - (mathScore?.subjectRankProvinceAvg ?? 20),
+				20 - (englishScore?.subjectRankProvinceAvg ?? 20),
+				20 - (koreanHistoryScore?.subjectRankProvinceAvg ?? 20),
+				20 - (inquiry1Score?.subjectRankProvinceAvg ?? 20),
+				20 - (inquiry2Score?.subjectRankProvinceAvg ?? 20),
+				20 - (secondLanguageAndChineseCharactersScore?.subjectRankProvinceAvg ?? 20)];
+			}
 			chartName.config.data.datasets[2].data = [20 - (koreanScore?.subjectRankMunicipalityAvg ?? 20),
 			20 - (mathScore?.subjectRankMunicipalityAvg ?? 20),
 			20 - (englishScore?.subjectRankMunicipalityAvg ?? 20),
@@ -261,74 +297,79 @@ else {
 
 			const $koreanHistoryTookStatusTd = $('#koreanHistoryTookStatus');
 			$koreanHistoryTookStatusTd.empty();
-			if (koreanHistoryScore == null) {
-				const $a = $('<a></a>', { 'href': `/exam/examList` }).text('미응시');
-				$koreanHistoryTookStatusTd.append($a);
-
-			} else {
-				const $span = $('<span></span>').text('응시');
+			if (koreanHistoryScore != null) {
+				const $span = $('<span></span>', {'class': 'subject-took-status-span'}).text('응시');
 				$koreanHistoryTookStatusTd.append($span);
+			}
+			else {
+				const $a = $('<a></a>', { 'class': 'subject-took-status-a', 'href': `/exam/examList` }).text('미응시');
+				$koreanHistoryTookStatusTd.append($a);
 			}
 
 			const $koreanTookStatusTd = $('#koreanTookStatus');
 			$koreanTookStatusTd.empty();
-			if (koreanScore == null) {
-				const $a = $('<a></a>', { 'href': `/exam/examList` }).text('미응시');
-				$koreanTookStatusTd.append($a);
-			} else {
-				const $span = $('<span></span>').text('응시');
+			if(koreanScore != null) {
+				const $span = $('<span></span>', {'class': 'subject-took-status-span'}).text('응시');
 				$koreanTookStatusTd.append($span);
+			}
+			else {
+				const $a = $('<a></a>', { 'class': 'subject-took-status-a', 'href': `/exam/examList` }).text('미응시');
+				$koreanTookStatusTd.append($a);
 			}
 
 			const $mathTookStatusTd = $('#mathTookStatus');
 			$mathTookStatusTd.empty();
-			if (mathScore == null) {
-				const $a = $('<a></a>', { 'href': `/exam/examList` }).text('미응시');
-				$mathTookStatusTd.append($a);
-			} else {
-				const $span = $('<span></span>').text('응시');
+			if(mathScore != null) {
+				const $span = $('<span></span>', {'class': 'subject-took-status-span'}).text('응시');
 				$mathTookStatusTd.append($span);
+			}
+			else {
+				const $a = $('<a></a>', { 'class': 'subject-took-status-a', 'href': `/exam/examList` }).text('미응시');
+				$mathTookStatusTd.append($a);
 			}
 
 			const $englishTookStatusTd = $('#englishTookStatus');
 			$englishTookStatusTd.empty();
-			if (englishScore == null) {
-				const $a = $('<a></a>', { 'href': `/exam/examList` }).text('미응시');
-				$englishTookStatusTd.append($a);
-			} else {
-				const $span = $('<span></span>').text('응시');
+			if(englishScore != null) {
+				const $span = $('<span></span>', {'class': 'subject-took-status-span'}).text('응시');
 				$englishTookStatusTd.append($span);
+			}
+			else {
+				const $a = $('<a></a>', { 'class': 'subject-took-status-a', 'href': `/exam/examList` }).text('미응시');
+				$englishTookStatusTd.append($a);
 			}
 
 			const $inquiry1TookStatusTd = $('#inquiry1TookStatus');
 			$inquiry1TookStatusTd.empty();
-			if (inquiry1Score == null) {
-				const $a = $('<a></a>', { 'href': `/exam/examList` }).text('미응시');
-				$inquiry1TookStatusTd.append($a);
-			} else {
-				const $span = $('<span></span>').text('응시');
+			if(inquiry1Score != null) {
+				const $span = $('<span></span>', {'class': 'subject-took-status-span'}).text('응시');
 				$inquiry1TookStatusTd.append($span);
 			}
-
+			else {
+				const $a = $('<a></a>', { 'class': 'subject-took-status-a', 'href': `/exam/examList` }).text('미응시');
+				$inquiry1TookStatusTd.append($a);
+			}
+			
 			const $inquiry2TookStatusTd = $('#inquiry2TookStatus');
 			$inquiry2TookStatusTd.empty();
-			if (inquiry2Score == null) {
-				const $a = $('<a></a>', { 'href': `/exam/examList` }).text('미응시');
-				$inquiry2TookStatusTd.append($a);
-			} else {
-				const $span = $('<span></span>').text('응시');
+			if(inquiry2Score != null) {
+				const $span = $('<span></span>', {'class': 'subject-took-status-span'}).text('응시');
 				$inquiry2TookStatusTd.append($span);
+			}
+			else {
+				const $a = $('<a></a>', { 'class': 'subject-took-status-a', 'href': `/exam/examList` }).text('미응시');
+				$inquiry2TookStatusTd.append($a);
 			}
 
 			const $secondLanguageAndChineseCharactersTookStatusTd = $('#secondLanguageAndChineseCharactersTookStatus');
 			$secondLanguageAndChineseCharactersTookStatusTd.empty();
-			if (secondLanguageAndChineseCharactersScore == null) {
-				const $a = $('<a></a>', { 'href': `/exam/examList` }).text('미응시');
-
-				$secondLanguageAndChineseCharactersTookStatusTd.append($a);
-			} else {
-				const $span = $('<span></span>').text('응시');
+			if(secondLanguageAndChineseCharactersScore != null) {
+				const $span = $('<span></span>', {'class': 'subject-took-status-span'}).text('응시');
 				$secondLanguageAndChineseCharactersTookStatusTd.append($span);
+			}
+			else {
+				const $a = $('<a></a>', { 'class': 'subject-took-status-a', 'href': `/exam/examList` }).text('미응시');
+				$secondLanguageAndChineseCharactersTookStatusTd.append($a);
 			}
 
 			$('#koreanHistoryOriginalScore').text(koreanHistoryScore?.subjectOriginalScore ?? '');
