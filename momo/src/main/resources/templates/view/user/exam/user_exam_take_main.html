@@ -127,7 +127,7 @@
 				<tr>
 					<th>응시자</th>
 					<td>
-						<span th:text="${'['+examInfo.userId+'] '+examInfo.userName}"></span>
+						<span th:text="${'['+session.loggedInUser.userId+'] '+session.loggedInUser.userName}"></span>
 					</td>
 					<th>시험 날짜</th>
 					<td th:text="${examInfo.examDate}">2024-06-08</td>
@@ -174,22 +174,22 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					<tr id="smjrcc1" style="display:none">
 						<td>언어 영역</td>
 						<td>국어</td>
 						<td><input type="checkbox" name="subject" value="smjrcc1" id="korSubject" /></td>
 					</tr>
-					<tr>
+					<tr id="smjrcc2" style="display:none">
 						<td>수리 영역</td>
 						<td>수학</td>
 						<td><input type="checkbox" name="subject" value="smjrcc2" id="mathSubject" /></td>
 					</tr>
-					<tr>
+					<tr id="smjrcc3" style="display:none">
 						<td>영어 영역</td>
 						<td>영어</td>
 						<td><input type="checkbox" name="subject" value="smjrcc3" id="engSubject" /></td>
 					</tr>
-					<tr>
+					<tr id="smjrcc4" style="display:none">
 						<td>한국사 영역</td>
 						<td>한국사</td>
 						<td><input type="checkbox" name="subject" value="" id="korHSubject" /></td>
@@ -249,11 +249,23 @@
 		const jobList = [];
 		const langList = [];
 		var examQuestionInfo = /*[[${examQuestionInfo}]]*/[];
+		console.log(examQuestionInfo)
 		examQuestionInfo.forEach((element, idx) => {
 			const smjrcc = element['subMjrCatCode'];
 			switch (smjrcc) {
+				case 'smjrcc1':
+					$(`#${smjrcc}`).css('display', '')
+					break;
+				case 'smjrcc2':
+					$(`#${smjrcc}`).css('display', '')
+					break;
+				case 'smjrcc3':
+					$(`#${smjrcc}`).css('display', '')
+					break;
+
 				case 'smjrcc4':
 					$('#korHSubject').val(element['subMirCatCode']);
+					$(`#${smjrcc}`).css('display', '')
 					break;
 				case 'smjrcc5':
 					if (!socialList.includes(element['subMirCatNm'])) {

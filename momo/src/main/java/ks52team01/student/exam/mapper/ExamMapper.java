@@ -1,6 +1,7 @@
 package ks52team01.student.exam.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,7 +32,13 @@ public interface ExamMapper {
 
 	List<ExamInfo> getSearchExamList(ExamInfo examInfo);
 
-	List<QnaBank> getQuestionInfoListByExamCode(String examCode, String currentSubject,String currentMjrCode);
+	List<QnaBank> getQuestionInfoListByExamCode(String examCode, String currentSubject, String currentMjrCode);
 
 	int registerResultToSubjectTable(ExamSubjectResult examResult);
+
+	Map<String, Object> searchExamRatingExist(String userCode, String examCode);
+
+	int registerExamRatingToExam(String newPk, String userCode, String examCode, String rating);
+
+	int modifyExamRatingToExam(String userCode, String examCode, String rating);
 }

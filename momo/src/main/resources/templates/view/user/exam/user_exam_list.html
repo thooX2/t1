@@ -18,7 +18,8 @@
 		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
 </th:block>
 <th:block layout:fragment="customJs">
-	<script>
+	<script th:inline="javascript">
+		var loginSession = /*[[${session.loggedInUser}]]*/[];
 		var loginTF = false;
 		var first = true;
 		var bYearOld, eYearOld;
@@ -169,12 +170,17 @@
 		$title.textContent = '모의고사 기출문제';
 
 		$(document).on('click', '.btn_popup_test', function () {
-			const width = window.innerWidth * 1.0;
-			const height = window.innerHeight * 1.0;
-			const clickedExamCode = $(this).closest('li').find('img').prop('alt');
+			if (loginSession) {
+				const width = window.innerWidth * 1.0;
+				const height = window.innerHeight * 1.0;
+				const clickedExamCode = $(this).closest('li').find('img').prop('alt');
 
-			window.open(`/exam/userExamTake?examCode=${clickedExamCode}`, 'popupWindow',
-				`width=${width},height=${height},scrollbars=yes`);
+				window.open(`/exam/userExamTake?examCode=${clickedExamCode}`, 'popupWindow',
+					`width=${width},height=${height},scrollbars=yes`);
+			} else {
+				alert('로그인 후 시험에 응시할 수 있습니다.')
+			}
+
 		})
 
 		$(document).on('click', '.btn_L_col2.has_down', function () {
@@ -233,6 +239,7 @@
 				const searchData = data;
 				$('.count_area > p > em').eq(0).text(data.length);
 				if (data != null && data.length > 0) {
+					$('.board_qusesion ul').empty();
 					$(searchData).each((idx, element) => {
 
 						const imgSrc = (element.examType === '교육청')
@@ -259,19 +266,19 @@
 					            <div class="survey_wrap" id="survey_wrap_24271023">
 					                <dl class="survey_result answer01">
 					                    <dt>
-					                        <a href="#">
+					                        <a href="#" name="examLike">
 					                            <p style="width: 65.7051282051282%;">쉬워요!</p>
 					                        </a>
 					                    </dt>
-					                    <dd>205명</dd>
+					                    <dd>${element.examLike}명</dd>
 					                </dl>
 					                <dl class="survey_result answer02">
 					                    <dt>
-					                        <a href="#">
+					                        <a href="#" name="examHate">
 					                            <p style="width: 34.294871794871796%;">어려워요!</p>
 					                        </a>
 					                    </dt>
-					                    <dd>107명</dd>
+					                    <dd>${element.examHate}명</dd>
 					                </dl>
 					            </div>
 					        </div>
@@ -289,8 +296,7 @@
 					        </div>
 					    </li>
 					`;
-						$('.board_qusesion ul').empty();
-						$('.board_qusesion ul').append(newRow);
+						$('#examSearchList').append(newRow);
 					})
 				} else {
 					$('.board_qusesion ul').empty();
@@ -300,6 +306,73 @@
 			request.fail(function (jqXHR, textStatus, error) {
 				console.log(error);
 			})
+		})
+
+
+
+		$(document).on('click', 'a[name="examLike"]', function (event) {
+			event.preventDefault(); // 기본 동작 방지 (예: 링크 이동 방지)
+			event.stopPropagation(); // 이벤트 전파 방지
+			if (loginSession != null) {
+				const examCode = $(this).closest('li').find('img').prop('alt')
+				examRating('1', examCode);
+			} else {
+				alert('로그인 후 서비스를 이용하실 수 있습니다.')
+			}
+		})
+		$(document).on('click', 'a[name="examHate"]', function (event) {
+			event.preventDefault(); // 기본 동작 방지 (예: 링크 이동 방지)
+			event.stopPropagation(); // 이벤트 전파 방지
+
+			if (loginSession != null) {
+				const examCode = $(this).closest('li').find('img').prop('alt')
+				examRating('0', examCode);
+			} else {
+				alert('로그인 후 서비스를 이용하실 수 있습니다.')
+			}
+		})
+
+		function examRating(rate, examCode) {
+			const request = $.ajax({
+				url: '/exam/chooseLHExam',
+				method: 'post',
+				data: {
+					'rate': rate,
+					'examCode': examCode,
+				},
+				dataType: 'json'
+			})
+			request.done(function (data) {
+				if (data)
+					location.reload();
+				if (!data) {
+					let message = "쉬워요!"
+					if (rate == 0) {
+						message = "어려워요!"
+					}
+					alert(`이미 ${message}를 선택하셨습니다`);
+				}
+			})
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			})
+		}
+		// 쉬워요/어려워요 바 크기 조정
+		$(function () {
+			$('a[name="examLike"]').each((idx, element) => {
+				// 숫자를 가져와서 뒤에 ~명자를 빼는 과정
+				const likeNum = parseInt($(element).parent().next().text().slice(0, -1));
+				const hateNum = parseInt($(element).closest('dl').next().find('dd').text().slice(0, -1));
+				if (likeNum == 0 && hateNum == 0) {
+				} else {
+					const likeWidthNum = (likeNum / (likeNum + hateNum)) * 100;
+					const hateWidthNum = (hateNum / (likeNum + hateNum)) * 100;
+
+					$(element).find('p').css('width', `${likeWidthNum}%`)
+					$(element).closest('dl').next().find('p').css('width', `${hateWidthNum}%`)
+				}
+			})
+
 		})
 
 
@@ -522,7 +595,7 @@
 
 					<!-- board_list -->
 					<div class="board_qusesion">
-						<ul>
+						<ul id="examSearchList">
 							<li th:if="${examList !=null}" th:each="el:${examList}">
 								<div class="img">
 									<img th:if="${el.examType=='교육청'}" src="/user/img/exam/educationCenter.png"
@@ -544,20 +617,31 @@
 									</div>
 									<div class="survey_wrap" id="survey_wrap_24271023">
 										<dl class="survey_result answer01">
-											<dt>
-												<a href="#">
-													<p style="width: 65.7051282051282%;">쉬워요!</p>
+											<dt style="position: relative; text-align: left;">
+												<a href="#" name="examLike">
+													<p style="width: 0%; ">
+														<span
+															style="position: absolute; top: 0; left: 3rem; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">
+															쉬워요!
+														</span>
+													</p>
 												</a>
+
 											</dt>
-											<dd>205명</dd>
+											<dd th:text="${el.examLike+'명'}">205명</dd>
 										</dl>
 										<dl class="survey_result answer02">
-											<dt>
-												<a href="">
-													<p style="width: 34.294871794871796%;">어려워요!</p>
+											<dt style="position: relative; text-align: left;">
+												<a href="#" name="examHate">
+													<p style="width: 0%;">
+														<span
+															style="position: absolute; top: 0; left: 3rem; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">
+															어려워요!
+														</span>
+													</p>
 												</a>
 											</dt>
-											<dd>107명</dd>
+											<dd th:text="${el.examHate+'명'}">107명</dd>
 										</dl>
 									</div>
 								</div>
