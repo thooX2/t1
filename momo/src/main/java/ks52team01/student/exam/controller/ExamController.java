@@ -2,6 +2,7 @@ package ks52team01.student.exam.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,30 @@ public class ExamController {
 
 	private final ExamService examService;
 	private final FileService fileService;
+
+	@PostMapping("/chooseLHExam")
+	@ResponseBody
+	public boolean chooseLHExam(@RequestParam(name = "rate") String rate,
+			@RequestParam(name = "examCode") String ExamCode, HttpSession session) {
+		boolean isChecked = true;
+		User user = (User) session.getAttribute("loggedInUser");
+		String userCode = user.getUserCode();
+		Map<String, Object> result = examService.searchExamRatingExist(userCode, ExamCode);
+
+		int countResult = ((Long) result.get("count")).intValue();
+
+		if (countResult > 0) {
+			if (rate.equals((result.get("examLH") + ""))) {
+				isChecked = false;
+			} else {
+				examService.modifyExamRatingToExam(userCode, ExamCode, rate);
+			}
+		} else {
+			examService.registerExamRatingToExam(userCode, ExamCode, rate);
+		}
+
+		return isChecked;
+	}
 
 	@PostMapping("/{examCode}/solutions")
 	public String userExamSolution(@PathVariable(name = "examCode") String examCode,

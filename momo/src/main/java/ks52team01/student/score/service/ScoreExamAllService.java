@@ -7,6 +7,8 @@ import ks52team01.student.exam.dto.TookExamInfo;
 import ks52team01.student.score.dto.Subject;
 
 public interface ScoreExamAllService {
+
+	public List<TookExamInfo> getTookExamList(String userCode);
 	
 	public List<TookExamInfo> getFirstTookExamList(String userCode);
 	
