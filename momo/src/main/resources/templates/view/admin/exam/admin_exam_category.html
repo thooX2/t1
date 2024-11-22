@@ -313,14 +313,39 @@
 		$('#category').change(function () {
 			if ($(this).val() == "exam_qna_chap") {
 				$(this).closest('tr').next().next().css('display', '');
-			}else{
+			} else {
 				$(this).closest('tr').next().next().css('display', 'none');
 			}
 		})
 
 
 		$('#addCategoryBtn').click(function () {
-			alert('해당기능은 차후에 지원 예정입니다');
+			const category = $('#category').val()
+			const selectMJR = $('#selectMJR').val()
+			const categoryNm = $('input[name="category_nm"]').val()
+			const selectSubMjrCatCode = $('#subMjrCatCode > select').val()
+			const selectUserCode = $('#manager_id').val()
+
+
+
+			const request = $.ajax({
+				url: '/admin/exam/addCategory',
+				method: 'post',
+				data: {
+					'category': category,
+					'selectMJR': selectMJR,
+					'categoryNm': categoryNm,
+					'selectSubMjrCatCode': selectSubMjrCatCode,
+					'selectUserCode': selectUserCode,
+				},
+				dataType: 'json'
+			});
+
+			request.done(function (data) {
+			})
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
 		})
 
 	</script>
@@ -429,8 +454,8 @@
 										<tr>
 											<td class="f_th01">카테고리명</td>
 											<td class="f_td01">
-												<input type="text" name="category_nm" style="width:99%" hname="카테고리명"
-													required="Y" />
+												<input type="text" name="category_nm" style="width:99%"
+													placeholder="카테고리명" />
 											</td>
 										</tr>
 

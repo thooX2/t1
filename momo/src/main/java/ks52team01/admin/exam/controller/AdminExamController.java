@@ -42,6 +42,21 @@ public class AdminExamController {
 	private final CommonMapper commonMapper;
 	private final FilesUtils filesUtils;
 
+	@PostMapping("/addCategory")
+	@ResponseBody
+	public boolean addCategory(@RequestParam(name = "category") String category,
+			@RequestParam(name = "selectMJR") String selectMJR, @RequestParam(name = "categoryNm") String categoryNm,
+			@RequestParam(name = "selectSubMjrCatCode") String selectSubMjrCatCode,
+			@RequestParam(name = "selectUserCode") String selectUserCode) {
+		log.error(category);
+		log.error(selectMJR);
+		log.error(categoryNm);
+		log.error(selectSubMjrCatCode);
+		log.error(selectUserCode);
+		
+		return false;
+	}
+
 	// 이미지 업로드
 	@PostMapping("/upload/image")
 	@ResponseBody
@@ -91,7 +106,7 @@ public class AdminExamController {
 
 		// 해당테이블에서 내용을 지우고 그다음에 등록하는걸로 데이터 등록
 		int isDeleted = adminExamService.deleteQuestionFromExam(selectedExamCode);
-	
+
 		if (!totalQuestionList.isEmpty() && totalQuestionList != null) {
 			done = adminExamService.registerQuestionToExam(examMappingQuestion);
 		}
