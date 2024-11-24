@@ -281,13 +281,7 @@
 
 		$(function () {
 			$('.js-example-basic-single').select2({
-				placeholder: '항목을 선택해 주세요', // 플레이스홀더 텍스트 설정
-				allowClear: true, // 클리어 버튼 허용
-				language: {
-					noResults: function () {
-						return "결과가 없습니다"; // Set custom message when no results are found
-					}
-				}
+				allowClear: false, // 클리어 버튼 비허용
 			});
 		});
 
@@ -320,28 +314,35 @@
 
 
 		$('#addCategoryBtn').click(function () {
-			const category = $('#category').val()
+			const tableNm = $('#category').val()
 			const selectMJR = $('#selectMJR').val()
 			const categoryNm = $('input[name="category_nm"]').val()
-			const selectSubMjrCatCode = $('#subMjrCatCode > select').val()
-			const selectUserCode = $('#manager_id').val()
+			let selectSubMirCatCode = $('#subMirCatCode > select').val()
+			const selectUserCode = $('select[name="manager_id"]').val()
 
+			if (tableNm != "exam_qna_chap") {
+				selectSubMirCatCode = "";
+			}
 
 
 			const request = $.ajax({
 				url: '/admin/exam/addCategory',
 				method: 'post',
 				data: {
-					'category': category,
+					'tableNm': tableNm,
 					'selectMJR': selectMJR,
 					'categoryNm': categoryNm,
-					'selectSubMjrCatCode': selectSubMjrCatCode,
+					'selectSubMirCatCode': selectSubMirCatCode,
 					'selectUserCode': selectUserCode,
 				},
 				dataType: 'json'
 			});
 
 			request.done(function (data) {
+				if (data)
+					location.reload();
+				if (!data)
+					alert('등록에 실패했습니다.')
 			})
 			request.fail(function (jqXHR, textStatus, error) {
 				console.log(error);

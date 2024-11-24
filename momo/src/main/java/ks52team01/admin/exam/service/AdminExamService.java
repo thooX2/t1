@@ -2,6 +2,7 @@ package ks52team01.admin.exam.service;
 
 import java.util.List;
 
+import ks52team01.admin.exam.dto.AddCategory;
 import ks52team01.admin.exam.dto.AdminExamInfo;
 import ks52team01.admin.exam.dto.AdminExamQnaChap;
 import ks52team01.admin.exam.dto.AdminExamQnaType;
@@ -50,5 +51,7 @@ public interface AdminExamService {
 	List<AdminQnaBank> getQuestionListByExamCode(String examCode);
 
 	int deleteQuestionFromExam(String selectedExamCode);
+
+	int addCategory(AddCategory addCategory);
 
 }

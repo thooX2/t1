@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
+import ks52team01.admin.exam.dto.AddCategory;
 import ks52team01.admin.exam.dto.AdminExamInfo;
 import ks52team01.admin.exam.dto.AdminExamQnaChap;
 import ks52team01.admin.exam.dto.AdminExamQnaType;
@@ -44,17 +45,13 @@ public class AdminExamController {
 
 	@PostMapping("/addCategory")
 	@ResponseBody
-	public boolean addCategory(@RequestParam(name = "category") String category,
-			@RequestParam(name = "selectMJR") String selectMJR, @RequestParam(name = "categoryNm") String categoryNm,
-			@RequestParam(name = "selectSubMjrCatCode") String selectSubMjrCatCode,
-			@RequestParam(name = "selectUserCode") String selectUserCode) {
-		log.error(category);
-		log.error(selectMJR);
-		log.error(categoryNm);
-		log.error(selectSubMjrCatCode);
-		log.error(selectUserCode);
-		
-		return false;
+	public boolean addCategory(AddCategory addCategory) {
+		boolean jobDone = false;
+
+		int result = adminExamService.addCategory(addCategory);
+		if (result > 0)
+			jobDone = true;
+		return jobDone;
 	}
 
 	// 이미지 업로드

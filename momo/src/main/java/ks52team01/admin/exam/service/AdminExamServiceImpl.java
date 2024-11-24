@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ks52team01.admin.exam.dto.AddCategory;
 import ks52team01.admin.exam.dto.AdminExamInfo;
 import ks52team01.admin.exam.dto.AdminExamQnaChap;
 import ks52team01.admin.exam.dto.AdminExamQnaType;
@@ -191,6 +192,31 @@ public class AdminExamServiceImpl implements AdminExamService {
 	public List<AdminSubMirCate> getAdminExamCategoryList() {
 
 		return adminExamMapper.getAdminExamCategoryList();
+	}
+
+	@Override
+	public int addCategory(AddCategory addCategory) {
+		String columnNm = "";
+		String codePattern = "";
+		// pk자동증가를 위해서 테이블명마다 값을 세팅
+		switch (addCategory.getTableNm()) {
+		case "exam_qna_chap":
+			columnNm = "exam_qna_chap_code";
+			codePattern = "eqcc";
+			break;
+		case "exam_qna_type":
+			columnNm = "exam_qna_type_code";
+			codePattern = "eqtc";
+			break;
+		case "sub_mir_cat":
+			columnNm = "sub_mir_cat_code";
+			codePattern = "smircc";
+			break;
+		}
+
+		String newPk = commonMapper.getPrimaryKey(addCategory.getTableNm(), columnNm, codePattern);
+		addCategory.setPkCode(newPk);
+		return adminExamMapper.addCategory(addCategory);
 	}
 
 }
