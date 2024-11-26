@@ -30,10 +30,10 @@
 ## 🧑‍💻2. 팀원 소개
 | 이름   | GitHub                                   | 이메일                |
 |--------|------------------------------------------|-----------------------|
-| 김승수 | (https://github.com/thooX2)      | thox2q9@gmail.com     |
-| 김도영 | (https://github.com/Doyoung9568)  | doyoung9568@gmail.com |
-| 문성민 | (https://github.com/leeyeonghee) | @example.com |
-| 최승현 | (https://github.com/elster009) | tmdgus199901@gmail.com |
+| 김승수 | https://github.com/thooX2      | thox2q9@gmail.com     |
+| 김도영 | https://github.com/Doyoung9568  | doyoung9568@gmail.com |
+| 문성민 | https://github.com/leeyeonghee | @example.com |
+| 최승현 | https://github.com/elster009 | tmdgus199901@gmail.com |
 
 ---
 
