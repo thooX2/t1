@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ks52team01.admin.exam.dto.AddCategory;
 import ks52team01.admin.exam.dto.AdminExamInfo;
 import ks52team01.admin.exam.dto.AdminExamQnaChap;
 import ks52team01.admin.exam.dto.AdminExamQnaType;
@@ -53,5 +54,7 @@ public interface AdminExamMapper {
 	List<AdminQnaBank> getQuestionListByExamCode(String examCode);
 
 	int deleteQuestionFromExam(String selectedExamCode);
+
+	int addCategory(AddCategory addCategory);
 
 }

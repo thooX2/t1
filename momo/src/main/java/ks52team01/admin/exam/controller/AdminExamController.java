@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
+import ks52team01.admin.exam.dto.AddCategory;
 import ks52team01.admin.exam.dto.AdminExamInfo;
 import ks52team01.admin.exam.dto.AdminExamQnaChap;
 import ks52team01.admin.exam.dto.AdminExamQnaType;
@@ -41,6 +42,17 @@ public class AdminExamController {
 	private final FileService fileService;
 	private final CommonMapper commonMapper;
 	private final FilesUtils filesUtils;
+
+	@PostMapping("/addCategory")
+	@ResponseBody
+	public boolean addCategory(AddCategory addCategory) {
+		boolean jobDone = false;
+
+		int result = adminExamService.addCategory(addCategory);
+		if (result > 0)
+			jobDone = true;
+		return jobDone;
+	}
 
 	// 이미지 업로드
 	@PostMapping("/upload/image")
@@ -91,7 +103,7 @@ public class AdminExamController {
 
 		// 해당테이블에서 내용을 지우고 그다음에 등록하는걸로 데이터 등록
 		int isDeleted = adminExamService.deleteQuestionFromExam(selectedExamCode);
-	
+
 		if (!totalQuestionList.isEmpty() && totalQuestionList != null) {
 			done = adminExamService.registerQuestionToExam(examMappingQuestion);
 		}
