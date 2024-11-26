@@ -2394,3 +2394,6 @@
         background: transparent;
     }
 }
+.team-info-li {
+            font-size: 1.6rem !important;
+}

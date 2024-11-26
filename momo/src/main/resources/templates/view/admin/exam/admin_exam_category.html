@@ -44,7 +44,8 @@
 		}
 
 		.left-section,
-		.right-section {
+		.right-section,
+		.modify-section {
 			padding: 10px;
 			box-sizing: border-box;
 		}
@@ -56,7 +57,8 @@
 		}
 
 		/* 오른쪽 섹션 스타일 */
-		.right-section {
+		.right-section,
+		.modify-section {
 			width: 50%;
 		}
 
@@ -117,6 +119,7 @@
 
 		/* 타임리프에서 전달받은 categoryList 데이터를 자바스크립트 변수로 변환 */
 		var categoryList = /*[[${categoryList}]]*/[];
+
 		var qnaTypeList = /*[[${qnaTypeList}]]*/[];
 		var qnaChapList = /*[[${qnaChapList}]]*/[];
 		var categoryMap = {};
@@ -237,7 +240,6 @@
 
 		qnaChapList.forEach((element, idx) => {
 
-			console.log(element);
 			treeData[3]['children'].forEach(elem => {
 
 				elem['children'].forEach(el => {
@@ -276,23 +278,94 @@
 
 		// 노드 클릭 시 이벤트 처리
 		$("#tree").on("fancytreeactivate", function (event, data) {
-			alert("선택된 과목: " + data.node.title);
+			// alert("선택된 과목: " + data.node.title);
+			//console.log(data)
+
+			// 클릭한 노드의 최상단 title찾기(진정한 최상단은 root이지만 바로 그 밑에 title을 가져오기)
+			let currentNode = data.node;
+			let topNode = data.node;
+
+			// 최상단 노드(top node) 찾기(최상단은 root이고 그 바로아랫단계 찾기)
+			while (topNode.getParent()) {
+				currentNode = topNode; // 상위 노드 저장
+				topNode = topNode.getParent();
+			}
+			console.log(currentNode.title);
+
+
+			$('.right-section').css("display", "none")
+			$('.modify-section').css("display", "");
+
 		});
 
 		$(function () {
 			$('.js-example-basic-single').select2({
-				placeholder: '담당자 선택', // 플레이스홀더 텍스트 설정
-				allowClear: true, // 클리어 버튼 허용
-				language: {
-					noResults: function () {
-						return "결과가 없습니다"; // Set custom message when no results are found
-					}
-				}
+				allowClear: false, // 클리어 버튼 비허용
 			});
 		});
 
+		// 옵션에서 첫번째 항목을 누르면 전체 코드가 다시 다 나오게 하기 위한 부분
+		const original = $('#subMirCatCode > select').html()
+
+		// 선택한 과목에 따라 중분류가 다르게 나오게 하는 부분
+		$('#selectMJR').change(function () {
+			if ($(this).val() == "") {
+				$('#subMirCatCode > select').append(original);
+			} else {
+				$('#subMirCatCode > select').empty();
+				categoryList.forEach((element, idx) => {
+					if ($(this).val() == element['subMjrCatCode']) {
+						const optionVal = element['subMirCatCode']
+						const optionNm = element['subMirCatNm']
+						const newOption = `<option value="${optionVal}">${optionNm}</option>`;
+						$('#subMirCatCode > select').append(newOption);
+					}
+				})
+			}
+		})
+		$('#category').change(function () {
+			if ($(this).val() == "exam_qna_chap") {
+				$(this).closest('tr').next().next().css('display', '');
+			} else {
+				$(this).closest('tr').next().next().css('display', 'none');
+			}
+		})
+
+
 		$('#addCategoryBtn').click(function () {
-			alert('해당기능은 차후에 지원 예정입니다');
+			const tableNm = $('#category').val()
+			const selectMJR = $('#selectMJR').val()
+			const categoryNm = $('input[name="category_nm"]').val()
+			let selectSubMirCatCode = $('#subMirCatCode > select').val()
+			const selectUserCode = $('select[name="manager_id"]').val()
+
+			if (tableNm != "exam_qna_chap") {
+				selectSubMirCatCode = "";
+			}
+
+
+			const request = $.ajax({
+				url: '/admin/exam/addCategory',
+				method: 'post',
+				data: {
+					'tableNm': tableNm,
+					'selectMJR': selectMJR,
+					'categoryNm': categoryNm,
+					'selectSubMirCatCode': selectSubMirCatCode,
+					'selectUserCode': selectUserCode,
+				},
+				dataType: 'json'
+			});
+
+			request.done(function (data) {
+				if (data)
+					location.reload();
+				if (!data)
+					alert('등록에 실패했습니다.')
+			})
+			request.fail(function (jqXHR, textStatus, error) {
+				console.log(error);
+			});
 		})
 
 	</script>
@@ -339,60 +412,177 @@
 
 						<!-- 오른쪽 섹션 -->
 						<div class="right-section">
+							<table class="c_tb01" cellpadding="0" cellspacing="0">
+								<tbody>
+									<tr>
+										<td class="c_th01">카테고리 등록</td>
+										<td class="c_td01"></td>
+									</tr>
+								</tbody>
+							</table>
 
-							<form name="" method="">
-								<table class="c_tb01" cellpadding="0" cellspacing="0">
-									<tbody>
-										<tr>
-											<td class="c_th01">카테고리 등록</td>
-											<td class="c_td01"></td>
-										</tr>
-									</tbody>
-								</table>
-
-								<table class="f_tb01" cellpadding="0" cellspacing="0">
-									<tbody>
-										<tr>
-											<td class="f_th01">상위 카테고리</td>
-											<td class="f_td01">
-												<span id="parent_name">-</span> &nbsp;
-											</td>
-										</tr>
-										<tr>
-											<td class="f_th01">카테고리명</td>
-											<td class="f_td01">
-												<input type="text" name="category_nm" style="width:90%" hname="카테고리명"
-													required="Y" />
-											</td>
-										</tr>
-
-
-										<tr>
-											<td class="f_th01">담당자</td>
-											<td class="f_td01" colspan="3">
-												<select name="manager_id" class="js-example-basic-single select2"
-													hname="담당자" required="Y">
+							<table class="f_tb01" cellpadding="0" cellspacing="0">
+								<tbody>
+									<tr>
+										<td class="f_th01">상위 카테고리</td>
+										<td class="f_td01">
+											<span>
+												<select id="category" style="width:100%">
+													<option style="color:gray">카테고리 선택</option>
+													<option value="sub_mir_cat">과목 중분류</option>
+													<option value="exam_qna_type">출제 유형</option>
+													<option value="exam_qna_chap">출제 단원</option>
+												</select>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">과목 대분류</td>
+										<td class="f_td01">
+											<span id="subMjrCatCode">
+												<select style="width:100%" id="selectMJR">
+													<option style="color:gray" value="">과목 선택</option>
+													<option value="smjrcc1">국어</option>
+													<option value="smjrcc2">수학</option>
+													<option value="smjrcc3">영어</option>
+													<option value="smjrcc4">한국사</option>
+													<option value="smjrcc5">사회탐구</option>
+													<option value="smjrcc6">과학탐구</option>
+													<option value="smjrcc7">직업탐구</option>
+													<option value="smjrcc8">제2외국어 및 한문</option>
+												</select>
+											</span>
+										</td>
+									</tr>
+									<tr style="display: none;">
+										<td class="f_th01">과목 중분류</td>
+										<td class="f_td01">
+											<span id="subMirCatCode">
+												<select class="js-example-basic-single select2" style="width:99%">
 													<option value=""> - 담당자 선택 - </option>
-													<option th:if="${userList !=null}" th:each="ul:${userList}"
-														th:value="${ul.userCode}"
-														th:text="${'['+ul.userId+'] '+ul.userName }">
-
+													<option th:if="${categoryList != null}"
+														th:each="cl : ${categoryList}"
+														th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
+														th:value="${cl.subMirCatCode}">
 													</option>
 												</select>
-											</td>
-										</tr>
-									</tbody>
-									<tfoot>
-										<tr>
-											<td class="b_th01"></td>
-											<td class="b_td01">
-												<button type="button" class="bttn2" id="addCategoryBtn">등록</button>
-											</td>
-										</tr>
-									</tfoot>
-								</table>
-							</form>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">카테고리명</td>
+										<td class="f_td01">
+											<input type="text" name="category_nm" style="width:99%"
+												placeholder="카테고리명" />
+										</td>
+									</tr>
+
+
+									<tr>
+										<td class="f_th01">담당자</td>
+										<td class="f_td01" colspan="3">
+											<select name="manager_id" class="js-example-basic-single select2"
+												hname="담당자" required="Y">
+												<option value=""> - 담당자 선택 - </option>
+												<option th:if="${userList !=null}" th:each="ul:${userList}"
+													th:value="${ul.userCode}"
+													th:text="${'['+ul.userId+'] '+ul.userName }">
+												</option>
+											</select>
+										</td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td class="b_th01"></td>
+										<td class="b_td01">
+											<button type="button" class="bttn2" id="addCategoryBtn">등록</button>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
 						</div>
+						<!-- right section -->
+						<!-- modify section -->
+						<div class="modify-section" style="display:none;">
+							<table class="c_tb01" cellpadding="0" cellspacing="0">
+								<tbody>
+									<tr>
+										<td class="c_th01">카테고리 수정</td>
+										<td class="c_td01"></td>
+									</tr>
+								</tbody>
+							</table>
+
+							<table class="f_tb01" cellpadding="0" cellspacing="0">
+								<tbody>
+									<tr>
+										<td class="f_th01">상위 카테고리</td>
+										<td class="f_td01">
+											<input type="text" name="" style="width:99%" placeholder="카테고리명" />
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">과목 대분류</td>
+										<td class="f_td01">
+											<span id="subMjrCatCode">
+												<select style="width:100%" id="selectMJR">
+													<option style="color:gray" value="">과목 선택</option>
+													<option value="smjrcc1">국어</option>
+													<option value="smjrcc2">수학</option>
+													<option value="smjrcc3">영어</option>
+													<option value="smjrcc4">한국사</option>
+													<option value="smjrcc5">사회탐구</option>
+													<option value="smjrcc6">과학탐구</option>
+													<option value="smjrcc7">직업탐구</option>
+													<option value="smjrcc8">제2외국어 및 한문</option>
+												</select>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">과목 중분류</td>
+										<td class="f_td01">
+											<span id="subMirCatCode">
+												<select class="js-example-basic-single select2" style="width:99%">
+													<option value=""> - 과목선택 - </option>
+													<option th:if="${categoryList != null}"
+														th:each="cl : ${categoryList}"
+														th:text="${cl.subMirCatNm == '통합국어' || cl.subMirCatNm == '통합수학' || cl.subMirCatNm == '통합사회' || cl.subMirCatNm == '통합과학' ? cl.subMjrName + ' > (중등과정) ' + cl.subMirCatNm :(cl.subMjrName =='한국사')?cl.subMjrName + ' > ' + '한국사': cl.subMjrName + ' > ' + cl.subMirCatNm}"
+														th:value="${cl.subMirCatCode}">
+													</option>
+												</select>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td class="f_th01">카테고리명</td>
+										<td class="f_td01">
+											<input type="text" name="" style="width:99%" placeholder="카테고리명" />
+										</td>
+									</tr>
+
+
+									<tr>
+										<td class="f_th01">담당자</td>
+										<td class="f_td01" colspan="3">
+											<select name="" class="js-example-basic-single select2" style="width:99%">
+												<option value=""> - 담당자 선택 - </option>
+											</select>
+										</td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td class="b_th01"></td>
+										<td class="b_td01">
+											<button type="button" class="bttn2" id="">수정</button>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+						<!-- modify section -->
 					</div>
 				</div>
 			</div>

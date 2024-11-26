@@ -90,7 +90,20 @@
 		<result column="user_id" property="userId" />
 		<result column="exam_mapping_question_reg_time" property="examMappingQuestionRegTime" />
 	</resultMap>
-	
+	<insert id="addCategory" parameterType="addCategory" >
+		INSERT INTO ${tableNm}
+	    VALUES (
+	        <if test="tableNm == 'exam_qna_chap'">
+	            #{pkCode}, #{selectUserCode}, #{selectMJR}, #{selectSubMirCatCode}, #{categoryNm}, NOW()
+	        </if>
+	        <if test="tableNm == 'exam_qna_type'">
+	            #{pkCode}, #{selectMJR}, null,  #{selectUserCode},  #{categoryNm}, NOW()
+	        </if>
+	        <if test="tableNm == 'sub_mir_cat'">
+	            #{pkCode}, #{selectMJR}, #{categoryNm}, null, 'Y'
+	        </if>
+	    )
+	</insert>
 	<delete id="deleteQuestionFromExam" parameterType="String">
 		DELETE FROM
 			exam_mapping_question
