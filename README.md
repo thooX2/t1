@@ -32,8 +32,8 @@
 |--------|------------------------------------------|-----------------------|
 | 김승수 | [김승수의 GitHub](https://github.com/thooX2)      | thox2q9@gmail.com     |
 | 김도영 | [김도영의 GitHub](https://github.com/Doyoung9568)  | doyoung9568@gmail.com |
-| 문성민 | [문성민의 GitHub](https://github.com/leeyeonghee) | leeyeonghee@example.com |
-| 최승현 | [최승현의 GitHub](https://github.com/leeyeonghee) | leeyeonghee@example.com |
+| 문성민 | [문성민의 GitHub](https://github.com/leeyeonghee) | @example.com |
+| 최승현 | [최승현의 GitHub](https://github.com/leeyeonghee) | @example.com |
 
 ---
 
@@ -115,7 +115,8 @@
 ## ✅7. **주요 기능 설명**
 ### **학생 기능**
 - **모의고사 보기**: 과목 선택 및 문제 풀이 기능  
-- **시험 결과 확인**: 점수와 정답/오답 피드백 제공  
+- **시험 결과 확인**: 점수와 정답/오답 피드백 제공
+- **시험 결과 분석**: 기간별 성적변화 기능 제공  
 - **성적 조회** : 성적 시각화 종합 조회
 
 ### **관리자 기능**
