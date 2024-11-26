@@ -74,10 +74,13 @@
 ---
 
 ## 💻5. 개발 환경
-- **IDE**: Spring Tool Suite (STS)  
-- **운영체제**: Windows 10, macOS  
-- **서버**: Tomcat 9  
-- **DBMS**: MySQL 8.0  
+																	
+![image](https://github.com/user-attachments/assets/4e064415-7181-4132-a481-9adccfaa0cff)
+
+
+
+
+
 
 ![image](https://github.com/user-attachments/assets/c1ac2280-d961-44f4-a892-e5494e9093b6)
 
